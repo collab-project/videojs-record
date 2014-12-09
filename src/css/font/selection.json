@@ -1,0 +1,109 @@
+{
+	"IcoMoonType": "selection",
+	"icons": [
+		{
+			"icon": {
+				"paths": [
+					"M-0.088 512c0-141.5 114.5-256 256-256 141.438 0 256 114.5 256 256s-114.562 256-256 256c-141.499 0-256-114.5-256-256z"
+				],
+				"width": 511,
+				"attrs": [],
+				"tags": [
+					"primitive-dot"
+				],
+				"defaultCode": 61522,
+				"grid": 16
+			},
+			"attrs": [],
+			"properties": {
+				"id": 133,
+				"order": 2,
+				"prevSize": 16,
+				"code": 61522,
+				"name": "primitive-dot"
+			},
+			"setIdx": 0,
+			"iconIdx": 133
+		},
+		{
+			"icon": {
+				"paths": [
+					"M512 768h-512v-512h512v512z"
+				],
+				"width": 512,
+				"attrs": [],
+				"tags": [
+					"primitive-square"
+				],
+				"defaultCode": 61523,
+				"grid": 16
+			},
+			"attrs": [],
+			"properties": {
+				"id": 134,
+				"order": 1,
+				"prevSize": 16,
+				"code": 61523,
+				"name": "primitive-square"
+			},
+			"setIdx": 0,
+			"iconIdx": 134
+		},
+		{
+			"icon": {
+				"paths": [
+					"M1024 282.5l-90.506-90.5-178.746 178.752-101.5-101.502 178.75-178.75-90.5-90.5-178.75 178.75-114.748-114.75-86.626 86.624 512.002 512.002 86.624-86.624-114.752-114.752zM274.748 749.254c165.768 165.762 385.194 36.362 519.292-75.464l-443.824-443.824c-111.824 134.096-241.228 353.522-75.468 519.288zM191.998 704.004l127.994 127.996-191.992 191.992-127.996-127.994z"
+				],
+				"attrs": [],
+				"tags": [
+					"power cord",
+					"cord",
+					"plugin",
+					"extension"
+				],
+				"grid": 16
+			},
+			"attrs": [],
+			"properties": {
+				"id": 178,
+				"order": 3,
+				"prevSize": 16,
+				"code": 58880,
+				"name": "powercord"
+			},
+			"setIdx": 2,
+			"iconIdx": 178
+		}
+	],
+	"height": 1024,
+	"metadata": {
+		"name": "icomoon"
+	},
+	"preferences": {
+		"showGlyphs": true,
+		"showQuickUse": true,
+		"showQuickUse2": true,
+		"showSVGs": true,
+		"fontPref": {
+			"prefix": "icon-",
+			"metadata": {
+				"fontFamily": "icomoon"
+			},
+			"metrics": {
+				"emSize": 1024,
+				"baseline": 6.25,
+				"whitespace": 50
+			},
+			"resetPoint": 58880
+		},
+		"imagePref": {
+			"prefix": "icon-",
+			"png": true,
+			"useClassSelector": true
+		},
+		"historySize": 100,
+		"showCodes": true,
+		"search": "",
+		"showLiga": false
+	}
+}

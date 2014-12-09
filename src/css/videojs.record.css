@@ -1,0 +1,16 @@
+/* Custom Icon Font
+--------------------------------------------------------------------------------
+The control icons are from a custom font. Each icon corresponds to a character
+(e.g. "\e001"). Font icons allow for easy scaling and coloring of icons.
+*/
+@font-face{
+	font-family: 'VideoJS-Record';
+	src:url('font/videojs-record.eot?-6n8h49');
+	src:url('font/videojs-record.eot?#iefix-6n8h49') format('embedded-opentype'),
+		url('font/videojs-record.woff?-6n8h49') format('woff'),
+		url('font/videojs-record.ttf?-6n8h49') format('truetype'),
+		url('font/videojs-record.svg?-6n8h49#icomoon') format('svg');
+
+	font-weight: normal;
+	font-style: normal;
+}
