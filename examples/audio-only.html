@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <title>Audio-only Example - Record Plugin for Video.js</title>
+
+  <link href="http://vjs.zencdn.net/4.11.1/video-js.css" rel="stylesheet">
+
+  <script src="http://vjs.zencdn.net/4.11.1/video.js"></script>
+  
+  <script src="http://wavesurfer.fm/build/wavesurfer.min.js"></script>
+  <script src="http://wavesurfer.fm/plugin/wavesurfer.microphone.js"></script>
+  <script src="http://raw.githubusercontent.com/collab-project/videojs-wavesurfer/master/videojs.wavesurfer.js"></script>
+
+  <script src="../src/js/videojs.record.js"></script>
+
+</head>
+<body>
+
+<audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+<script>
+var player = videojs("myAudio",
+{
+    controls: true,
+    autoplay: true,
+    loop: false,
+    width: 600,
+    height: 300,
+    plugins: {
+        wavesurfer: {
+            src: "live",
+            waveColor: "black"
+        }
+    }
+});
+
+// change player background color
+player.el().style.backgroundColor = "#81B4DE";
+</script>
+
+</body>
+</html>
