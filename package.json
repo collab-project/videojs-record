@@ -2,7 +2,7 @@
   "name": "videojs-record",
   "version": "0.1.0",
   "description": "A video.js plugin for recording audio/video files.",
-  "main": "src/videojs.record.js",
+  "main": "src/js/videojs.record.js",
   "directories": {
     "examples": "examples"
   },
