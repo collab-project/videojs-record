@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <title>Video-only Example - Record Plugin for Video.js</title>
+
+  <link href="http://vjs.zencdn.net/4.11.1/video-js.css" rel="stylesheet">
+  <link href="../src/css/videojs.record.css" rel="stylesheet">
+
+  <script src="http://vjs.zencdn.net/4.11.1/video.js"></script>
+
+  <script src="../src/js/videojs.record.js"></script>
+
+</head>
+<body>
+
+<video id="myVideo" class="video-js vjs-default-skin"></video>
+
+<script>
+var player = videojs("myVideo",
+{
+    controls: true,
+    width: 600,
+    height: 300,
+    children: {
+        controlBar: {
+            children: {
+                muteToggle: false,
+                volumeControl: false
+            }
+        }
+    },
+    plugins: {
+        record: {
+            audio: false,
+            video: true
+        }
+    }
+});
+
+// change player background color
+player.el().style.backgroundColor = "#47AFD1";
+</script>
+
+</body>
+</html>
