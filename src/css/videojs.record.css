@@ -18,7 +18,7 @@ The control icons are from a custom font. Each icon corresponds to a character
 /* Record toggle
 --------------------------------------------------------------------------------
 */
-.vjs-default-skin .vjs-record-control {
+.vjs-default-skin .vjs-record-button {
 	font-family: VideoJS-Record;
 	speak: none;
 	font-style: normal;
@@ -34,17 +34,17 @@ The control icons are from a custom font. Each icon corresponds to a character
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.vjs-default-skin .vjs-record-control:before {
+.vjs-default-skin .vjs-record-button:before {
 	font-family: VideoJS-Record;
   	content: "\f052"; /* record icon */
 }
 
-.vjs-default-skin.vjs-record-stop .vjs-record-control:before {
+.vjs-default-skin.vjs-record-stop .vjs-record-button:before {
 	font-family: VideoJS-Record;
   	content: "\f053"; /* stop icon */
 }
 
-.vjs-default-skin.vjs-record-start .vjs-record-control:before {
+.vjs-default-skin.vjs-record-start .vjs-record-button:before {
 	font-family: VideoJS-Record;
   	content: "\f053"; /* stop icon */
 }

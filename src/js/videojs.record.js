@@ -22,24 +22,19 @@
 
             console.log('videojs.Recorder', this.options().options);
 
+            this.audio = this.options().options.audio;
+            this.video = this.options().options.video;
+
             this._recording = false;
 
-            // get browser-specific getUserMedia
-            /*this.getUserMedia = (
-                navigator.getUserMedia ||
-                navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia
-            ).bind(navigator);*/
+            if (this.audio)
+            {
+                // enable microphone plugin
+                this.microphone = Object.create(WaveSurfer.Microphone);
+            }
 
-            // add device button
-            //this.device_btn = new DeviceButton(player);
-            //player.addChild(this.device_btn); //this.device_btn);
-
-            // add record button
-            //this.record_btn = new videojs.RecordToggle(player);
-            //this.record_btn.hide();
-            //player.controlBar.addChild(this.record_btn);
+            // hide play control
+            this.player().controlBar.playToggle.hide();
         },
 
         /**
@@ -55,23 +50,15 @@
          */
         getDevice: function()
         {
-            console.log('getDevice');
             this.startPlayers();
 
             // init Microphone plugin
-            /*this.microphone = Object.create(WaveSurfer.Microphone);
-            console.log(this.player());
             this.microphone.init({
                 wavesurfer: this.player().waveform.surfer
             });
 
-            this.microphone.start();*/
-            /*this.getUserMedia({
-                video: false,
-                audio: true
-            },
-            this.microphone.gotStream.bind(this),
-            this.microphone.streamError.bind(this));*/
+            // connect to microphone device
+            this.microphone.start();
         },
 
         /**
@@ -104,7 +91,9 @@
         startPlayers: function()
         {
             var options = this.options().options;
+
             console.log('startplayers', this.player().waveform.surfer);
+
             // init waveform
             this.initialize(options);
 
@@ -150,6 +139,7 @@
         {
             videojs.Button.call(this, player, options);
 
+            this.on(player, 'click', this.onClick);
             this.on(player, 'startRecord', this.onStart);
             this.on(player, 'stopRecord', this.onStop);
         }
@@ -157,8 +147,11 @@
 
     RecordToggle.prototype.onClick = function(e)
     {
+        // We need to stop this event before it bubbles up
+        e.stopImmediatePropagation();
+
         var recorder = this.player().recorder;
-        console.log('click record');
+
         if (!recorder.isRecording())
         {
             recorder.start();
@@ -176,7 +169,7 @@
         this.addClass('vjs-record-start');
 
         // update label
-        this.el_.children[0].children[0].innerHTML = this.localize('Stop');
+        this.el().firstChild.firstChild.innerHTML = this.localize('Stop');
     };
 
     RecordToggle.prototype.onStop = function()
@@ -186,7 +179,7 @@
         this.addClass('vjs-record-stop');
 
         // update label
-        this.el_.children[0].children[0].innerHTML = this.localize('Record');
+        this.el().firstChild.firstChild.innerHTML = this.localize('Record');
     };
 
     /**
@@ -196,10 +189,20 @@
      * @class
      * @constructor
     */
-    DeviceButton = videojs.Button.extend({});
-    DeviceButton.prototype.onClick = function()
+    DeviceButton = videojs.Button.extend(
     {
-        console.log('click device button');
+        /** @constructor */
+        init: function(player, options)
+        {
+            videojs.Button.call(this, player, options);
+
+            this.on('click', this.onClick);
+        }
+    });
+    DeviceButton.prototype.onClick = function(e)
+    {
+        // We need to stop this event before it bubbles up
+        e.stopImmediatePropagation();
 
         // open device dialog
         this.player().recorder.getDevice();
@@ -207,10 +210,12 @@
 
     // Note that we're not doing this in prototype.createEl() because
     // it won't be called by Component.init (due to name obfuscation).
-    var createDeviceButton = function() {
+    var createButton = function(name)
+    {
         var props = {
-            className: 'vjs-device-button vjs-control',
-            innerHTML: '<div class="vjs-control-content"><span class="vjs-control-text">' + ('Device') + '</span></div>',
+            className: 'vjs-' + name.toLowerCase() + '-button vjs-control',
+            innerHTML: '<div class="vjs-control-content"><span class="vjs-control-text">' +
+                name + '</span></div>',
             role: 'button',
             'aria-live': 'polite', // let the screen reader user know that the text of the button may change
             tabIndex: 0
@@ -241,7 +246,7 @@
         var settings = videojs.util.mergeOptions(defaults, options);
         var player = this;
 
-        // create new recorder
+        // create recorder
         player.recorder = new videojs.Recorder(player,
         {
             'el': createPlugin(),
@@ -249,12 +254,21 @@
         });
         player.el().appendChild(player.recorder.el());
 
-        // create new device button
+        // add device button
         player.deviceButton = new DeviceButton(player,
         {
-            'el' : createDeviceButton(),
+            'el': createButton('Device'),
         });
         player.recorder.el().appendChild(player.deviceButton.el());
+
+        // add record toggle
+        player.recordToggle = new RecordToggle(player,
+        {
+            'el': createButton('Record'),
+        });
+        player.recordToggle.hide();
+        player.controlBar.el().insertBefore(player.recordToggle.el(),
+            player.controlBar.el().firstChild);
     };
 
     // register the plugin
