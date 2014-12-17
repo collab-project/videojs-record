@@ -7,9 +7,10 @@ The plugin has the following dependencies:
 
 | Library | Description |
 | --- | --- |
-| ![video.js](http://www.videojs.com/) | HTML5 media player with Flash fallback. |
+| ![Video.js](http://www.videojs.com/) | HTML5 media player with Flash fallback. |
 | ![wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) | Adds navigable waveform for audio files. |
 | ![videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) | Turns video.js into an audio-player. |
+| ![RecordRTC.js](http://recordrtc.org/) | Media-recording library. |
 
 It also uses the `Microphone` plugin that comes with wavesurfer.js (when recording audio-only).
 
@@ -22,6 +23,7 @@ Start by including these packages and styles on your page:
 <link href="http://vjs.zencdn.net/4.11.1/video-js.css" rel="stylesheet">
 
 <script src="http://vjs.zencdn.net/4.11.1/video.js"></script>
+<script src="http://recordrtc.org/latest.js"></script>
 <script src="http://wavesurfer.fm/build/wavesurfer.min.js"></script>
 <script src="http://wavesurfer.fm/plugin/wavesurfer.microphone.js"></script>
 <script src="../../videojs-wavesurfer/videojs.wavesurfer.js"></script>
