@@ -3,9 +3,8 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;' +
+    banner: '/*! <%= pkg.name %> - v<%= pkg.version %>\n' +
+      '* Copyright (c) <%= grunt.template.today("yyyy") %>' +
       ' Licensed <%= pkg.license %> */\n',
     clean: {
       files: ['dist']
@@ -16,7 +15,7 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: 'src/*.js',
+        src: 'src/js/videojs.record.js',
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -40,7 +39,7 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc'
         },
-        src: ['src/**/*.js']
+        src: ['src/js/*.js']
       },
     },
     watch: {
