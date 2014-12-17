@@ -147,7 +147,7 @@
 
     RecordToggle.prototype.onClick = function(e)
     {
-        // We need to stop this event before it bubbles up
+        // stop this event before it bubbles up
         e.stopImmediatePropagation();
 
         var recorder = this.player().recorder;
@@ -201,7 +201,7 @@
     });
     DeviceButton.prototype.onClick = function(e)
     {
-        // We need to stop this event before it bubbles up
+        // stop this event before it bubbles up
         e.stopImmediatePropagation();
 
         // open device dialog
@@ -210,12 +210,17 @@
 
     // Note that we're not doing this in prototype.createEl() because
     // it won't be called by Component.init (due to name obfuscation).
-    var createButton = function(name)
+    /**
+     * Create a custom button
+     * @param className {string} class name for the new button
+     * @param label {string} label for the new button
+     */
+    var createButton = function(className, label)
     {
         var props = {
-            className: 'vjs-' + name.toLowerCase() + '-button vjs-control',
+            className: 'vjs-' + className + '-button vjs-control',
             innerHTML: '<div class="vjs-control-content"><span class="vjs-control-text">' +
-                name + '</span></div>',
+                label + '</span></div>',
             role: 'button',
             'aria-live': 'polite', // let the screen reader user know that the text of the button may change
             tabIndex: 0
@@ -257,14 +262,14 @@
         // add device button
         player.deviceButton = new DeviceButton(player,
         {
-            'el': createButton('Device'),
+            'el': createButton('device', player.localize('Device')),
         });
         player.recorder.el().appendChild(player.deviceButton.el());
 
         // add record toggle
         player.recordToggle = new RecordToggle(player,
         {
-            'el': createButton('Record'),
+            'el': createButton('record', player.localize('Record')),
         });
         player.recordToggle.hide();
         player.controlBar.el().insertBefore(player.recordToggle.el(),
