@@ -20,12 +20,12 @@
             // run base component initializing with new options.
             videojs.Component.call(this, player, options, ready);
 
-            this.audio = this.options().options.audio;
-            this.video = this.options().options.video;
+            this.recordAudio = this.options().options.audio;
+            this.recordVideo = this.options().options.video;
 
             this._recording = false;
 
-            if (this.audio)
+            if (this.recordAudio)
             {
                 // XXX: enable videojs-wavesurfer plugin automatically
                 this.surfer = player.waveform;
@@ -48,12 +48,13 @@
          */
         getDevice: function()
         {
-            if (this.audio)
+            if (this.recordAudio)
             {
+                // setup microphone
                 this.surfer.microphone.on('deviceReady', this.onDeviceReady.bind(this));
                 this.surfer.microphone.on('deviceError', this.onDeviceError.bind(this));
 
-                // open device selection
+                // open browser device selection dialog
                 this.player().play();
             }
         },
@@ -70,6 +71,12 @@
 
             // show record button
             this.player().recordToggle.show();
+
+            // setup recordrtc
+            if (this.recordAudio)
+            {
+                this.engine = RecordRTC(this.surfer.microphone.stream);
+            }
         },
 
         /**
@@ -87,10 +94,12 @@
          */
         start: function()
         {
-            console.log('start recording');
-
             this._recording = true;
 
+            // start recording stream
+            this.engine.startRecording();
+
+            // notify UI
             this.trigger('startRecord');
         },
 
@@ -99,11 +108,35 @@
          */
         stop: function()
         {
-            console.log('stop recording');
-
             this._recording = false;
 
+            // stop recording stream
+            this.engine.stopRecording(this.onStopRecording.bind(this));
+
+            // notify UI
             this.trigger('stopRecord');
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         * @param {string} Reference to the recorded Blob object, eg.
+         *   blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
+         */
+        onStopRecording: function(audioURL)
+        {
+            console.log('stopped recording:', audioURL);
+
+            // get data
+            var recordedBlob = this.engine.getBlob();
+            this.engine.getDataURL(function(dataURL) { });
+
+            if (this.recordAudio)
+            {
+                // pause live visualization
+                this.player().pause();
+
+                // XXX: visualize recorded stream
+            }
         }
 
     });
