@@ -20,8 +20,6 @@
             // run base component initializing with new options.
             videojs.Component.call(this, player, options, ready);
 
-            console.log('videojs.Recorder', this.options().options);
-
             this.audio = this.options().options.audio;
             this.video = this.options().options.video;
 
@@ -29,8 +27,8 @@
 
             if (this.audio)
             {
-                // enable microphone plugin
-                this.microphone = Object.create(WaveSurfer.Microphone);
+                // XXX: enable videojs-wavesurfer plugin automatically
+                this.surfer = player.waveform;
             }
 
             // hide play control
@@ -50,15 +48,38 @@
          */
         getDevice: function()
         {
-            this.startPlayers();
+            if (this.audio)
+            {
+                this.surfer.microphone.on('deviceReady', this.onDeviceReady.bind(this));
+                this.surfer.microphone.on('deviceError', this.onDeviceError.bind(this));
 
-            // init Microphone plugin
-            this.microphone.init({
-                wavesurfer: this.player().waveform.surfer
-            });
+                // open device selection
+                this.player().play();
+            }
+        },
 
-            // connect to microphone device
-            this.microphone.start();
+        /**
+         * 
+         */
+        onDeviceReady: function()
+        {
+            console.info('onDeviceReady');
+
+            // hide device button
+            this.player().deviceButton.hide();
+
+            // show record button
+            this.player().recordToggle.show();
+        },
+
+        /**
+         * 
+         */
+        onDeviceError: function(code)
+        {
+            console.warn('onDeviceError', code);
+
+            // XXX: display error
         },
 
         /**
@@ -83,42 +104,6 @@
             this._recording = false;
 
             this.trigger('stopRecord');
-        },
-
-        /**
-         * Start the players.
-         */
-        startPlayers: function()
-        {
-            var options = this.options().options;
-
-            console.log('startplayers', this.player().waveform.surfer);
-
-            // init waveform
-            this.initialize(options);
-
-            // start loading
-            if (options.src !== undefined)
-            {
-                this.load(options.src);
-            }
-        },
-
-        /**
-         * Initializes the waveform.
-         * 
-         * @param opts: Plugin options.
-         */
-        initialize: function(opts)
-        {
-            this.originalHeight = this.player().options().height;
-
-            // set waveform element and dimensions
-            opts.container = this.el();
-            opts.height = this.player().height() - this.player().controlBar.height();
-
-            // customize waveform appearance
-            this.player().waveform.surfer.init(opts);
         }
 
     });
@@ -196,7 +181,7 @@
         {
             videojs.Button.call(this, player, options);
 
-            this.on('click', this.onClick);
+            this.on(player, 'click', this.onClick);
         }
     });
     DeviceButton.prototype.onClick = function(e)
