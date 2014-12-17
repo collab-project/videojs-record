@@ -1,16 +1,20 @@
 Video.js Record
 ===============
 
-A [video.js](http://www.videojs.com/) plugin for recording audio/video files.
+A Video.js plugin for recording audio/video files.
 
+The plugin has the following dependencies:
+
+| Library | Description |
+| --- | --- |
+| ![video.js](http://www.videojs.com/) | HTML5 media player with Flash fallback. |
+| ![wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) | Adds navigable waveform for audio files. |
+| ![videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) | Turns video.js into an audio-player. |
+
+It also uses the `Microphone` plugin that comes with wavesurfer.js (when recording audio-only).
 
 Using the Plugin
 ----------------
-
-The plugin depends on the [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js),
-[video.js](http://www.videojs.com/) and
-[videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) packages. It
-also uses the `Microphone` plugin that comes with wavesurfer.js (when recording audio-only).
 
 Start by including these packages and styles on your page:
 
