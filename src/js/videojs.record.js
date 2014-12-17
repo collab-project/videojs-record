@@ -124,7 +124,7 @@
         {
             videojs.Button.call(this, player, options);
 
-            this.on(player, 'click', this.onClick);
+            this.on('click', this.onClick);
             this.on(player, 'startRecord', this.onStart);
             this.on(player, 'stopRecord', this.onStop);
         }
@@ -181,7 +181,7 @@
         {
             videojs.Button.call(this, player, options);
 
-            this.on(player, 'click', this.onClick);
+            this.on('click', this.onClick);
         }
     });
     DeviceButton.prototype.onClick = function(e)
