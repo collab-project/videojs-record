@@ -37,8 +37,10 @@ var player = videojs("myAudio",
         wavesurfer: {
             src: "live",
             waveColor: "black",
-            cursorWidth: 0,
-            interact: false
+            progressColor: "grey",
+            cursorWidth: 1,
+            interact: false,
+            hideScrollbar: true
         },
         record: {
             audio: true,
@@ -48,7 +50,7 @@ var player = videojs("myAudio",
 });
 
 // change player background color
-player.el().style.backgroundColor = "#76CF9F";
+player.el().style.backgroundColor = "#9FD6BA";
 </script>
 
 </body>
