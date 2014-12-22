@@ -22,6 +22,7 @@
 
             this.recordAudio = this.options().options.audio;
             this.recordVideo = this.options().options.video;
+            this.recordTimeMax = this.options().options.recordTimeMax;
 
             this._recording = false;
 
@@ -60,12 +61,10 @@
         },
 
         /**
-         * 
+         * Invoked when the device is ready.
          */
         onDeviceReady: function()
         {
-            console.info('onDeviceReady');
-
             // hide device button
             this.player().deviceButton.hide();
 
@@ -80,7 +79,7 @@
         },
 
         /**
-         * 
+         * Invoked when an device error occurred.
          */
         onDeviceError: function(code)
         {
@@ -119,23 +118,25 @@
 
         /**
          * Invoked when recording is stopped and resulting stream is available.
-         * @param {string} Reference to the recorded Blob object, eg.
+         * @param {string} audioURL Reference to the recorded Blob object, eg.
          *   blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
          */
         onStopRecording: function(audioURL)
         {
-            console.log('stopped recording:', audioURL);
-
-            // get data
+            // get stream data
             var recordedBlob = this.engine.getBlob();
-            this.engine.getDataURL(function(dataURL) { });
 
             if (this.recordAudio)
             {
                 // pause live visualization
                 this.player().pause();
 
-                // XXX: visualize recorded stream
+                // show play control
+                // XXX: once the waveform's ready?
+                this.player().controlBar.playToggle.show();
+
+                // visualize recorded stream
+                this.player().waveform.load(recordedBlob);
             }
         }
 
@@ -255,9 +256,11 @@
         return videojs.Component.prototype.createEl(null, props);
     };
 
+    // plugin defaults
     var defaults = {
         audio: false,
-        video: true
+        video: true,
+        recordTimeMax: 10
     };
 
     /**
