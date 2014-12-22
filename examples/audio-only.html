@@ -25,21 +25,13 @@ var player = videojs("myAudio",
     controls: true,
     width: 600,
     height: 300,
-    children: {
-        controlBar: {
-            children: {
-                muteToggle: false,
-                volumeControl: false
-            }
-        }
-    },
     plugins: {
         wavesurfer: {
             src: "live",
             waveColor: "black",
             progressColor: "grey",
             cursorWidth: 1,
-            interact: false,
+            msDisplayMax: 60,
             hideScrollbar: true
         },
         record: {
