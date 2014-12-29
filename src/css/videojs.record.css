@@ -39,12 +39,12 @@ The control icons are from a custom font. Each icon corresponds to a character
   	content: "\f052"; /* record icon */
 }
 
-.vjs-default-skin.vjs-record-stop .vjs-record-button:before {
+.vjs-default-skin .vjs-record-button.vjs-record-stop:before {
 	font-family: VideoJS-Record;
-  	content: "\f053"; /* stop icon */
+  	content: "\f052"; /* record icon */
 }
 
-.vjs-default-skin.vjs-record-start .vjs-record-button:before {
+.vjs-default-skin .vjs-record-button.vjs-record-start:before {
 	font-family: VideoJS-Record;
   	content: "\f053"; /* stop icon */
 }
