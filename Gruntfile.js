@@ -61,6 +61,8 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-videojs-languages');
+
   require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('default', ['vjslanguages', 'concat', 'uglify']);
