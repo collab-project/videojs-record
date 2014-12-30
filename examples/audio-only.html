@@ -31,12 +31,13 @@ var player = videojs("myAudio",
             waveColor: "black",
             progressColor: "grey",
             cursorWidth: 1,
-            msDisplayMax: 60,
+            msDisplayMax: 0,
             hideScrollbar: true
         },
         record: {
             audio: true,
-            video: false
+            video: false,
+            recordTimeMax: 20
         }
     }
 });
