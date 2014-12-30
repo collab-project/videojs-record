@@ -26,6 +26,10 @@ The control icons are from a custom font. Each icon corresponds to a character
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
+	width: 2.5em;
+	font-size: 15px;
+    top: -8px;
+    left: 7px;
   	cursor: pointer;
   	outline: none;
 

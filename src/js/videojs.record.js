@@ -34,6 +34,9 @@
 
             // hide play control
             this.player().controlBar.playToggle.hide();
+
+            // display max record time
+            this.player().waveform.setDuration(this.recordTimeMax);
         },
 
         /**
@@ -71,10 +74,19 @@
             // show record button
             this.player().recordToggle.show();
 
-            // setup recordrtc
-            if (this.recordAudio)
+            // setup recording
+            if (this.recordAudio && !this.recordVideo)
             {
+                // audio-only
                 this.engine = RecordRTC(this.surfer.microphone.stream);
+            }
+            else if (this.recordAudio && this.recordVideo)
+            {
+                // XXX: audio and video
+            }
+            else if (!this.recordAudio && this.recordVideo)
+            {
+                // XXX: video-only
             }
         },
 
@@ -95,6 +107,17 @@
         {
             this._recording = true;
 
+            // hide play control
+            this.player().controlBar.playToggle.hide();
+
+            // resume live visualization
+            this.surfer.liveMode = true;
+            this.player().play();
+
+            // start countdown
+            this.startTime = this.surfer.microphone.stream.currentTime;
+            this.countDown = this.setInterval(this.onCountDown.bind(this), 100);
+
             // start recording stream
             this.engine.startRecording();
 
@@ -108,6 +131,9 @@
         stop: function()
         {
             this._recording = false;
+
+            // stop countdown
+            this.clearInterval(this.countDown);
 
             // stop recording stream
             this.engine.stopRecording(this.onStopRecording.bind(this));
@@ -138,6 +164,29 @@
                 // visualize recorded stream
                 this.player().waveform.load(recordedBlob);
             }
+        },
+
+        /**
+         * 
+         */
+        onCountDown: function()
+        {
+            var currentTime = this.surfer.microphone.stream.currentTime - this.startTime;
+            var duration = this.recordTimeMax;
+
+            // update duration
+            this.player().waveform.setDuration(duration);
+
+            if (currentTime >= duration)
+            {
+                // stop countdown
+                this.stop();
+
+                currentTime = duration;
+            }
+
+            // update current time
+            this.player().waveform.setCurrentTime(currentTime, duration);
         }
 
     });
