@@ -20,9 +20,9 @@ Using the Plugin
 Start by including these packages and styles on your page:
 
 ```html
-<link href="http://vjs.zencdn.net/4.11.1/video-js.css" rel="stylesheet">
+<link href="http://vjs.zencdn.net/4.11.3/video-js.css" rel="stylesheet">
 
-<script src="http://vjs.zencdn.net/4.11.1/video.js"></script>
+<script src="http://vjs.zencdn.net/4.11.3/video.js"></script>
 <script src="http://recordrtc.org/latest.js"></script>
 <script src="http://wavesurfer.fm/build/wavesurfer.min.js"></script>
 <script src="http://wavesurfer.fm/plugin/wavesurfer.microphone.js"></script>
