@@ -126,29 +126,22 @@
          */
         onDeviceReady: function(stream)
         {
+            this.stream = stream;
+
+            // connect stream to engine
+            this.engine = RecordRTC(this.stream);
+
             // hide device button
             this.player().deviceButton.hide();
 
             // show record button
             this.player().recordToggle.show();
 
-            // setup recording
+            // setup preview
             switch (this.getRecordType())
             {
-                case this.AUDIO_ONLY:
-                    this.stream = this.surfer.microphone.stream;
-
-                    // connect audio stream
-                    this.engine = RecordRTC(this.stream);
-                    break;
-
                 case this.VIDEO_ONLY:
-                    this.stream = stream;
-
-                    // connect video stream
-                    this.engine = RecordRTC(this.stream);
-
-                    // show stream preview
+                    // show video preview
                     var video = this.player().el().firstChild;
                     video.src = URL.createObjectURL(this.stream);
                     video.muted = true;
