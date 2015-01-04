@@ -12,14 +12,16 @@
         /**
          * The constructor function for the class.
          * 
-         * @param options: Player options.
-         * @param ready: Ready callback function.
+         * @param {videojs.Player|Object} player
+         * @param {Object} options Player options.
+         * @param {Function} ready Ready callback function.
          */
         init: function(player, options, ready)
         {
             // run base component initializing with new options.
             videojs.Component.call(this, player, options, ready);
 
+            // parse settings
             this.recordAudio = this.options().options.audio;
             this.recordVideo = this.options().options.video;
             this.recordTimeMax = this.options().options.recordTimeMax;
@@ -30,13 +32,13 @@
             {
                 // XXX: enable videojs-wavesurfer plugin automatically
                 this.surfer = player.waveform;
+
+                // display max record time
+                this.surfer.setDuration(this.recordTimeMax);
             }
 
             // hide play control
             this.player().controlBar.playToggle.hide();
-
-            // display max record time
-            this.player().waveform.setDuration(this.recordTimeMax);
         },
 
         /**
@@ -110,7 +112,10 @@
             // hide play control
             this.player().controlBar.playToggle.hide();
 
-            // resume live visualization
+            // disable playback events
+            this.surfer.setupPlaybackEvents(false);
+
+            // start/resume live visualization
             this.surfer.liveMode = true;
             this.player().play();
 
@@ -154,20 +159,32 @@
 
             if (this.recordAudio)
             {
-                // pause live visualization
+                // Pausing the player so we can visualize the recorded data
+                // will trigger an async videojs 'pause' event that we have
+                // to wait for.
+                this.player().one('pause', function()
+                {
+                    // show play control
+                    // XXX: once the waveform's ready?
+                    this.player().controlBar.playToggle.show();
+
+                    // setup events during playback
+                    this.surfer.setupPlaybackEvents(true);
+
+                    // XXX: display loader
+
+                    // visualize recorded stream
+                    this.surfer.load(recordedBlob);
+
+                }.bind(this));
+
+                // pause player's live visualization
                 this.player().pause();
-
-                // show play control
-                // XXX: once the waveform's ready?
-                this.player().controlBar.playToggle.show();
-
-                // visualize recorded stream
-                this.player().waveform.load(recordedBlob);
             }
         },
 
         /**
-         * 
+         * Invoked during recording and displays the remaining time.
          */
         onCountDown: function()
         {
@@ -175,7 +192,7 @@
             var duration = this.recordTimeMax;
 
             // update duration
-            this.player().waveform.setDuration(duration);
+            this.surfer.setDuration(duration);
 
             if (currentTime >= duration)
             {
@@ -186,7 +203,7 @@
             }
 
             // update current time
-            this.player().waveform.setCurrentTime(currentTime, duration);
+            this.surfer.setCurrentTime(currentTime, duration);
         }
 
     });
