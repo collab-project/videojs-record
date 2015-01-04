@@ -7,6 +7,7 @@
   <link href="../src/css/videojs.record.css" rel="stylesheet">
 
   <script src="http://vjs.zencdn.net/4.11.3/video.js"></script>
+  <script src="http://recordrtc.org/latest.js"></script>
 
   <script src="../src/js/videojs.record.js"></script>
 
@@ -19,8 +20,8 @@
 var player = videojs("myVideo",
 {
     controls: true,
-    width: 600,
-    height: 300,
+    width: 320,
+    height: 240,
     children: {
         controlBar: {
             children: {
@@ -32,7 +33,8 @@ var player = videojs("myVideo",
     plugins: {
         record: {
             audio: false,
-            video: true
+            video: true,
+            recordTimeMax: 5
         }
     }
 });
