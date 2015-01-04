@@ -42,14 +42,14 @@ You also need to include an extra stylesheet:
 <link href="videojs.record.css" rel="stylesheet">
 ```
 
-If you want to record an audio/video or video-only stream, include an
+If you want to record an audio/video, or video-only, stream then include a
 `video` element on your page:
 
 ```html
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 ```
 
-If you're only recording audio, include an `audio` element instead:
+If you're only recording audio, then include an `audio` element instead:
 
 ```html
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
