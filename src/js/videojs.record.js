@@ -9,6 +9,10 @@
      */
     videojs.Recorder = videojs.Component.extend({
 
+        AUDIO_ONLY: 'audio_only',
+        VIDEO_ONLY: 'video_only',
+        AUDIO_VIDEO: 'audio_video',
+
         /**
          * The constructor function for the class.
          * 
@@ -28,13 +32,50 @@
 
             this._recording = false;
 
-            if (this.recordAudio)
-            {
-                // XXX: enable videojs-wavesurfer plugin automatically
-                this.surfer = player.waveform;
+            //
+            this.getUserMedia = (
+                navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia
+            ).bind(navigator);
 
-                // display max record time
-                this.surfer.setDuration(this.recordTimeMax);
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    // XXX: enable videojs-wavesurfer plugin automatically?
+                    this.surfer = player.waveform;
+
+                    // display max record time
+                    this.surfer.setDuration(this.recordTimeMax);
+                    break;
+
+                case this.VIDEO_ONLY:
+                    // customize controls
+                    // XXX: below are hacks copied from videojs.wavesurfer that
+                    //      customize the video.js UI...
+                    this.player().bigPlayButton.hide();
+                    if (this.player().options().controls)
+                    {
+                        // progress control isn't used by this plugin
+                        this.player().controlBar.progressControl.hide();
+
+                        // prevent controlbar fadeout
+                        this.player().on('userinactive', function(event)
+                        {
+                           this.player().userActive(true);
+                        });
+
+                        // videojs automatically hides the controls when no valid 'source'
+                        // element is included in the 'audio' tag. Don't.
+                        this.player().controlBar.show();
+
+                        // disable currentTimeDisplay's 'timeupdate' event listener that
+                        // constantly tries to reset the current time value to 0
+                        this.player().off('timeupdate');
+                    }
+                    // XXX: display max record time for video
+                    break;
             }
 
             // hide play control
@@ -54,21 +95,36 @@
          */
         getDevice: function()
         {
-            if (this.recordAudio)
+            // setup device
+            switch (this.getRecordType())
             {
-                // setup microphone
-                this.surfer.microphone.on('deviceReady', this.onDeviceReady.bind(this));
-                this.surfer.microphone.on('deviceError', this.onDeviceError.bind(this));
+                case this.AUDIO_ONLY:
+                    // setup microphone
+                    this.surfer.microphone.on('deviceReady', this.onDeviceReady.bind(this));
+                    this.surfer.microphone.on('deviceError', this.onDeviceError.bind(this));
 
-                // open browser device selection dialog
-                this.player().play();
+                    // open browser device selection dialog
+                    this.player().play();
+                    break;
+
+                case this.VIDEO_ONLY:
+                    // setup camera
+                    this.getUserMedia({
+                        video: true,
+                        audio: false
+                    },
+                    this.onDeviceReady.bind(this),
+                    this.onDeviceError.bind(this));
+                    break;
             }
         },
 
         /**
          * Invoked when the device is ready.
+         *
+         * @param stream:
          */
-        onDeviceReady: function()
+        onDeviceReady: function(stream)
         {
             // hide device button
             this.player().deviceButton.hide();
@@ -77,18 +133,28 @@
             this.player().recordToggle.show();
 
             // setup recording
-            if (this.recordAudio && !this.recordVideo)
+            switch (this.getRecordType())
             {
-                // audio-only
-                this.engine = RecordRTC(this.surfer.microphone.stream);
-            }
-            else if (this.recordAudio && this.recordVideo)
-            {
-                // XXX: audio and video
-            }
-            else if (!this.recordAudio && this.recordVideo)
-            {
-                // XXX: video-only
+                case this.AUDIO_ONLY:
+                    this.stream = this.surfer.microphone.stream;
+
+                    // connect audio stream
+                    this.engine = RecordRTC(this.stream);
+                    break;
+
+                case this.VIDEO_ONLY:
+                    this.stream = stream;
+
+                    // connect video stream
+                    this.engine = RecordRTC(this.stream);
+
+                    // show stream preview
+                    var video = this.player().el().firstChild;
+                    video.src = URL.createObjectURL(this.stream);
+                    video.muted = true;
+                    video.controls = false;
+                    video.play();
+                    break;
             }
         },
 
@@ -112,15 +178,24 @@
             // hide play control
             this.player().controlBar.playToggle.hide();
 
-            // disable playback events
-            this.surfer.setupPlaybackEvents(false);
+            // setup engine
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    // disable playback events
+                    this.surfer.setupPlaybackEvents(false);
 
-            // start/resume live visualization
-            this.surfer.liveMode = true;
-            this.player().play();
+                    // start/resume live visualization
+                    this.surfer.liveMode = true;
+                    this.player().play();
+                    break;
+
+                case this.VIDEO_ONLY:
+                    break;
+            }
 
             // start countdown
-            this.startTime = this.surfer.microphone.stream.currentTime;
+            this.startTime = this.stream.currentTime;
             this.countDown = this.setInterval(this.onCountDown.bind(this), 100);
 
             // start recording stream
@@ -157,30 +232,32 @@
             // get stream data
             var recordedBlob = this.engine.getBlob();
 
-            if (this.recordAudio)
+            switch (this.getRecordType())
             {
-                // Pausing the player so we can visualize the recorded data
-                // will trigger an async videojs 'pause' event that we have
-                // to wait for.
-                this.player().one('pause', function()
-                {
-                    // show play control
-                    // XXX: once the waveform's ready?
-                    this.player().controlBar.playToggle.show();
+                case this.AUDIO_ONLY:
+                    // Pausing the player so we can visualize the recorded data
+                    // will trigger an async videojs 'pause' event that we have
+                    // to wait for.
+                    this.player().one('pause', function()
+                    {
+                        // show play control
+                        // XXX: once the waveform's ready?
+                        this.player().controlBar.playToggle.show();
 
-                    // setup events during playback
-                    this.surfer.setupPlaybackEvents(true);
+                        // setup events during playback
+                        this.surfer.setupPlaybackEvents(true);
 
-                    // display loader
-                    this.player().loadingSpinner.show();
+                        // display loader
+                        this.player().loadingSpinner.show();
 
-                    // visualize recorded stream
-                    this.surfer.load(recordedBlob);
+                        // visualize recorded stream
+                        this.surfer.load(recordedBlob);
 
-                }.bind(this));
+                    }.bind(this));
 
-                // pause player's live visualization
-                this.player().pause();
+                    // pause player's live visualization
+                    this.player().pause();
+                    break;
             }
         },
 
@@ -189,11 +266,8 @@
          */
         onCountDown: function()
         {
-            var currentTime = this.surfer.microphone.stream.currentTime - this.startTime;
+            var currentTime = this.stream.currentTime - this.startTime;
             var duration = this.recordTimeMax;
-
-            // update duration
-            this.surfer.setDuration(duration);
 
             if (currentTime >= duration)
             {
@@ -203,8 +277,35 @@
                 currentTime = duration;
             }
 
-            // update current time
-            this.surfer.setCurrentTime(currentTime, duration);
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    // update duration
+                    this.surfer.setDuration(duration);
+
+                    // update current time
+                    this.surfer.setCurrentTime(currentTime, duration);
+                    break;
+            }
+        },
+
+        /**
+         * Get recorder type.
+         */
+        getRecordType: function()
+        {
+            if (this.recordAudio && !this.recordVideo)
+            {
+                return this.AUDIO_ONLY;
+            }
+            else if (this.recordAudio && this.recordVideo)
+            {
+                return this.AUDIO_VIDEO;
+            }
+            else if (!this.recordAudio && this.recordVideo)
+            {
+                return this.VIDEO_ONLY;
+            }
         }
 
     });
