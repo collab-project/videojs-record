@@ -171,7 +171,8 @@
                     // setup events during playback
                     this.surfer.setupPlaybackEvents(true);
 
-                    // XXX: display loader
+                    // display loader
+                    this.player().loadingSpinner.show();
 
                     // visualize recorded stream
                     this.surfer.load(recordedBlob);
