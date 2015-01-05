@@ -160,9 +160,9 @@
                 case this.VIDEO_ONLY:
                     // show live video preview
                     this.mediaElement = this.player().el().firstChild;
-                    this.mediaElement.src = URL.createObjectURL(this.stream);
                     this.mediaElement.muted = true;
                     this.mediaElement.controls = false;
+                    this.load(URL.createObjectURL(this.stream));
                     this.mediaElement.play();
                     break;
             }
@@ -242,14 +242,14 @@
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
-                    // get stream data
-                    var recordedBlob = this.engine.getBlob();
-
                     // Pausing the player so we can visualize the recorded data
                     // will trigger an async videojs 'pause' event that we have
                     // to wait for.
                     this.player().one('pause', function()
                     {
+                        // get stream data
+                        var recordedBlob = this.engine.getBlob();
+
                         // show play control
                         // XXX: once the waveform's ready?
                         this.player().controlBar.playToggle.show();
@@ -261,12 +261,9 @@
                         this.player().loadingSpinner.show();
 
                         // visualize recorded stream
-                        this.surfer.load(recordedBlob);
+                        this.load(recordedBlob);
 
                     }.bind(this));
-
-                    // pause player's live visualization
-                    this.player().pause();
                     break;
 
                 case this.VIDEO_ONLY:
@@ -295,21 +292,22 @@
                             {
                                 // There seems to be a Firefox issue with playing back blobs.
                                 // The ugly, but functional workaround, is to simply reset
-                                // the source.
-                                this.mediaElement.src = audioVideoWebMURL;
+                                // the source. See https://bugzilla.mozilla.org/show_bug.cgi?id=969290
+                                //this.mediaElement.src = audioVideoWebMURL;
+                                this.load(audioVideoWebMURL);
                                 this.player().play();
                             }
                         }.bind(this));
 
                         // load recorded video
-                        this.mediaElement.src = audioVideoWebMURL;
+                        this.load(audioVideoWebMURL);
 
                     }.bind(this));
-
-                    // pause player so user can start playback
-                    this.player().pause();
                     break;
             }
+
+            // pause player so user can start playback
+            this.player().pause();
         },
 
         /**
@@ -383,6 +381,28 @@
                         ).firstChild.innerHTML = this.formatTime(
                         duration, duration);
                     break;
+            }
+        },
+
+        /**
+         * Start loading data.
+         * 
+         * @param {String|Blob|File} url Either the URL of the media file,
+         *     or a Blob or File object.
+         */
+        load: function(url)
+        {
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    // visualize recorded stream
+                    this.surfer.load(url);
+                    break;
+
+                default:
+                    // set stream
+                    this.mediaElement.src = url;
+                    break
             }
         },
 
