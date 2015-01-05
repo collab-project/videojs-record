@@ -61,9 +61,11 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-videojs-languages');
-
-  require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('default', ['vjslanguages', 'concat', 'uglify']);
 };
