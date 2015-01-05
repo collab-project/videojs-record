@@ -32,7 +32,7 @@
 
             this._recording = false;
 
-            //
+            // cross-browser
             this.getUserMedia = (
                 navigator.getUserMedia ||
                 navigator.webkitGetUserMedia ||
@@ -156,9 +156,11 @@
          */
         onDeviceError: function(code)
         {
-            console.warn('onDeviceError', code);
+            // store code
+            this.player().deviceErrorCode = code;
 
-            // XXX: display error
+            // forward error to player
+            this.player().trigger('deviceError');
         },
 
         /**

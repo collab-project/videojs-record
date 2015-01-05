@@ -44,6 +44,12 @@ var player = videojs("myAudio",
 
 // change player background color
 player.el().style.backgroundColor = "#9FD6BA";
+
+// error handling
+player.on('deviceError', function()
+{
+    console.log('device error:', player.deviceErrorCode);
+});
 </script>
 
 </body>
