@@ -48,7 +48,7 @@
                     this.surfer = player.waveform;
 
                     // initially hide playhead
-                    this.playhead = this.surfer.el().getElementsByTagName("wave")[1];
+                    this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
                     this.playhead.style.display = 'none';
                     break;
 
@@ -101,18 +101,37 @@
         {
             this.recordOptions = {
                 // width of video
-                'width': player.width(),
+                'width': this.player().width(),
+
                 // height of video
-                'height': player.height()
+                'height': this.player().height(),
+
+                // The size of the buffer (in sample-frames) which needs to
+                // be processed each time onprocessaudio is called.
+                // From the spec: This value controls how frequently the audioprocess event is
+                // dispatched and how many sample-frames need to be processed each call.
+                // Lower values for buffer size will result in a lower (better) latency.
+                // Higher values will be necessary to avoid audio breakup and glitches.
+                // Legal values are (256, 512, 1024, 2048, 4096, 8192, 16384).
+                'buffer-size': 4096,
+
+                // The sample rate (in sample-frames per second) at which the
+                // AudioContext handles audio. It is assumed that all AudioNodes
+                // in the context run at this rate. In making this assumption,
+                // sample-rate converters or "varispeed" processors are not supported
+                // in real-time processing.
+                // The sampleRate parameter describes the sample-rate of the
+                // linear PCM audio data in the buffer in sample-frames per second.
+
+                // An implementation must support sample-rates in at least
+                // the range 22050 to 96000.
+                'sample-rate': 44100
             };
 
             // setup device
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
-                    // audio record options
-                    this.recordOptions = {};
-
                     // setup microphone
                     this.surfer.microphone.on('deviceReady',
                         this.onDeviceReady.bind(this));
@@ -156,7 +175,7 @@
             this.stream = stream;
 
             // connect stream to recording engine
-            this.engine = RecordRTC(this.stream, this.recordOptions);
+            this.engine = new RecordRTC(this.stream, this.recordOptions);
 
             // hide device selection button
             this.player().deviceButton.hide();
@@ -331,7 +350,7 @@
                         }.bind(this));
 
                         // unmute local audio during playback
-                        if (this.getRecordType() == this.AUDIO_VIDEO)
+                        if (this.getRecordType() === this.AUDIO_VIDEO)
                         {
                             this.mediaElement.muted = false;
                         }
@@ -439,7 +458,7 @@
                 default:
                     // set stream
                     this.mediaElement.src = url;
-                    break
+                    break;
             }
         },
 
@@ -506,7 +525,7 @@
                         ms = '0' + ms;
                     }
                 }
-                ms = ":" + ms;
+                ms = ':' + ms;
             }
             else
             {
