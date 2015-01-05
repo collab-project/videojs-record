@@ -99,10 +99,20 @@
          */
         getDevice: function()
         {
+            this.recordOptions = {
+                // width of video
+                'width': player.width(),
+                // height of video
+                'height': player.height()
+            };
+
             // setup device
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
+                    // audio record options
+                    this.recordOptions = {};
+
                     // setup microphone
                     this.surfer.microphone.on('deviceReady',
                         this.onDeviceReady.bind(this));
@@ -121,6 +131,7 @@
                     },
                     this.onDeviceReady.bind(this),
                     this.onDeviceError.bind(this));
+
                     break;
 
                 case this.AUDIO_VIDEO:
@@ -145,7 +156,7 @@
             this.stream = stream;
 
             // connect stream to recording engine
-            this.engine = RecordRTC(this.stream);
+            this.engine = RecordRTC(this.stream, this.recordOptions);
 
             // hide device selection button
             this.player().deviceButton.hide();
