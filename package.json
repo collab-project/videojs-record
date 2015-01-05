@@ -25,8 +25,8 @@
     "recorder"
   ],
   "dependencies": {
-    "video.js": ">=4.7.3",
-    "wavesurfer.js": ">=1.0.9",
+    "video.js": ">=4.11.0",
+    "wavesurfer.js": ">=1.0.10",
     "videojs-wavesurfer": ">=0.8.1",
     "recordrtc": ">=5.0.4"
   },
@@ -36,7 +36,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-concat": "~0.4.0",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-videojs-languages": "0.0.4",
+    "grunt-videojs-languages": "~0.0.4",
     "load-grunt-tasks": "~0.6.0"
   },
   "author": "",
