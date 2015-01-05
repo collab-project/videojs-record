@@ -7,9 +7,7 @@
   <link href="../src/css/videojs.record.css" rel="stylesheet">
 
   <script src="http://vjs.zencdn.net/4.11.3/video.js"></script>
-  <script src="http://wavesurfer.fm/build/wavesurfer.min.js"></script>
-  <script src="http://wavesurfer.fm/plugin/wavesurfer.microphone.js"></script>
-  <script src="../../videojs-wavesurfer/videojs.wavesurfer.js"></script>
+  <script src="http://recordrtc.org/latest.js"></script>
 
   <script src="../src/js/videojs.record.js"></script>
 
@@ -22,32 +20,25 @@
 var player = videojs("myVideo",
 {
     controls: true,
-    width: 600,
-    height: 300,
-    children: {
-        controlBar: {
-            children: {
-                muteToggle: false,
-                volumeControl: false
-            }
-        }
-    },
+    width: 320,
+    height: 240,
     plugins: {
-        wavesurfer: {
-            src: "live",
-            waveColor: "black",
-            cursorWidth: 0,
-            interact: false
-        },
         record: {
             audio: true,
-            video: true
+            video: true,
+            recordTimeMax: 10
         }
     }
 });
 
 // change player background color
 player.el().style.backgroundColor = "#C70233";
+
+// error handling
+player.on('deviceError', function()
+{
+    console.log('device error:', player.deviceErrorCode);
+});
 </script>
 
 </body>

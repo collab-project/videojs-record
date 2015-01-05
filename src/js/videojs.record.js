@@ -47,7 +47,7 @@
                     this.surfer = player.waveform;
                     break;
 
-                case this.VIDEO_ONLY:
+                default:
                     // customize controls
                     // XXX: below are hacks copied from videojs.wavesurfer that
                     //      customize the video.js UI...
@@ -157,6 +157,7 @@
             // setup preview
             switch (this.getRecordType())
             {
+                case this.AUDIO_VIDEO:
                 case this.VIDEO_ONLY:
                     // show live video preview
                     this.mediaElement = this.player().el().firstChild;
@@ -207,7 +208,10 @@
                     this.off('timeupdate');
                     this.off('play');
 
-                    // start/resume live video preview
+                    // mute local audio
+                    this.mediaElement.muted = true;
+
+                    // start/resume live preview
                     this.load(URL.createObjectURL(this.stream));
                     this.mediaElement.play();
                     break;
@@ -275,7 +279,7 @@
                     }.bind(this));
                     break;
 
-                case this.VIDEO_ONLY:
+                default:
                     this.player().one('pause', function()
                     {
                         // hide loader
@@ -303,6 +307,12 @@
                                 this.player().play();
                             }
                         }.bind(this));
+
+                        // unmute local audio during playback
+                        if (this.getRecordType() == this.AUDIO_VIDEO)
+                        {
+                            this.mediaElement.muted = false;
+                        }
 
                         // load recorded media
                         this.load(audioVideoWebMURL);
