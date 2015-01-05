@@ -45,9 +45,6 @@
                 case this.AUDIO_ONLY:
                     // XXX: enable videojs-wavesurfer plugin automatically?
                     this.surfer = player.waveform;
-
-                    // display max record time
-                    this.surfer.setDuration(this.recordTimeMax);
                     break;
 
                 case this.VIDEO_ONLY:
@@ -74,9 +71,11 @@
                         // constantly tries to reset the current time value to 0
                         this.player().off('timeupdate');
                     }
-                    // XXX: display max record time for video
                     break;
             }
+
+            // display max record time
+            this.setDuration(this.recordTimeMax);
 
             // hide play control
             this.player().controlBar.playToggle.hide();
@@ -100,8 +99,10 @@
             {
                 case this.AUDIO_ONLY:
                     // setup microphone
-                    this.surfer.microphone.on('deviceReady', this.onDeviceReady.bind(this));
-                    this.surfer.microphone.on('deviceError', this.onDeviceError.bind(this));
+                    this.surfer.microphone.on('deviceReady',
+                        this.onDeviceReady.bind(this));
+                    this.surfer.microphone.on('deviceError',
+                        this.onDeviceError.bind(this));
 
                     // open browser device selection dialog
                     this.player().play();
@@ -112,6 +113,16 @@
                     this.getUserMedia({
                         video: true,
                         audio: false
+                    },
+                    this.onDeviceReady.bind(this),
+                    this.onDeviceError.bind(this));
+                    break;
+
+                case this.AUDIO_VIDEO:
+                    // setup camera/mic
+                    this.getUserMedia({
+                        video: true,
+                        audio: true
                     },
                     this.onDeviceReady.bind(this),
                     this.onDeviceError.bind(this));
@@ -128,25 +139,31 @@
         {
             this.stream = stream;
 
-            // connect stream to engine
+            // connect stream to recording engine
             this.engine = RecordRTC(this.stream);
 
-            // hide device button
+            // hide device selection button
             this.player().deviceButton.hide();
 
             // show record button
             this.player().recordToggle.show();
 
+            // tweak default videojs UI
+            this.player().controlBar.liveDisplay.hide();
+            this.player().controlBar.currentTimeDisplay.show();
+            this.player().controlBar.timeDivider.show();
+            this.player().controlBar.durationDisplay.show();
+
             // setup preview
             switch (this.getRecordType())
             {
                 case this.VIDEO_ONLY:
-                    // show video preview
-                    var video = this.player().el().firstChild;
-                    video.src = URL.createObjectURL(this.stream);
-                    video.muted = true;
-                    video.controls = false;
-                    video.play();
+                    // show live video preview
+                    this.mediaElement = this.player().el().firstChild;
+                    this.mediaElement.src = URL.createObjectURL(this.stream);
+                    this.mediaElement.muted = true;
+                    this.mediaElement.controls = false;
+                    this.mediaElement.play();
                     break;
             }
         },
@@ -184,9 +201,6 @@
                     this.surfer.liveMode = true;
                     this.player().play();
                     break;
-
-                case this.VIDEO_ONLY:
-                    break;
             }
 
             // start countdown
@@ -219,17 +233,18 @@
 
         /**
          * Invoked when recording is stopped and resulting stream is available.
-         * @param {string} audioURL Reference to the recorded Blob object, eg.
+         *
+         * @param {string} audioVideoWebMURL Reference to the recorded Blob object, eg.
          *   blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
          */
-        onStopRecording: function(audioURL)
+        onStopRecording: function(audioVideoWebMURL)
         {
-            // get stream data
-            var recordedBlob = this.engine.getBlob();
-
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
+                    // get stream data
+                    var recordedBlob = this.engine.getBlob();
+
                     // Pausing the player so we can visualize the recorded data
                     // will trigger an async videojs 'pause' event that we have
                     // to wait for.
@@ -253,6 +268,47 @@
                     // pause player's live visualization
                     this.player().pause();
                     break;
+
+                case this.VIDEO_ONLY:
+                    this.player().one('pause', function()
+                    {
+                        // show play control
+                        this.player().controlBar.playToggle.show();
+
+                        // hide loader
+                        this.player().loadingSpinner.hide();
+
+                        // show stream duration
+                        this.setDuration(this.streamDuration);
+
+                        // update time during playback
+                        this.player().on('timeupdate', function()
+                        {
+                            this.setCurrentTime(this.player().currentTime(),
+                                this.streamDuration);
+                        }.bind(this));
+
+                        // workaround firefox issue
+                        this.player().on('play', function()
+                        {
+                            if (this.player().seeking())
+                            {
+                                // There seems to be a Firefox issue with playing back blobs.
+                                // The ugly, but functional workaround, is to simply reset
+                                // the source.
+                                this.mediaElement.src = audioVideoWebMURL;
+                                this.player().play();
+                            }
+                        }.bind(this));
+
+                        // load recorded video
+                        this.mediaElement.src = audioVideoWebMURL;
+
+                    }.bind(this));
+
+                    // pause player so user can start playback
+                    this.player().pause();
+                    break;
             }
         },
 
@@ -264,22 +320,68 @@
             var currentTime = this.stream.currentTime - this.startTime;
             var duration = this.recordTimeMax;
 
+            this.streamDuration = currentTime;
+
             if (currentTime >= duration)
             {
-                // stop countdown
-                this.stop();
-
+                // at the end
                 currentTime = duration;
+
+                // stop recording
+                this.stop();
             }
 
+            // update duration
+            this.setDuration(duration);
+
+            // update current time
+            this.setCurrentTime(currentTime, duration);
+        },
+
+        /**
+         * Updates the player's element displaying the current time.
+         *
+         * @param {Number} currentTime (optional) Current position of the
+         *    playhead (in seconds).
+         * @param {Number} duration (optional) Duration in seconds.
+         */
+        setCurrentTime: function(currentTime, duration)
+        {
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
-                    // update duration
-                    this.surfer.setDuration(duration);
-
-                    // update current time
                     this.surfer.setCurrentTime(currentTime, duration);
+                    break;
+
+                default:
+                    var time = Math.min(currentTime, duration);
+
+                    // update control
+                    this.player().controlBar.currentTimeDisplay.el(
+                        ).firstChild.innerHTML = this.formatTime(
+                        time, duration);
+                    break;
+            }
+        },
+
+        /**
+         * Updates the player's element displaying the duration time.
+         *
+         * @param {Number} duration (optional) Duration in seconds.
+         */
+        setDuration: function(duration)
+        {
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    this.surfer.setDuration(duration);
+                    break;
+
+                default:
+                    // update control
+                    this.player().controlBar.durationDisplay.el(
+                        ).firstChild.innerHTML = this.formatTime(
+                        duration, duration);
                     break;
             }
         },
@@ -301,6 +403,70 @@
             {
                 return this.VIDEO_ONLY;
             }
+        },
+
+        /**
+         * Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.
+         * 
+         * Supplying a guide (in seconds) will force a number of leading zeros
+         * to cover the length of the guide.
+         * 
+         * @param {Number} seconds Number of seconds to be turned into a string
+         * @param {Number} guide Number (in seconds) to model the string after
+         * @return {String} Time formatted as H:MM:SS, M:SS or M:SS:MMM.
+         */
+        formatTime: function(seconds, guide)
+        {
+            // Default to using seconds as guide
+            guide = guide || seconds;
+            var s = Math.floor(seconds % 60),
+                m = Math.floor(seconds / 60 % 60),
+                h = Math.floor(seconds / 3600),
+                gm = Math.floor(guide / 60 % 60),
+                gh = Math.floor(guide / 3600),
+                ms = Math.floor((seconds - s) * 1000);
+
+            // handle invalid times
+            if (isNaN(seconds) || seconds === Infinity)
+            {
+                // '-' is false for all relational operators (e.g. <, >=) so this
+                // setting will add the minimum number of fields specified by the
+                // guide
+                h = m = s = ms = '-';
+            }
+
+            // Check if we need to show milliseconds
+            if (guide > 0 && guide < this.msDisplayMax)
+            {
+                if (ms < 100)
+                {
+                    if (ms < 10)
+                    {
+                        ms = '00' + ms;
+                    }
+                    else
+                    {
+                        ms = '0' + ms;
+                    }
+                }
+                ms = ":" + ms;
+            }
+            else
+            {
+                ms = '';
+            }
+
+            // Check if we need to show hours
+            h = (h > 0 || gh > 0) ? h + ':' : '';
+
+            // If hours are showing, we may need to add a leading zero.
+            // Always show at least one digit of minutes.
+            m = (((h || gm >= 10) && m < 10) ? '0' + m : m) + ':';
+
+            // Check if leading zero is need for seconds
+            s = ((s < 10) ? '0' + s : s);
+
+            return h + m + s + ms;
         }
 
     });
