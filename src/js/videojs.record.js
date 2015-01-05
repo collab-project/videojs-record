@@ -32,6 +32,9 @@
 
             this._recording = false;
 
+            // shortcut
+            player.getBlob = this.getBlob;
+
             // cross-browser
             this.getUserMedia = (
                 navigator.getUserMedia ||
@@ -294,6 +297,12 @@
             // show play control
             this.player().controlBar.playToggle.show();
 
+            // store reference to recorded stream data
+            this.player().recordedData = this.engine.getBlob();
+
+            // notify listeners that data is available
+            this.trigger('finishRecord');
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -302,9 +311,6 @@
                     // to wait for.
                     this.player().one('pause', function()
                     {
-                        // get stream data
-                        var recordedBlob = this.engine.getBlob();
-
                         // setup events during playback
                         this.surfer.setupPlaybackEvents(true);
 
@@ -315,7 +321,7 @@
                         this.playhead.style.display = 'block';
 
                         // visualize recorded stream
-                        this.load(recordedBlob);
+                        this.load(this.player().recordedData);
 
                     }.bind(this));
                     break;
