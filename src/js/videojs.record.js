@@ -44,7 +44,12 @@
             {
                 case this.AUDIO_ONLY:
                     // XXX: enable videojs-wavesurfer plugin automatically?
+
                     this.surfer = player.waveform;
+
+                    // initially hide playhead
+                    this.playhead = this.surfer.el().getElementsByTagName("wave")[1];
+                    this.playhead.style.display = 'none';
                     break;
 
                 default:
@@ -198,6 +203,9 @@
                     // disable playback events
                     this.surfer.setupPlaybackEvents(false);
 
+                    // hide playhead
+                    this.playhead.style.display = 'none';
+
                     // start/resume live audio visualization
                     this.surfer.liveMode = true;
                     this.player().play();
@@ -272,6 +280,9 @@
 
                         // display loader
                         this.player().loadingSpinner.show();
+
+                        // show playhead
+                        this.playhead.style.display = 'block';
 
                         // visualize recorded stream
                         this.load(recordedBlob);
