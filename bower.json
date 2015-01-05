@@ -27,7 +27,7 @@
     "video.js": ">=4.11.0",
     "wavesurfer.js": ">=1.0.10",
     "videojs-wavesurfer": ">=0.8.1",
-    "recordrtc": ">=5.0.4"
+    "recordrtc": "git://github.com/muaz-khan/RecordRTC.git"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -35,6 +35,6 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-concat": "~0.4.0",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-videojs-languages": "~0.0.4"
+    "grunt-videojs-languages": "git://github.com/videojs/grunt-videojs-languages.git"
   }
 }
