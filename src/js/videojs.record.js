@@ -197,9 +197,19 @@
                     // disable playback events
                     this.surfer.setupPlaybackEvents(false);
 
-                    // start/resume live visualization
+                    // start/resume live audio visualization
                     this.surfer.liveMode = true;
                     this.player().play();
+                    break;
+
+                default:
+                    // disable playback events
+                    this.off('timeupdate');
+                    this.off('play');
+
+                    // start/resume live video preview
+                    this.load(URL.createObjectURL(this.stream));
+                    this.mediaElement.play();
                     break;
             }
 
@@ -239,6 +249,9 @@
          */
         onStopRecording: function(audioVideoWebMURL)
         {
+            // show play control
+            this.player().controlBar.playToggle.show();
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -249,10 +262,6 @@
                     {
                         // get stream data
                         var recordedBlob = this.engine.getBlob();
-
-                        // show play control
-                        // XXX: once the waveform's ready?
-                        this.player().controlBar.playToggle.show();
 
                         // setup events during playback
                         this.surfer.setupPlaybackEvents(true);
@@ -269,9 +278,6 @@
                 case this.VIDEO_ONLY:
                     this.player().one('pause', function()
                     {
-                        // show play control
-                        this.player().controlBar.playToggle.show();
-
                         // hide loader
                         this.player().loadingSpinner.hide();
 
@@ -279,27 +285,26 @@
                         this.setDuration(this.streamDuration);
 
                         // update time during playback
-                        this.player().on('timeupdate', function()
+                        this.on(this.player(), 'timeupdate', function()
                         {
                             this.setCurrentTime(this.player().currentTime(),
                                 this.streamDuration);
                         }.bind(this));
 
                         // workaround firefox issue
-                        this.player().on('play', function()
+                        this.on(this.player(), 'play', function()
                         {
                             if (this.player().seeking())
                             {
                                 // There seems to be a Firefox issue with playing back blobs.
                                 // The ugly, but functional workaround, is to simply reset
                                 // the source. See https://bugzilla.mozilla.org/show_bug.cgi?id=969290
-                                //this.mediaElement.src = audioVideoWebMURL;
                                 this.load(audioVideoWebMURL);
                                 this.player().play();
                             }
                         }.bind(this));
 
-                        // load recorded video
+                        // load recorded media
                         this.load(audioVideoWebMURL);
 
                     }.bind(this));
