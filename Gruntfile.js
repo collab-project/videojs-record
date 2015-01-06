@@ -112,8 +112,9 @@ module.exports = function(grunt) {
 
     // Copy over font files
     grunt.file.recurse('src/css/font', function(absdir, rootdir, subdir, filename) {
-      // Block .DS_Store files
-      if ('filename'.substring(0,1) !== '.') {
+      // only fonts
+      var ext = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
+      if (["ttf", "svg", "eot", "woff"].indexOf(ext) > -1) {
         grunt.file.copy(absdir, 'dist/css/font/' + filename);
       }
     });
