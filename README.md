@@ -154,13 +154,14 @@ If you want to disable and hide specific controls, use the video.js `children`
 option:
 
 ```javascript
-// user completed recording and stream is available
-player.on('finishRecord', function()
-{
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
-});
+children: {
+    controlBar: {
+        children: {
+            // hide fullscreen control
+            fullscreenToggle: false
+        }
+    }
+},
 ```
 
 Development
