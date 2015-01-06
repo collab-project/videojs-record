@@ -1,8 +1,26 @@
 'use strict';
 
 module.exports = function(grunt) {
+  var pkg, version, verParts;
+  pkg = grunt.file.readJSON('package.json');
+
+  verParts = pkg.version.split('.');
+  version = {
+  full: pkg.version,
+    major: verParts[0],
+    minor: verParts[1],
+    patch: verParts[2]
+  };
+  version.majorMinor = version.major + '.' + version.minor;
+
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: pkg,
+    build: {
+      src: 'src/js/dependencies.js',
+      options: {
+        baseDir: 'src/js/'
+      }
+    },
     banner: '/*! <%= pkg.name %> - v<%= pkg.version %>\n' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %>' +
       ' Licensed <%= pkg.license %> */\n',
@@ -16,7 +34,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: 'src/js/videojs.record.js',
-        dest: 'dist/<%= pkg.name %>.js'
+        dest: 'dist/videojs.record.js'
       }
     },
     uglify: {
@@ -25,7 +43,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
+        dest: 'dist/videojs.record.min.js'
       }
     },
     jshint: {
@@ -41,6 +59,17 @@ module.exports = function(grunt) {
         },
         src: ['src/js/*.js']
       },
+    },
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'dist/css',
+          src: ['*.css'],
+          dest: 'dist/css',
+          ext: '.record.min.css'
+        }]
+      }
     },
     watch: {
       gruntfile: {
@@ -64,8 +93,33 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-videojs-languages');
 
-  grunt.registerTask('default', ['vjslanguages', 'concat', 'uglify']);
+  grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages']);
+  grunt.registerTask('default', ['pretask', 'build', 'uglify']);
+
+  grunt.registerMultiTask('build', 'Building Source', function(){
+
+    // Copy over CSS
+    grunt.file.copy('src/css/videojs.record.css', 'dist/css/videojs.record.css');
+
+    // Inject version number into css file
+    var css = grunt.file.read('dist/css/videojs.record.css');
+    css = css.replace(/GENERATED_AT_BUILD/g, version.full);
+    grunt.file.write('dist/css/videojs.record.css', css);
+
+    // Copy over font files
+    grunt.file.recurse('src/css/font', function(absdir, rootdir, subdir, filename) {
+      // Block .DS_Store files
+      if ('filename'.substring(0,1) !== '.') {
+        grunt.file.copy(absdir, 'dist/css/font/' + filename);
+      }
+    });
+
+    // Minify CSS
+    grunt.task.run(['cssmin']);
+  });
+
 };

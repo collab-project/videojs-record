@@ -1,6 +1,3 @@
-/*! videojs-record
- * Copyright (c) 2014-2015 Collab
- * Licensed under the MIT license. */
 (function(window, videojs) {
     'use strict';
 
