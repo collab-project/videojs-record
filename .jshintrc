@@ -6,6 +6,7 @@
     "trailing" : true,
     "undef"    : true,
     "predef"   : [
-        "videojs"
+        "videojs",
+        "RecordRTC"
     ]
 }
