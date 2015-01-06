@@ -256,7 +256,7 @@
             }
 
             // start countdown
-            this.startTime = this.stream.currentTime;
+            this.startTime = new Date().getTime();
             this.countDown = this.setInterval(this.onCountDown.bind(this), 100);
 
             // start recording stream
@@ -374,7 +374,7 @@
          */
         onCountDown: function()
         {
-            var currentTime = this.stream.currentTime - this.startTime;
+            var currentTime = (new Date().getTime() - this.startTime) / 1000;
             var duration = this.recordTimeMax;
 
             this.streamDuration = currentTime;
