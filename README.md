@@ -8,25 +8,25 @@ A Video.js plugin for recording audio/video files.
 Installation
 ------------
 
-You can use [bower](http://bower.io) (`bower install videojs-record`) or
-[npm](https://www.npmjs.org) (`npm install videojs-record`) to install the
-plugin, or download and include `videojs.record.js` in your project.
+Use [bower](http://bower.io) (`bower install videojs-record`) or
+[npm](https://www.npmjs.org) (`npm install videojs-record`) to install
+the plugin or download and include the dependencies manually.
 
 The plugin has the following mandatory dependencies:
 
 - [Video.js](http://www.videojs.com) - HTML5 media player that provides the user interface.
-- [RecordRTC.js](http://recordrtc.org) - Provides support for audio/video recording.
+- [RecordRTC.js](http://recordrtc.org) - Adds support for audio/video recording.
 
-If you're going to record audio-only, you'll also need these dependencies:
+When recording audio-only, the following dependencies apply as well:
 
-- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Adds navigable waveform for audio files. Also comes with a [microphone plugin](http://www.wavesurfer.fm/example/microphone) used for realtime visualization of the microphone.
+- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer.fm/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Turns Video.js into an audio-player.
 
 Using the Plugin
 ----------------
 
 Whether you're going to record audio or video, or both, you'll always need
-video.js and recordrtc.js. Start by including these on your page:
+video.js and recordrtc.js. Start by including the following:
 
 ```html
 <link href="http://vjs.zencdn.net/4.11.3/video-js.css" rel="stylesheet">
@@ -35,14 +35,14 @@ video.js and recordrtc.js. Start by including these on your page:
 <script src="http://recordrtc.org/latest.js"></script>
 ```
 
-The videojs-record plugin automatically registers itself when you include the script
-on your page:
+The videojs-record plugin automatically registers itself when the script
+is included on the page:
 
 ```html
 <script src="videojs.record.js"></script>
 ```
 
-You also need to include an extra stylesheet that includes a
+Include the extra stylesheet that includes a
 [custom font](src/css/font) with additional icons:
 
 ```html
@@ -51,8 +51,8 @@ You also need to include an extra stylesheet that includes a
 
 ### Audio/video
 
-If you want to record both audio/video, or video-only, then include a
-`video` element on your page that will display a live camera preview:
+When recording both audio/video, or video-only, include a
+`video` element:
 
 ```html
 <video id="myVideo" class="video-js vjs-default-skin"></video>
@@ -65,8 +65,8 @@ Check out the full [audio/video](examples/audio-video.html "audio/video example"
 
 ![Audio-only screenshot](examples/img/audio-only.png?raw=true "Audio-only screenshot")
 
-If you're only recording audio, you also need to include wavesurfer.js and
-the videojs-wavesurfer and microphone plugins. Make sure to place them before
+When recording audio-only, also include the wavesurfer.js library and
+the videojs-wavesurfer and microphone plugins. Make sure to place this before
 the `videojs.record.js` script.
 
 ```html
@@ -152,7 +152,7 @@ player.on('finishRecord', function()
 Customizing controls
 --------------------
 
-If you want to disable and hide specific controls, use the video.js `children`
+To disable and hide specific controls, use the video.js `children`
 option:
 
 ```javascript
