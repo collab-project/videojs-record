@@ -17,7 +17,7 @@ The plugin has the following mandatory dependencies:
 - [Video.js](http://www.videojs.com) - HTML5 media player that provides the user interface.
 - [RecordRTC.js](http://recordrtc.org) - Adds support for audio/video recording.
 
-When recording audio-only, the following dependencies apply as well:
+When recording audio-only, the following dependencies are also required:
 
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer.fm/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Turns Video.js into an audio-player.
@@ -42,7 +42,7 @@ is included on the page:
 <script src="videojs.record.js"></script>
 ```
 
-Include the extra stylesheet that includes a
+Add the extra stylesheet that includes a
 [custom font](src/css/font) with additional icons:
 
 ```html
