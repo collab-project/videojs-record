@@ -550,7 +550,7 @@
 
     });
 
-    var RecordToggle, DeviceButton;
+    var RecordToggle, DeviceButton, RecordIndicator;
 
     /**
      * Button to toggle between start and stop recording
@@ -571,7 +571,6 @@
             this.on(player, 'stopRecord', this.onStop);
         }
     });
-
     RecordToggle.prototype.onClick = function(e)
     {
         // stop this event before it bubbles up
@@ -588,7 +587,6 @@
             recorder.stop();
         }
     };
-
     RecordToggle.prototype.onStart = function()
     {
         // add the vjs-record-start class to the element so it can change appearance
@@ -598,7 +596,6 @@
         // update label
         this.el().firstChild.firstChild.innerHTML = this.localize('Stop');
     };
-
     RecordToggle.prototype.onStop = function()
     {
         // add the vjs-record-stop class to the element so it can change appearance
@@ -634,6 +631,25 @@
         // open device dialog
         this.player().recorder.getDevice();
     };
+
+    /**
+     * Icon indicating recording is active.
+     * @param {videojs.Player|Object} player
+     * @param {Object=} options
+     * @class
+     * @constructor
+    */
+    RecordIndicator = videojs.Component.extend(
+    {
+        /** @constructor */
+        init: function(player, options)
+        {
+            videojs.Component.call(this, player, options);
+
+            this.on(player, 'startRecord', this.show);
+            this.on(player, 'stopRecord', this.hide);
+        }
+    });
 
     // Note that we're not doing this in prototype.createEl() because
     // it won't be called by Component.init (due to name obfuscation).
@@ -694,6 +710,15 @@
             'el': createButton('device', player.localize('Device')),
         });
         player.recorder.el().appendChild(player.deviceButton.el());
+
+        // add record indicator
+        player.recordIndicator = new RecordIndicator(player,
+        {
+            'el': videojs.Component.prototype.createEl(null, {
+                className: 'vjs-record-indicator vjs-control',
+            })
+        });
+        player.recorder.el().appendChild(player.recordIndicator.el());
 
         // add record toggle
         player.recordToggle = new RecordToggle(player,

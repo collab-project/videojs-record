@@ -116,8 +116,7 @@ The control icons are from a custom font. Each icon corresponds to a character
 
 .vjs-device-button:after {
 	content: "\e600";
-	/* In order to center the play icon vertically we need to set the line height
-	 to the same as the button height */
+
 	line-height: 2.6em;
 	text-shadow: 0.05em 0.05em 0.1em #000;
 	text-align: center /* Needed for IE8 */;
@@ -147,5 +146,33 @@ The control icons are from a custom font. Each icon corresponds to a character
 
 .vjs-error .vjs-device-button {
  	display: none;
+}
+
+
+/* Recording indicator
+--------------------------------------------------------------------------------
+*/
+
+.vjs-record-indicator {
+	background-color: red;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+
+	display: none;
+	z-index: 2;
+	opacity: 1;
+
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.vjs-record-indicator.vjs-control {
+	width: 18px;
+	height: 18px;
+	position: absolute;
+
+	/* top-right */
+	top: 12px;
+	right: 14px;
 }
 
