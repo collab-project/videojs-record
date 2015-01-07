@@ -25,6 +25,8 @@
             // parse settings
             this.recordAudio = this.options().options.audio;
             this.recordVideo = this.options().options.video;
+            this.audioBufferSize = this.options().options.audioBufferSize;
+            this.audioSampleRate = this.options().options.audioSampleRate;
             this.recordTimeMax = this.options().options.recordTimeMax;
 
             this._recording = false;
@@ -106,26 +108,9 @@
                 // height of video
                 'height': this.player().height(),
 
-                // The size of the buffer (in sample-frames) which needs to
-                // be processed each time onprocessaudio is called.
-                // From the spec: This value controls how frequently the audioprocess event is
-                // dispatched and how many sample-frames need to be processed each call.
-                // Lower values for buffer size will result in a lower (better) latency.
-                // Higher values will be necessary to avoid audio breakup and glitches.
-                // Legal values are (256, 512, 1024, 2048, 4096, 8192, 16384).
-                'buffer-size': 4096,
+                'bufferSize': this.audioBufferSize,
 
-                // The sample rate (in sample-frames per second) at which the
-                // AudioContext handles audio. It is assumed that all AudioNodes
-                // in the context run at this rate. In making this assumption,
-                // sample-rate converters or "varispeed" processors are not supported
-                // in real-time processing.
-                // The sampleRate parameter describes the sample-rate of the
-                // linear PCM audio data in the buffer in sample-frames per second.
-
-                // An implementation must support sample-rates in at least
-                // the range 22050 to 96000.
-                'sample-rate': 44100
+                'sampleRate': this.audioSampleRate
             };
 
             // setup device
@@ -651,8 +636,6 @@
         }
     });
 
-    // Note that we're not doing this in prototype.createEl() because
-    // it won't be called by Component.init (due to name obfuscation).
     /**
      * Create a custom button
      * @param className {string} class name for the new button
@@ -682,9 +665,30 @@
 
     // plugin defaults
     var defaults = {
+        // Include audio in the recorded clip.
         audio: false,
+        // Include video in the recorded clip.
         video: true,
-        recordTimeMax: 10
+        // Maximum length of the recorded clip.
+        recordTimeMax: 10,
+        // The size of the audio buffer (in sample-frames) which needs to
+        // be processed each time onprocessaudio is called.
+        // From the spec: This value controls how frequently the audioprocess event is
+        // dispatched and how many sample-frames need to be processed each call.
+        // Lower values for buffer size will result in a lower (better) latency.
+        // Higher values will be necessary to avoid audio breakup and glitches.
+        // Legal values are (256, 512, 1024, 2048, 4096, 8192, 16384).
+        audioBufferSize: 4096,
+        // The audio sample rate (in sample-frames per second) at which the
+        // AudioContext handles audio. It is assumed that all AudioNodes
+        // in the context run at this rate. In making this assumption,
+        // sample-rate converters or "varispeed" processors are not supported
+        // in real-time processing.
+        // The sampleRate parameter describes the sample-rate of the
+        // linear PCM audio data in the buffer in sample-frames per second.
+        // An implementation must support sample-rates in at least
+        // the range 22050 to 96000.
+        audioSampleRate: 22050
     };
 
     /**

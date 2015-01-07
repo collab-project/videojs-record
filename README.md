@@ -115,9 +115,11 @@ Available options for this plugin:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `audio` | boolean | `false` | Set to `true` for recording audio. |
-| `video` | boolean | `true` | Set to `true` for recording video. |
-| `recordTimeMax` | float | `10` | Maximum length of a recorded clip. |
+| `audio` | boolean | `false` | Include audio in the recorded clip. |
+| `video` | boolean | `true` | Include video in the recorded clip. |
+| `recordTimeMax` | float | `10` | Maximum length of the recorded clip. |
+| `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 256, 512, 1024, 2048, 4096, 8192 and 16384. |
+| `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 
 Plugin events
 -------------
