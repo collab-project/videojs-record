@@ -37,7 +37,7 @@ var player = videojs("myAudio",
         record: {
             audio: true,
             video: false,
-            recordTimeMax: 20
+            maxLength: 20
         }
     }
 });
@@ -65,6 +65,5 @@ player.on('finishRecord', function()
     console.log('finished recording: ', player.recordedData);
 });
 </script>
-
 </body>
 </html>

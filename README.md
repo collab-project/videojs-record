@@ -117,7 +117,7 @@ Available options for this plugin:
 | --- | --- | --- | --- |
 | `audio` | boolean | `false` | Include audio in the recorded clip. |
 | `video` | boolean | `true` | Include video in the recorded clip. |
-| `recordTimeMax` | float | `10` | Maximum length of the recorded clip. |
+| `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 
@@ -131,7 +131,7 @@ Events for this plugin that are available on the video.js player instance:
 | `deviceError` | Triggered when the user doesn't allow the browser to access the microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia#errorCallback). |
 | `startRecord` | Triggered when the user clicked the record button to start recording. |
 | `stopRecord` | Triggered when the user clicked the stop button to stop recording. |
-| `finishRecord` | Triggered once the recorded stream is available. Check `player.recordedData` for the Blob data of your recorded clip. |
+| `finishRecord` | Triggered once the recorded stream is available. Check `player.recordedData` for the Blob data of the recorded clip. |
 
 Get recorded data
 -----------------

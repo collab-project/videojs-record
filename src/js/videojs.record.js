@@ -27,7 +27,7 @@
             this.recordVideo = this.options().options.video;
             this.audioBufferSize = this.options().options.audioBufferSize;
             this.audioSampleRate = this.options().options.audioSampleRate;
-            this.recordTimeMax = this.options().options.recordTimeMax;
+            this.maxLength = this.options().options.maxLength;
 
             this._recording = false;
 
@@ -82,7 +82,7 @@
             }
 
             // display max record time
-            this.setDuration(this.recordTimeMax);
+            this.setDuration(this.maxLength);
 
             // hide play control
             this.player().controlBar.playToggle.hide();
@@ -360,7 +360,7 @@
         onCountDown: function()
         {
             var currentTime = (new Date().getTime() - this.startTime) / 1000;
-            var duration = this.recordTimeMax;
+            var duration = this.maxLength;
 
             this.streamDuration = currentTime;
 
@@ -670,7 +670,7 @@
         // Include video in the recorded clip.
         video: true,
         // Maximum length of the recorded clip.
-        recordTimeMax: 10,
+        maxLength: 10,
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
         // From the spec: This value controls how frequently the audioprocess event is
