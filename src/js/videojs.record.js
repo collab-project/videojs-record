@@ -30,6 +30,7 @@
             this.maxLength = this.options().options.maxLength;
 
             this._recording = false;
+            this._processing = false;
 
             // shortcut
             player.getBlob = this.getBlob;
@@ -206,49 +207,53 @@
          */
         start: function()
         {
-            this._recording = true;
-
-            // hide play control
-            this.player().controlBar.playToggle.hide();
-
-            // setup engine
-            switch (this.getRecordType())
+            if (!this._processing)
             {
-                case this.AUDIO_ONLY:
-                    // disable playback events
-                    this.surfer.setupPlaybackEvents(false);
+                this._recording = true;
 
-                    // hide playhead
-                    this.playhead.style.display = 'none';
+                // hide play control
+                this.player().controlBar.playToggle.hide();
 
-                    // start/resume live audio visualization
-                    this.surfer.liveMode = true;
-                    this.player().play();
-                    break;
+                // setup engine
+                switch (this.getRecordType())
+                {
+                    case this.AUDIO_ONLY:
+                        // disable playback events
+                        this.surfer.setupPlaybackEvents(false);
 
-                default:
-                    // disable playback events
-                    this.off('timeupdate');
-                    this.off('play');
+                        // hide playhead
+                        this.playhead.style.display = 'none';
 
-                    // mute local audio
-                    this.mediaElement.muted = true;
+                        // start/resume live audio visualization
+                        this.surfer.liveMode = true;
+                        this.player().play();
+                        break;
 
-                    // start/resume live preview
-                    this.load(URL.createObjectURL(this.stream));
-                    this.mediaElement.play();
-                    break;
+                    default:
+                        // disable playback events
+                        this.off('timeupdate');
+                        this.off('play');
+
+                        // mute local audio
+                        this.mediaElement.muted = true;
+
+                        // start/resume live preview
+                        this.load(URL.createObjectURL(this.stream));
+                        this.mediaElement.play();
+                        break;
+                }
+
+                // start countdown
+                this.startTime = new Date().getTime();
+                this.countDown = this.setInterval(this.onCountDown.bind(this),
+                    100);
+
+                // start recording stream
+                this.engine.startRecording();
+
+                // notify UI
+                this.trigger('startRecord');
             }
-
-            // start countdown
-            this.startTime = new Date().getTime();
-            this.countDown = this.setInterval(this.onCountDown.bind(this), 100);
-
-            // start recording stream
-            this.engine.startRecording();
-
-            // notify UI
-            this.trigger('startRecord');
         },
 
         /**
@@ -256,16 +261,20 @@
          */
         stop: function()
         {
-            this._recording = false;
+            if (!this._processing)
+            {
+                this._recording = false;
+                this._processing = true;
 
-            // stop countdown
-            this.clearInterval(this.countDown);
+                // stop countdown
+                this.clearInterval(this.countDown);
 
-            // stop recording stream
-            this.engine.stopRecording(this.onStopRecording.bind(this));
+                // stop recording stream
+                this.engine.stopRecording(this.onStopRecording.bind(this));
 
-            // notify UI
-            this.trigger('stopRecord');
+                // notify UI
+                this.trigger('stopRecord');
+            }
         },
 
         /**
@@ -302,6 +311,12 @@
                         // show playhead
                         this.playhead.style.display = 'block';
 
+                        // restore interaction with controls after waveform
+                        // rendering is complete
+                        this.surfer.surfer.once('ready', function(){
+                            this._processing = false;
+                        }.bind(this));
+
                         // visualize recorded stream
                         this.load(this.player().recordedData);
 
@@ -311,6 +326,9 @@
                 default:
                     this.player().one('pause', function()
                     {
+                        // video data is ready
+                        this._processing = false;
+
                         // hide loader
                         this.player().loadingSpinner.hide();
 
@@ -688,7 +706,7 @@
         // linear PCM audio data in the buffer in sample-frames per second.
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
-        audioSampleRate: 22050
+        audioSampleRate: 44100
     };
 
     /**
