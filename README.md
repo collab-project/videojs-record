@@ -84,8 +84,8 @@ And define an `audio` element:
 Check out the full [audio-only](examples/audio-only.html "audio-only example")
 example.
 
-Options
--------
+Plugin options
+--------------
 
 Configure the player using the video.js
 [options](https://github.com/videojs/video.js/blob/master/docs/guides/options.md),
@@ -108,10 +108,7 @@ var player = videojs("myVideo",
 });
 ```
 
-Plugin options
---------------
-
-Available options for this plugin:
+The available options for this plugin are:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -165,6 +162,18 @@ children: {
     }
 },
 ```
+
+More features using other plugins
+---------------------------------
+
+The Video.js community created
+[lots of plugins](https://github.com/videojs/video.js/wiki/Plugins)
+that can be used to enhance the player's functionality. Plugins actually
+tested with `videojs-record`:
+
+- [videojs-persistvolume](https://github.com/theonion/videojs-persistvolume) -
+  Saves user's volume setting using `localStorage`, but falls back to cookies
+  if necessary.
 
 Development
 -----------
