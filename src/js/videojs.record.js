@@ -706,7 +706,7 @@
         // linear PCM audio data in the buffer in sample-frames per second.
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
-        audioSampleRate: 44100
+        audioSampleRate: 22050
     };
 
     /**
