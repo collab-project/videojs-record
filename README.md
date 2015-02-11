@@ -125,6 +125,7 @@ Events for this plugin that are available on the video.js player instance:
 
 | Event | Description |
 | --- | --- |
+| `deviceReady` | Triggered when the device is ready to use. |
 | `deviceError` | Triggered when the user doesn't allow the browser to access the microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia#errorCallback). |
 | `startRecord` | Triggered when the user clicked the record button to start recording. |
 | `stopRecord` | Triggered when the user clicked the stop button to stop recording. |

@@ -160,6 +160,9 @@
         {
             this.stream = stream;
 
+            // forward to listeners
+            this.player().trigger('deviceReady');
+
             // connect stream to recording engine
             this.engine = new RecordRTC(this.stream, this.recordOptions);
 
