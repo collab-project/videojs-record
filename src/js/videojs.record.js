@@ -743,6 +743,7 @@
                 className: 'vjs-record-indicator vjs-control',
             })
         });
+        player.recordIndicator.hide();
         player.recorder.el().appendChild(player.recordIndicator.el());
 
         // add record toggle
