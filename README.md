@@ -102,7 +102,7 @@ var player = videojs("myVideo",
         record: {
             audio: false,
             video: true,
-            recordTimeMax: 5
+            maxLength: 5
         }
     }
 });
