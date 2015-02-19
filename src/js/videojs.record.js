@@ -46,8 +46,7 @@
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
-                    // XXX: enable videojs-wavesurfer plugin automatically?
-
+                    // reference to videojs-wavesurfer plugin
                     this.surfer = player.waveform;
 
                     // initially hide playhead
@@ -72,8 +71,9 @@
                         });
 
                         // videojs automatically hides the controls when no valid 'source'
-                        // element is included in the 'audio' tag. Don't.
+                        // element is included in the 'audio' tag. Don't. Ever again.
                         this.player().controlBar.show();
+                        this.player().controlBar.el().style.display = "block";
 
                         // disable currentTimeDisplay's 'timeupdate' event listener that
                         // constantly tries to reset the current time value to 0
@@ -174,9 +174,16 @@
 
             // tweak default videojs UI
             this.player().controlBar.liveDisplay.hide();
-            this.player().controlBar.currentTimeDisplay.show();
-            this.player().controlBar.timeDivider.show();
-            this.player().controlBar.durationDisplay.show();
+
+            // show elements that should never be hidden
+            var uiElements = [this.player().controlBar.currentTimeDisplay,
+                              this.player().controlBar.timeDivider,
+                              this.player().controlBar.durationDisplay];
+            for (var element in uiElements)
+            {
+                uiElements[element].el().style.display = "block";
+                uiElements[element].show();
+            }
 
             // setup preview
             switch (this.getRecordType())
