@@ -73,7 +73,7 @@
                         // videojs automatically hides the controls when no valid 'source'
                         // element is included in the 'audio' tag. Don't. Ever again.
                         this.player().controlBar.show();
-                        this.player().controlBar.el().style.display = "block";
+                        this.player().controlBar.el().style.display = 'block';
 
                         // disable currentTimeDisplay's 'timeupdate' event listener that
                         // constantly tries to reset the current time value to 0
@@ -181,7 +181,7 @@
                               this.player().controlBar.durationDisplay];
             for (var element in uiElements)
             {
-                uiElements[element].el().style.display = "block";
+                uiElements[element].el().style.display = 'block';
                 uiElements[element].show();
             }
 
