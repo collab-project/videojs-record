@@ -479,6 +479,31 @@
         },
 
         /**
+         * Cleanup resources.
+         */
+        destroy: function()
+        {
+            // stop playback
+            this._recording = false;
+            this._processing = false;
+
+            // stop countdown
+            this.clearInterval(this.countDown);
+
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    // also disposes player
+                    this.surfer.destroy();
+                    break;
+
+                default:
+                    this.player().dispose();
+                    break;
+            }
+        },
+
+        /**
          * Get recorder type.
          */
         getRecordType: function()
