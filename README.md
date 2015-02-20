@@ -118,6 +118,17 @@ The available options for this plugin are:
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 
+Plugin methods
+-------------
+
+Methods for this plugin:
+
+| Method | Description |
+| --- | --- |
+| `isRecording` | Returns a boolean indicating whether recording is active or not. |
+| `getRecordType` | Get recorder type as string, either `audio_only', `video_only` or `audio_video`. |
+| `destroy` | Destroys the recorder instance and children. |
+
 Plugin events
 -------------
 
