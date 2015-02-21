@@ -127,7 +127,7 @@ Methods for this plugin:
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
-| `getRecordType` | Get recorder type as string, either `audio_only', `video_only` or `audio_video`. |
+| `getRecordType` | Get recorder type as string, either `audio_only`, `video_only` or `audio_video`. |
 | `destroy` | Destroys the recorder instance and children. |
 
 Plugin events
