@@ -28,6 +28,7 @@
             this.audioBufferSize = this.options().options.audioBufferSize;
             this.audioSampleRate = this.options().options.audioSampleRate;
             this.maxLength = this.options().options.maxLength;
+            this.debug = this.options().options.debug;
 
             this._recording = false;
             this._processing = false;
@@ -103,15 +104,11 @@
         getDevice: function()
         {
             this.recordOptions = {
-                // width of video
                 'width': this.player().width(),
-
-                // height of video
                 'height': this.player().height(),
-
                 'bufferSize': this.audioBufferSize,
-
-                'sampleRate': this.audioSampleRate
+                'sampleRate': this.audioSampleRate,
+                'disableLogs': !this.debug
             };
 
             // setup device
@@ -741,7 +738,9 @@
         // linear PCM audio data in the buffer in sample-frames per second.
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
-        audioSampleRate: 22050
+        audioSampleRate: 22050,
+        // Enables console logging for debugging purposes
+        debug: false
     };
 
     /**
