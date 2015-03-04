@@ -12,6 +12,9 @@ Use [bower](http://bower.io) (`bower install videojs-record`) or
 [npm](https://www.npmjs.org) (`npm install videojs-record`) to install
 the plugin or download and include the dependencies manually.
 
+Dependencies
+------------
+
 The plugin has the following mandatory dependencies:
 
 - [Video.js](http://www.videojs.com) - HTML5 media player that provides the user interface.
@@ -22,8 +25,8 @@ When recording audio-only, the following dependencies are also required:
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer.fm/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Turns Video.js into an audio-player.
 
-Using the Plugin
-----------------
+Usage
+-----
 
 Whether you're going to record audio or video, or both, you'll always need
 video.js and recordrtc.js. Start by including the following:
@@ -84,8 +87,8 @@ And define an `audio` element:
 Check out the full [audio-only](examples/audio-only.html "audio-only example")
 example.
 
-Plugin options
---------------
+Options
+-------
 
 Configure the player using the video.js
 [options](https://github.com/videojs/video.js/blob/master/docs/guides/options.md),
@@ -119,8 +122,8 @@ The available options for this plugin are:
 | `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `debug` | boolean | `false` | Enables console logging for debugging purposes. |
 
-Plugin methods
--------------
+Methods
+-------
 
 Methods for this plugin:
 
@@ -130,8 +133,8 @@ Methods for this plugin:
 | `getRecordType` | Get recorder type as string, either `audio_only`, `video_only` or `audio_video`. |
 | `destroy` | Destroys the recorder instance and children. |
 
-Plugin events
--------------
+Events
+------
 
 Events for this plugin that are available on the video.js player instance:
 
