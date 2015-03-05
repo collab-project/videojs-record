@@ -32,9 +32,9 @@ Whether you're going to record audio or video, or both, you'll always need
 video.js and recordrtc.js. Start by including the following:
 
 ```html
-<link href="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.11.3/video-js.css" rel="stylesheet">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.3/video-js.css" rel="stylesheet">
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.11.3/video.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.3/video.js"></script>
 <script src="http://recordrtc.org/latest.js"></script>
 ```
 
