@@ -73,8 +73,8 @@ the videojs-wavesurfer and microphone plugins. Make sure to place this before
 the `videojs.record.js` script.
 
 ```html
-<script src="http://wavesurfer.fm/build/wavesurfer.min.js"></script>
-<script src="http://wavesurfer.fm/plugin/wavesurfer.microphone.js"></script>
+<script src="http://wavesurfer.fm/dist/wavesurfer.min.js"></script>
+<script src="http://wavesurfer.fm/dist/plugin/wavesurfer.microphone.min.js"></script>
 <script src="videojs.wavesurfer.js"></script>
 ```
 
