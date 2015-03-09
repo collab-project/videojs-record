@@ -92,7 +92,8 @@ Options
 
 Configure the player using the video.js
 [options](https://github.com/videojs/video.js/blob/master/docs/guides/options.md),
-and enable the plugin by adding a `record` entry. For example:
+and enable the plugin by adding a `record` configuration to `plugins`. For
+example:
 
 ```javascript
 var player = videojs("myVideo",
