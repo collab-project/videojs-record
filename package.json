@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/collab-project/videojs-record.git"
   },
+  "scripts": {
+    "test": "echo No tests yet!"
+  },
   "keywords": [
     "waveform",
     "audio",
