@@ -19,7 +19,7 @@ The control icons are from a custom font. Each icon corresponds to a character
     font-style: normal;
 }
 
-/* Record toggle
+/* Record Toggle (start/stop recording button in controlbar)
 --------------------------------------------------------------------------------
 */
 .vjs-record-button {
@@ -68,6 +68,60 @@ The control icons are from a custom font. Each icon corresponds to a character
 .vjs-record-button.vjs-record-start:after {
     font-family: VideoJS-Record;
     content: "\f053"; /* stop icon */
+}
+
+/* Camera Toggle (create/retry snapshot button in controlbar)
+--------------------------------------------------------------------------------
+*/
+.vjs-camera-button {
+    font-family: VideoJS-Record;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1.2;
+
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.vjs-camera-button.vjs-control {
+    width: 1em;
+    height: 1em;
+    padding-left: 9px;
+    padding-top: 2px;
+}
+
+.vjs-camera-button:focus,
+.vjs-camera-button:hover {
+    text-shadow: 0em 0em 1em #ffffff;
+}
+
+.vjs-camera-button:after {
+    font-family: VideoJS-Record;
+    content: "\e601"; /* camera icon */
+}
+
+.vjs-camera-button.vjs-record-stop:after {
+    font-family: VideoJS-Record;
+    content: "\e601"; /* camera icon */
+
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.vjs-camera-button.vjs-record-start:after {
+    font-family: VideoJS-Record;
+    font-size: 16px;
+
+    content: "\e602"; /* retry icon */
 }
 
 /* Device Button (device button at start)
@@ -147,8 +201,7 @@ The control icons are from a custom font. Each icon corresponds to a character
     display: none;
 }
 
-
-/* Recording indicator
+/* Recording Indicator (dot in top-right corner visible when recording)
 --------------------------------------------------------------------------------
 */
 .vjs-record-indicator {
@@ -171,4 +224,10 @@ The control icons are from a custom font. Each icon corresponds to a character
     /* top-right */
     top: 12px;
     right: 14px;
+}
+
+/* Record Canvas (canvas used to display snapshot images)
+--------------------------------------------------------------------------------
+*/
+.vjs-record-canvas {
 }

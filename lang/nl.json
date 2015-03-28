@@ -1,4 +1,7 @@
 {
   "Device": "Apparaat",
-  "Record": "Opnemen"
+  "Record": "Opnemen",
+  "Stop": "Stop",
+  "Image": "Afbeelding",
+  "Retry": "Opnieuw"
 }

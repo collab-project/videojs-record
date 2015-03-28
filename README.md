@@ -1,7 +1,7 @@
 Video.js Record
 ===============
 
-A Video.js plugin for recording audio/video files.
+A Video.js plugin for recording audio/video/image files.
 
 ![Screenshot](examples/img/screenshot.png?raw=true "Screenshot")
 
@@ -20,12 +20,15 @@ the plugin or download and include the dependencies manually.
 Dependencies
 ------------
 
-The plugin has the following mandatory dependencies:
+The plugin has the following mandatory dependency:
 
 - [Video.js](http://www.videojs.com) - HTML5 media player that provides the user interface.
+
+When recording audio and/or video you also need:
+
 - [RecordRTC.js](http://recordrtc.org) - Adds support for audio/video recording.
 
-When recording audio-only, the following dependencies are also required:
+And when recording audio-only, the following dependencies are also required:
 
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer.fm/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Turns Video.js into an audio-player.
@@ -33,13 +36,16 @@ When recording audio-only, the following dependencies are also required:
 Usage
 -----
 
-Whether you're going to record audio or video, or both, you'll always need
-video.js and recordrtc.js. Start by including the following:
+Start by including the video.js stylesheet and library:
 
 ```html
 <link href="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video-js.css" rel="stylesheet">
-
 <script src="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video.js"></script>
+```
+
+If you're going to record audio and/or video you need to include recordrtc.js as well:
+
+```html
 <script src="http://recordrtc.org/latest.js"></script>
 ```
 
@@ -50,23 +56,24 @@ is included on the page:
 <script src="videojs.record.js"></script>
 ```
 
-Add the extra stylesheet that includes a
+Add the extra stylesheet for the plugin that includes a
 [custom font](src/css/font) with additional icons:
 
 ```html
 <link href="videojs.record.css" rel="stylesheet">
 ```
 
-### Audio/video
+### Audio/video/image
 
-When recording both audio/video, or video-only, include a
+When recording both audio/video, video-only or images, include a
 `video` element:
 
 ```html
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 ```
 
-Check out the full [audio/video](examples/audio-video.html "audio/video example") or
+Check out the full [audio/video](examples/audio-video.html "audio/video example"), the
+[image](examples/image-only.html "image example") or the
 [video-only](examples/video-only.html "video-only example") examples.
 
 ### Audio-only
@@ -109,6 +116,7 @@ var player = videojs("myVideo",
     height: 240,
     plugins: {
         record: {
+            image: false,
             audio: false,
             video: true,
             maxLength: 5
@@ -121,8 +129,9 @@ The available options for this plugin are:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
+| `image` | boolean | `false` | Create a snapshot image. |
 | `audio` | boolean | `false` | Include audio in the recorded clip. |
-| `video` | boolean | `true` | Include video in the recorded clip. |
+| `video` | boolean | `false` | Include video in the recorded clip. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
@@ -136,33 +145,33 @@ Methods for this plugin:
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
-| `getRecordType` | Get recorder type as string, either `audio_only`, `video_only` or `audio_video`. |
+| `getRecordType` | Get recorder type as string, either `image_only`, `audio_only`, `video_only` or `audio_video`. |
 | `destroy` | Destroys the recorder instance and children. |
 
 Events
 ------
 
-Events for this plugin that are available on the video.js player instance:
+Plugin events that are available on the video.js player instance:
 
 | Event | Description |
 | --- | --- |
-| `deviceReady` | Triggered when the device is ready to use. |
-| `deviceError` | Triggered when the user doesn't allow the browser to access the microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia#errorCallback). |
-| `startRecord` | Triggered when the user clicked the record button to start recording. |
-| `stopRecord` | Triggered when the user clicked the stop button to stop recording. |
-| `finishRecord` | Triggered once the recorded stream is available. Check `player.recordedData` for the Blob data of the recorded clip. |
+| `deviceReady` | The webcam or microphone is ready to use. |
+| `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia#errorCallback). |
+| `startRecord` | User pressed the record or camera button to start recording. |
+| `stopRecord` | User pressed the stop button to stop recording. |
+| `finishRecord` | The recorded stream or image is available. Check `player.recordedData` for the Blob data of the recording. |
 
 Get recorded data
 -----------------
 
-Listen for the `finishRecord` event and obtain the clip data from the
+Listen for the `finishRecord` event and obtain the recorded data from the
 `player.recordedData` attribute for further processing:
 
 ```javascript
 // user completed recording and stream is available
 player.on('finishRecord', function()
 {
-    // the blob object contains the recorded data that
+    // the recordedData object contains the stream data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
 });

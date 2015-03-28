@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <title>Image-only Example - Record Plugin for Video.js</title>
+
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video-js.css" rel="stylesheet">
+  <link href="../src/css/videojs.record.css" rel="stylesheet">
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video.js"></script>
+
+  <script src="../src/js/videojs.record.js"></script>
+
+</head>
+<body>
+
+<video id="myImage" class="video-js vjs-default-skin"></video>
+
+<script>
+var player = videojs("myImage",
+{
+    controls: true,
+    width: 320,
+    height: 240,
+    children: {
+        controlBar: {
+            children: {
+                currentTimeDisplay: false,
+                timeDivider: false,
+                durationDisplay: false,
+                muteToggle: false,
+                volumeControl: false
+            }
+        }
+    },
+    plugins: {
+        record: {
+            image: true
+        }
+    }
+});
+
+// change player background color
+player.el().style.backgroundColor = "#6B2DA8";
+
+// error handling
+player.on('deviceError', function()
+{
+    console.warn('device error:', player.deviceErrorCode);
+});
+
+// snapshot is available
+player.on('finishRecord', function()
+{
+    // the blob object contains the image data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('snapshot ready');//console.log('snapshot ready: ', player.recordedData);
+});
+</script>
+
+</body>
+</html>

@@ -6,6 +6,7 @@
      */
     videojs.Recorder = videojs.Component.extend({
 
+        IMAGE_ONLY: 'image_only',
         AUDIO_ONLY: 'audio_only',
         VIDEO_ONLY: 'video_only',
         AUDIO_VIDEO: 'audio_video',
@@ -23,6 +24,7 @@
             videojs.Component.call(this, player, options, ready);
 
             // parse settings
+            this.recordImage = this.options().options.image;
             this.recordAudio = this.options().options.audio;
             this.recordVideo = this.options().options.video;
             this.audioBufferSize = this.options().options.audioBufferSize;
@@ -51,14 +53,18 @@
                     this.surfer = player.waveform;
 
                     // initially hide playhead
+                    // XXX: fix this in wavesurfer.js, see
+                    //      https://github.com/katspaugh/wavesurfer.js/issues/306
                     this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
                     this.playhead.style.display = 'none';
                     break;
 
-                default:
+                case this.IMAGE_ONLY:
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
                     // customize controls
-                    // XXX: below are hacks copied from videojs.wavesurfer that
-                    //      customize the video.js UI...
+                    // XXX: below are customizations copied from videojs.wavesurfer that
+                    //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
                     if (this.player().options().controls)
                     {
@@ -111,7 +117,8 @@
                 'disableLogs': !this.debug
             };
 
-            // setup device
+            // ask the browser to give us access to media device and get a
+            // stream reference in the callback function
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -125,6 +132,7 @@
                     this.player().play();
                     break;
 
+                case this.IMAGE_ONLY:
                 case this.VIDEO_ONLY:
                     // setup camera
                     this.getUserMedia({
@@ -133,11 +141,10 @@
                     },
                     this.onDeviceReady.bind(this),
                     this.onDeviceError.bind(this));
-
                     break;
 
                 case this.AUDIO_VIDEO:
-                    // setup camera/mic
+                    // setup camera/microphone
                     this.getUserMedia({
                         video: true,
                         audio: true
@@ -151,49 +158,60 @@
         /**
          * Invoked when the device is ready.
          *
-         * @param stream:
+         * @param stream: LocalMediaStream instance.
          */
         onDeviceReady: function(stream)
         {
+            // store reference to stream for stopping etc.
             this.stream = stream;
 
             // forward to listeners
             this.player().trigger('deviceReady');
 
-            // connect stream to recording engine
-            this.engine = new RecordRTC(this.stream, this.recordOptions);
-
             // hide device selection button
             this.player().deviceButton.hide();
 
-            // show record button
-            this.player().recordToggle.show();
-
-            // tweak default videojs UI
+            // hide live display indicator
             this.player().controlBar.liveDisplay.hide();
 
-            // show elements that should never be hidden
-            var uiElements = [this.player().controlBar.currentTimeDisplay,
-                              this.player().controlBar.timeDivider,
-                              this.player().controlBar.durationDisplay];
-            for (var element in uiElements)
+            // setup recording engine
+            if (this.getRecordType() !== this.IMAGE_ONLY)
             {
-                uiElements[element].el().style.display = 'block';
-                uiElements[element].show();
+                // connect stream to recording engine
+                this.engine = new RecordRTC(this.stream, this.recordOptions);
+
+                // show elements that should never be hidden in audio and/or
+                // video modus
+                var uiElements = [this.player().controlBar.currentTimeDisplay,
+                                  this.player().controlBar.timeDivider,
+                                  this.player().controlBar.durationDisplay];
+                for (var element in uiElements)
+                {
+                    uiElements[element].el().style.display = 'block';
+                    uiElements[element].show();
+                }
+
+                // show record button
+                this.player().recordToggle.show();
+            }
+            else
+            {
+                // disable record indicator
+                this.player().recordIndicator.disable();
+
+                // show camera button
+                this.player().cameraButton.show();
             }
 
             // setup preview
-            switch (this.getRecordType())
+            if (this.getRecordType() !== this.AUDIO_ONLY)
             {
-                case this.AUDIO_VIDEO:
-                case this.VIDEO_ONLY:
-                    // show live video preview
-                    this.mediaElement = this.player().el().firstChild;
-                    this.mediaElement.muted = true;
-                    this.mediaElement.controls = false;
-                    this.load(URL.createObjectURL(this.stream));
-                    this.mediaElement.play();
-                    break;
+                // show live video preview
+                this.mediaElement = this.player().el().firstChild;
+                this.mediaElement.muted = true;
+                this.mediaElement.controls = false;
+                this.load(URL.createObjectURL(this.stream));
+                this.mediaElement.play();
             }
         },
 
@@ -236,7 +254,8 @@
                         this.player().play();
                         break;
 
-                    default:
+                    case this.VIDEO_ONLY:
+                    case this.AUDIO_VIDEO:
                         // disable playback events
                         this.off('timeupdate');
                         this.off('play');
@@ -250,13 +269,22 @@
                         break;
                 }
 
-                // start countdown
-                this.startTime = new Date().getTime();
-                this.countDown = this.setInterval(this.onCountDown.bind(this),
-                    100);
+                // start recording
+                if (this.getRecordType() !== this.IMAGE_ONLY)
+                {
+                    // start countdown
+                    this.startTime = new Date().getTime();
+                    this.countDown = this.setInterval(this.onCountDown.bind(this),
+                        100);
 
-                // start recording stream
-                this.engine.startRecording();
+                    // start recording stream
+                    this.engine.startRecording();
+                }
+                else
+                {
+                    // create snapshot
+                    this.createSnapshot();
+                }
 
                 // notify UI
                 this.trigger('startRecord');
@@ -273,14 +301,25 @@
                 this._recording = false;
                 this._processing = true;
 
-                // stop countdown
-                this.clearInterval(this.countDown);
-
-                // stop recording stream
-                this.engine.stopRecording(this.onStopRecording.bind(this));
-
                 // notify UI
                 this.trigger('stopRecord');
+
+                if (this.getRecordType() !== this.IMAGE_ONLY)
+                {
+                    // stop countdown
+                    this.clearInterval(this.countDown);
+
+                    // stop recording stream (result will be available async)
+                    this.engine.stopRecording(this.onStopRecording.bind(this));
+                }
+                else
+                {
+                    // notify UI
+                    this.trigger('stopRecord');
+
+                    // notify listeners that image data is available
+                    this.trigger('finishRecord');
+                }
             }
         },
 
@@ -330,7 +369,8 @@
                     }.bind(this));
                     break;
 
-                default:
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
                     this.player().one('pause', function()
                     {
                         // video data is ready
@@ -420,7 +460,8 @@
                     this.surfer.setCurrentTime(currentTime, duration);
                     break;
 
-                default:
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
                     var time = Math.min(currentTime, duration);
 
                     // update control
@@ -444,7 +485,8 @@
                     this.surfer.setDuration(duration);
                     break;
 
-                default:
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
                     // update control
                     this.player().controlBar.durationDisplay.el(
                         ).firstChild.innerHTML = this.formatTime(
@@ -468,8 +510,10 @@
                     this.surfer.load(url);
                     break;
 
-                default:
-                    // set stream
+                case this.IMAGE_ONLY:
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
+                    // assign stream to src
                     this.mediaElement.src = url;
                     break;
             }
@@ -494,7 +538,9 @@
                     this.surfer.destroy();
                     break;
 
-                default:
+                case this.IMAGE_ONLY:
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
                     this.player().dispose();
                     break;
             }
@@ -505,7 +551,11 @@
          */
         getRecordType: function()
         {
-            if (this.recordAudio && !this.recordVideo)
+            if (this.recordImage)
+            {
+                return this.IMAGE_ONLY;
+            }
+            else if (this.recordAudio && !this.recordVideo)
             {
                 return this.AUDIO_ONLY;
             }
@@ -520,6 +570,37 @@
         },
 
         /**
+         * Create snapshot image.
+         */
+        createSnapshot: function()
+        {
+            var recordCanvas = this.player().recordCanvas.el().firstChild;
+
+            // set the canvas size to the dimensions of the camera,
+            // which also wipes it
+            recordCanvas.width = this.player().width();
+            recordCanvas.height = this.player().height();
+
+            // get a frame of the stream and copy it onto the canvas
+            recordCanvas.getContext('2d').drawImage(
+                this.mediaElement, 0, 0, recordCanvas.width,
+                recordCanvas.height
+            );
+
+            // turn the canvas data into base-64 data with a PNG header
+            this.player().recordedData = recordCanvas.toDataURL('image/png');
+
+            // hide preview video
+            this.mediaElement.style.display = 'none';
+
+            // show the snapshot
+            this.player().recordCanvas.show();
+
+            // stop recording
+            this.stop();
+        },
+
+        /**
          * Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.
          * 
          * Supplying a guide (in seconds) will force a number of leading zeros
@@ -531,6 +612,8 @@
          */
         formatTime: function(seconds, guide)
         {
+            // XXX: integrate method changes in video.js, see
+            //      https://github.com/videojs/video.js/issues/1922
             // Default to using seconds as guide
             guide = guide || seconds;
             var s = Math.floor(seconds % 60),
@@ -585,7 +668,7 @@
 
     });
 
-    var RecordToggle, DeviceButton, RecordIndicator;
+    var RecordToggle, CameraButton, DeviceButton, RecordIndicator, RecordCanvas;
 
     /**
      * Button to toggle between start and stop recording
@@ -642,6 +725,71 @@
     };
 
     /**
+     * Button to toggle between create and retry snapshot image
+     * @param {videojs.Player|Object} player
+     * @param {Object=} options
+     * @class
+     * @constructor
+    */
+    CameraButton = videojs.Button.extend(
+    {
+        /** @constructor */
+        init: function(player, options)
+        {
+            videojs.Button.call(this, player, options);
+
+            this.on('click', this.onClick);
+            this.on(player, 'startRecord', this.onStart);
+            this.on(player, 'stopRecord', this.onStop);
+        }
+    });
+    CameraButton.prototype.onClick = function(e)
+    {
+        // stop this event before it bubbles up
+        e.stopImmediatePropagation();
+
+        var recorder = this.player().recorder;
+
+        if (!recorder._processing)
+        {
+            // create snapshot
+            recorder.start();
+        }
+        else
+        {
+            // retry
+            recorder._processing = false;
+
+            // retry: hide the snapshot
+            this.player().recordCanvas.hide();
+
+            // show preview video
+            this.player().el().firstChild.style.display = 'block';
+
+            // reset camera button
+            this.onStop();
+        }
+    };
+    CameraButton.prototype.onStart = function()
+    {
+        // add the vjs-record-start class to the element so it can change appearance
+        this.removeClass('vjs-record-stop');
+        this.addClass('vjs-record-start');
+
+        // update label
+        this.el().firstChild.firstChild.innerHTML = this.localize('Retry');
+    };
+    CameraButton.prototype.onStop = function()
+    {
+        // add the vjs-record-stop class to the element so it can change appearance
+        this.removeClass('vjs-record-start');
+        this.addClass('vjs-record-stop');
+
+        // update label
+        this.el().firstChild.firstChild.innerHTML = this.localize('Image');
+    };
+
+    /**
      * Button to select recording device
      * @param {videojs.Player|Object} player
      * @param {Object=} options
@@ -685,6 +833,21 @@
             this.on(player, 'stopRecord', this.hide);
         }
     });
+    RecordIndicator.prototype.disable = function()
+    {
+        // disable record indicator event handlers
+        this.off(this.player(), 'startRecord', this.show);
+        this.off(this.player(), 'stopRecord', this.hide);
+    };
+
+    /**
+     * Canvas for displaying snapshot image.
+     * @param {videojs.Player|Object} player
+     * @param {Object=} options
+     * @class
+     * @constructor
+    */
+    RecordCanvas = videojs.Component.extend();
 
     /**
      * Create a custom button
@@ -715,10 +878,12 @@
 
     // plugin defaults
     var defaults = {
+        // Creates a snapshot image.
+        image: false,
         // Include audio in the recorded clip.
         audio: false,
         // Include video in the recorded clip.
-        video: true,
+        video: false,
         // Maximum length of the recorded clip.
         maxLength: 10,
         // The size of the audio buffer (in sample-frames) which needs to
@@ -763,7 +928,7 @@
         // add device button
         player.deviceButton = new DeviceButton(player,
         {
-            'el': createButton('device', player.localize('Device')),
+            'el': createButton('device', player.localize('Device'))
         });
         player.recorder.el().appendChild(player.deviceButton.el());
 
@@ -771,16 +936,36 @@
         player.recordIndicator = new RecordIndicator(player,
         {
             'el': videojs.Component.prototype.createEl(null, {
-                className: 'vjs-record-indicator vjs-control',
+                className: 'vjs-record-indicator vjs-control'
             })
         });
         player.recordIndicator.hide();
         player.recorder.el().appendChild(player.recordIndicator.el());
 
+        // add canvas for image display
+        player.recordCanvas = new RecordCanvas(player,
+        {
+            'el': videojs.Component.prototype.createEl(null, {
+                className: 'vjs-record-canvas',
+                innerHTML: '<canvas></canvas>'
+            })
+        });
+        player.recordCanvas.hide();
+        player.recorder.el().appendChild(player.recordCanvas.el());
+
+        // add camera button
+        player.cameraButton = new CameraButton(player,
+        {
+            'el': createButton('camera', player.localize('Image'))
+        });
+        player.cameraButton.hide();
+        player.controlBar.el().insertBefore(player.cameraButton.el(),
+            player.controlBar.el().firstChild);
+
         // add record toggle
         player.recordToggle = new RecordToggle(player,
         {
-            'el': createButton('record', player.localize('Record')),
+            'el': createButton('record', player.localize('Record'))
         });
         player.recordToggle.hide();
         player.controlBar.el().insertBefore(player.recordToggle.el(),
