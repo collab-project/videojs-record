@@ -31,7 +31,7 @@ When recording audio and/or video you also need:
 And when recording audio-only, the following dependencies are also required:
 
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer.fm/example/microphone) used for realtime visualization of the microphone audio signal.
-- [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Turns Video.js into an audio-player.
+- [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
 Usage
 -----
@@ -43,7 +43,7 @@ Start by including the video.js stylesheet and library:
 <script src="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video.js"></script>
 ```
 
-If you're going to record audio and/or video you need to include recordrtc.js as well:
+If you're going to record audio and/or video you need to include RecordRTC as well:
 
 ```html
 <script src="http://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
@@ -65,7 +65,7 @@ Add the extra stylesheet for the plugin that includes a
 
 ### Audio/video/image
 
-When recording both audio/video, video-only or images, include a
+When recording both audio/video, video-only or an image, include a
 `video` element:
 
 ```html
@@ -77,7 +77,7 @@ Check out the full [audio/video](examples/audio-video.html "audio/video example"
 [video-only](examples/video-only.html "video-only example") examples.
 
 Note that recording both audio and video in a single WebM file is currently
-only supported in Mozilla FireFox >= 29. On other browsers the resulting file
+only supported in Mozilla Firefox >= 29. On other browsers the resulting file
 only contains video data.
 
 ### Audio-only

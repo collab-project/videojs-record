@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A video.js plugin for recording audio/video/image files.",
   "main": "src/js/videojs.record.js",
   "directories": {
@@ -22,7 +22,8 @@
     "player",
     "record",
     "stream",
-    "recorder"
+    "recorder",
+    "RecordRTC"
   ],
   "dependencies": {
     "video.js": ">=4.11.0",
