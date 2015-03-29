@@ -60,6 +60,13 @@ module.exports = function(grunt) {
         src: ['src/js/*.js']
       },
     },
+    csscomb: {
+      site: {
+        files: {
+          'src/css/videojs.record.css': ['src/css/videojs.record.css']
+        }
+      }
+    },
     cssmin: {
       target: {
         files: [{
@@ -96,8 +103,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-videojs-languages');
+  grunt.loadNpmTasks('grunt-csscomb');
 
-  grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages']);
+  grunt.registerTask('pretask', ['jshint', 'csscomb', 'concat', 'vjslanguages']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'Building Source', function(){

@@ -38,7 +38,8 @@
     "grunt-contrib-jshint": ">=0.10.0",
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-watch": ">=0.6.1",
-    "grunt-videojs-languages": ">=0.0.4"
+    "grunt-videojs-languages": ">=0.0.4",
+    "grunt-csscomb": ">=3.0.0"
   },
   "author": "",
   "license": "MIT",

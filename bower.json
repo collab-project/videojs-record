@@ -37,6 +37,7 @@
     "grunt-contrib-concat": ">=0.4.0",
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-cssmin": ">=0.11.0",
-    "grunt-videojs-languages": ">=0.0.4"
+    "grunt-videojs-languages": ">=0.0.4",
+    "grunt-csscomb": ">=3.0.0"
   }
 }
