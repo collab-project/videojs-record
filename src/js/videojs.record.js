@@ -318,10 +318,7 @@
                 }
                 else
                 {
-                    // notify UI
-                    this.trigger('stopRecord');
-
-                    // notify listeners that image data is available
+                    // notify listeners that image data is (already) available
                     this.trigger('finishRecord');
                 }
             }
