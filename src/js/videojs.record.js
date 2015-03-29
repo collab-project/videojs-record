@@ -109,20 +109,16 @@
          */
         getDevice: function()
         {
-            this.recordOptions = {
-                'width': this.player().width(),
-                'height': this.player().height(),
-                'bufferSize': this.audioBufferSize,
-                'sampleRate': this.audioSampleRate,
-                'disableLogs': !this.debug
-            };
-
             // ask the browser to give us access to media device and get a
             // stream reference in the callback function
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
                     // setup microphone
+                    this.mediaType = {
+                        audio: true,
+                        video: false
+                    };
                     this.surfer.microphone.on('deviceReady',
                         this.onDeviceReady.bind(this));
                     this.surfer.microphone.on('deviceError',
@@ -135,22 +131,26 @@
                 case this.IMAGE_ONLY:
                 case this.VIDEO_ONLY:
                     // setup camera
-                    this.getUserMedia({
-                        video: true,
-                        audio: false
-                    },
-                    this.onDeviceReady.bind(this),
-                    this.onDeviceError.bind(this));
+                    this.mediaType = {
+                        audio: false,
+                        video: true
+                    };
+                    this.getUserMedia(
+                        this.mediaType,
+                        this.onDeviceReady.bind(this),
+                        this.onDeviceError.bind(this));
                     break;
 
                 case this.AUDIO_VIDEO:
-                    // setup camera/microphone
-                    this.getUserMedia({
-                        video: true,
-                        audio: true
-                    },
-                    this.onDeviceReady.bind(this),
-                    this.onDeviceError.bind(this));
+                    // setup camera and microphone
+                    this.mediaType = {
+                        audio: true,
+                        video: true
+                    };
+                    this.getUserMedia(
+                        this.mediaType,
+                        this.onDeviceReady.bind(this),
+                        this.onDeviceError.bind(this));
                     break;
             }
         },
@@ -178,7 +178,11 @@
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
                 // connect stream to recording engine
-                this.engine = new RecordRTC(this.stream, this.recordOptions);
+                this.engine = new MRecordRTC();
+                this.engine.bufferSize = this.audioBufferSize;
+                this.engine.sampleRate = this.audioSampleRate;
+                this.engine.mediaType = this.mediaType;
+                this.engine.addStream(this.stream);
 
                 // show elements that should never be hidden in audio and/or
                 // video modus
@@ -328,95 +332,122 @@
          *
          * @param {string} audioVideoWebMURL Reference to the recorded Blob object, eg.
          *   blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
+         * @param {string} type Media type, eg. 'video' or 'audio'.
          */
-        onStopRecording: function(audioVideoWebMURL)
+        onStopRecording: function(audioVideoWebMURL, type)
         {
-            // show play control
-            this.player().controlBar.playToggle.show();
+            // store reference to recorded stream URL
+            this.mediaURL = audioVideoWebMURL;
 
             // store reference to recorded stream data
-            this.player().recordedData = this.engine.getBlob();
-
-            // notify listeners that data is available
-            this.trigger('finishRecord');
-
-            switch (this.getRecordType())
+            this.engine.getBlob(function(recording)
             {
-                case this.AUDIO_ONLY:
-                    // Pausing the player so we can visualize the recorded data
-                    // will trigger an async videojs 'pause' event that we have
-                    // to wait for.
-                    this.player().one('pause', function()
-                    {
-                        // setup events during playback
-                        this.surfer.setupPlaybackEvents(true);
+                switch (this.getRecordType())
+                {
+                    case this.AUDIO_ONLY:
+                        // show play control
+                        this.player().controlBar.playToggle.show();
 
-                        // display loader
-                        this.player().loadingSpinner.show();
+                        // store recorded data
+                        this.player().recordedData = recording.audio;
 
-                        // show playhead
-                        this.playhead.style.display = 'block';
+                        // notify listeners that data is available
+                        this.trigger('finishRecord');
 
-                        // restore interaction with controls after waveform
-                        // rendering is complete
-                        this.surfer.surfer.once('ready', function(){
-                            this._processing = false;
+                        // Pausing the player so we can visualize the recorded data
+                        // will trigger an async videojs 'pause' event that we have
+                        // to wait for.
+                        this.player().one('pause', function()
+                        {
+                            // setup events during playback
+                            this.surfer.setupPlaybackEvents(true);
+
+                            // display loader
+                            this.player().loadingSpinner.show();
+
+                            // show playhead
+                            this.playhead.style.display = 'block';
+
+                            // restore interaction with controls after waveform
+                            // rendering is complete
+                            this.surfer.surfer.once('ready', function(){
+                                this._processing = false;
+                            }.bind(this));
+
+                            // visualize recorded stream
+                            this.load(this.player().recordedData);
+
                         }.bind(this));
 
-                        // visualize recorded stream
-                        this.load(this.player().recordedData);
+                        // pause player so user can start playback
+                        this.player().pause();
+                        break;
 
-                    }.bind(this));
-                    break;
-
-                case this.VIDEO_ONLY:
-                case this.AUDIO_VIDEO:
-                    this.player().one('pause', function()
-                    {
-                        // video data is ready
-                        this._processing = false;
-
-                        // hide loader
-                        this.player().loadingSpinner.hide();
-
-                        // show stream duration
-                        this.setDuration(this.streamDuration);
-
-                        // update time during playback
-                        this.on(this.player(), 'timeupdate', function()
+                    case this.VIDEO_ONLY:
+                    case this.AUDIO_VIDEO:
+                        // currently recordrtc calls this twice on chrome,
+                        // first with audio data, then with video data.
+                        // on firefox it's called once but with a single webm
+                        // video blob that also includes audio data.
+                        if (recording.video !== undefined)
                         {
-                            this.setCurrentTime(this.player().currentTime(),
-                                this.streamDuration);
-                        }.bind(this));
+                            // show play control
+                            this.player().controlBar.playToggle.show();
 
-                        // workaround firefox issue
-                        this.on(this.player(), 'play', function()
-                        {
-                            if (this.player().seeking())
+                            // store recorded data
+                            this.player().recordedData = recording.video;
+
+                            // notify listeners that data is available
+                            this.trigger('finishRecord');
+
+                            this.player().one('pause', function()
                             {
-                                // There seems to be a Firefox issue with playing back blobs.
-                                // The ugly, but functional workaround, is to simply reset
-                                // the source. See https://bugzilla.mozilla.org/show_bug.cgi?id=969290
-                                this.load(audioVideoWebMURL);
-                                this.player().play();
-                            }
-                        }.bind(this));
+                                // video data is ready
+                                this._processing = false;
 
-                        // unmute local audio during playback
-                        if (this.getRecordType() === this.AUDIO_VIDEO)
-                        {
-                            this.mediaElement.muted = false;
+                                // hide loader
+                                this.player().loadingSpinner.hide();
+
+                                // show stream duration
+                                this.setDuration(this.streamDuration);
+
+                                // update time during playback
+                                this.on(this.player(), 'timeupdate', function()
+                                {
+                                    this.setCurrentTime(this.player().currentTime(),
+                                        this.streamDuration);
+                                }.bind(this));
+
+                                // workaround firefox issue
+                                this.on(this.player(), 'play', function()
+                                {
+                                    if (this.player().seeking())
+                                    {
+                                        // There seems to be a Firefox issue with playing back blobs.
+                                        // The ugly, but functional workaround, is to simply reset
+                                        // the source. See https://bugzilla.mozilla.org/show_bug.cgi?id=969290
+                                        this.load(this.mediaURL);
+                                        this.player().play();
+                                    }
+                                }.bind(this));
+
+                                // unmute local audio during playback
+                                if (this.getRecordType() === this.AUDIO_VIDEO)
+                                {
+                                    this.mediaElement.muted = false;
+                                }
+
+                                // load recorded media
+                                this.load(this.mediaURL);
+
+                            }.bind(this));
+
+                            // pause player so user can start playback
+                            this.player().pause();
                         }
-
-                        // load recorded media
-                        this.load(audioVideoWebMURL);
-
-                    }.bind(this));
-                    break;
-            }
-
-            // pause player so user can start playback
-            this.player().pause();
+                        break;
+                }
+            }.bind(this));
         },
 
         /**
