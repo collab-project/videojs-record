@@ -77,7 +77,8 @@ Check out the full [audio/video](examples/audio-video.html "audio/video example"
 [video-only](examples/video-only.html "video-only example") examples.
 
 Note that recording both audio and video in a single WebM file is currently
-only supported in Mozilla FireFox >= 29.
+only supported in Mozilla FireFox >= 29. On other browsers the resulting file
+only contains video data.
 
 ### Audio-only
 

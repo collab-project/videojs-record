@@ -1,12 +1,13 @@
 {
     "browser"  : true,
-    "curly": true,
-    "eqeqeq": true,
+    "curly"    : true,
+    "eqeqeq"   : true,
     "quotmark" : "single",
     "trailing" : true,
     "undef"    : true,
     "predef"   : [
         "videojs",
-        "RecordRTC"
+        "RecordRTC",
+        "MRecordRTC"
     ]
 }
