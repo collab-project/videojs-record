@@ -46,7 +46,7 @@ Start by including the video.js stylesheet and library:
 If you're going to record audio and/or video you need to include recordrtc.js as well:
 
 ```html
-<script src="http://recordrtc.org/latest.js"></script>
+<script src="http://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
 ```
 
 The videojs-record plugin automatically registers itself when the script
