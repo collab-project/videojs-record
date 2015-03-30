@@ -47,12 +47,6 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      gruntfile: {
-        options: {
-          node: true
-        },
-        src: 'Gruntfile.js'
-      },
       src: {
         options: {
           jshintrc: '.jshintrc'
@@ -61,7 +55,7 @@ module.exports = function(grunt) {
       },
     },
     csscomb: {
-      site: {
+      src: {
         files: {
           'src/css/videojs.record.css': ['src/css/videojs.record.css']
         }
