@@ -182,6 +182,7 @@
                 this.engine.bufferSize = this.audioBufferSize;
                 this.engine.sampleRate = this.audioSampleRate;
                 this.engine.mediaType = this.mediaType;
+                this.engine.disableLogs = !this.debug;
                 this.engine.addStream(this.stream);
 
                 // show elements that should never be hidden in audio and/or
