@@ -2,7 +2,7 @@
     'use strict';
 
     /**
-     * Record audio/video with the video.js player.
+     * Record audio/video/images using the Video.js player.
      */
     videojs.Recorder = videojs.Component.extend({
 
