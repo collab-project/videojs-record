@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <title>Animated GIF Example - Record Plugin for Video.js</title>
+
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video-js.css" rel="stylesheet">
+  <link href="../src/css/videojs.record.css" rel="stylesheet">
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/video.js/4.12.5/video.js"></script>
+
+  <script src="http://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+  <script src="http://cdn.webrtc-experiment.com/gif-recorder.js"></script>
+
+  <script src="../src/js/videojs.record.js"></script>
+
+</head>
+<body>
+
+<video id="myVideo" class="video-js vjs-default-skin"></video>
+
+<script>
+var player = videojs('myVideo',
+{
+    controls: true,
+    width: 320,
+    height: 240,
+    children: {
+        controlBar: {
+            children: {
+                muteToggle: false,
+                volumeControl: false,
+                fullscreenToggle: false
+            }
+        }
+    },
+    plugins: {
+        record: {
+            animation: true,
+            animationQuality: 20,
+            animationFrameRate: 200,
+            maxLength: 5
+        }
+    }
+});
+
+// change player background color
+player.el().style.backgroundColor = '#6EF55F';
+
+// error handling
+player.on('deviceError', function()
+{
+    console.warn('device error:', player.deviceErrorCode);
+});
+
+// user clicked the record button and started recording
+player.on('startRecord', function()
+{
+    console.log('started recording!');
+});
+
+// user completed recording and stream is available
+player.on('finishRecord', function()
+{
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording: ', player.recordedData);
+});
+</script>
+
+</body>
+</html>
