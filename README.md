@@ -26,7 +26,7 @@ The plugin has the following mandatory dependency:
 
 When recording audio and/or video you also need:
 
-- [RecordRTC.js](http://recordrtc.org) - Adds support for audio/video recording.
+- [RecordRTC.js](http://recordrtc.org) - Adds support for audio/video/GIF recording.
 
 And when recording audio-only, the following dependencies are also required:
 
@@ -65,15 +65,16 @@ Add the extra stylesheet for the plugin that includes a
 
 ### Audio/video/image
 
-When recording both audio/video, video-only or an image, include a
-`video` element:
+When recording either audio/video, video-only, animated GIF or a single image,
+include a `video` element:
 
 ```html
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 ```
 
-Check out the full [audio/video](examples/audio-video.html "audio/video example"), the
-[image](examples/image-only.html "image example") or the
+Check out the full [audio/video](examples/audio-video.html "audio/video example"),
+[image](examples/image-only.html "image example"),
+[animated GIF](examples/animated-gif.html "animated GIF example") or the
 [video-only](examples/video-only.html "video-only example") examples.
 
 Note that recording both audio and video in a single WebM file is currently
@@ -133,13 +134,16 @@ The available options for this plugin are:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `image` | boolean | `false` | Create a snapshot image. |
+| `image` | boolean | `false` | Create single snapshot image. |
 | `audio` | boolean | `false` | Include audio in the recorded clip. |
 | `video` | boolean | `false` | Include video in the recorded clip. |
+| `animation` | boolean | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
-| `debug` | boolean | `false` | Enables console logging for debugging purposes. |
+| `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
+| `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
+| `debug` | boolean | `false` | Enables console log messages in RecordRTC. |
 
 Methods
 -------
@@ -149,8 +153,8 @@ Methods for this plugin:
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
-| `getRecordType` | Get recorder type as string, either `image_only`, `audio_only`, `video_only` or `audio_video`. |
-| `destroy` | Destroys the recorder instance and children. |
+| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
+| `destroy` | Destroys the recorder instance and children (including the video.js player). |
 
 Events
 ------
