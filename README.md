@@ -164,7 +164,7 @@ Plugin events that are available on the video.js player instance:
 | Event | Description |
 | --- | --- |
 | `deviceReady` | The webcam or microphone is ready to use. |
-| `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia#errorCallback). |
+| `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia#errorCallback). |
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `finishRecord` | The recorded stream or image is available. Check the `player.recordedData` object for the recorded data. |
