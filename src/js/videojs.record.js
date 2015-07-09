@@ -434,17 +434,27 @@
 
                     case this.VIDEO_ONLY:
                     case this.AUDIO_VIDEO:
-                        // currently recordrtc calls this twice on chrome,
-                        // first with audio data, then with video data.
+                        // when recording both audio and video, recordrtc
+                        // calls this twice on chrome, first with audio data
+                        // and then with video data.
                         // on firefox it's called once but with a single webm
-                        // video blob that also includes audio data.
+                        // blob that includes both audio and video data.
                         if (recording.video !== undefined)
                         {
                             // show play control
                             this.player().controlBar.playToggle.show();
 
-                            // store recorded data
+                            // store recorded data (video-only or firefox audio+video)
                             this.player().recordedData = recording.video;
+
+                            // on the chrome browser two blobs are created
+                            // containing the separate audio/video streams.
+                            // the isChrome var comes from recordrtc.
+                            if (this.getRecordType() === this.AUDIO_VIDEO && isChrome)
+                            {
+                                // store both audio and video
+                                this.player().recordedData = recording;
+                            }
 
                             // notify listeners that data is available
                             this.trigger('finishRecord');

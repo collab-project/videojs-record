@@ -77,9 +77,9 @@ Check out the full [audio/video](examples/audio-video.html "audio/video example"
 [animated GIF](examples/animated-gif.html "animated GIF example") or the
 [video-only](examples/video-only.html "video-only example") examples.
 
-Note that recording both audio and video in a single WebM file is currently
-only supported in Mozilla Firefox >= 29. On other browsers the resulting file
-only contains video data.
+Note that recording both audio and video into a single WebM file is currently
+only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
+Blob objects are created: one for audio and one for video.
 
 ### Audio-only
 
@@ -167,13 +167,13 @@ Plugin events that are available on the video.js player instance:
 | `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia#errorCallback). |
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
-| `finishRecord` | The recorded stream or image is available. Check `player.recordedData` for the Blob data of the recording. |
+| `finishRecord` | The recorded stream or image is available. Check the `player.recordedData` object for the recorded data. |
 
 Get recorded data
 -----------------
 
 Listen for the `finishRecord` event and obtain the recorded data from the
-`player.recordedData` attribute for further processing:
+`player.recordedData` object for further processing:
 
 ```javascript
 // user completed recording and stream is available
@@ -184,6 +184,10 @@ player.on('finishRecord', function()
     console.log('finished recording: ', player.recordedData);
 });
 ```
+
+Note that in the Chrome browser `player.recordedData` returns an object with
+`audio` and `video` properties when recording both audio/video. In Firefox
+it returns a single WebM Blob object containing both audio and video.
 
 Customizing controls
 --------------------
