@@ -459,6 +459,13 @@
                             // notify listeners that data is available
                             this.trigger('finishRecord');
 
+                            // remove previous listeners
+                            this.off(this.player(), 'pause', this.onPlayerPause);
+                            this.off(this.player(), 'play', this.onPlayerStart);
+
+                            // Pausing the player so we can visualize the recorded data
+                            // will trigger an async videojs 'pause' event that we have
+                            // to wait for.
                             this.player().one('pause', function()
                             {
                                 // video data is ready
@@ -477,18 +484,27 @@
                                         this.streamDuration);
                                 }.bind(this));
 
-                                // workaround firefox issue
-                                this.on(this.player(), 'play', function()
+                                // because there are 2 separate data streams for audio
+                                // and video in the Chrome browser, playback the audio
+                                // stream in a new extra audio element and the video
+                                // stream in the regular video.js player.
+                                if (this.getRecordType() === this.AUDIO_VIDEO && isChrome)
                                 {
-                                    if (this.player().seeking())
+                                    if (this.extraAudio === undefined)
                                     {
-                                        // There seems to be a Firefox issue with playing back blobs.
-                                        // The ugly, but functional workaround, is to simply reset
-                                        // the source. See https://bugzilla.mozilla.org/show_bug.cgi?id=969290
-                                        this.load(this.mediaURL);
-                                        this.player().play();
+                                        this.extraAudio = this.player().createEl('audio');
+                                        this.extraAudio.id = 'extraAudio';
                                     }
-                                }.bind(this));
+
+                                    this.extraAudio.src = URL.createObjectURL(
+                                        this.player().recordedData.audio);
+
+                                    // pause extra audio when player pauses
+                                    this.on(this.player(), 'pause', this.onPlayerPause);
+                                }
+
+                                // workaround some browser issues when player starts
+                                this.on(this.player(), 'play', this.onPlayerStart);
 
                                 // unmute local audio during playback
                                 if (this.getRecordType() === this.AUDIO_VIDEO)
@@ -535,16 +551,10 @@
                         this.player().pause();
 
                         // show animation on play
-                        this.on(this.player(), 'play', function()
-                        {
-                            this.showAnimation(this.mediaURL);
-                        }.bind(this));
+                        this.on(this.player(), 'play', this.showAnimation);
 
                         // hide animation on pause
-                        this.on(this.player(), 'pause', function()
-                        {
-                            this.hideAnimation();
-                        }.bind(this));
+                        this.on(this.player(), 'pause', this.hideAnimation);
                         break;
                 }
             }.bind(this));
@@ -771,7 +781,7 @@
         /**
          * Show animated GIF.
          */
-        showAnimation: function(mediaURL)
+        showAnimation: function()
         {
             var animationDisplay = this.player().animationDisplay.el().firstChild;
 
@@ -783,7 +793,7 @@
             this.player().recordCanvas.hide();
 
             // show the animation
-            animationDisplay.src = mediaURL;
+            animationDisplay.src = this.mediaURL;
             this.player().animationDisplay.show();
         },
 
@@ -797,6 +807,42 @@
 
             // hide the animation
             this.player().animationDisplay.hide();
+        },
+
+        /**
+         * Player started playback.
+         */
+        onPlayerStart: function()
+        {
+            // workaround firefox issue
+            if (this.player().seeking())
+            {
+                // There seems to be a Firefox issue
+                // with playing back blobs. The ugly,
+                // but functional workaround, is to
+                // simply reset the source. See
+                // https://bugzilla.mozilla.org/show_bug.cgi?id=969290
+                this.load(this.mediaURL);
+                this.player().play();
+            }
+
+            // workaround chrome issue
+            if (this.getRecordType() === this.AUDIO_VIDEO && isChrome &&
+                !this._recording)
+            {
+                // sync extra audio playhead position with video.js player
+                this.extraAudio.currentTime = this.player().currentTime();
+                this.extraAudio.play();
+            }
+        },
+
+        /**
+         * Player is paused.
+         */
+        onPlayerPause: function()
+        {
+            // pause extra audio when video.js player pauses
+            this.extraAudio.pause();
         },
 
         /**
