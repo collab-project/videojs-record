@@ -21,9 +21,10 @@ module.exports = function(grunt) {
         baseDir: 'src/js/'
       }
     },
-    banner: '/*! <%= pkg.name %> - v<%= pkg.version %>\n' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %>' +
-      ' Licensed <%= pkg.license %> */\n',
+    banner: '/*! <%= pkg.name %> v<%= pkg.version %>\n' +
+      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
+      '* Copyright (c) 2014-<%= grunt.template.today("yyyy") %>' +
+      ' - Licensed <%= pkg.license %> */\n',
     clean: {
       files: ['dist']
     },
