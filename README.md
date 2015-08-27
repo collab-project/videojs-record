@@ -15,7 +15,8 @@ Installation
 
 Use [bower](http://bower.io) (`bower install videojs-record`) or
 [npm](https://www.npmjs.org) (`npm install videojs-record`) to install
-the plugin or download and include the dependencies manually.
+the plugin or [download](https://github.com/collab-project/videojs-record/releases)
+the library and dependencies elsewhere.
 
 Dependencies
 ------------
