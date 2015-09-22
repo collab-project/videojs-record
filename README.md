@@ -34,6 +34,10 @@ And when recording audio-only, the following dependencies are also required:
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer-js.org/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
+Optional dependencies when recording audio-only:
+
+- [libvorbis.js](https://github.com/Garciat/libvorbis.js) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
+
 Usage
 -----
 
@@ -105,6 +109,20 @@ And define an `audio` element:
 
 Check out the full audio-only example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
 
+Recording audio can result in large audio files, especially when there is no native
+support for other audio formats (.ogg for example) in the browser (like Chrome).
+libvorbis.js provides a Javascript implementation of a PCM to Ogg Vorbis encoder and
+you can choose to use this instead of RecordRTC (when recording audio-only).
+
+Include the libvorbis.js library (instead of RecordRTC.js) and place it before
+any other scripts:
+
+```html
+<script src="/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.min.js" async></script>
+```
+
+Check out the audio-only Ogg example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
+
 Options
 -------
 
@@ -140,11 +158,12 @@ The available options for this plugin are:
 | `video` | boolean | `false` | Include video in the recorded clip. |
 | `animation` | boolean | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
+| `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc` and `libvorbis.js`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `22050` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
-| `debug` | boolean | `false` | Enables console log messages in RecordRTC. |
+| `debug` | boolean | `false` | Enables console log messages. |
 
 Methods
 -------
@@ -164,7 +183,7 @@ Plugin events that are available on the video.js player instance:
 
 | Event | Description |
 | --- | --- |
-| `deviceReady` | The webcam or microphone is ready to use. |
+| `deviceReady` | The webcam and/or microphone is ready to use. |
 | `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia#errorCallback). |
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
