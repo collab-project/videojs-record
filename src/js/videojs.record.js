@@ -1377,7 +1377,7 @@
         // linear PCM audio data in the buffer in sample-frames per second.
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
-        audioSampleRate: 22050,
+        audioSampleRate: 44100,
         // Frame rate in frames per second.
         animationFrameRate: 200,
         // Sets quality of color quantization (conversion of images to the
