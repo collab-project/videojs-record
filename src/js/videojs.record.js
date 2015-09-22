@@ -34,12 +34,12 @@
             this.engine.disableLogs = !this.debug;
 
             // audio settings
-            this.engine.bufferSize = this.audioBufferSize;
-            this.engine.sampleRate = this.audioSampleRate;
+            this.engine.bufferSize = this.bufferSize;
+            this.engine.sampleRate = this.sampleRate;
 
             // animated gif settings
-            this.engine.quality = this.animationQuality;
-            this.engine.frameRate = this.animationFrameRate;
+            this.engine.quality = this.quality;
+            this.engine.frameRate = this.frameRate;
 
             // connect stream to recording engine
             this.engine.addStream(this.inputStream);
@@ -122,6 +122,114 @@
                 }
             }.bind(this));
         }
+    });
+
+    videojs.LibVorbisEngine = videojs.RecordBase.extend(
+    {
+        /**
+         * Setup recording engine.
+         */
+        setup: function(stream, mediaType, debug)
+        {
+            this.inputStream = stream;
+            this.mediaType = mediaType;
+            this.debug = debug;
+
+            // setup libvorbis.js
+            this.options = {
+                workerURL: '/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.worker.min.js',
+                moduleURL: '/libvorbis.js/js/libvorbis.asmjs.min.js',
+                encoderOptions: {
+                    channels: 2,
+                    sampleRate: this.sampleRate,
+                    quality: 0.8
+                }
+            };
+        },
+
+        /**
+         * Start recording.
+         */
+        start: function()
+        {
+            this.chunks = [];
+            this.audioContext = new AudioContext();
+            this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);
+            this.scriptProcessorNode = this.audioContext.createScriptProcessor(this.bufferSize);
+
+            libvorbis.OggVbrAsyncEncoder.create(
+                this.options,
+                this.onData.bind(this),
+                this.onStopRecording.bind(this)).then(
+                this.onEngineCreated.bind(this));
+        },
+
+        /**
+         * Stop recording.
+         */
+        stop: function()
+        {
+            this.audioSourceNode.disconnect(this.scriptProcessorNode);
+            this.scriptProcessorNode.disconnect(this.audioContext.destination);
+
+            this.encoder.finish();
+        },
+
+        /**
+         * Invoked when the libvorbis encoder is ready for recording.
+         */
+        onEngineCreated: function(encoder)
+        {
+            this.encoder = encoder;
+
+            this.scriptProcessorNode.onaudioprocess = this.onAudioProcess.bind(this);
+
+            this.audioSourceNode.connect(this.scriptProcessorNode);
+            this.scriptProcessorNode.connect(this.audioContext.destination);
+        },
+
+        /**
+         * Continous encoding of audio data.
+         */
+        onAudioProcess: function(ev)
+        {
+            var inputBuffer = ev.inputBuffer;
+            var samples = inputBuffer.length;
+
+            var ch0 = inputBuffer.getChannelData(0);
+            var ch1 = inputBuffer.getChannelData(1);
+
+            // script processor reuses buffers; we need to make copies
+            ch0 = new Float32Array(ch0);
+            ch1 = new Float32Array(ch1);
+
+            var channelData = [ch0, ch1];
+
+            this.encoder.encode(channelData);
+        },
+
+        /**
+         *
+         */
+        onData: function(data)
+        {
+            this.chunks.push(data);
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         */
+        onStopRecording: function()
+        {
+            this.recordedData = new Blob(this.chunks, {type: 'audio/ogg'});
+
+            // store reference to recorded stream URL
+            this.mediaURL = URL.createObjectURL(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
+        }
+
     });
 
     /**
@@ -328,6 +436,7 @@
             {
                 // connect stream to recording engine
                 this.engine = new videojs.RecordRTCEngine(this.player());
+                //this.engine = new videojs.LibVorbisEngine(this.player());
                 this.engine.on('recordComplete',
                     this.onRecordComplete.bind(this));
 
