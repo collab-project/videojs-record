@@ -254,6 +254,7 @@
             this.recordVideo = this.options().options.video;
             this.recordAnimation = this.options().options.animation;
             this.maxLength = this.options().options.maxLength;
+            this.audioEngine = this.options().options.audioEngine;
             this.debug = this.options().options.debug;
 
             // audio settings
@@ -435,8 +436,17 @@
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
                 // connect stream to recording engine
-                this.engine = new videojs.RecordRTCEngine(this.player());
-                //this.engine = new videojs.LibVorbisEngine(this.player());
+                if (this.audioEngine === 'recordrtc')
+                {
+                    // RecordRTC.js (default)
+                    this.engine = new videojs.RecordRTCEngine(this.player());
+                }
+                else if (this.audioEngine === 'libvorbis.js')
+                {
+                    // libvorbis.js
+                    this.engine = new videojs.LibVorbisEngine(this.player());
+                }
+                // listen for events
                 this.engine.on('recordComplete',
                     this.onRecordComplete.bind(this));
 
@@ -1347,13 +1357,16 @@
         animation: false,
         // Maximum length of the recorded clip.
         maxLength: 10,
+        // Audio recording library to use. Legal values are 'recordrtc'
+        // and 'libvorbis.js'.
+        audioEngine: 'recordrtc',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
         // From the spec: This value controls how frequently the audioprocess event is
         // dispatched and how many sample-frames need to be processed each call.
         // Lower values for buffer size will result in a lower (better) latency.
         // Higher values will be necessary to avoid audio breakup and glitches.
-        // Legal values are (256, 512, 1024, 2048, 4096, 8192, 16384).
+        // Legal values are 256, 512, 1024, 2048, 4096, 8192 or 16384.
         audioBufferSize: 4096,
         // The audio sample rate (in sample-frames per second) at which the
         // AudioContext handles audio. It is assumed that all AudioNodes
