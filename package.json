@@ -23,13 +23,17 @@
     "record",
     "stream",
     "recorder",
-    "RecordRTC"
+    "RecordRTC",
+    "libvorbis.js",
+    "vorbis",
+    "ogg"
   ],
   "dependencies": {
     "video.js": ">=4.11.0",
     "wavesurfer.js": ">=1.0.23",
     "videojs-wavesurfer": ">=0.9.6",
-    "recordrtc": ">=5.0.8"
+    "recordrtc": ">=5.0.8",
+    "libvorbis.js": ">=0.5.1"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",

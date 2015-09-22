@@ -14,7 +14,10 @@
     "record",
     "stream",
     "recorder",
-    "RecordRTC"
+    "RecordRTC",
+    "libvorbis.js",
+    "vorbis",
+    "ogg"
   ],
   "license": "MIT",
   "ignore": [
@@ -28,7 +31,8 @@
     "video.js": ">=4.11.0",
     "wavesurfer.js": ">=1.0.23",
     "videojs-wavesurfer": ">=0.9.6",
-    "recordrtc": "git://github.com/muaz-khan/RecordRTC.git"
+    "recordrtc": "git://github.com/muaz-khan/RecordRTC.git",
+    "libvorbis.js": ">=0.5.1"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",
@@ -38,6 +42,6 @@
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-cssmin": ">=0.11.0",
     "grunt-videojs-languages": ">=0.0.4",
-    "grunt-csscomb": ">=3.0.0"
+    "grunt-csscomb": "git://github.com/csscomb/grunt-csscomb.git"
   }
 }
