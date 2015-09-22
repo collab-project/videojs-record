@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <title>Libvorbis Audio-only Example - Record Plugin for Video.js</title>
+
+  <link href="http://vjs.zencdn.net/4.12.12/video-js.css" rel="stylesheet">
+  <link href="../src/css/videojs.record.css" rel="stylesheet">
+
+  <script src="http://vjs.zencdn.net/4.12.12/video.js"></script>
+  <script src="/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.min.js" async></script>
+  <script src="http://wavesurfer-js.org/dist/wavesurfer.min.js"></script>
+  <script src="http://wavesurfer-js.org/dist/plugin/wavesurfer.microphone.min.js"></script>
+  <script src="../../videojs-wavesurfer/videojs.wavesurfer.js"></script>
+
+  <script src="../src/js/videojs.record.js"></script>
+
+</head>
+<body>
+
+<audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+<script>
+var player = videojs("myAudio",
+{
+    controls: true,
+    width: 600,
+    height: 300,
+    plugins: {
+        wavesurfer: {
+            src: "live",
+            waveColor: "black",
+            progressColor: "#2E732D",
+            cursorWidth: 1,
+            msDisplayMax: 20,
+            hideScrollbar: true
+        },
+        record: {
+            audio: true,
+            video: false,
+            maxLength: 20,
+            audioEngine: "libvorbis.js"
+        }
+    }
+});
+
+// change player background color
+player.el().style.backgroundColor = "#9FD6BA";
+
+// error handling
+player.on('deviceError', function()
+{
+    console.log('device error:', player.deviceErrorCode);
+});
+
+// user clicked the record button and started recording
+player.on('startRecord', function()
+{
+    console.log('started recording!');
+});
+
+// user completed recording and stream is available
+player.on('finishRecord', function()
+{
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording: ', player.recordedData);
+});
+</script>
+</body>
+</html>
