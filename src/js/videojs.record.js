@@ -1,11 +1,8 @@
 (function(window, videojs) {
     'use strict';
 
-    /**
-     * Record audio/video/images using the Video.js player.
-     */
-    videojs.Recorder = videojs.Component.extend({
-
+    videojs.RecordBase = videojs.Component.extend(
+    {
         // recorder modes
         IMAGE_ONLY: 'image_only',
         AUDIO_ONLY: 'audio_only',
@@ -13,6 +10,124 @@
         AUDIO_VIDEO: 'audio_video',
         ANIMATION: 'animation',
 
+        /** @constructor */
+        init: function(player, options, ready)
+        {
+            videojs.Component.call(this, player, options, ready);
+        }
+    });
+
+    videojs.RecordRTCEngine = videojs.RecordBase.extend(
+    {
+        /**
+         * Setup recording engine.
+         */
+        setup: function(stream, mediaType, debug)
+        {
+            this.inputStream = stream;
+            this.mediaType = mediaType;
+            this.debug = debug;
+
+            // setup RecordRTC
+            this.engine = new MRecordRTC();
+            this.engine.mediaType = this.mediaType;
+            this.engine.disableLogs = !this.debug;
+
+            // audio settings
+            this.engine.bufferSize = this.audioBufferSize;
+            this.engine.sampleRate = this.audioSampleRate;
+
+            // animated gif settings
+            this.engine.quality = this.animationQuality;
+            this.engine.frameRate = this.animationFrameRate;
+
+            // connect stream to recording engine
+            this.engine.addStream(this.inputStream);
+        },
+
+        /**
+         * Start recording.
+         */
+        start: function()
+        {
+            this.engine.startRecording();
+        },
+
+        /**
+         * Stop recording. Result will be available async when onStopRecording
+         * is called.
+         */
+        stop: function()
+        {
+            this.engine.stopRecording(this.onStopRecording.bind(this));
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         *
+         * @param {string} audioVideoWebMURL Reference to the recorded Blob
+         *     object, eg. blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
+         * @param {string} type Media type, eg. 'video' or 'audio'.
+         */
+        onStopRecording: function(audioVideoWebMURL, type)
+        {
+            // store reference to recorded stream URL
+            this.mediaURL = audioVideoWebMURL;
+
+            // store reference to recorded stream data
+            var recordType = this.player().recorder.getRecordType();
+            this.engine.getBlob(function(recording)
+            {
+                switch (recordType)
+                {
+                    case this.AUDIO_ONLY:
+                        this.recordedData = recording.audio;
+
+                        // notify listeners
+                        this.trigger('recordComplete');
+                        break;
+
+                    case this.VIDEO_ONLY:
+                    case this.AUDIO_VIDEO:
+                        // when recording both audio and video, recordrtc
+                        // calls this twice on chrome, first with audio data
+                        // and then with video data.
+                        // on firefox it's called once but with a single webm
+                        // blob that includes both audio and video data.
+                        if (recording.video !== undefined)
+                        {
+                            // data is video-only but on firefox audio+video
+                            this.recordedData = recording.video;
+
+                            // on the chrome browser two blobs are created
+                            // containing the separate audio/video streams.
+                            // the isChrome var comes from recordrtc.
+                            if (recordType === this.AUDIO_VIDEO && isChrome)
+                            {
+                                // store both audio and video
+                                this.recordedData = recording;
+                            }
+
+                            // notify listeners
+                            this.trigger('recordComplete');
+                        }
+                        break;
+
+                    case this.ANIMATION:
+                        this.recordedData = recording.gif;
+
+                        // notify listeners
+                        this.trigger('recordComplete');
+                        break;
+                }
+            }.bind(this));
+        }
+    });
+
+    /**
+     * Record audio/video/images using the Video.js player.
+     */
+    videojs.Recorder = videojs.RecordBase.extend({
         /**
          * The constructor function for the class.
          * 
@@ -212,16 +327,19 @@
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
                 // connect stream to recording engine
-                this.engine = new MRecordRTC();
-                this.engine.mediaType = this.mediaType;
-                this.engine.disableLogs = !this.debug;
+                this.engine = new videojs.RecordRTCEngine(this.player());
+                this.engine.on('recordComplete',
+                    this.onRecordComplete.bind(this));
+
                 // audio settings
                 this.engine.bufferSize = this.audioBufferSize;
                 this.engine.sampleRate = this.audioSampleRate;
+
                 // animated gif settings
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
-                this.engine.addStream(this.stream);
+
+                this.engine.setup(this.stream, this.mediaType, !this.debug);
 
                 // show elements that should never be hidden in animation,
                 // audio and/or video modus
@@ -333,7 +451,7 @@
                         this.onCountDown.bind(this), 100);
 
                     // start recording stream
-                    this.engine.startRecording();
+                    this.engine.start();
                 }
                 else
                 {
@@ -365,7 +483,7 @@
                     this.clearInterval(this.countDown);
 
                     // stop recording stream (result will be available async)
-                    this.engine.stopRecording(this.onStopRecording.bind(this));
+                    this.engine.stop();
                 }
                 else
                 {
@@ -376,188 +494,165 @@
         },
 
         /**
-         * Invoked when recording is stopped and resulting stream is available.
-         *
-         * @param {string} audioVideoWebMURL Reference to the recorded Blob object, eg.
-         *   blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
-         * @param {string} type Media type, eg. 'video' or 'audio'.
+         * Invoked when recording completed and the resulting stream is
+         * available.
          */
-        onStopRecording: function(audioVideoWebMURL, type)
+        onRecordComplete: function()
         {
             // store reference to recorded stream URL
-            this.mediaURL = audioVideoWebMURL;
+            this.mediaURL = this.engine.mediaURL;
 
             // store reference to recorded stream data
-            this.engine.getBlob(function(recording)
+            switch (this.getRecordType())
             {
-                switch (this.getRecordType())
-                {
-                    case this.AUDIO_ONLY:
-                        // show play control
-                        this.player().controlBar.playToggle.show();
+                case this.AUDIO_ONLY:
+                    // show play control
+                    this.player().controlBar.playToggle.show();
 
-                        // store recorded data
-                        this.player().recordedData = recording.audio;
+                    // store recorded data
+                    this.player().recordedData = this.engine.recordedData;
 
-                        // notify listeners that data is available
-                        this.trigger('finishRecord');
+                    // notify listeners that data is available
+                    this.trigger('finishRecord');
 
-                        // Pausing the player so we can visualize the recorded data
-                        // will trigger an async videojs 'pause' event that we have
-                        // to wait for.
-                        this.player().one('pause', function()
+                    // Pausing the player so we can visualize the recorded data
+                    // will trigger an async videojs 'pause' event that we have
+                    // to wait for.
+                    this.player().one('pause', function()
+                    {
+                        // setup events during playback
+                        this.surfer.setupPlaybackEvents(true);
+
+                        // display loader
+                        this.player().loadingSpinner.show();
+
+                        // show playhead
+                        this.playhead.style.display = 'block';
+
+                        // restore interaction with controls after waveform
+                        // rendering is complete
+                        this.surfer.surfer.once('ready', function()
                         {
-                            // setup events during playback
-                            this.surfer.setupPlaybackEvents(true);
-
-                            // display loader
-                            this.player().loadingSpinner.show();
-
-                            // show playhead
-                            this.playhead.style.display = 'block';
-
-                            // restore interaction with controls after waveform
-                            // rendering is complete
-                            this.surfer.surfer.once('ready', function()
-                            {
-                                this._processing = false;
-                            }.bind(this));
-
-                            // visualize recorded stream
-                            this.load(this.player().recordedData);
-
+                            this._processing = false;
                         }.bind(this));
 
-                        // pause player so user can start playback
-                        this.player().pause();
-                        break;
+                        // visualize recorded stream
+                        this.load(this.player().recordedData);
 
-                    case this.VIDEO_ONLY:
-                    case this.AUDIO_VIDEO:
-                        // when recording both audio and video, recordrtc
-                        // calls this twice on chrome, first with audio data
-                        // and then with video data.
-                        // on firefox it's called once but with a single webm
-                        // blob that includes both audio and video data.
-                        if (recording.video !== undefined)
-                        {
-                            // show play control
-                            this.player().controlBar.playToggle.show();
+                    }.bind(this));
 
-                            // store recorded data (video-only or firefox audio+video)
-                            this.player().recordedData = recording.video;
+                    // pause player so user can start playback
+                    this.player().pause();
+                    break;
 
-                            // on the chrome browser two blobs are created
-                            // containing the separate audio/video streams.
-                            // the isChrome var comes from recordrtc.
-                            if (this.getRecordType() === this.AUDIO_VIDEO && isChrome)
-                            {
-                                // store both audio and video
-                                this.player().recordedData = recording;
-                            }
+                case this.VIDEO_ONLY:
+                case this.AUDIO_VIDEO:
+                    // show play control
+                    this.player().controlBar.playToggle.show();
 
-                            // notify listeners that data is available
-                            this.trigger('finishRecord');
+                    // store recorded data (video-only or firefox audio+video)
+                    this.player().recordedData = this.engine.recordedData;
 
-                            // remove previous listeners
-                            this.off(this.player(), 'pause', this.onPlayerPause);
-                            this.off(this.player(), 'play', this.onPlayerStart);
+                    // notify listeners that data is available
+                    this.trigger('finishRecord');
 
-                            // Pausing the player so we can visualize the recorded data
-                            // will trigger an async videojs 'pause' event that we have
-                            // to wait for.
-                            this.player().one('pause', function()
-                            {
-                                // video data is ready
-                                this._processing = false;
+                    // remove previous listeners
+                    this.off(this.player(), 'pause', this.onPlayerPause);
+                    this.off(this.player(), 'play', this.onPlayerStart);
 
-                                // hide loader
-                                this.player().loadingSpinner.hide();
-
-                                // show stream total duration
-                                this.setDuration(this.streamDuration);
-
-                                // update time during playback
-                                this.on(this.player(), 'timeupdate', function()
-                                {
-                                    this.setCurrentTime(this.player().currentTime(),
-                                        this.streamDuration);
-                                }.bind(this));
-
-                                // because there are 2 separate data streams for audio
-                                // and video in the Chrome browser, playback the audio
-                                // stream in a new extra audio element and the video
-                                // stream in the regular video.js player.
-                                if (this.getRecordType() === this.AUDIO_VIDEO && isChrome)
-                                {
-                                    if (this.extraAudio === undefined)
-                                    {
-                                        this.extraAudio = this.player().createEl('audio');
-                                        this.extraAudio.id = 'extraAudio';
-                                    }
-
-                                    this.extraAudio.src = URL.createObjectURL(
-                                        this.player().recordedData.audio);
-
-                                    // pause extra audio when player pauses
-                                    this.on(this.player(), 'pause', this.onPlayerPause);
-                                }
-
-                                // workaround some browser issues when player starts
-                                this.on(this.player(), 'play', this.onPlayerStart);
-
-                                // unmute local audio during playback
-                                if (this.getRecordType() === this.AUDIO_VIDEO)
-                                {
-                                    this.mediaElement.muted = false;
-                                }
-
-                                // load recorded media
-                                this.load(this.mediaURL);
-
-                            }.bind(this));
-
-                            // pause player so user can start playback
-                            this.player().pause();
-                        }
-                        break;
-
-                    case this.ANIMATION:
-                        // show play control
-                        this.player().controlBar.playToggle.show();
-
-                        // store recorded data
-                        this.player().recordedData = recording.gif;
-
-                        // notify listeners that data is available
-                        this.trigger('finishRecord');
-
-                        // animation data is ready
+                    // Pausing the player so we can visualize the recorded data
+                    // will trigger an async videojs 'pause' event that we have
+                    // to wait for.
+                    this.player().one('pause', function()
+                    {
+                        // video data is ready
                         this._processing = false;
 
                         // hide loader
                         this.player().loadingSpinner.hide();
 
-                        // show animation total duration
+                        // show stream total duration
                         this.setDuration(this.streamDuration);
 
-                        // hide preview video
-                        this.mediaElement.style.display = 'none';
+                        // update time during playback
+                        this.on(this.player(), 'timeupdate', function()
+                        {
+                            this.setCurrentTime(this.player().currentTime(),
+                                this.streamDuration);
+                        }.bind(this));
 
-                        // show the first frame
-                        this.player().recordCanvas.show();
+                        // because there are 2 separate data streams for audio
+                        // and video in the Chrome browser, playback the audio
+                        // stream in a new extra audio element and the video
+                        // stream in the regular video.js player.
+                        if (this.getRecordType() === this.AUDIO_VIDEO && isChrome)
+                        {
+                            if (this.extraAudio === undefined)
+                            {
+                                this.extraAudio = this.player().createEl('audio');
+                                this.extraAudio.id = 'extraAudio';
+                            }
 
-                        // pause player so user can start playback
-                        this.player().pause();
+                            this.extraAudio.src = URL.createObjectURL(
+                                this.player().recordedData.audio);
 
-                        // show animation on play
-                        this.on(this.player(), 'play', this.showAnimation);
+                            // pause extra audio when player pauses
+                            this.on(this.player(), 'pause', this.onPlayerPause);
+                        }
 
-                        // hide animation on pause
-                        this.on(this.player(), 'pause', this.hideAnimation);
-                        break;
-                }
-            }.bind(this));
+                        // workaround some browser issues when player starts
+                        this.on(this.player(), 'play', this.onPlayerStart);
+
+                        // unmute local audio during playback
+                        if (this.getRecordType() === this.AUDIO_VIDEO)
+                        {
+                            this.mediaElement.muted = false;
+                        }
+
+                        // load recorded media
+                        this.load(this.mediaURL);
+
+                    }.bind(this));
+
+                    // pause player so user can start playback
+                    this.player().pause();
+                    break;
+
+                case this.ANIMATION:
+                    // show play control
+                    this.player().controlBar.playToggle.show();
+
+                    // store recorded data
+                    this.player().recordedData = this.engine.recordedData;
+
+                    // notify listeners that data is available
+                    this.trigger('finishRecord');
+
+                    // animation data is ready
+                    this._processing = false;
+
+                    // hide loader
+                    this.player().loadingSpinner.hide();
+
+                    // show animation total duration
+                    this.setDuration(this.streamDuration);
+
+                    // hide preview video
+                    this.mediaElement.style.display = 'none';
+
+                    // show the first frame
+                    this.player().recordCanvas.show();
+
+                    // pause player so user can start playback
+                    this.player().pause();
+
+                    // show animation on play
+                    this.on(this.player(), 'play', this.showAnimation);
+
+                    // hide animation on pause
+                    this.on(this.player(), 'pause', this.hideAnimation);
+                    break;
+            }
         },
 
         /**
@@ -1202,7 +1297,8 @@
         // add record indicator
         player.recordIndicator = new RecordIndicator(player,
         {
-            'el': videojs.Component.prototype.createEl(null, {
+            'el': videojs.Component.prototype.createEl(null,
+            {
                 className: 'vjs-record-indicator vjs-control'
             })
         });
@@ -1212,7 +1308,8 @@
         // add canvas for recording and displaying image
         player.recordCanvas = new RecordCanvas(player,
         {
-            'el': videojs.Component.prototype.createEl(null, {
+            'el': videojs.Component.prototype.createEl(null,
+            {
                 className: 'vjs-record-canvas',
                 innerHTML: '<canvas></canvas>'
             })
@@ -1223,7 +1320,8 @@
         // add image for animation display
         player.animationDisplay = new AnimationDisplay(player,
         {
-            'el': videojs.Component.prototype.createEl(null, {
+            'el': videojs.Component.prototype.createEl(null,
+            {
                 className: 'vjs-animation-display',
                 innerHTML: '<img />'
             })
