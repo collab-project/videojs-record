@@ -9,7 +9,6 @@
         "videojs",
         "RecordRTC",
         "MRecordRTC",
-        "isChrome",
         "libvorbis",
         "AudioContext"
     ]

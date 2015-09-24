@@ -14,6 +14,10 @@
         init: function(player, options, ready)
         {
             videojs.Component.call(this, player, options, ready);
+
+            this.isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveBlob || !!navigator.msSaveOrOpenBlob);
+            this.isOpera = !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
+            this.isChrome = !this.isOpera && !this.isEdge && !!navigator.webkitGetUserMedia;
         }
     });
 
@@ -102,7 +106,7 @@
                             // on the chrome browser two blobs are created
                             // containing the separate audio/video streams.
                             // the isChrome var comes from recordrtc.
-                            if (recordType === this.AUDIO_VIDEO && isChrome)
+                            if (recordType === this.AUDIO_VIDEO && this.isChrome)
                             {
                                 // store both audio and video
                                 this.recordedData = recording;
@@ -708,7 +712,7 @@
                         // and video in the Chrome browser, playback the audio
                         // stream in a new extra audio element and the video
                         // stream in the regular video.js player.
-                        if (this.getRecordType() === this.AUDIO_VIDEO && isChrome)
+                        if (this.getRecordType() === this.AUDIO_VIDEO && this.isChrome)
                         {
                             if (this.extraAudio === undefined)
                             {
@@ -1045,7 +1049,7 @@
             }
 
             // workaround chrome issue
-            if (this.getRecordType() === this.AUDIO_VIDEO && isChrome &&
+            if (this.getRecordType() === this.AUDIO_VIDEO && this.isChrome &&
                 !this._recording)
             {
                 // sync extra audio playhead position with video.js player
