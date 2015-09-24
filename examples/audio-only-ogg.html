@@ -38,7 +38,9 @@ var player = videojs("myAudio",
             audio: true,
             video: false,
             maxLength: 20,
-            audioEngine: "libvorbis.js"
+            audioEngine: "libvorbis.js",
+            audioWorkerURL: "/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.worker.min.js",
+            audioModuleURL: "/libvorbis.js/js/libvorbis.asmjs.min.js"
         }
     }
 });

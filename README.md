@@ -34,7 +34,7 @@ And when recording audio-only, the following dependencies are also required:
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer-js.org/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
-Optional dependencies when recording audio-only:
+Optional dependencies for other output formats:
 
 - [libvorbis.js](https://github.com/Garciat/libvorbis.js) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
 
@@ -109,20 +109,6 @@ And define an `audio` element:
 
 Check out the full audio-only example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
 
-Recording audio can result in large audio files, especially when there is no native
-support for other audio formats (.ogg for example) in the browser (like Chrome).
-libvorbis.js provides a Javascript implementation of a PCM to Ogg Vorbis encoder and
-you can choose to use this instead of RecordRTC (when recording audio-only).
-
-Include the libvorbis.js library (instead of RecordRTC.js) and place it before
-any other scripts:
-
-```html
-<script src="/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.min.js" async></script>
-```
-
-Check out the audio-only Ogg example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
-
 Options
 -------
 
@@ -161,6 +147,8 @@ The available options for this plugin are:
 | `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc` and `libvorbis.js`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
+| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `libvorbis.oggvbr.asyncencoder.worker.min.js`. Currently only used for libvorbis.js. |
+| `audioModuleURL` | string | `''` | URL for the audio module, for example: `libvorbis.asmjs.min.js`. Currently only used for libvorbis.js. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 | `debug` | boolean | `false` | Enables console log messages. |
@@ -226,6 +214,27 @@ children: {
 },
 ```
 
+Other output formats
+--------------------
+
+Microphone recordings can result in large audio files, especially when there is no native
+support for other audio formats (.ogg for example) in the browser (like Chrome).
+libvorbis.js provides a Javascript implementation of a PCM to Ogg Vorbis encoder and
+you can choose to use this instead of RecordRTC (when recording audio-only).
+
+Include the libvorbis.js library (instead of RecordRTC.js) and place it before
+any other scripts:
+
+```html
+<script src="/path/to/libvorbis.oggvbr.asyncencoder.min.js" async></script>
+```
+
+And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
+`audioModuleURL` options.
+
+Check out the audio-only Ogg example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
+
+
 Localization
 ------------
 
@@ -246,11 +255,10 @@ And setting the Video.js player's `language` option:
 language: "nl"
 ```
 
-Adding support
-for an additional language is done by adding a new file with a filename that
-consists of the countrycode and the `.json` extension, eg. `fr.json`. The
-[build script](#development) compiles the JSON into a usable language file,
-eg. `fr.js`. Check the Video.js wiki for a
+Adding support for an additional language is done by adding a new file with
+a filename that consists of the countrycode and the `.json` extension, eg.
+`fr.json`. The [build script](#development) compiles the JSON into a usable
+language file, eg. `fr.js`. Check the Video.js wiki for a
 [list of supported countrycodes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
 Pull requests to add more languages to this plugin are always welcome!
 

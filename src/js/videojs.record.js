@@ -137,8 +137,8 @@
 
             // setup libvorbis.js
             this.options = {
-                workerURL: '/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.worker.min.js',
-                moduleURL: '/libvorbis.js/js/libvorbis.asmjs.min.js',
+                workerURL: this.audioWorkerURL,
+                moduleURL: this.audioModuleURL,
                 encoderOptions: {
                     channels: 2,
                     sampleRate: this.sampleRate,
@@ -254,10 +254,12 @@
             this.recordVideo = this.options().options.video;
             this.recordAnimation = this.options().options.animation;
             this.maxLength = this.options().options.maxLength;
-            this.audioEngine = this.options().options.audioEngine;
             this.debug = this.options().options.debug;
 
             // audio settings
+            this.audioEngine = this.options().options.audioEngine;
+            this.audioWorkerURL = this.options().options.audioWorkerURL;
+            this.audioModuleURL = this.options().options.audioModuleURL;
             this.audioBufferSize = this.options().options.audioBufferSize;
             this.audioSampleRate = this.options().options.audioSampleRate;
 
@@ -453,6 +455,8 @@
                 // audio settings
                 this.engine.bufferSize = this.audioBufferSize;
                 this.engine.sampleRate = this.audioSampleRate;
+                this.engine.audioWorkerURL = this.audioWorkerURL;
+                this.engine.audioModuleURL = this.audioModuleURL;
 
                 // animated gif settings
                 this.engine.quality = this.animationQuality;
@@ -1378,6 +1382,10 @@
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
         audioSampleRate: 44100,
+        // URL for the audio worker.
+        audioWorkerURL: '',
+        // URL for the audio module.
+        audioModuleURL: '',
         // Frame rate in frames per second.
         animationFrameRate: 200,
         // Sets quality of color quantization (conversion of images to the
