@@ -7,7 +7,7 @@
   <link href="../src/css/videojs.record.css" rel="stylesheet">
 
   <script src="http://vjs.zencdn.net/4.12.12/video.js"></script>
-  <script src="/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.min.js" async></script>
+  <script src="lib/libvorbis.oggvbr.asyncencoder.min.js" async></script>
   <script src="http://wavesurfer-js.org/dist/wavesurfer.min.js"></script>
   <script src="http://wavesurfer-js.org/dist/plugin/wavesurfer.microphone.min.js"></script>
   <script src="../../videojs-wavesurfer/videojs.wavesurfer.js"></script>
@@ -39,8 +39,8 @@ var player = videojs("myAudio",
             video: false,
             maxLength: 20,
             audioEngine: "libvorbis.js",
-            audioWorkerURL: "/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.worker.min.js",
-            audioModuleURL: "/libvorbis.js/js/libvorbis.asmjs.min.js"
+            audioWorkerURL: "/videojs-record/examples/lib/libvorbis.oggvbr.asyncencoder.worker.min.js",
+            audioModuleURL: "/videojs-record/examples/lib/libvorbis.asmjs.min.js"
         }
     }
 });
