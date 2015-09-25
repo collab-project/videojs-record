@@ -10,6 +10,10 @@
         AUDIO_VIDEO: 'audio_video',
         ANIMATION: 'animation',
 
+        // recorder engines
+        RECORDRTC: 'recordrtc',
+        LIBVORBISJS: 'libvorbis.js',
+
         /** @constructor */
         init: function(player, options, ready)
         {
@@ -441,13 +445,21 @@
             // setup recording engine
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
+                // currently libvorbis.js is only supported in
+                // audio-only mode
+                if (this.getRecordType() !== this.AUDIO_ONLY &&
+                    this.audioEngine === this.LIBVORBISJS)
+                {
+                    throw new Error('Currently libvorbis.js is only supported in audio-only mode.');
+                }
+
                 // connect stream to recording engine
-                if (this.audioEngine === 'recordrtc')
+                if (this.audioEngine === this.RECORDRTC)
                 {
                     // RecordRTC.js (default)
                     this.engine = new videojs.RecordRTCEngine(this.player());
                 }
-                else if (this.audioEngine === 'libvorbis.js')
+                else if (this.audioEngine === this.LIBVORBISJS)
                 {
                     // libvorbis.js
                     this.engine = new videojs.LibVorbisEngine(this.player());

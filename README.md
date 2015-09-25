@@ -220,7 +220,8 @@ Other output formats
 Microphone recordings can result in large audio files, especially when there is no native
 support for other audio formats (.ogg for example) in the browser (like Chrome).
 libvorbis.js provides a Javascript implementation of a PCM to Ogg Vorbis encoder and
-you can choose to use this instead of RecordRTC (when recording audio-only).
+you can choose to use this instead of RecordRTC (currently only available when recording
+audio-only).
 
 Include the libvorbis.js library (instead of RecordRTC.js) and place it before
 any other scripts:
