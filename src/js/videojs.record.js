@@ -14,14 +14,24 @@
         RECORDRTC: 'recordrtc',
         LIBVORBISJS: 'libvorbis.js',
 
+        // browser checks
+        isEdge: function()
+        {
+            return navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveBlob || !!navigator.msSaveOrOpenBlob);
+        },
+        isOpera: function()
+        {
+            return !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
+        },
+        isChrome: function()
+        {
+            return !this.isOpera() && !this.isEdge() && !!navigator.webkitGetUserMedia;
+        },
+
         /** @constructor */
         init: function(player, options, ready)
         {
             videojs.Component.call(this, player, options, ready);
-
-            this.isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveBlob || !!navigator.msSaveOrOpenBlob);
-            this.isOpera = !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
-            this.isChrome = !this.isOpera && !this.isEdge && !!navigator.webkitGetUserMedia;
         }
     });
 
@@ -109,8 +119,7 @@
 
                             // on the chrome browser two blobs are created
                             // containing the separate audio/video streams.
-                            // the isChrome var comes from recordrtc.
-                            if (recordType === this.AUDIO_VIDEO && this.isChrome)
+                            if (recordType === this.AUDIO_VIDEO && this.isChrome())
                             {
                                 // store both audio and video
                                 this.recordedData = recording;
@@ -634,12 +643,48 @@
          */
         stopDevice: function()
         {
-            if (this.isRecording()) {
+            // stop recording
+            if (this.isRecording())
+            {
                 this.stop();
             }
 
-            if (this.stream !== null) {
-                this.stream.stop();
+            // stop stream and device
+            if (this.stream)
+            {
+                if (!this.isChrome())
+                {
+                    this.stream.stop();
+                }
+                else
+                {
+                    // use MediaStreamTrack in Chrome instead of stream.stop()
+                    // (deprecated since Chrome 45)
+                    // https://developers.google.com/web/updates/2015/07/mediastream-deprecations
+                    var track;
+                    switch (this.getRecordType())
+                    {
+                        case this.AUDIO_ONLY:
+                            track = this.stream.getAudioTracks()[0];
+                            track.stop();
+                            break;
+
+                        case this.VIDEO_ONLY:
+                        case this.ANIMATION:
+                        case this.IMAGE_ONLY:
+                            track = this.stream.getVideoTracks()[0];
+                            track.stop();
+                            break;
+
+                        case this.AUDIO_VIDEO:
+                            track = this.stream.getTracks();
+                            for (var index in track)
+                            {
+                                track[index].stop();
+                            }
+                            break;
+                    }
+                }
             }
         },
 
@@ -735,7 +780,7 @@
                         // and video in the Chrome browser, playback the audio
                         // stream in a new extra audio element and the video
                         // stream in the regular video.js player.
-                        if (this.getRecordType() === this.AUDIO_VIDEO && this.isChrome)
+                        if (this.getRecordType() === this.AUDIO_VIDEO && this.isChrome())
                         {
                             if (this.extraAudio === undefined)
                             {
@@ -1072,8 +1117,8 @@
             }
 
             // workaround chrome issue
-            if (this.getRecordType() === this.AUDIO_VIDEO && this.isChrome &&
-                !this._recording)
+            if (this.getRecordType() === this.AUDIO_VIDEO &&
+                this.isChrome() && !this._recording)
             {
                 // sync extra audio playhead position with video.js player
                 this.extraAudio.currentTime = this.player().currentTime();
