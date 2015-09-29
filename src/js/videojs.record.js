@@ -368,15 +368,18 @@
                         audio: true,
                         video: false
                     };
-                    this.surfer.microphone.on('deviceReady',
-                        this.onDeviceReady.bind(this));
-                    this.surfer.microphone.on('deviceError',
+                    // this.surfer.microphone.on('deviceReady',
+                    //     this.onDeviceReady.bind(this));
+                    // this.surfer.microphone.on('deviceError',
+                    //     this.onDeviceError.bind(this));
+                    this.getUserMedia(
+                        this.mediaType,
+                        this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
-
                     // open browser device selection dialog
                     this.player().play();
+                    // this.player().pause();
                     break;
-
                 case this.IMAGE_ONLY:
                 case this.VIDEO_ONLY:
                     // setup camera
