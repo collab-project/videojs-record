@@ -279,9 +279,6 @@
             this._recording = false;
             this._processing = false;
 
-            // shortcut
-            player.getBlob = this.getBlob;
-
             // cross-browser getUserMedia
             this.getUserMedia = (
                 navigator.getUserMedia ||
@@ -629,6 +626,20 @@
                     // notify listeners that image data is (already) available
                     this.trigger('finishRecord');
                 }
+            }
+        },
+
+        /**
+         * Stop device(s) and recording if active.
+         */
+        stopDevice: function()
+        {
+            if (this.isRecording()) {
+                this.stop();
+            }
+
+            if (this.stream !== null) {
+                this.stream.stop();
             }
         },
 

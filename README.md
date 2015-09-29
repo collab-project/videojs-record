@@ -156,18 +156,31 @@ The available options for this plugin are:
 Methods
 -------
 
-Methods for this plugin:
+Methods for this plugin documented below are available on the `recorder` object
+of the video.js player instance. For example:
+
+```javascript
+player.recorder.destroy();
+```
 
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
 | `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
+| `stopDevice` | Stop the recording and the active audio and/or video device(s). |
 
 Events
 ------
 
-Plugin events that are available on the video.js player instance:
+Plugin events that are available on the video.js player instance. For example:
+
+```javascript
+player.on('startRecord', function()
+{
+    console.log('started recording!');
+});
+```
 
 | Event | Description |
 | --- | --- |
