@@ -287,6 +287,7 @@
             // recorder state
             this._recording = false;
             this._processing = false;
+            this._deviceActive = false;
 
             // cross-browser getUserMedia
             this.getUserMedia = (
@@ -436,6 +437,8 @@
          */
         onDeviceReady: function(stream)
         {
+            this._deviceActive = true;
+
             // store reference to stream for stopping etc.
             this.stream = stream;
 
@@ -447,6 +450,11 @@
 
             // hide live display indicator
             this.player().controlBar.liveDisplay.hide();
+
+            // reset playback listeners
+            this.off(this.player(), 'timeupdate', this.playbackTimeUpdate);
+            this.off(this.player(), 'pause', this.onPlayerPause);
+            this.off(this.player(), 'play', this.onPlayerStart);
 
             // setup recording engine
             if (this.getRecordType() !== this.IMAGE_ONLY)
@@ -517,6 +525,8 @@
                 this.mediaElement = this.player().el().firstChild;
                 this.mediaElement.muted = true;
                 this.mediaElement.controls = false;
+
+                // start stream
                 this.load(URL.createObjectURL(this.stream));
                 this.mediaElement.play();
             }
@@ -527,6 +537,8 @@
          */
         onDeviceError: function(code)
         {
+            this._deviceActive = false;
+
             // store code
             this.player().deviceErrorCode = code;
 
@@ -685,6 +697,8 @@
                             break;
                     }
                 }
+
+                this._deviceActive = false;
             }
         },
 
@@ -770,11 +784,7 @@
                         this.setDuration(this.streamDuration);
 
                         // update time during playback
-                        this.on(this.player(), 'timeupdate', function()
-                        {
-                            this.setCurrentTime(this.player().currentTime(),
-                                this.streamDuration);
-                        }.bind(this));
+                        this.on(this.player(), 'timeupdate', this.playbackTimeUpdate);
 
                         // because there are 2 separate data streams for audio
                         // and video in the Chrome browser, playback the audio
@@ -961,6 +971,7 @@
             // stop playback
             this._recording = false;
             this._processing = false;
+            this._deviceActive = false;
 
             // stop countdown
             this.clearInterval(this.countDown);
@@ -1133,6 +1144,15 @@
         {
             // pause extra audio when video.js player pauses
             this.extraAudio.pause();
+        },
+
+        /**
+         * Update time during playback.
+         */
+        playbackTimeUpdate: function()
+        {
+            this.setCurrentTime(this.player().currentTime(),
+                this.streamDuration);
         },
 
         /**
