@@ -18,6 +18,9 @@ Use [bower](http://bower.io) (`bower install videojs-record`) or
 the plugin or [download](https://github.com/collab-project/videojs-record/releases)
 the library and dependencies elsewhere.
 
+Note about video.js v5.0: this plugin is [currently](https://github.com/collab-project/videojs-record/issues/6) only compatible with video.js v.4.x
+releases (for example [4.12.15](https://github.com/videojs/video.js/tree/v4.12.15)).
+
 Dependencies
 ------------
 
