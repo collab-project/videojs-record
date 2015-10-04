@@ -383,6 +383,12 @@
                     this.surfer.microphone.on('deviceError',
                         this.onDeviceError.bind(this));
 
+                    // disable existing playback events
+                    this.surfer.setupPlaybackEvents(false);
+
+                    // (re)set surfer liveMode
+                    this.surfer.liveMode = true;
+
                     // open browser device selection dialog
                     this.player().play();
                     break;
@@ -447,6 +453,13 @@
 
             // hide device selection button
             this.player().deviceButton.hide();
+
+            // reset time (e.g. when stopDevice was used)
+            this.setDuration(this.maxLength);
+            this.setCurrentTime(0);
+
+            // hide play/pause control (e.g. when stopDevice was used)
+            this.player().controlBar.playToggle.hide();
 
             // hide live display indicator
             this.player().controlBar.liveDisplay.hide();
@@ -514,7 +527,12 @@
                 // disable record indicator
                 this.player().recordIndicator.disable();
 
-                // show camera button
+                // setup UI for retrying snapshot (e.g. when stopDevice was
+                // used)
+                this.retrySnapshot();
+
+                // reset and show camera button
+                this.player().cameraButton.onStop();
                 this.player().cameraButton.show();
             }
 
@@ -664,9 +682,19 @@
             // stop stream and device
             if (this.stream)
             {
+                // use MediaStream.stop in browsers other than Chrome for now
                 if (!this.isChrome())
                 {
-                    this.stream.stop();
+                    if (this.getRecordType() === this.AUDIO_ONLY)
+                    {
+                        // make the microphone plugin stop it's stream
+                        this.surfer.microphone.stop();
+                    }
+                    else
+                    {
+                        // stop stream
+                        this.stream.stop();
+                    }
                 }
                 else
                 {
@@ -677,8 +705,8 @@
                     switch (this.getRecordType())
                     {
                         case this.AUDIO_ONLY:
-                            track = this.stream.getAudioTracks()[0];
-                            track.stop();
+                            // make the microphone plugin stop it's stream
+                            this.surfer.microphone.stop();
                             break;
 
                         case this.VIDEO_ONLY:
@@ -1041,6 +1069,20 @@
         },
 
         /**
+         * Reset UI for retrying a snapshot image.
+         */
+        retrySnapshot: function()
+        {
+            this._processing = false;
+
+            // retry: hide the snapshot
+            this.player().recordCanvas.hide();
+
+            // show preview video
+            this.player().el().firstChild.style.display = 'block';
+        },
+
+        /**
          * Capture frame from camera and copy it to canvas.
          */
         captureFrame: function()
@@ -1314,13 +1356,7 @@
         else
         {
             // retry
-            recorder._processing = false;
-
-            // retry: hide the snapshot
-            this.player().recordCanvas.hide();
-
-            // show preview video
-            this.player().el().firstChild.style.display = 'block';
+            recorder.retrySnapshot();
 
             // reset camera button
             this.onStop();

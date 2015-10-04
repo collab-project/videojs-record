@@ -172,6 +172,7 @@ player.recorder.destroy();
 | `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
+| `getDevice` | Start the audio and/or video device(s). |
 
 Events
 ------
