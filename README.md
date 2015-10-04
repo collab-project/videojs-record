@@ -47,14 +47,14 @@ Usage
 Start by including the video.js stylesheet and library:
 
 ```html
-<link href="http://vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/4.12.15/video.js"></script>
+<link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/4.12.15/video.js"></script>
 ```
 
 If you're going to record audio and/or video you need to include RecordRTC as well:
 
 ```html
-<script src="http://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+<script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
 ```
 
 The videojs-record plugin automatically registers itself when the script
@@ -81,10 +81,10 @@ include a `video` element:
 ```
 
 Check out the full audio/video
-([demo](http://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html)),
-image ([demo](http://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html)),
-animated GIF ([demo](http://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html)) or the
-video-only ([demo](http://collab-project.github.io/videojs-record/examples/video-only.html) or [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html)) examples.
+([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html)),
+image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html)),
+animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html)) or the
+video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) or [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html)) examples.
 
 Note that recording both audio and video into a single WebM file is currently
 only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
@@ -110,7 +110,7 @@ And define an `audio` element:
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 ```
 
-Check out the full audio-only example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
+Check out the full audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
 
 Options
 -------
@@ -249,7 +249,7 @@ any other scripts:
 And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
 `audioModuleURL` options.
 
-Check out the audio-only Ogg example ([demo](http://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
+Check out the audio-only Ogg example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
 
 
 Localization
@@ -263,7 +263,7 @@ the Video.js language file and the plugin's language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="http://vjs.zencdn.net/4.12.15/lang/nl.js"></script>
+<script src="//vjs.zencdn.net/4.12.15/lang/nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:
