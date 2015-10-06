@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Audio-only Example - Record Plugin for Video.js</title>
+
+  <link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
+  <link href="../src/css/videojs.record.css" rel="stylesheet">
+
+  <script src="//vjs.zencdn.net/4.12.15/video.js"></script>
+  <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
+  <script src="//katspaugh.github.io/wavesurfer.js/dist/wavesurfer.min.js"></script>
+  <script src="//katspaugh.github.io/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
+  <script src="//collab-project.github.io/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
+
+  <script src="../src/js/videojs.record.js"></script>
+
+</head>
+<body>
+
+<audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+<script>
+var player = videojs("myAudio",
+{
+    controls: true,
+    width: 600,
+    height: 300,
+    plugins: {
+        wavesurfer: {
+            src: "live",
+            waveColor: "black",
+            progressColor: "#2E732D",
+            cursorWidth: 1,
+            msDisplayMax: 20,
+            hideScrollbar: true
+        },
+        record: {
+            audio: true,
+            video: false,
+            maxLength: 20
+        }
+    }
+});
+
+// change player background color
+player.el().style.backgroundColor = "#9FD6BA";
+
+// error handling
+player.on('deviceError', function()
+{
+    console.log('device error:', player.deviceErrorCode);
+});
+
+// user requested to enumerate devices
+player.on('availableDevices', function()
+{
+    console.log('available devices:', player.recorder.devices);
+});
+
+function enumerateAudioOutputDevices(ev)
+{
+    player.recorder.enumerateDevices('audiooutput');
+}
+</script>
+
+<button onclick="enumerateAudioOutputDevices()">Enumerate audio output devices</button>
+
+</body>
+</html>

@@ -1235,6 +1235,54 @@
         },
 
         /**
+         * Collects information about the media input and output devices
+         * available on the system.
+         *
+         * Returns an array of MediaDeviceInfo instances.
+         */
+        enumerateDevices: function(kind)
+        {
+            // check for browser-support
+            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
+            {
+                console.warn('enumerateDevices() not supported.');
+                return;
+            }
+
+            if (kind === null)
+            {
+                kind = 'all';
+            }
+
+            navigator.mediaDevices.enumerateDevices().then(function(deviceInfos)
+            {
+                this.devices = [];
+                for (var i = 0; i !== deviceInfos.length; ++i)
+                {
+                    var deviceInfo = deviceInfos[i];
+                    var device = {};
+                    device.deviceId = deviceInfo.deviceId;
+                    device.kind = deviceInfo.kind;
+
+                    if (deviceInfo.kind === kind || kind === 'all')
+                    {
+                        device.label = deviceInfo.label || kind +
+                            (this.devices.length + 1);
+                        this.devices.push(device);
+                    }
+                }
+
+                // notify listeners
+                this.trigger('availableDevices');
+
+            }.bind(this)).catch(function(err)
+            {
+                console.warn(err.name + ": " + err.message);
+                return;
+            });
+        },
+
+        /**
          * Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.
          * 
          * Supplying a guide (in seconds) will force a number of leading zeros
