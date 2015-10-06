@@ -1,4 +1,4 @@
-/*! videojs-record v0.9.1
+/*! videojs-record v0.9.2
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2015 - Licensed MIT */
 (function(window, videojs) {
@@ -371,6 +371,16 @@
          */
         getDevice: function()
         {
+            // define device callbacks once
+            if (this.deviceReadyCallback === undefined)
+            {
+                this.deviceReadyCallback = this.onDeviceReady.bind(this);
+            }
+
+            if (this.deviceErrorCallback === undefined)
+            {
+                this.deviceErrorCallback = this.onDeviceError.bind(this);
+            }
             // ask the browser to give us access to media device and get a
             // stream reference in the callback function
             switch (this.getRecordType())
@@ -381,13 +391,27 @@
                         audio: true,
                         video: false
                     };
+                    // remove existing mic listeners
+                    this.surfer.microphone.un('deviceReady',
+                        this.deviceReadyCallback);
+                    this.surfer.microphone.un('deviceError',
+                        this.deviceErrorCallback);
+
+                    // setup new mic listeners
                     this.surfer.microphone.on('deviceReady',
-                        this.onDeviceReady.bind(this));
+                        this.deviceReadyCallback);
                     this.surfer.microphone.on('deviceError',
-                        this.onDeviceError.bind(this));
+                        this.deviceErrorCallback);
+
+                    // disable existing playback events
+                    this.surfer.setupPlaybackEvents(false);
+
+                    // (re)set surfer liveMode
+                    this.surfer.liveMode = true;
+                    this.surfer.microphone.paused = false;
 
                     // open browser device selection dialog
-                    this.player().play();
+                    this.surfer.microphone.start();
                     break;
 
                 case this.IMAGE_ONLY:
@@ -450,6 +474,13 @@
 
             // hide device selection button
             this.player().deviceButton.hide();
+
+            // reset time (e.g. when stopDevice was used)
+            this.setDuration(this.maxLength);
+            this.setCurrentTime(0);
+
+            // hide play/pause control (e.g. when stopDevice was used)
+            this.player().controlBar.playToggle.hide();
 
             // hide live display indicator
             this.player().controlBar.liveDisplay.hide();
@@ -517,7 +548,12 @@
                 // disable record indicator
                 this.player().recordIndicator.disable();
 
-                // show camera button
+                // setup UI for retrying snapshot (e.g. when stopDevice was
+                // used)
+                this.retrySnapshot();
+
+                // reset and show camera button
+                this.player().cameraButton.onStop();
                 this.player().cameraButton.show();
             }
 
@@ -573,6 +609,7 @@
                         this.playhead.style.display = 'none';
 
                         // start/resume live audio visualization
+                        this.surfer.microphone.paused = false;
                         this.surfer.liveMode = true;
                         this.player().play();
                         break;
@@ -658,30 +695,59 @@
          */
         stopDevice: function()
         {
-            // stop recording
             if (this.isRecording())
             {
+                // stop stream once recorded data is available,
+                // otherwise it'll break recording
+                this.one('finishRecord', this.stopStream);
+
+                // stop recording
                 this.stop();
             }
+            else
+            {
+                // stop stream now, since there's no recorded data
+                // being available
+                this.stopStream();
+            }
+        },
 
+        /**
+         * Stop stream and device.
+         */
+        stopStream: function()
+        {
             // stop stream and device
             if (this.stream)
             {
+                // use MediaStream.stop in browsers other than Chrome for now
+                // This will be deprecated in Firefox 44 (see
+                // https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/
+                // and https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106)
                 if (!this.isChrome())
                 {
-                    this.stream.stop();
+                    if (this.getRecordType() === this.AUDIO_ONLY)
+                    {
+                        // make the microphone plugin stop it's device
+                        this.surfer.microphone.stopDevice();
+                    }
+                    else
+                    {
+                        // stop MediaStream
+                        this.stream.stop();
+                    }
                 }
                 else
                 {
-                    // use MediaStreamTrack in Chrome instead of stream.stop()
-                    // (deprecated since Chrome 45)
+                    // use MediaStreamTrack.stop() in Chrome instead of
+                    // MediaStream.stop() (deprecated since Chrome 45)
                     // https://developers.google.com/web/updates/2015/07/mediastream-deprecations
                     var track;
                     switch (this.getRecordType())
                     {
                         case this.AUDIO_ONLY:
-                            track = this.stream.getAudioTracks()[0];
-                            track.stop();
+                            // make the microphone plugin stop it's device
+                            this.surfer.microphone.stopDevice();
                             break;
 
                         case this.VIDEO_ONLY:
@@ -700,7 +766,6 @@
                             break;
                     }
                 }
-
                 this._deviceActive = false;
             }
         },
@@ -1044,6 +1109,20 @@
         },
 
         /**
+         * Reset UI for retrying a snapshot image.
+         */
+        retrySnapshot: function()
+        {
+            this._processing = false;
+
+            // retry: hide the snapshot
+            this.player().recordCanvas.hide();
+
+            // show preview video
+            this.player().el().firstChild.style.display = 'block';
+        },
+
+        /**
          * Capture frame from camera and copy it to canvas.
          */
         captureFrame: function()
@@ -1317,13 +1396,7 @@
         else
         {
             // retry
-            recorder._processing = false;
-
-            // retry: hide the snapshot
-            this.player().recordCanvas.hide();
-
-            // show preview video
-            this.player().el().firstChild.style.display = 'block';
+            recorder.retrySnapshot();
 
             // reset camera button
             this.onStop();
