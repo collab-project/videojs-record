@@ -1245,7 +1245,8 @@
             // check for browser-support
             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
             {
-                console.warn('enumerateDevices() not supported.');
+                // XXX: fire event
+                //console.warn('enumerateDevices() not supported.');
                 return;
             }
 
@@ -1277,7 +1278,8 @@
 
             }.bind(this)).catch(function(err)
             {
-                console.warn(err.name + ": " + err.message);
+                // XXX: fire event
+                //console.warn(err.name + ': ' + err.message);
                 return;
             });
         },
