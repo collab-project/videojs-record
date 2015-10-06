@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Audio-only Example - Record Plugin for Video.js</title>
+  <title>Enumerate Devices Example - Record Plugin for Video.js</title>
 
   <link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
   <link href="../src/css/videojs.record.css" rel="stylesheet">
@@ -46,25 +46,25 @@ var player = videojs("myAudio",
 // change player background color
 player.el().style.backgroundColor = "#9FD6BA";
 
-// error handling
-player.on('deviceError', function()
-{
-    console.log('device error:', player.deviceErrorCode);
-});
-
 // user requested to enumerate devices
-player.on('availableDevices', function()
+player.on('enumerateReady', function()
 {
-    console.log('available devices:', player.recorder.devices);
+    console.log('input and output devices:', player.recorder.devices);
 });
 
-function enumerateAudioOutputDevices(ev)
+// error handling
+player.on('enumerateError', function()
 {
-    player.recorder.enumerateDevices('audiooutput');
+    console.log('error:', player.deviceErrorCode);
+});
+
+function enumerateDevices(ev)
+{
+    player.recorder.enumerateDevices();
 }
 </script>
 
-<button onclick="enumerateAudioOutputDevices()">Enumerate audio output devices</button>
+<button onclick="enumerateDevices()">Enumerate input and output devices</button>
 
 </body>
 </html>

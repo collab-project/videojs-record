@@ -1245,12 +1245,12 @@
             // check for browser-support
             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
             {
-                // XXX: fire event
                 //console.warn('enumerateDevices() not supported.');
+                this.trigger('enumerateError');
                 return;
             }
 
-            if (kind === null)
+            if (!kind)
             {
                 kind = 'all';
             }
@@ -1267,19 +1267,27 @@
 
                     if (deviceInfo.kind === kind || kind === 'all')
                     {
-                        device.label = deviceInfo.label || kind +
+                        // the user must have already granted permission to the page
+                        // to use the media devices in order to get the device label
+                        // populated. When served over HTTPS, the browser will remember
+                        // permission granted on subsequent loads, so the permission
+                        // will have been granted before requesting media. When using
+                        // HTTP, not HTTPS, the getUserMedia request must be made and
+                        // accepted before enumerateDevices will populate labels.
+                        device.label = deviceInfo.label || deviceInfo.kind + ' ' +
                             (this.devices.length + 1);
+
                         this.devices.push(device);
                     }
                 }
 
                 // notify listeners
-                this.trigger('availableDevices');
+                this.trigger('enumerateReady');
 
             }.bind(this)).catch(function(err)
             {
-                // XXX: fire event
                 //console.warn(err.name + ': ' + err.message);
+                this.trigger('enumerateError');
                 return;
             });
         },
