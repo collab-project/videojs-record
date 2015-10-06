@@ -1238,14 +1238,26 @@
          * Collects information about the media input and output devices
          * available on the system.
          *
-         * Returns an array of MediaDeviceInfo instances.
+         * Returns an array.
          */
         enumerateDevices: function(kind)
         {
-            // check for browser-support
+            // MediaStreamTrack.enumerateDevices() is available since Firefox 36
+            // and Chrome 45.0.2441.x or later (over HTTPS, with
+            // "Enable experimental Web Platform features" flag enabled).
             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
             {
-                //console.warn('enumerateDevices() not supported.');
+                //console.warn('navigator.mediaDevices.enumerateDevices() not supported.');
+                this.trigger('enumerateError');
+                return;
+            }
+
+            // MediaStreamTrack.getSources() is not present in current
+            // Firefox but available in Chrome since v30.
+            if (typeof MediaStreamTrack === 'undefined' ||
+                typeof MediaStreamTrack.getSources === 'undefined')
+            {
+                //console.warn('MediaStreamTrack.getSources() not supported.');
                 this.trigger('enumerateError');
                 return;
             }
