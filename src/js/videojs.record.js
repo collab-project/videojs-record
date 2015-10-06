@@ -368,6 +368,16 @@
          */
         getDevice: function()
         {
+            // define device callbacks once
+            if (this.deviceReadyCallback === undefined)
+            {
+                this.deviceReadyCallback = this.onDeviceReady.bind(this);
+            }
+
+            if (this.deviceErrorCallback === undefined)
+            {
+                this.deviceErrorCallback = this.onDeviceError.bind(this);
+            }
             // ask the browser to give us access to media device and get a
             // stream reference in the callback function
             switch (this.getRecordType())
@@ -378,19 +388,27 @@
                         audio: true,
                         video: false
                     };
+                    // remove existing mic listeners
+                    this.surfer.microphone.un('deviceReady',
+                        this.deviceReadyCallback);
+                    this.surfer.microphone.un('deviceError',
+                        this.deviceErrorCallback);
+
+                    // setup new mic listeners
                     this.surfer.microphone.on('deviceReady',
-                        this.onDeviceReady.bind(this));
+                        this.deviceReadyCallback);
                     this.surfer.microphone.on('deviceError',
-                        this.onDeviceError.bind(this));
+                        this.deviceErrorCallback);
 
                     // disable existing playback events
                     this.surfer.setupPlaybackEvents(false);
 
                     // (re)set surfer liveMode
                     this.surfer.liveMode = true;
+                    this.surfer.microphone.paused = false;
 
                     // open browser device selection dialog
-                    this.player().play();
+                    this.surfer.microphone.start();
                     break;
 
                 case this.IMAGE_ONLY:
@@ -588,6 +606,7 @@
                         this.playhead.style.display = 'none';
 
                         // start/resume live audio visualization
+                        this.surfer.microphone.paused = false;
                         this.surfer.liveMode = true;
                         this.player().play();
                         break;
@@ -673,12 +692,28 @@
          */
         stopDevice: function()
         {
-            // stop recording
             if (this.isRecording())
             {
+                // stop stream once recorded data is available,
+                // otherwise it'll break recording
+                this.one('finishRecord', this.stopStream);
+
+                // stop recording
                 this.stop();
             }
+            else
+            {
+                // stop stream now, since there's no recorded data
+                // being available
+                this.stopStream();
+            }
+        },
 
+        /**
+         * Stop stream and device.
+         */
+        stopStream: function()
+        {
             // stop stream and device
             if (this.stream)
             {
@@ -690,26 +725,26 @@
                 {
                     if (this.getRecordType() === this.AUDIO_ONLY)
                     {
-                        // make the microphone plugin stop it's stream
-                        this.surfer.microphone.stop();
+                        // make the microphone plugin stop it's device
+                        this.surfer.microphone.stopDevice();
                     }
                     else
                     {
-                        // stop stream
+                        // stop MediaStream
                         this.stream.stop();
                     }
                 }
                 else
                 {
-                    // use MediaStreamTrack in Chrome instead of stream.stop()
-                    // (deprecated since Chrome 45)
+                    // use MediaStreamTrack.stop() in Chrome instead of
+                    // MediaStream.stop() (deprecated since Chrome 45)
                     // https://developers.google.com/web/updates/2015/07/mediastream-deprecations
                     var track;
                     switch (this.getRecordType())
                     {
                         case this.AUDIO_ONLY:
-                            // make the microphone plugin stop it's stream
-                            this.surfer.microphone.stop();
+                            // make the microphone plugin stop it's device
+                            this.surfer.microphone.stopDevice();
                             break;
 
                         case this.VIDEO_ONLY:
@@ -728,7 +763,6 @@
                             break;
                     }
                 }
-
                 this._deviceActive = false;
             }
         },
