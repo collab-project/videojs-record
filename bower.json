@@ -10,6 +10,7 @@
     "video",
     "wavesurfer",
     "videojs",
+    "videojs-plugin",
     "player",
     "record",
     "stream",
