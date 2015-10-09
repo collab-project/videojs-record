@@ -87,8 +87,10 @@ animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/an
 video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) or [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html)) examples.
 
 Note that recording both audio and video into a single WebM file is currently
-only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
-Blob objects are created: one for audio and one for video.
+only supported in Mozilla Firefox >= 29 (Chrome support is planned for the
+[M48 release](https://code.google.com/p/chromium/issues/detail?id=261321)).
+In the Chrome browser two separate Blob objects are created: one for audio
+and one for video.
 
 ### Audio-only
 
@@ -193,6 +195,8 @@ player.on('startRecord', function()
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `finishRecord` | The recorded stream or image is available. Check the `player.recordedData` object for the recorded data. |
+| `enumerateReady` | `enumerateDevices` returned the devices successfully. |
+| `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 
 Get recorded data
 -----------------
@@ -213,6 +217,11 @@ player.on('finishRecord', function()
 Note that in the Chrome browser `player.recordedData` returns an object with
 `audio` and `video` properties when recording both audio/video. In Firefox
 it returns a single WebM Blob object containing both audio and video.
+
+Getting a list of available input and ouput devices
+---------------------------------------------------
+
+TODO
 
 Customizing controls
 --------------------

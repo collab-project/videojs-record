@@ -4,14 +4,22 @@
   <meta charset="utf-8">
   <title>Enumerate Devices Example - Record Plugin for Video.js</title>
 
-  <link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
+  <!--<link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">-->
+  <link href="../node_modules/video.js/dist/video-js/video-js.css" rel="stylesheet">
   <link href="../src/css/videojs.record.css" rel="stylesheet">
 
-  <script src="//vjs.zencdn.net/4.12.15/video.js"></script>
-  <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
-  <script src="//katspaugh.github.io/wavesurfer.js/dist/wavesurfer.min.js"></script>
+  <!--<script src="//vjs.zencdn.net/4.12.15/video.js"></script>-->
+  <script src="../node_modules/video.js/dist/video-js/video.js"></script>
+  <!--<script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>-->
+  <script src="../node_modules/recordrtc/RecordRTC.js"></script>
+
+  <!--<script src="//katspaugh.github.io/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="//katspaugh.github.io/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
-  <script src="//collab-project.github.io/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
+  <script src="//collab-project.github.io/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>-->
+
+  <script src="/wavesurfer.js/dist/wavesurfer.min.js"></script>
+  <script src="/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
+  <script src="/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="../src/js/videojs.record.js"></script>
 
@@ -55,7 +63,7 @@ player.on('enumerateReady', function()
 // error handling
 player.on('enumerateError', function()
 {
-    console.log('error:', player.deviceErrorCode);
+    console.log('error:', player.enumerateErrorCode);
 });
 
 function enumerateDevices(ev)

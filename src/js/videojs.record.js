@@ -1242,32 +1242,43 @@
          */
         enumerateDevices: function(kind)
         {
+            var enumerator;
             // MediaStreamTrack.enumerateDevices() is available since Firefox 36
             // and Chrome 45.0.2441.x or later (over HTTPS, with
             // "Enable experimental Web Platform features" flag enabled).
             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
             {
-                //console.warn('navigator.mediaDevices.enumerateDevices() not supported.');
-                this.trigger('enumerateError');
-                return;
+                // MediaStreamTrack.getSources() is not present in current
+                // Firefox but available in Chrome since v30.
+                if (typeof MediaStreamTrack === 'undefined' ||
+                    typeof MediaStreamTrack.getSources === 'undefined')
+                {
+                    // MediaStreamTrack.getSources() not available
+                    this.player().enumerateErrorCode = 'getSources() and enumerateDevices() not supported.'
+                    this.trigger('enumerateError');
+                    return;
+                }
+                else
+                {
+                    // use getSources
+                    enumerator = MediaStreamTrack.getSources;
+                }
             }
-
-            // MediaStreamTrack.getSources() is not present in current
-            // Firefox but available in Chrome since v30.
-            if (typeof MediaStreamTrack === 'undefined' ||
-                typeof MediaStreamTrack.getSources === 'undefined')
+            else
             {
-                //console.warn('MediaStreamTrack.getSources() not supported.');
-                this.trigger('enumerateError');
-                return;
+                console.log('foo');
+                // use enumerateDevices
+                enumerator = navigator.mediaDevices.enumerateDevices;
             }
 
+            // filter devices by kind
             if (!kind)
             {
                 kind = 'all';
             }
+            console.log(enumerator);
 
-            navigator.mediaDevices.enumerateDevices().then(function(deviceInfos)
+            enumerator(this).then(function(deviceInfos)
             {
                 this.devices = [];
                 for (var i = 0; i !== deviceInfos.length; ++i)
@@ -1298,10 +1309,10 @@
 
             }.bind(this)).catch(function(err)
             {
-                //console.warn(err.name + ': ' + err.message);
+                this.player().enumerateErrorCode = err;
                 this.trigger('enumerateError');
                 return;
-            });
+            }.bind(this));
         },
 
         /**
