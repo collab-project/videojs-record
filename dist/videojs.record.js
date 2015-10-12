@@ -1,4 +1,4 @@
-/*! videojs-record v0.9.2
+/*! videojs-record v0.9.3
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2015 - Licensed MIT */
 (function(window, videojs) {
