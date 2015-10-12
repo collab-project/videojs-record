@@ -4,5 +4,8 @@
   "icons": [{
     "name": "play",
     "svg": "av/svg/production/ic_play_arrow_48px.svg"
+  }, {
+    "name": "play-circle",
+    "svg": "av/svg/production/ic_play_circle_outline_48px.svg"
   }]
 }
