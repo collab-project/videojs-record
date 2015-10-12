@@ -1,7 +1,10 @@
 (function(window, videojs) {
     'use strict';
 
-    videojs.RecordBase = videojs.Component.extend(
+    var VjsComponent = videojs.getComponent('Component');
+    var VjsButton = videojs.getComponent('Button');
+
+    videojs.RecordBase = videojs.extend(VjsComponent,
     {
         // recorder modes
         IMAGE_ONLY: 'image_only',
@@ -29,13 +32,13 @@
         },
 
         /** @constructor */
-        init: function(player, options, ready)
+        constructor: function(player, options)
         {
-            videojs.Component.call(this, player, options, ready);
+            VjsComponent.call(this, player, options);
         }
     });
 
-    videojs.RecordRTCEngine = videojs.RecordBase.extend(
+    videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
     {
         /**
          * Setup recording engine.
@@ -141,7 +144,7 @@
         }
     });
 
-    videojs.LibVorbisEngine = videojs.RecordBase.extend(
+    videojs.LibVorbisEngine = videojs.extend(videojs.RecordBase,
     {
         /**
          * Setup recording engine.
@@ -252,37 +255,37 @@
     /**
      * Record audio/video/images using the Video.js player.
      */
-    videojs.Recorder = videojs.RecordBase.extend({
+    videojs.Recorder = videojs.extend(videojs.RecordBase,
+    {
         /**
          * The constructor function for the class.
          * 
          * @param {videojs.Player|Object} player
          * @param {Object} options Player options.
-         * @param {Function} ready Ready callback function.
          */
-        init: function(player, options, ready)
+        constructor: function(player, options)
         {
             // run base component initializing with new options.
-            videojs.Component.call(this, player, options, ready);
+            VjsComponent.call(this, player, options);
 
             // record settings
-            this.recordImage = this.options().options.image;
-            this.recordAudio = this.options().options.audio;
-            this.recordVideo = this.options().options.video;
-            this.recordAnimation = this.options().options.animation;
-            this.maxLength = this.options().options.maxLength;
-            this.debug = this.options().options.debug;
+            this.recordImage = this.options_.options.image;
+            this.recordAudio = this.options_.options.audio;
+            this.recordVideo = this.options_.options.video;
+            this.recordAnimation = this.options_.options.animation;
+            this.maxLength = this.options_.options.maxLength;
+            this.debug = this.options_.options.debug;
 
             // audio settings
-            this.audioEngine = this.options().options.audioEngine;
-            this.audioWorkerURL = this.options().options.audioWorkerURL;
-            this.audioModuleURL = this.options().options.audioModuleURL;
-            this.audioBufferSize = this.options().options.audioBufferSize;
-            this.audioSampleRate = this.options().options.audioSampleRate;
+            this.audioEngine = this.options_.options.audioEngine;
+            this.audioWorkerURL = this.options_.options.audioWorkerURL;
+            this.audioModuleURL = this.options_.options.audioModuleURL;
+            this.audioBufferSize = this.options_.options.audioBufferSize;
+            this.audioSampleRate = this.options_.options.audioSampleRate;
 
             // animation settings
-            this.animationFrameRate = this.options().options.animationFrameRate;
-            this.animationQuality = this.options().options.animationQuality;
+            this.animationFrameRate = this.options_.options.animationFrameRate;
+            this.animationQuality = this.options_.options.animationQuality;
 
             // recorder state
             this._recording = false;
@@ -317,7 +320,7 @@
                     // XXX: below are customizations copied from videojs.wavesurfer that
                     //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
-                    if (this.player().options().controls)
+                    if (this.player().options_.controls)
                     {
                         // progress control isn't used by this plugin
                         this.player().controlBar.progressControl.hide();
@@ -1312,12 +1315,12 @@
      * @class
      * @constructor
     */
-    RecordToggle = videojs.Button.extend(
+    RecordToggle = videojs.extend(VjsButton,
     {
         /** @constructor */
-        init: function(player, options)
+        constructor: function(player, options)
         {
-            videojs.Button.call(this, player, options);
+            VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
             this.on(player, 'startRecord', this.onStart);
@@ -1366,12 +1369,12 @@
      * @class
      * @constructor
     */
-    CameraButton = videojs.Button.extend(
+    CameraButton = videojs.extend(VjsButton,
     {
         /** @constructor */
-        init: function(player, options)
+        constructor: function(player, options)
         {
-            videojs.Button.call(this, player, options);
+            VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
             this.on(player, 'startRecord', this.onStart);
@@ -1425,10 +1428,10 @@
      * @class
      * @constructor
     */
-    DeviceButton = videojs.Button.extend(
+    DeviceButton = videojs.extend(VjsButton,
     {
         /** @constructor */
-        init: function(player, options)
+        constructor: function(player, options)
         {
             videojs.Button.call(this, player, options);
 
@@ -1451,12 +1454,12 @@
      * @class
      * @constructor
     */
-    RecordIndicator = videojs.Component.extend(
+    RecordIndicator = videojs.extend(VjsComponent,
     {
         /** @constructor */
-        init: function(player, options)
+        constructor: function(player, options)
         {
-            videojs.Component.call(this, player, options);
+            VjsComponent.call(this, player, options);
 
             this.on(player, 'startRecord', this.show);
             this.on(player, 'stopRecord', this.hide);
@@ -1476,7 +1479,7 @@
      * @class
      * @constructor
     */
-    RecordCanvas = videojs.Component.extend();
+    RecordCanvas = videojs.extend(VjsComponent);
 
     /**
      * Image for displaying animated GIF image.
@@ -1485,7 +1488,7 @@
      * @class
      * @constructor
     */
-    AnimationDisplay = videojs.Component.extend();
+    AnimationDisplay = videojs.extend(VjsComponent);
 
     /**
      * Create a custom button
@@ -1502,7 +1505,7 @@
             'aria-live': 'polite', // let the screen reader user know that the text of the button may change
             tabIndex: 0
         };
-        return videojs.Component.prototype.createEl(null, props);
+        return VjsComponent.prototype.createEl('div', props);
     };
 
     var createPlugin = function()
@@ -1511,7 +1514,7 @@
             className: 'vjs-record',
             tabIndex: 0
         };
-        return videojs.Component.prototype.createEl(null, props);
+        return VjsComponent.prototype.createEl('div', props);
     };
 
     // plugin defaults
@@ -1571,7 +1574,7 @@
      */
     var record = function(options)
     {
-        var settings = videojs.util.mergeOptions(defaults, options);
+        var settings = videojs.mergeOptions(defaults, options);
         var player = this;
 
         // create recorder
@@ -1592,7 +1595,7 @@
         // add record indicator
         player.recordIndicator = new RecordIndicator(player,
         {
-            'el': videojs.Component.prototype.createEl(null,
+            'el': VjsComponent.prototype.createEl('div',
             {
                 className: 'vjs-record-indicator vjs-control'
             })
@@ -1603,7 +1606,7 @@
         // add canvas for recording and displaying image
         player.recordCanvas = new RecordCanvas(player,
         {
-            'el': videojs.Component.prototype.createEl(null,
+            'el': VjsComponent.prototype.createEl('div',
             {
                 className: 'vjs-record-canvas',
                 innerHTML: '<canvas></canvas>'
@@ -1615,7 +1618,7 @@
         // add image for animation display
         player.animationDisplay = new AnimationDisplay(player,
         {
-            'el': videojs.Component.prototype.createEl(null,
+            'el': VjsComponent.prototype.createEl('div',
             {
                 className: 'vjs-animation-display',
                 innerHTML: '<img />'
