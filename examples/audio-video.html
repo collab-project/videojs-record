@@ -12,6 +12,17 @@
 
   <script src="../src/js/videojs.record.js"></script>
 
+  <style>
+  /* place fullscreen control on right side of the player */
+  .video-js .vjs-custom-control-spacer {
+      display: block;
+      width: 100%;
+  }
+  /* change player background color */
+  #myVideo {
+      background-color: #E8E884;
+  }
+  </style>
 </head>
 <body>
 
@@ -31,9 +42,6 @@ var player = videojs("myVideo",
         }
     }
 });
-
-// change player background color
-player.el().style.backgroundColor = "#E8E884";
 
 // error handling
 player.on('deviceError', function()

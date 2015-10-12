@@ -11,6 +11,12 @@
 
   <script src="../src/js/videojs.record.js"></script>
 
+  <style>
+  /* change player background color */
+  #myImage {
+      background-color: #6B2DA8;
+  }
+  </style>
 </head>
 <body>
 
@@ -22,17 +28,9 @@ var player = videojs("myImage",
     controls: true,
     width: 320,
     height: 240,
-    children: {
-        controlBar: {
-            children: {
-                currentTimeDisplay: false,
-                timeDivider: false,
-                durationDisplay: false,
-                muteToggle: false,
-                volumeControl: false,
-                fullscreenToggle: false
-            }
-        }
+    controlBar: {
+        volumeMenuButton: false,
+        fullscreenToggle: false
     },
     plugins: {
         record: {
@@ -40,9 +38,6 @@ var player = videojs("myImage",
         }
     }
 });
-
-// change player background color
-player.el().style.backgroundColor = "#6B2DA8";
 
 // error handling
 player.on('deviceError', function()

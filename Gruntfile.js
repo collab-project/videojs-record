@@ -1,5 +1,9 @@
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
+var _ = require('lodash');
+
 module.exports = function(grunt) {
   var pkg, version, verParts;
   pkg = grunt.file.readJSON('package.json');
@@ -55,13 +59,6 @@ module.exports = function(grunt) {
         src: ['src/js/*.js']
       },
     },
-    csscomb: {
-      src: {
-        files: {
-          'src/css/videojs.record.css': ['src/css/videojs.record.css']
-        }
-      }
-    },
     cssmin: {
       target: {
         files: [{
@@ -71,6 +68,13 @@ module.exports = function(grunt) {
           dest: 'dist/css',
           ext: '.record.min.css'
         }]
+      }
+    },
+    sass: {
+      dist: {
+        files: {
+          'src/css/videojs.record.css': 'src/css/font/scss/videojs-icons.scss'
+        }
       }
     },
     watch: {
@@ -98,9 +102,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-videojs-languages');
-  grunt.loadNpmTasks('grunt-csscomb');
+  grunt.loadNpmTasks('grunt-sass');
 
-  grunt.registerTask('pretask', ['jshint', 'csscomb', 'concat', 'vjslanguages']);
+  grunt.registerTask('font', ['generate-font', 'update-base64', 'sass']);
+  grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages', 'font']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'Building Source', function(){
@@ -117,13 +122,84 @@ module.exports = function(grunt) {
     grunt.file.recurse('src/css/font', function(absdir, rootdir, subdir, filename) {
       // only fonts
       var ext = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
-      if (["ttf", "svg", "eot", "woff"].indexOf(ext) > -1) {
+      if (['ttf', 'svg', 'eot', 'woff'].indexOf(ext) > -1) {
         grunt.file.copy(absdir, 'dist/css/font/' + filename);
       }
     });
 
     // Minify CSS
     grunt.task.run(['cssmin']);
+  });
+
+  grunt.registerTask('generate-font', function() {
+    var done = this.async();
+
+    var webfontsGenerator = require('webfonts-generator');
+    var iconConfig = require('./src/css/font/icons.json');
+    var svgRootDir = iconConfig['root-dir'];
+    var icons = iconConfig.icons;
+
+    var iconFiles = icons.map(function(icon) {
+      // If root-dir is specified for a specific icon, use that.
+      if (icon['root-dir']) {
+        return icon['root-dir'] + icon.svg;
+      }
+
+      // Otherwise, use the default root-dir.
+      return svgRootDir + icon.svg;
+    });
+
+    webfontsGenerator({
+      files: iconFiles,
+      dest: 'src/css/font/',
+      fontName: iconConfig['font-name'],
+      cssDest: 'src/css/font/scss/_icons.scss',
+      cssTemplate: 'src/css/font/templates/scss.hbs',
+      htmlDest: 'src/css/font/preview.html',
+      htmlTemplate: 'src/css/font/templates/html.hbs',
+      html: true,
+      rename: function(iconPath) {
+        var fileName = path.basename(iconPath);
+
+        var iconName = _.result(_.find(icons, function(icon) {
+          var svgName = path.basename(icon.svg);
+
+          return svgName === fileName;
+        }), 'name');
+
+        return iconName;
+      },
+      types: ['svg', 'ttf', 'woff', 'eot']
+    }, function(error) {
+      if (error) {
+        console.error(error);
+        done(false);
+      }
+
+      done();
+    });
+
+  });
+
+  grunt.registerTask('update-base64', function() {
+    var iconScssFile = './src/css/font/scss/_icons.scss';
+    var fontFiles = {
+      ttf: './src/css/font/videojs-record.ttf',
+      woff: './src/css/font/videojs-record.woff'
+    };
+
+    var scssContents = fs.readFileSync(iconScssFile).toString();
+
+    Object.keys(fontFiles).forEach(function(font) {
+      var fontFile = fontFiles[font];
+      var fontContent = fs.readFileSync(fontFile);
+
+      var regex = new RegExp("(url.*font-" + font + ".*base64,)([^\\s]+)(\\).*)");
+
+      scssContents = scssContents.replace(regex, "$1" + fontContent.toString('base64') + "$3");
+    });
+
+    fs.writeFileSync(iconScssFile, scssContents);
   });
 
 };

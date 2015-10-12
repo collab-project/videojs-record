@@ -3,7 +3,7 @@ Video.js Record
 
 A Video.js plugin for recording audio/video/image files.
 
-![Screenshot](examples/img/screenshot.png?raw=true "Screenshot")
+<img title="Screenshot" src="examples/img/screenshot.png?raw=true" width="329">
 
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)]()
@@ -219,17 +219,14 @@ it returns a single WebM Blob object containing both audio and video.
 Customizing controls
 --------------------
 
-To disable and hide specific controls, use the video.js `children`
+To disable and hide specific controls, use the video.js `controlBar`
 option:
 
 ```javascript
-children: {
-    controlBar: {
-        children: {
-            // hide fullscreen control
-            fullscreenToggle: false
-        }
-    }
+controlBar: {
+    // hide volume and fullscreen controls
+    volumeMenuButton: false,
+    fullscreenToggle: false
 },
 ```
 
@@ -266,7 +263,7 @@ the Video.js language file and the plugin's language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="//vjs.zencdn.net/4.12.15/lang/nl.js"></script>
+<script src="//vjs.zencdn.net/5.0/lang/nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:

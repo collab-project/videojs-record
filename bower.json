@@ -31,7 +31,7 @@
   "dependencies": {
     "video.js": ">=5.0.0",
     "wavesurfer.js": ">=1.0.44",
-    "videojs-wavesurfer": ">=1.0.0",
+    "videojs-wavesurfer": ">=1.0.1",
     "recordrtc": "git://github.com/muaz-khan/RecordRTC.git",
     "libvorbis.js": ">=0.5.1"
   },
@@ -42,7 +42,11 @@
     "grunt-contrib-concat": ">=0.4.0",
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-cssmin": ">=0.11.0",
+    "grunt-sass": "git://github.com/sindresorhus/grunt-sass.git",
     "grunt-videojs-languages": ">=0.0.4",
-    "grunt-csscomb": "git://github.com/csscomb/grunt-csscomb.git"
+    "videojs-font": "git://github.com/videojs/font.git",
+    "lodash": "^3.9.3",
+    "material-design-icons": "^2.0.0",
+    "webfonts-generator": "git://github.com/sunflowerdeath/webfonts-generator.git"
   }
 }

@@ -6,9 +6,9 @@ This directory contains the additional font used in the videojs-record plugin.
 Edit the Font
 -------------
 
-To modify your generated font, use the `selection.js` file, located in the `css/font`
-directory. You can import this file into the [IcoMoon](https://icomoon.io/app)
-app. All the tags (class names) and the Unicode points of your glyphs are saved in
-this file.
+To modify the generated font, change the `icons.json` file, located in the `src/css/font`
+directory. Then run `grunt` to update the generated font files and CSS definitions. View
+`src/css/font/preview.html` in a browser to see the result.
 
-See the documentation for more info on how to use this package: https://icomoon.io/#docs/font-face
+See the videojs `font` project documentation for more info:
+https://github.com/videojs/font/blob/master/README.md

@@ -32,7 +32,7 @@
   "dependencies": {
     "video.js": ">=5.0.0",
     "wavesurfer.js": ">=1.0.44",
-    "videojs-wavesurfer": ">=1.0.0",
+    "videojs-wavesurfer": ">=1.0.1",
     "recordrtc": ">=5.0.8",
     "libvorbis.js": ">=0.5.1"
   },
@@ -43,8 +43,12 @@
     "grunt-contrib-jshint": ">=0.10.0",
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-watch": ">=0.6.1",
+    "grunt-sass": "^1.0.0",
     "grunt-videojs-languages": ">=0.0.4",
-    "grunt-csscomb": ">=3.0.0"
+    "videojs-font": ">=1.3.0",
+    "lodash": "^3.9.3",
+    "material-design-icons": "^2.0.0",
+    "webfonts-generator": "^0.2.4"
   },
   "author": "",
   "license": "MIT",
