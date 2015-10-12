@@ -47,8 +47,8 @@ Usage
 Start by including the video.js stylesheet and library:
 
 ```html
-<link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
-<script src="//vjs.zencdn.net/4.12.15/video.js"></script>
+<link href="//vjs.zencdn.net/5.0/video-js.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/5.0/video.js"></script>
 ```
 
 If you're going to record audio and/or video you need to include RecordRTC as well:
