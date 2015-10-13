@@ -163,7 +163,7 @@ module.exports = function(grunt) {
       fontName: iconConfig['font-name'],
       cssDest: 'src/css/font/scss/_icons.scss',
       cssTemplate: 'src/css/font/templates/scss.hbs',
-      htmlDest: 'src/css/font-preview.html',
+      htmlDest: 'src/css/font/preview.html',
       htmlTemplate: 'src/css/font/templates/html.hbs',
       html: true,
       rename: function(iconPath) {
