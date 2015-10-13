@@ -318,7 +318,17 @@
                 this.player().recordToggle.el(),
                 this.player().controlBar.el().firstChild);
 
-            // tweak player UI
+            // get rid of unused controls
+            if (this.player().controlBar.remainingTimeDisplay !== undefined)
+            {
+                this.player().controlBar.remainingTimeDisplay.dispose();
+            }
+            if (this.player().controlBar.liveDisplay !== undefined)
+            {
+                this.player().controlBar.liveDisplay.dispose();
+            }
+
+            // tweak player UI based on type
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -499,9 +509,6 @@
 
             // hide play/pause control (e.g. when stopDevice was used)
             this.player().controlBar.playToggle.hide();
-
-            // hide live display indicator
-            this.player().controlBar.liveDisplay.hide();
 
             // reset playback listeners
             this.off(this.player(), 'timeupdate', this.playbackTimeUpdate);
