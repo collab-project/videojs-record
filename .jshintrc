@@ -10,7 +10,6 @@
         "RecordRTC",
         "MRecordRTC",
         "libvorbis",
-        "AudioContext",
-        "player"
+        "AudioContext"
     ]
 }

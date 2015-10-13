@@ -310,7 +310,7 @@
         setupUI: function()
         {
             // insert custom controls on left-side of controlbar
-            this.player().controlBar.addChild(player.cameraButton);
+            this.player().controlBar.addChild(this.player().cameraButton);
             this.player().controlBar.el().insertBefore(
                 this.player().cameraButton.el(),
                 this.player().controlBar.el().firstChild);
@@ -333,7 +333,7 @@
             {
                 case this.AUDIO_ONLY:
                     // reference to videojs-wavesurfer plugin
-                    this.surfer = player.waveform;
+                    this.surfer = this.player().waveform;
 
                     // initially hide playhead (fixed in wavesurfer 1.0.25)
                     this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
