@@ -2,10 +2,23 @@
   "font-name": "videojs-record",
   "root-dir": "./node_modules/material-design-icons/",
   "icons": [{
-    "name": "play",
-    "svg": "av/svg/production/ic_play_arrow_48px.svg"
-  }, {
-    "name": "play-circle",
-    "svg": "av/svg/production/ic_play_circle_outline_48px.svg"
+    "name": "device-perm",
+    "svg": "action/svg/production/ic_perm_camera_mic_48px.svg"
+  },
+  {
+    "name": "record-start",
+    "svg": "image/svg/production/ic_lens_48px.svg"
+  },
+  {
+    "name": "record-stop",
+    "svg": "av/svg/production/ic_stop_48px.svg"
+  },
+  {
+    "name": "photo-retry",
+    "svg": "av/svg/production/ic_replay_48px.svg"
+  },
+  {
+    "name": "photo-camera",
+    "svg": "image/svg/production/ic_photo_camera_48px.svg"
   }]
 }
