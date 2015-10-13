@@ -14,6 +14,12 @@
 
   <script src="../src/js/videojs.record.js"></script>
 
+  <style>
+  /* change player background color */
+  #myVideo {
+      background-color: #6EF55F;
+  }
+  </style>
 </head>
 <body>
 
@@ -25,14 +31,9 @@ var player = videojs('myVideo',
     controls: true,
     width: 320,
     height: 240,
-    children: {
-        controlBar: {
-            children: {
-                muteToggle: false,
-                volumeControl: false,
-                fullscreenToggle: false
-            }
-        }
+    controlBar: {
+        volumeMenuButton: false,
+        fullscreenToggle: false
     },
     plugins: {
         record: {
@@ -43,9 +44,6 @@ var player = videojs('myVideo',
         }
     }
 });
-
-// change player background color
-player.el().style.backgroundColor = '#6EF55F';
 
 // error handling
 player.on('deviceError', function()

@@ -130,7 +130,7 @@ module.exports = function(grunt) {
     grunt.file.recurse('src/css/font', function(absdir, rootdir, subdir, filename) {
       // only fonts
       var ext = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
-      if (["ttf", "svg", "eot", "woff"].indexOf(ext) > -1) {
+      if (['ttf', 'svg', 'eot', 'woff'].indexOf(ext) > -1) {
         grunt.file.copy(absdir, 'dist/css/font/' + filename);
       }
     });

@@ -219,17 +219,14 @@ it returns a single WebM Blob object containing both audio and video.
 Customizing controls
 --------------------
 
-To disable and hide specific controls, use the video.js `children`
+To disable and hide specific controls, use the video.js `controlBar`
 option:
 
 ```javascript
-children: {
-    controlBar: {
-        children: {
-            // hide fullscreen control
-            fullscreenToggle: false
-        }
-    }
+controlBar: {
+    // hide volume and fullscreen controls
+    volumeMenuButton: false,
+    fullscreenToggle: false
 },
 ```
 
