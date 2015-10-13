@@ -882,25 +882,33 @@
                         this.setDuration(this.streamDuration);
 
                         // update time during playback
-                        this.on(this.player(), 'timeupdate', this.playbackTimeUpdate);
+                        this.on(this.player(), 'timeupdate',
+                            this.playbackTimeUpdate);
 
                         // because there are 2 separate data streams for audio
                         // and video in the Chrome browser, playback the audio
                         // stream in a new extra audio element and the video
                         // stream in the regular video.js player.
-                        if (this.getRecordType() === this.AUDIO_VIDEO && this.isChrome())
+                        if (this.getRecordType() === this.AUDIO_VIDEO &&
+                            this.isChrome())
                         {
                             if (this.extraAudio === undefined)
                             {
                                 this.extraAudio = this.createEl('audio');
                                 this.extraAudio.id = 'extraAudio';
+
+                                // handle volume changes in extra audio
+                                // for chrome
+                                this.player().on('volumechange',
+                                    this.onVolumeChange.bind(this));
                             }
 
                             this.extraAudio.src = URL.createObjectURL(
                                 this.player().recordedData.audio);
 
                             // pause extra audio when player pauses
-                            this.on(this.player(), 'pause', this.onPlayerPause);
+                            this.on(this.player(), 'pause',
+                                this.onPlayerPause);
                         }
 
                         // workaround some browser issues when player starts
@@ -959,6 +967,22 @@
                     this.on(this.player(), 'pause', this.hideAnimation);
                     break;
             }
+        },
+
+        /**
+         * Fired when the volume in the temporary audio element
+         * for Chrome in audio+video mode is present.
+         */
+        onVolumeChange: function()
+        {
+            var volume = this.player().volume();
+            if (this.player().muted())
+            {
+                // muted volume
+                volume = 0;
+            }
+
+            this.extraAudio.volume = volume;
         },
 
         /**
