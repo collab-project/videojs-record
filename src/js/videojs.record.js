@@ -675,7 +675,7 @@
                 }
 
                 // notify UI
-                this.trigger('startRecord');
+                this.player().trigger('startRecord');
             }
         },
 
@@ -690,7 +690,7 @@
                 this._processing = true;
 
                 // notify UI
-                this.trigger('stopRecord');
+                this.player().trigger('stopRecord');
 
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
@@ -703,7 +703,7 @@
                 else
                 {
                     // notify listeners that image data is (already) available
-                    this.trigger('finishRecord');
+                    this.player().trigger('finishRecord');
                 }
             }
         },
@@ -717,7 +717,7 @@
             {
                 // stop stream once recorded data is available,
                 // otherwise it'll break recording
-                this.one('finishRecord', this.stopStream);
+                this.player().one('finishRecord', this.stopStream);
 
                 // stop recording
                 this.stop();
@@ -808,7 +808,7 @@
                     this.player().recordedData = this.engine.recordedData;
 
                     // notify listeners that data is available
-                    this.trigger('finishRecord');
+                    this.player().trigger('finishRecord');
 
                     // Pausing the player so we can visualize the recorded data
                     // will trigger an async videojs 'pause' event that we have
@@ -849,7 +849,7 @@
                     this.player().recordedData = this.engine.recordedData;
 
                     // notify listeners that data is available
-                    this.trigger('finishRecord');
+                    this.player().trigger('finishRecord');
 
                     // remove previous listeners
                     this.off(this.player(), 'pause', this.onPlayerPause);
@@ -917,7 +917,7 @@
                     this.player().recordedData = this.engine.recordedData;
 
                     // notify listeners that data is available
-                    this.trigger('finishRecord');
+                    this.player().trigger('finishRecord');
 
                     // animation data is ready
                     this._processing = false;
@@ -1338,8 +1338,8 @@
             VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
-            this.on(player.recorder, 'startRecord', this.onStart);
-            this.on(player.recorder, 'stopRecord', this.onStop);
+            this.on(player, 'startRecord', this.onStart);
+            this.on(player, 'stopRecord', this.onStop);
         }
     });
     RecordToggle.prototype.onClick = function(e)
@@ -1389,8 +1389,8 @@
             VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
-            this.on(player.recorder, 'startRecord', this.onStart);
-            this.on(player.recorder, 'stopRecord', this.onStop);
+            this.on(player, 'startRecord', this.onStart);
+            this.on(player, 'stopRecord', this.onStop);
         }
     });
     CameraButton.prototype.onClick = function(e)
@@ -1445,7 +1445,7 @@
             VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
-        },
+        }
     });
     DeviceButton.prototype.onClick = function(e)
     {
@@ -1467,15 +1467,15 @@
         {
             VjsComponent.call(this, player, options);
 
-            this.on(player.recorder, 'startRecord', this.show);
-            this.on(player.recorder, 'stopRecord', this.hide);
+            this.on(player, 'startRecord', this.show);
+            this.on(player, 'stopRecord', this.hide);
         }
     });
     RecordIndicator.prototype.disable = function()
     {
         // disable record indicator event handlers
-        this.off(this.player().recorder, 'startRecord', this.show);
-        this.off(this.player().recorder, 'stopRecord', this.hide);
+        this.off(this.player(), 'startRecord', this.show);
+        this.off(this.player(), 'stopRecord', this.hide);
     };
 
     /**
