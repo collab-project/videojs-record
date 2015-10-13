@@ -1280,7 +1280,7 @@
         {
             if (this.player().controlBar.volumeMenuButton !== undefined)
             {
-                if (display == true)
+                if (display === true)
                 {
                     display = 'block';
                 }
