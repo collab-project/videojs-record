@@ -585,10 +585,15 @@
             // setup preview
             if (this.getRecordType() !== this.AUDIO_ONLY)
             {
-                // show live video preview
+                // show live preview
                 this.mediaElement = this.player().el().firstChild;
-                this.mediaElement.muted = true;
                 this.mediaElement.controls = false;
+
+                // mute incoming audio for feedback loops
+                this.mediaElement.muted = true;
+
+                // hide the volume bar while it's muted
+                this.displayVolumeControl(false);
 
                 // start stream
                 this.load(URL.createObjectURL(this.stream));
@@ -887,7 +892,7 @@
                         {
                             if (this.extraAudio === undefined)
                             {
-                                this.extraAudio = this.player().createEl('audio');
+                                this.extraAudio = this.createEl('audio');
                                 this.extraAudio.id = 'extraAudio';
                             }
 
@@ -905,6 +910,9 @@
                         if (this.getRecordType() === this.AUDIO_VIDEO)
                         {
                             this.mediaElement.muted = false;
+
+                            // show the volume bar when it's unmuted
+                            this.displayVolumeControl(true);
                         }
 
                         // load recorded media
@@ -1181,6 +1189,9 @@
             // mute local audio
             this.mediaElement.muted = true;
 
+            // hide volume control to prevent feedback
+            this.displayVolumeControl(false);
+
             // start/resume live preview
             this.load(URL.createObjectURL(this.stream));
             this.mediaElement.play();
@@ -1260,6 +1271,25 @@
         {
             this.setCurrentTime(this.player().currentTime(),
                 this.streamDuration);
+        },
+
+        /**
+         * Show/hide the volume menu.
+         */
+        displayVolumeControl: function(display)
+        {
+            if (this.player().controlBar.volumeMenuButton !== undefined)
+            {
+                if (display == true)
+                {
+                    display = 'block';
+                }
+                else
+                {
+                    display = 'none';
+                }
+                this.player().controlBar.volumeMenuButton.el().style.display = display;
+            }
         },
 
         /**
