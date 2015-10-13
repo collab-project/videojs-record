@@ -80,7 +80,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'src/css/videojs-icons.css': 'src/css/font/scss/videojs-icons.scss'
+          'src/css/videojs.record.css': 'src/css/font/scss/videojs-icons.scss'
         }
       }
     },
