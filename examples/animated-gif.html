@@ -4,16 +4,22 @@
   <meta charset="utf-8">
   <title>Animated GIF Example - Record Plugin for Video.js</title>
 
-  <link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
+  <link href="//vjs.zencdn.net/5.0/video-js.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.min.css" rel="stylesheet">
 
-  <script src="//vjs.zencdn.net/4.12.15/video.js"></script>
+  <script src="//vjs.zencdn.net/5.0/video.js"></script>
 
   <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
   <script src="//cdn.webrtc-experiment.com/gif-recorder.js"></script>
 
   <script src="../dist/videojs.record.min.js"></script>
 
+  <style>
+  /* change player background color */
+  #myVideo {
+      background-color: #6EF55F;
+  }
+  </style>
 </head>
 <body>
 
@@ -25,14 +31,9 @@ var player = videojs('myVideo',
     controls: true,
     width: 320,
     height: 240,
-    children: {
-        controlBar: {
-            children: {
-                muteToggle: false,
-                volumeControl: false,
-                fullscreenToggle: false
-            }
-        }
+    controlBar: {
+        volumeMenuButton: false,
+        fullscreenToggle: false
     },
     plugins: {
         record: {
@@ -43,10 +44,6 @@ var player = videojs('myVideo',
         }
     }
 });
-
-// change player background color
-player.el().style.backgroundColor = '#6EF55F';
-
 // error handling
 player.on('deviceError', function()
 {
