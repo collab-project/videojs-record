@@ -166,11 +166,14 @@ $icons: (
   z-index: 2;
 
   opacity: 1;
-  -webkit-border-radius: 9px;
-      -moz-border-radius: 9px;
-          border-radius: 9px;
+  border-radius: 9px;
   background-color: red;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+  box-shadow: 0em 0em 1em #FFF, 0px 1px 0px rgba(0, 0, 0, .3);
+  animation-name: recording-cue;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
 }
 
 .vjs-record-indicator.vjs-control
@@ -180,6 +183,18 @@ $icons: (
     top: 12px;
     right: 14px;
 
-    width: 18px;
-    height: 18px;
+    width: 12px;
+    height: 12px;
+} 
+
+@keyframes recording-cue {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity:  .5;
+  }
+  to {
+    opacity: 1;
+  }
 }
