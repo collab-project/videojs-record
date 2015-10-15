@@ -1,4 +1,24 @@
-(function(window, videojs) {
+(function (root, factory)
+{
+    if (typeof define === 'function' && define.amd)
+    {
+        // AMD. Register as an anonymous module.
+        define(['videojs'], factory);
+    }
+    else if (typeof module === 'object' && module.exports)
+    {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('videojs'));
+    }
+    else
+    {
+        // Browser globals (root is window)
+        root.returnExports = factory(root.videojs);
+    }
+}(this, function (videojs)
+{
     'use strict';
 
     var VjsComponent = videojs.getComponent('Component');
@@ -1713,4 +1733,7 @@
     // register the plugin
     videojs.plugin('record', record);
 
-})(window, window.videojs);
+    // return a function to define the module export
+    return record;
+
+}));
