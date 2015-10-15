@@ -31,7 +31,7 @@
   "dependencies": {
     "video.js": ">=5.0.0",
     "wavesurfer.js": ">=1.0.44",
-    "videojs-wavesurfer": ">=1.0.1",
+    "videojs-wavesurfer": ">=1.0.2",
     "recordrtc": "git://github.com/muaz-khan/RecordRTC.git",
     "libvorbis.js": ">=0.5.1"
   },
