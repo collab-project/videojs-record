@@ -354,10 +354,12 @@
                 case this.AUDIO_ONLY:
                     // reference to videojs-wavesurfer plugin
                     this.surfer = this.player().waveform;
-
-                    // initially hide playhead (fixed in wavesurfer 1.0.25)
-                    this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
-                    this.playhead.style.display = 'none';
+                    if (this.surfer)
+                    {
+                        // initially hide playhead (fixed in wavesurfer 1.0.25)
+                        this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
+                        this.playhead.style.display = 'none';
+                    }
                     break;
 
                 case this.IMAGE_ONLY:
@@ -1146,8 +1148,11 @@
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
-                    // also disposes player
-                    this.surfer.destroy();
+                    if (this.surfer)
+                    {
+                        // also disposes player
+                        this.surfer.destroy();
+                    }
                     break;
 
                 case this.IMAGE_ONLY:
