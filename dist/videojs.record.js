@@ -1,4 +1,4 @@
-/*! videojs-record v1.0.1
+/*! videojs-record v1.0.2
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2015 - Licensed MIT */
 (function (root, factory)
@@ -344,11 +344,11 @@
             // get rid of unused controls
             if (this.player().controlBar.remainingTimeDisplay !== undefined)
             {
-                this.player().controlBar.remainingTimeDisplay.dispose();
+                this.player().controlBar.remainingTimeDisplay.el().style.display = 'none';
             }
             if (this.player().controlBar.liveDisplay !== undefined)
             {
-                this.player().controlBar.liveDisplay.dispose();
+                this.player().controlBar.liveDisplay.el().style.display = 'none';
             }
 
             // tweak player UI based on type
@@ -357,10 +357,12 @@
                 case this.AUDIO_ONLY:
                     // reference to videojs-wavesurfer plugin
                     this.surfer = this.player().waveform;
-
-                    // initially hide playhead (fixed in wavesurfer 1.0.25)
-                    this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
-                    this.playhead.style.display = 'none';
+                    if (this.surfer)
+                    {
+                        // initially hide playhead (fixed in wavesurfer 1.0.25)
+                        this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
+                        this.playhead.style.display = 'none';
+                    }
                     break;
 
                 case this.IMAGE_ONLY:
@@ -418,6 +420,14 @@
         },
 
         /**
+         * Indicates whether the player is destroyed or not.
+         */
+        isDestroyed: function()
+        {
+            return this.player() && (this.player().children() === null);
+        },
+
+        /**
          * Open the brower's recording device selection dialog.
          */
         getDevice: function()
@@ -427,10 +437,13 @@
             {
                 this.deviceReadyCallback = this.onDeviceReady.bind(this);
             }
-
             if (this.deviceErrorCallback === undefined)
             {
                 this.deviceErrorCallback = this.onDeviceError.bind(this);
+            }
+            if (this.engineStopCallback === undefined)
+            {
+                this.engineStopCallback = this.onRecordComplete.bind(this);
             }
             // ask the browser to give us access to media device and get a
             // stream reference in the callback function
@@ -561,8 +574,7 @@
                     this.engine = new videojs.LibVorbisEngine(this.player());
                 }
                 // listen for events
-                this.engine.on('recordComplete',
-                    this.onRecordComplete.bind(this));
+                this.engine.on('recordComplete', this.engineStopCallback);
 
                 // audio settings
                 this.engine.bufferSize = this.audioBufferSize;
@@ -733,12 +745,18 @@
                     this.clearInterval(this.countDown);
 
                     // stop recording stream (result will be available async)
-                    this.engine.stop();
+                    if (this.engine)
+                    {
+                        this.engine.stop();
+                    }
                 }
                 else
                 {
-                    // notify listeners that image data is (already) available
-                    this.player().trigger('finishRecord');
+                    if (this.player().recordedData)
+                    {
+                        // notify listeners that image data is (already) available
+                        this.player().trigger('finishRecord');
+                    }
                 }
             }
         },
@@ -752,7 +770,7 @@
             {
                 // stop stream once recorded data is available,
                 // otherwise it'll break recording
-                this.player().one('finishRecord', this.stopStream);
+                this.player().one('finishRecord', this.stopStream.bind(this));
 
                 // stop recording
                 this.stop();
@@ -1116,10 +1134,15 @@
          */
         destroy: function()
         {
-            // stop playback
-            this._recording = false;
-            this._processing = false;
-            this._deviceActive = false;
+            // prevent callbacks if recording is in progress
+            if (this.engine)
+            {
+                this.engine.off('recordComplete', this.engineStopCallback);
+            }
+
+            // stop recording and device
+            this.stop();
+            this.stopDevice();
 
             // stop countdown
             this.clearInterval(this.countDown);
@@ -1128,8 +1151,11 @@
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
-                    // also disposes player
-                    this.surfer.destroy();
+                    if (this.surfer)
+                    {
+                        // also disposes player
+                        this.surfer.destroy();
+                    }
                     break;
 
                 case this.IMAGE_ONLY:
@@ -1139,6 +1165,10 @@
                     this.player().dispose();
                     break;
             }
+
+            this._recording = false;
+            this._processing = false;
+            this._deviceActive = false;
         },
 
         /**
