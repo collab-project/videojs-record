@@ -791,7 +791,8 @@
                 // use MediaStream.stop in browsers other than Chrome for now
                 // This will be deprecated in Firefox 44 (see
                 // https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/
-                // and https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106)
+                // https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
+                // https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
                 if (!this.isChrome())
                 {
                     if (this.getRecordType() === this.AUDIO_ONLY)
