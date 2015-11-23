@@ -356,9 +356,11 @@
                     this.surfer = this.player().waveform;
                     if (this.surfer)
                     {
-                        // initially hide playhead (fixed in wavesurfer 1.0.25)
-                        this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
-                        this.playhead.style.display = 'none';
+                        if(this.playhead){
+                            // initially hide playhead (fixed in wavesurfer 1.0.25)
+                            this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
+                            this.playhead.style.display = 'none';
+                        }
                     }
                     break;
 
@@ -666,9 +668,11 @@
                         // disable playback events
                         this.surfer.setupPlaybackEvents(false);
 
-                        // hide playhead
-                        // backwards compat (fixed since wavesurfer 1.0.25)
-                        this.playhead.style.display = 'none';
+                        if(this.playhead){
+                            // hide playhead
+                            // backwards compat (fixed since wavesurfer 1.0.25)
+                            this.playhead.style.display = 'none';
+                        }
 
                         // start/resume live audio visualization
                         this.surfer.microphone.paused = false;
@@ -872,9 +876,11 @@
                         // display loader
                         this.player().loadingSpinner.show();
 
-                        // show playhead
-                        this.playhead.style.display = 'block';
-
+                        if(this.playhead){
+                            // show playhead
+                            this.playhead.style.display = 'block';
+                        }
+                        
                         // restore interaction with controls after waveform
                         // rendering is complete
                         this.surfer.surfer.once('ready', function()
