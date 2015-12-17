@@ -10,7 +10,7 @@
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
-        module.exports = factory(require('videojs'));
+        module.exports = factory(require('video.js'));
     }
     else
     {
