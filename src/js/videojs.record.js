@@ -248,9 +248,6 @@
             this.encoder.encode(channelData);
         },
 
-        /**
-         *
-         */
         onData: function(data)
         {
             this.chunks.push(data);
@@ -401,7 +398,7 @@
         },
 
         /**
-         * Indicates whether we're currently recording or not.
+         * Indicates whether the plugin is currently recording or not.
          */
         isRecording: function()
         {
@@ -409,7 +406,8 @@
         },
 
         /**
-         * Indicates whether we're currently processing recorded data or not.
+         * Indicates whether the plugin is currently processing recorded data
+         * or not.
          */
         isProcessing: function()
         {
@@ -417,7 +415,7 @@
         },
 
         /**
-         * Indicates whether the player is destroyed or not.
+         * Indicates whether the plugin is destroyed or not.
          */
         isDestroyed: function()
         {
@@ -425,7 +423,7 @@
         },
 
         /**
-         * Open the brower's recording device selection dialog.
+         * Open the browser's recording device selection dialog.
          */
         getDevice: function()
         {
@@ -442,8 +440,8 @@
             {
                 this.engineStopCallback = this.onRecordComplete.bind(this);
             }
-            // ask the browser to give us access to media device and get a
-            // stream reference in the callback function
+            // ask the browser to give the user access to the media device
+            // and get a stream reference in the callback function
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -452,13 +450,13 @@
                         audio: true,
                         video: false
                     };
-                    // remove existing mic listeners
+                    // remove existing microphone listeners
                     this.surfer.microphone.un('deviceReady',
                         this.deviceReadyCallback);
                     this.surfer.microphone.un('deviceError',
                         this.deviceErrorCallback);
 
-                    // setup new mic listeners
+                    // setup new microphone listeners
                     this.surfer.microphone.on('deviceReady',
                         this.deviceReadyCallback);
                     this.surfer.microphone.on('deviceError',
@@ -503,7 +501,7 @@
                 case this.ANIMATION:
                     // setup camera
                     this.mediaType = {
-                        // animated gif
+                        // animated GIF
                         audio: false,
                         video: false,
                         gif: true
@@ -579,7 +577,7 @@
                 this.engine.audioWorkerURL = this.audioWorkerURL;
                 this.engine.audioModuleURL = this.audioModuleURL;
 
-                // animated gif settings
+                // animated GIF settings
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
 
@@ -774,8 +772,7 @@
             }
             else
             {
-                // stop stream now, since there's no recorded data
-                // being available
+                // stop stream now, since there's no recorded data available
                 this.stopStream();
             }
         },
@@ -862,8 +859,8 @@
                     this.player().trigger('finishRecord');
 
                     // Pausing the player so we can visualize the recorded data
-                    // will trigger an async videojs 'pause' event that we have
-                    // to wait for.
+                    // will trigger an async video.js 'pause' event that we
+                    // have to wait for.
                     this.player().one('pause', function()
                     {
                         // setup events during playback
@@ -906,9 +903,9 @@
                     this.off(this.player(), 'pause', this.onPlayerPause);
                     this.off(this.player(), 'play', this.onPlayerStart);
 
-                    // Pausing the player so we can visualize the recorded data
-                    // will trigger an async videojs 'pause' event that we have
-                    // to wait for.
+                    // pausing the player so we can visualize the recorded data
+                    // will trigger an async video.js 'pause' event that we
+                    // have to wait for.
                     this.player().one('pause', function()
                     {
                         // video data is ready
@@ -1106,7 +1103,7 @@
          * Start loading data.
          * 
          * @param {String|Blob|File} url Either the URL of the media file,
-         *     or a Blob or File object.
+         *     a Blob or a File object.
          */
         load: function(url)
         {
@@ -1121,7 +1118,7 @@
                 case this.VIDEO_ONLY:
                 case this.AUDIO_VIDEO:
                 case this.ANIMATION:
-                    // assign stream to audio/video element src
+                    // assign stream to audio/video element source
                     this.mediaElement.src = url;
                     break;
             }
@@ -1231,14 +1228,14 @@
         },
 
         /**
-         * Capture frame from camera and copy it to canvas.
+         * Capture frame from camera and copy data to canvas.
          */
         captureFrame: function()
         {
             var recordCanvas = this.player().recordCanvas.el().firstChild;
 
             // set the canvas size to the dimensions of the camera,
-            // which also wipes it
+            // which also wipes the content of the canvas
             recordCanvas.width = this.player().width();
             recordCanvas.height = this.player().height();
 
@@ -1267,7 +1264,7 @@
             // hide volume control to prevent feedback
             this.displayVolumeControl(false);
 
-            // start/resume live preview
+            // start or resume live preview
             this.load(URL.createObjectURL(this.stream));
             this.mediaElement.play();
         },
@@ -1308,7 +1305,7 @@
          */
         onPlayerStart: function()
         {
-            // workaround firefox issue
+            // workaround Firefox issue
             if (this.player().seeking())
             {
                 // There seems to be a Firefox issue
@@ -1349,7 +1346,7 @@
         },
 
         /**
-         * Show/hide the volume menu.
+         * Show or hide the volume menu.
          */
         displayVolumeControl: function(display)
         {
@@ -1472,7 +1469,7 @@
     };
     RecordToggle.prototype.onStart = function()
     {
-        // add the vjs-record-start class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-start');
         this.addClass('vjs-icon-record-stop');
 
@@ -1481,7 +1478,7 @@
     };
     RecordToggle.prototype.onStop = function()
     {
-        // add the vjs-record-stop class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-stop');
         this.addClass('vjs-icon-record-start');
 
@@ -1528,7 +1525,7 @@
     };
     CameraButton.prototype.onStart = function()
     {
-        // add class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-camera');
         this.addClass('vjs-icon-photo-retry');
 
@@ -1537,7 +1534,7 @@
     };
     CameraButton.prototype.onStop = function()
     {
-        // add class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-retry');
         this.addClass('vjs-icon-photo-camera');
 
@@ -1680,7 +1677,7 @@
         // Values greater than 20 do not yield significant improvements
         // in speed.
         animationQuality: 10,
-        // Enables console logging for debugging purposes
+        // Enables console logging for debugging purposes.
         debug: false
     };
 
