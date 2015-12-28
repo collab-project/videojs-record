@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>jQuery File Upload Example - Record Plugin for Video.js</title>
+        <link href="//vjs.zencdn.net/5.2.1/video-js.css" rel="stylesheet">
+        <link href="../../src/css/videojs.record.css" rel="stylesheet">
+
+        <style>
+        /* place fullscreen control on right side of the player */
+        .video-js .vjs-control.vjs-fullscreen-control {
+            position: absolute;
+            right: 0;
+        }
+        /* change player background color */
+        #myAudio {
+            background-color: #9FD6BA;
+        }
+        /* hide file upload button */
+        #fileupload {
+            display: none;
+        }
+        </style>
+    </head>
+
+    <body>
+        <audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+        <input id="fileupload" type="file" name="files[]" multiple>
+
+        <script src="//vjs.zencdn.net/5.2.1/video.js"></script>
+        <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
+        <script src="//katspaugh.github.io/wavesurfer.js/dist/wavesurfer.min.js"></script>
+        <script src="//katspaugh.github.io/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
+        <script src="//collab-project.github.io/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
+        <script src="../../src/js/videojs.record.js"></script>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="js/vendor/jquery.ui.widget.js"></script>
+        <script src="js/jquery.iframe-transport.js"></script>
+        <script src="js/jquery.fileupload.js"></script>
+
+        <script>
+        $(function () {
+            // Initialize the jQuery File Upload widget
+            $('#fileupload').fileupload({
+                url: '//localhost/~thijstriemstra/jQuery-File-Upload/server/php/',
+                maxFileSize: 999000,
+                done: function (e, data) {
+                    $.each(data.files, function (index, file) {
+                        var message = 'Upload complete: ' + file.name + ' (' +
+                            file.size + ' bytes)';
+                        $('<p/>').text(message).appendTo(document.body);
+                        console.log(message);
+                    });
+                }
+            });
+
+            // setup videojs-record
+            var player = videojs('myAudio',
+            {
+                controls: true,
+                width: 600,
+                height: 300,
+                plugins: {
+                    wavesurfer: {
+                        src: 'live',
+                        waveColor: 'black',
+                        progressColor: '#2E732D',
+                        cursorWidth: 1,
+                        msDisplayMax: 20,
+                        hideScrollbar: true
+                    },
+                    record: {
+                        audio: true,
+                        video: false,
+                        maxLength: 20
+                    }
+                }
+            });
+
+            // player error handling
+            player.on('deviceError', function()
+            {
+                console.warn('device error:', player.deviceErrorCode);
+            });
+
+            // data is available
+            player.on('finishRecord', function()
+            {
+                // the blob object contains the audio data
+                var audioFile = player.recordedData;
+
+                console.log('finished recording: ', player.recordedData);
+
+                // add filename and timestamp
+                var now = new Date();
+                audioFile.lastModifiedDate = now;
+                // guess extension name from mime-type, e.g. audio/ogg, but
+                // any extension is valid here
+                var fileExtension = '.' + audioFile.type.split('/')[1];
+                // use timestamp in filename, e.g. 1451180941326
+                audioFile.name = now.getTime() + fileExtension;
+
+                // upload data to server
+                var filesList = [audioFile];
+                $('#fileupload').fileupload('add', {files: filesList});
+            });
+
+        });
+        </script>
+
+    </body>
+</html>
