@@ -276,7 +276,7 @@
     {
         /**
          * The constructor function for the class.
-         * 
+         *
          * @param {videojs.Player|Object} player
          * @param {Object} options Player options.
          */
@@ -478,7 +478,7 @@
                     // setup camera
                     this.mediaType = {
                         audio: false,
-                        video: true
+                        video: this.recordVideo
                     };
                     this.getUserMedia(
                         this.mediaType,
@@ -490,7 +490,7 @@
                     // setup camera and microphone
                     this.mediaType = {
                         audio: true,
-                        video: true
+                        video: this.recordVideo
                     };
                     this.getUserMedia(
                         this.mediaType,
@@ -508,7 +508,7 @@
                     };
                     this.getUserMedia({
                             audio: false,
-                            video: true
+                            video: this.recordVideo
                         },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
@@ -1101,7 +1101,7 @@
 
         /**
          * Start loading data.
-         * 
+         *
          * @param {String|Blob|File} url Either the URL of the media file,
          *     a Blob or a File object.
          */
@@ -1250,7 +1250,7 @@
         },
 
         /**
-         * 
+         *
          */
         startVideoPreview: function()
         {
@@ -1366,10 +1366,10 @@
 
         /**
          * Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.
-         * 
+         *
          * Supplying a guide (in seconds) will force a number of leading zeros
          * to cover the length of the guide.
-         * 
+         *
          * @param {Number} seconds Number of seconds to be turned into a string
          * @param {Number} guide Number (in seconds) to model the string after
          * @return {String} Time formatted as H:MM:SS, M:SS or M:SS:MMM.
