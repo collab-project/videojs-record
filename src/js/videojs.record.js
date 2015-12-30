@@ -478,10 +478,12 @@
                     // setup camera
                     this.mediaType = {
                         audio: false,
-                        video: this.recordVideo
+                        video: true
                     };
-                    this.getUserMedia(
-                        this.mediaType,
+                    this.getUserMedia({
+                            audio: false,
+                            video: this.recordVideo
+                        },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
                     break;
@@ -490,10 +492,12 @@
                     // setup camera and microphone
                     this.mediaType = {
                         audio: true,
-                        video: this.recordVideo
+                        video: true
                     };
-                    this.getUserMedia(
-                        this.mediaType,
+                    this.getUserMedia({
+                            audio: this.recordAudio,
+                            video: this.recordVideo
+                        },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
                     break;
@@ -1171,23 +1175,26 @@
          */
         getRecordType: function()
         {
-            if (this.recordImage)
+            if (this.isModeEnabled(this.recordImage))
             {
                 return this.IMAGE_ONLY;
             }
-            else if (this.recordAnimation)
+            else if (this.isModeEnabled(this.recordAnimation))
             {
                 return this.ANIMATION;
             }
-            else if (this.recordAudio && !this.recordVideo)
+            else if (this.isModeEnabled(this.recordAudio) && !this.isModeEnabled(
+                this.recordVideo))
             {
                 return this.AUDIO_ONLY;
             }
-            else if (this.recordAudio && this.recordVideo)
+            else if (this.isModeEnabled(this.recordAudio) && this.isModeEnabled(
+                this.recordVideo))
             {
                 return this.AUDIO_VIDEO;
             }
-            else if (!this.recordAudio && this.recordVideo)
+            else if (!this.isModeEnabled(this.recordAudio) && this.isModeEnabled(
+                this.recordVideo))
             {
                 return this.VIDEO_ONLY;
             }
@@ -1250,7 +1257,7 @@
         },
 
         /**
-         *
+         * Start preview of video stream.
          */
         startVideoPreview: function()
         {
@@ -1428,6 +1435,14 @@
             s = ((s < 10) ? '0' + s : s);
 
             return h + m + s + ms;
+        },
+
+        /**
+         * Return boolean indicating whether mode is enabled or not.
+        */
+        isModeEnabled: function(mode)
+        {
+            return mode === Object(mode) || mode === true;
         }
 
     });

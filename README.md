@@ -140,38 +140,13 @@ var player = videojs("myVideo",
 });
 ```
 
-It is also possible to use `getUserMedia` video constraints. For example:
-
-```javascript
-var player = videojs("myVideo",
-{
-    controls: true,
-    loop: false,
-    width: 320,
-    height: 240,
-    plugins: {
-        record: {
-            image: false,
-            audio: false,
-            video: {
-                width: 1280,
-                height: 720
-            },
-            maxLength: 5
-        }
-    }
-});
-```
-
-This will set the resolution to `1280x720` if the camera supports it.
-
 The available options for this plugin are:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `image` | boolean | `false` | Create single snapshot image. |
-| `audio` | boolean | `false` | Include audio in the recorded clip. |
-| `video` | boolean/array | `false` | Include video in the recorded clip. |
+| `image` | boolean or object | `false` | Create single snapshot image. |
+| `audio` | boolean or object | `false` | Include audio in the recorded clip. |
+| `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc` and `libvorbis.js`. |
@@ -220,6 +195,37 @@ player.on('startRecord', function()
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `finishRecord` | The recorded stream or image is available. Check the `player.recordedData` object for the recorded data. |
+
+Media Constraints
+-----------------
+
+[Media stream constraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Parameters)
+allow you to specify the types of media to request, along with any requirements for each type.
+
+Use the `width` and `height` settings to change the camera resolution for example:
+
+```javascript
+var player = videojs("myVideo",
+{
+    controls: true,
+    loop: false,
+    // dimensions of player
+    width: 1280,
+    height: 720,
+    plugins: {
+        record: {
+            image: false,
+            audio: false,
+            video: {
+                // resolution of camera
+                width: 1280,
+                height: 720
+            },
+            maxLength: 5
+        }
+    }
+});
+```
 
 Get recorded data
 -----------------
