@@ -140,13 +140,38 @@ var player = videojs("myVideo",
 });
 ```
 
+It is also possible to use `getUserMedia` video constraints. For example:
+
+```javascript
+var player = videojs("myVideo",
+{
+    controls: true,
+    loop: false,
+    width: 320,
+    height: 240,
+    plugins: {
+        record: {
+            image: false,
+            audio: false,
+            video: {
+                width: 1280,
+                height: 720
+            },
+            maxLength: 5
+        }
+    }
+});
+```
+
+This will set the resolution to `1280x720` if the camera supports it.
+
 The available options for this plugin are:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `image` | boolean | `false` | Create single snapshot image. |
 | `audio` | boolean | `false` | Include audio in the recorded clip. |
-| `video` | boolean | `false` | Include video in the recorded clip. |
+| `video` | boolean/array | `false` | Include video in the recorded clip. |
 | `animation` | boolean | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc` and `libvorbis.js`. |
