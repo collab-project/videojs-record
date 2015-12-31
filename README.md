@@ -243,7 +243,7 @@ player.on('finishRecord', function()
 });
 ```
 
-Check the [jquery.fileupload example](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) on how to upload the
+Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html) examples on how to upload the
 data to a server.
 
 Note that in the Chrome browser `player.recordedData` returns an object with

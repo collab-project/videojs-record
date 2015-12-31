@@ -4,3 +4,8 @@ dist
 *.log
 node_modules
 bower_components
+*.phar
+*.lock
+composer.json
+php.ini
+vendor
