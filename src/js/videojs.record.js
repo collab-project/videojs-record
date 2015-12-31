@@ -55,6 +55,22 @@
         constructor: function(player, options)
         {
             VjsComponent.call(this, player, options);
+        },
+
+        /**
+         * Add filename and timestamp to recorded file object.
+         */
+        addFileInfo: function(fileObj)
+        {
+            var now = new Date();
+            fileObj.lastModifiedDate = now;
+
+            // guess extension name from mime-type, e.g. audio/ogg, but
+            // any extension is valid here
+            var fileExtension = '.' + fileObj.type.split('/')[1];
+
+            // use timestamp in filename, e.g. 1451180941326
+            fileObj.name = now.getTime() + fileExtension;
         }
     });
 
@@ -124,6 +140,8 @@
                     case this.AUDIO_ONLY:
                         this.recordedData = recording.audio;
 
+                        this.addFileInfo(this.recordedData);
+
                         // notify listeners
                         this.trigger('recordComplete');
                         break;
@@ -148,6 +166,8 @@
                                 this.recordedData = recording;
                             }
 
+                            this.addFileInfo(this.recordedData);
+
                             // notify listeners
                             this.trigger('recordComplete');
                         }
@@ -155,6 +175,8 @@
 
                     case this.ANIMATION:
                         this.recordedData = recording.gif;
+
+                        this.addFileInfo(this.recordedData);
 
                         // notify listeners
                         this.trigger('recordComplete');
@@ -259,6 +281,8 @@
         onStopRecording: function()
         {
             this.recordedData = new Blob(this.chunks, {type: 'audio/ogg'});
+
+            this.addFileInfo(this.recordedData)
 
             // store reference to recorded stream URL
             this.mediaURL = URL.createObjectURL(this.recordedData);

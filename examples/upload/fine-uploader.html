@@ -77,16 +77,7 @@
                 // the blob object contains the audio data
                 var audioFile = player.recordedData;
 
-                console.log('finished recording: ', player.recordedData);
-
-                // add filename and timestamp
-                var now = new Date();
-                audioFile.lastModifiedDate = now;
-                // guess extension name from mime-type, e.g. audio/ogg, but
-                // any extension is valid here
-                var fileExtension = '.' + audioFile.type.split('/')[1];
-                // use timestamp in filename, e.g. 1451180941326
-                audioFile.name = now.getTime() + fileExtension;
+                console.log('finished recording: ', audioFile);
 
                 // upload data to server
                 var filesList = [audioFile];
