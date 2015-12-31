@@ -282,7 +282,7 @@
         {
             this.recordedData = new Blob(this.chunks, {type: 'audio/ogg'});
 
-            this.addFileInfo(this.recordedData)
+            this.addFileInfo(this.recordedData);
 
             // store reference to recorded stream URL
             this.mediaURL = URL.createObjectURL(this.recordedData);
