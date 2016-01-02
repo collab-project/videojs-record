@@ -164,9 +164,16 @@
                             {
                                 // store both audio and video
                                 this.recordedData = recording;
-                            }
 
-                            this.addFileInfo(this.recordedData);
+                                for (var mtype in this.recordedData)
+                                {
+                                    this.addFileInfo(this.recordedData[mtype]);
+                                }
+                            }
+                            else
+                            {
+                                this.addFileInfo(this.recordedData);
+                            }
 
                             // notify listeners
                             this.trigger('recordComplete');
