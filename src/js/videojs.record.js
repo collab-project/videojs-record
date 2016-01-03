@@ -36,6 +36,7 @@
         // recorder engines
         RECORDRTC: 'recordrtc',
         LIBVORBISJS: 'libvorbis.js',
+        RECORDERJS: 'recorder.js',
 
         // browser checks
         isEdge: function()
@@ -74,6 +75,9 @@
         }
     });
 
+    /**
+     * Engine for the RecordRTC library.
+     */
     videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
     {
         /**
@@ -193,6 +197,9 @@
         }
     });
 
+    /**
+     * Audio-only engine for the libvorbis.js library.
+     */
     videojs.LibVorbisEngine = videojs.extend(videojs.RecordBase,
     {
         /**
@@ -288,6 +295,70 @@
         onStopRecording: function()
         {
             this.recordedData = new Blob(this.chunks, {type: 'audio/ogg'});
+
+            this.addFileInfo(this.recordedData);
+
+            // store reference to recorded stream URL
+            this.mediaURL = URL.createObjectURL(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
+        }
+    });
+
+    /**
+     * Audio-only engine for the recorder.js library.
+     */
+    videojs.RecorderjsEngine = videojs.extend(videojs.RecordBase,
+    {
+        /**
+         * Setup recording engine.
+         */
+        setup: function(stream, mediaType, debug)
+        {
+            this.inputStream = stream;
+            this.mediaType = mediaType;
+            this.debug = debug;
+
+            this.audioContext = new AudioContext();
+            this.audioSourceNode = this.audioContext.createMediaStreamSource(
+                this.inputStream);
+
+            // setup recorder.js
+            this.engine = new Recorder(this.audioSourceNode, {
+                bufferLen: this.bufferSize,
+                numChannels: 2
+            });
+        },
+
+        /**
+         * Start recording.
+         */
+        start: function()
+        {
+            this.engine.record();
+        },
+
+        /**
+         * Stop recording.
+         */
+        stop: function()
+        {
+            this.engine.stop();
+
+            this.engine.exportWAV(this.onStopRecording.bind(this));
+
+            this.engine.clear();
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         *
+         * @param {Blob} data Reference to the recorded Blob
+         */
+        onStopRecording: function(data)
+        {
+            this.recordedData = data;
 
             this.addFileInfo(this.recordedData);
 
@@ -586,25 +657,33 @@
                 // currently libvorbis.js is only supported in
                 // audio-only mode
                 if (this.getRecordType() !== this.AUDIO_ONLY &&
-                    this.audioEngine === this.LIBVORBISJS)
+                    (this.audioEngine === this.LIBVORBISJS ||
+                     this.audioEngine === this.RECORDERJS))
                 {
-                    throw new Error('Currently libvorbis.js is only supported in audio-only mode.');
+                    throw new Error('Currently ' + this.audioEngine +
+                        ' is only supported in audio-only mode.');
                 }
 
                 // connect stream to recording engine
-                if (this.audioEngine === this.RECORDRTC)
-                {
-                    // RecordRTC.js (default)
-                    this.engine = new videojs.RecordRTCEngine(this.player());
-                }
-                else if (this.audioEngine === this.LIBVORBISJS)
-                {
-                    // libvorbis.js
-                    this.engine = new videojs.LibVorbisEngine(this.player());
-                }
-                else
-                {
-                    throw new Error('Unknown audioEngine: ' + this.audioEngine);
+                switch (this.audioEngine) {
+                    case this.RECORDRTC:
+                        // RecordRTC.js (default)
+                        this.engine = new videojs.RecordRTCEngine(this.player());
+                        break;
+
+                    case this.LIBVORBISJS:
+                        // libvorbis.js
+                        this.engine = new videojs.LibVorbisEngine(this.player());
+                        break;
+
+                    case this.RECORDERJS:
+                        // recorder.js
+                        this.engine = new videojs.RecorderjsEngine(this.player());
+                        break;
+
+                    default:
+                        // unknown
+                        throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
                 // listen for events
                 this.engine.on('recordComplete', this.engineStopCallback);
@@ -1691,8 +1770,8 @@
         animation: false,
         // Maximum length of the recorded clip.
         maxLength: 10,
-        // Audio recording library to use. Legal values are 'recordrtc'
-        // and 'libvorbis.js'.
+        // Audio recording library to use. Legal values are 'recordrtc',
+        // 'libvorbis.js' and 'recorder.js'.
         audioEngine: 'recordrtc',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.

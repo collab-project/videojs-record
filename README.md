@@ -39,9 +39,10 @@ And when recording audio-only, the following dependencies are also required:
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer-js.org/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
-Optional dependencies for other output formats:
+Optional dependencies when using alternative audio libraries:
 
 - [libvorbis.js](https://github.com/Garciat/libvorbis.js) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
+- [recorder.js](https://github.com/mattdiamond/Recorderjs) - A plugin for recording/exporting the output of Web Audio API nodes.
 
 Usage
 -----
@@ -149,7 +150,7 @@ The available options for this plugin are:
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
-| `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc` and `libvorbis.js`. |
+| `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js` and `recorder.js`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `libvorbis.oggvbr.asyncencoder.worker.min.js`. Currently only used for libvorbis.js. |
