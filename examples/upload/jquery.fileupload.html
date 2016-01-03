@@ -45,7 +45,6 @@
             // Initialize the jQuery File Upload widget
             $('#fileupload').fileupload({
                 url: '//localhost/jQuery-File-Upload/server/php/',
-                maxFileSize: 999000,
                 done: function (e, data) {
                     $.each(data.files, function (index, file) {
                         var message = 'Upload complete: ' + file.name + ' (' +
