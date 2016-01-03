@@ -10,6 +10,7 @@
         "RecordRTC",
         "MRecordRTC",
         "libvorbis",
+        "Recorder",
         "AudioContext",
         "module",
         "require",

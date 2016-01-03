@@ -39,7 +39,7 @@ And when recording audio-only, the following dependencies are also required:
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer-js.org/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
-Optional dependencies when using alternative audio libraries:
+Optional dependencies when using [other audio libraries](#other-audio-libraries):
 
 - [libvorbis.js](https://github.com/Garciat/libvorbis.js) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
 - [recorder.js](https://github.com/mattdiamond/Recorderjs) - A plugin for recording/exporting the output of Web Audio API nodes.
@@ -264,14 +264,21 @@ controlBar: {
 },
 ```
 
-Other output formats
---------------------
+Other audio libraries
+---------------------
+
+RecordRTC is the default recording library but there is also support
+for other audio libraries.
+
+### libvorbis.js
 
 Microphone recordings can result in large audio files, especially when there is no native
 support for other audio formats (.ogg for example) in the browser (like Chrome).
-libvorbis.js provides a Javascript implementation of a PCM to Ogg Vorbis encoder and
-you can choose to use this instead of RecordRTC (currently only available when recording
-audio-only).
+
+[libvorbis.js](https://github.com/Garciat/libvorbis.js) provides a Javascript
+implementation of a PCM to Ogg Vorbis encoder and you can choose to use this
+instead of RecordRTC. libvorbis.js is currently only supported when recording
+audio-only.
 
 Include the libvorbis.js library (instead of RecordRTC.js) and place it before
 any other scripts:
@@ -284,6 +291,23 @@ And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
 `audioModuleURL` options.
 
 Check out the audio-only Ogg example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
+
+### recorder.js
+
+[recorder.js](https://github.com/mattdiamond/Recorderjs) is another plugin for
+recording/exporting the output of Web Audio API nodes, similar to RecordRTC.
+recorder.js is currently only supported when recording audio-only.
+
+Include the recorder.js library (instead of RecordRTC.js) and include it on the
+page:
+
+```html
+<script src="/path/to/recorder.js" async></script>
+```
+
+And specify the `recorder.js` `audioEngine` option.
+
+Check out the audio-only recorder.js example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-recorderjs.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-recorderjs.html)).
 
 Localization
 ------------
