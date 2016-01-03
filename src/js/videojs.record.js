@@ -297,7 +297,6 @@
             // notify listeners
             this.trigger('recordComplete');
         }
-
     });
 
     /**
@@ -602,6 +601,10 @@
                 {
                     // libvorbis.js
                     this.engine = new videojs.LibVorbisEngine(this.player());
+                }
+                else
+                {
+                    throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
                 // listen for events
                 this.engine.on('recordComplete', this.engineStopCallback);
