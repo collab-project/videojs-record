@@ -104,8 +104,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-videojs-languages');
   grunt.loadNpmTasks('grunt-sass');
 
-  grunt.registerTask('font', ['generate-font', 'update-base64', 'sass']);
-  grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages', 'font']);
+  grunt.registerTask('font', ['generate-font', 'update-base64']);
+  grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages', 'sass']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'Building Source', function(){

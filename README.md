@@ -214,7 +214,6 @@ var player = videojs("myVideo",
     height: 720,
     plugins: {
         record: {
-            image: false,
             audio: false,
             video: {
                 // resolution of camera
@@ -354,6 +353,12 @@ grunt
 ```
 
 Generated files are placed in the `dist` directory.
+
+Generate or update the font files:
+
+```
+grunt font
+```
 
 License
 -------
