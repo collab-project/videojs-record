@@ -312,7 +312,6 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 [list of supported countrycodes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
 Pull requests to add more languages to this plugin are always welcome!
 
-
 More features using other plugins
 ---------------------------------
 
@@ -354,11 +353,16 @@ grunt
 
 Generated files are placed in the `dist` directory.
 
+Font
+----
+
 Generate or update the font files:
 
 ```
 grunt font
 ```
+
+Check the [the font readme](src/css/font/README.md) for more information.
 
 License
 -------
