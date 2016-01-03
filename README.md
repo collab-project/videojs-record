@@ -194,7 +194,7 @@ player.on('startRecord', function()
 | `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia#errorCallback). |
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
-| `finishRecord` | The recorded stream or image is available. Check the `player.recordedData` object for the recorded data. |
+| `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
 
 Media Constraints
 -----------------
@@ -283,7 +283,6 @@ And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
 `audioModuleURL` options.
 
 Check out the audio-only Ogg example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
-
 
 Localization
 ------------
