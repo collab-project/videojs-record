@@ -20,7 +20,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: pkg,
     build: {
-      src: 'src/js/dependencies.js',
       options: {
         baseDir: 'src/js/'
       }
