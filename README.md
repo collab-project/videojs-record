@@ -36,7 +36,7 @@ When recording audio and/or video you also need:
 
 And when recording audio-only, the following dependencies are also required:
 
-- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://www.wavesurfer-js.org/example/microphone) used for realtime visualization of the microphone audio signal.
+- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](https://katspaugh.github.io/wavesurfer.js/example/microphone) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries):
@@ -102,8 +102,8 @@ the videojs-wavesurfer and microphone plugins. Make sure to place this before
 the `videojs.record.js` script.
 
 ```html
-<script src="http://wavesurfer-js.org/dist/wavesurfer.min.js"></script>
-<script src="http://wavesurfer-js.org/dist/plugin/wavesurfer.microphone.min.js"></script>
+<script src="//katspaugh.github.io/wavesurfer.js/dist/wavesurfer.min.js"></script>
+<script src="//katspaugh.github.io/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
 <script src="videojs.wavesurfer.js"></script>
 ```
 
