@@ -249,6 +249,9 @@
             this.scriptProcessorNode.disconnect(this.audioContext.destination);
 
             this.encoder.finish();
+
+            this.audioContext.close();
+            this.audioContext = null;
         },
 
         /**
