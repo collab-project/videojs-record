@@ -414,12 +414,20 @@
             this._deviceActive = false;
 
             // cross-browser getUserMedia
-            this.getUserMedia = (
+            var getUserMediaFn =
                 navigator.getUserMedia ||
                 navigator.webkitGetUserMedia ||
                 navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia
-            ).bind(navigator);
+                navigator.msGetUserMedia;
+
+            if (getUserMediaFn) {
+                this.getUserMedia = getUserMediaFn.bind(navigator);
+            } else {
+                this.getUserMedia = function (constraints, successCallback, errorCallback) {
+                    errorCallback(new Error('getUserMedia is not supported'));
+                };
+            }
+            
 
             // wait until player ui is ready
             this.player().one('ready', this.setupUI.bind(this));
