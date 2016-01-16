@@ -148,7 +148,7 @@ The available options for this plugin are:
 | `image` | boolean or object | `false` | Create single snapshot image. |
 | `audio` | boolean or object | `false` | Include audio in the recorded clip. |
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
-| `animation` | boolean | `false` | Animated GIF. |
+| `animation` | boolean or object | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js` and `recorder.js`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
