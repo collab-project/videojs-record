@@ -597,7 +597,7 @@
                     };
                     this.getUserMedia({
                             audio: false,
-                            video: this.recordVideo
+                            video: (this.getRecordType() === this.IMAGE_ONLY) ? this.recordImage : this.recordVideo
                         },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
@@ -627,7 +627,7 @@
                     };
                     this.getUserMedia({
                             audio: false,
-                            video: this.recordVideo
+                            video: this.recordAnimation
                         },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
