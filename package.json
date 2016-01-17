@@ -31,8 +31,8 @@
   ],
   "dependencies": {
     "video.js": ">=5.0.0",
-    "wavesurfer.js": ">=1.0.44",
-    "videojs-wavesurfer": ">=1.0.5",
+    "wavesurfer.js": ">=1.0.50",
+    "videojs-wavesurfer": ">=1.0.6",
     "recordrtc": ">=5.0.8",
     "libvorbis.js": ">=0.5.1"
   },
