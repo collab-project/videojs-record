@@ -6,7 +6,7 @@ A Video.js plugin for recording audio/video/image files.
 <img title="Screenshot" src="examples/img/screenshot.png?raw=true" width="329">
 
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
-[![npm](https://img.shields.io/npm/dm/videojs-record.svg)]()
+[![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 
