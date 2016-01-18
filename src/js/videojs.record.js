@@ -37,6 +37,7 @@
         RECORDRTC: 'recordrtc',
         LIBVORBISJS: 'libvorbis.js',
         RECORDERJS: 'recorder.js',
+        LAMEJS: 'lamejs',
 
         // browser checks
         isEdge: function()
@@ -377,6 +378,110 @@
     });
 
     /**
+     * Audio-only engine for the lamejs library.
+     */
+    videojs.LamejsEngine = videojs.extend(videojs.RecordBase,
+    {
+        /**
+         * Setup recording engine.
+         */
+        setup: function(stream, mediaType, debug)
+        {
+            this.inputStream = stream;
+            this.mediaType = mediaType;
+            this.debug = debug;
+
+            var config = {debug: this.debug};
+
+            this.audioContext = new AudioContext();
+            this.audioSourceNode = this.audioContext.createMediaStreamSource(
+                this.inputStream);
+            this.processor = this.audioContext.createScriptProcessor(
+                16384, 1, 1);
+            config.sampleRate = this.audioContext.sampleRate;
+
+            this.engine = new Worker(this.audioWorkerURL);
+            this.engine.onmessage = this.onWorkerMessage.bind(this);
+
+            this.engine.postMessage({cmd: 'init', config: config});
+        },
+
+        /**
+         * Start recording.
+         */
+        start: function()
+        {
+            this.processor.onaudioprocess = this.onAudioProcess.bind(this);
+            this.audioSourceNode.connect(this.processor);
+            this.processor.connect(this.audioContext.destination);
+        },
+
+        /**
+         * Stop recording.
+         */
+        stop: function()
+        {
+            this.audioSourceNode.disconnect();
+            this.processor.disconnect();
+            this.processor.onaudioprocess = null;
+
+            this.engine.postMessage({cmd: 'finish'});
+        },
+
+        /**
+         * Received a message from the worker.
+         */
+        onWorkerMessage: function(e)
+        {
+            switch (e.data.cmd)
+            {
+                case 'end':
+                    this.onStopRecording(new Blob(e.data.buf,
+                        {type: 'audio/mp3'}));
+                    break;
+
+                case 'error':
+                    this.player().trigger('error', e.data.error);
+                    break;
+
+                default:
+                    // invalid message received
+                    this.player().trigger('error', e.data);
+                    break;
+            }
+        },
+
+        /**
+         * Continous encoding of audio data.
+         */
+        onAudioProcess: function(ev)
+        {
+            // send microphone data to LAME for MP3 encoding while recording
+            var data = ev.inputBuffer.getChannelData(0);
+
+            this.engine.postMessage({cmd: 'encode', buf: data});
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         *
+         * @param {Blob} data Reference to the recorded Blob
+         */
+        onStopRecording: function(data)
+        {
+            this.recordedData = data;
+
+            this.addFileInfo(this.recordedData);
+
+            // store reference to recorded stream URL
+            this.mediaURL = URL.createObjectURL(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
+        }
+    });
+
+    /**
      * Record audio/video/images using the Video.js player.
      */
     videojs.Recorder = videojs.extend(videojs.RecordBase,
@@ -683,11 +788,12 @@
             // setup recording engine
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
-                // currently libvorbis.js is only supported in
-                // audio-only mode
+                // currently libvorbis.js, recorder.js and lamejs are only
+                // supported in audio-only mode
                 if (this.getRecordType() !== this.AUDIO_ONLY &&
                     (this.audioEngine === this.LIBVORBISJS ||
-                     this.audioEngine === this.RECORDERJS))
+                     this.audioEngine === this.RECORDERJS ||
+                     this.audioEngine === this.LAMEJS))
                 {
                     throw new Error('Currently ' + this.audioEngine +
                         ' is only supported in audio-only mode.');
@@ -708,6 +814,11 @@
                     case this.RECORDERJS:
                         // recorder.js
                         this.engine = new videojs.RecorderjsEngine(this.player());
+                        break;
+
+                    case this.LAMEJS:
+                        // lamejs
+                        this.engine = new videojs.LamejsEngine(this.player());
                         break;
 
                     default:
