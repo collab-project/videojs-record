@@ -723,7 +723,7 @@
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
 
-                this.engine.setup(this.stream, this.mediaType, !this.debug);
+                this.engine.setup(this.stream, this.mediaType, this.debug);
 
                 // show elements that should never be hidden in animation,
                 // audio and/or video modus
