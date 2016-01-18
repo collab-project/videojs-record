@@ -38,6 +38,7 @@
         LIBVORBISJS: 'libvorbis.js',
         RECORDERJS: 'recorder.js',
         LAMEJS: 'lamejs',
+        OPUSRECORDER: 'opus-recorder',
 
         // browser checks
         isEdge: function()
@@ -485,6 +486,67 @@
     });
 
     /**
+     * Audio-only engine for the opus-recorder library.
+     */
+    videojs.OpusRecorderEngine = videojs.extend(videojs.RecordBase,
+    {
+        /**
+         * Setup recording engine.
+         */
+        setup: function(stream, mediaType, debug)
+        {
+            this.inputStream = stream;
+            this.mediaType = mediaType;
+            this.debug = debug;
+
+            this.engine = new Recorder({
+                numberOfChannels: this.audioChannels,
+                bufferLength: this.bufferSize,
+                encoderSampleRate: this.sampleRate,
+                encoderPath: this.audioWorkerURL
+            });
+            this.engine.addEventListener('dataAvailable',
+                this.onStopRecording.bind(this));
+
+            this.engine.initStream();
+        },
+
+        /**
+         * Start recording.
+         */
+        start: function()
+        {
+            this.engine.start();
+        },
+
+        /**
+         * Stop recording.
+         */
+        stop: function()
+        {
+            this.engine.stop();
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         *
+         * @param {Blob} data Reference to the recorded Blob
+         */
+        onStopRecording: function(data)
+        {
+            this.recordedData = data.detail;
+
+            this.addFileInfo(this.recordedData);
+
+            // store reference to recorded stream URL
+            this.mediaURL = URL.createObjectURL(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
+        }
+    });
+
+    /**
      * Record audio/video/images using the Video.js player.
      */
     videojs.Recorder = videojs.extend(videojs.RecordBase,
@@ -793,43 +855,54 @@
             // setup recording engine
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
-                // currently libvorbis.js, recorder.js and lamejs are only
-                // supported in audio-only mode
+                // currently libvorbis.js, recorder.js, opus-recorder and lamejs
+                // are only supported in audio-only mode
                 if (this.getRecordType() !== this.AUDIO_ONLY &&
                     (this.audioEngine === this.LIBVORBISJS ||
                      this.audioEngine === this.RECORDERJS ||
-                     this.audioEngine === this.LAMEJS))
+                     this.audioEngine === this.LAMEJS ||
+                     this.audioEngine === this.OPUSRECORDER))
                 {
                     throw new Error('Currently ' + this.audioEngine +
                         ' is only supported in audio-only mode.');
                 }
 
-                // connect stream to recording engine
-                switch (this.audioEngine) {
+                // get recorder class
+                var engineClass;
+                switch (this.audioEngine)
+                {
                     case this.RECORDRTC:
                         // RecordRTC.js (default)
-                        this.engine = new videojs.RecordRTCEngine(this.player());
+                        engineClass = videojs.RecordRTCEngine;
                         break;
 
                     case this.LIBVORBISJS:
                         // libvorbis.js
-                        this.engine = new videojs.LibVorbisEngine(this.player());
+                        engineClass = videojs.LibVorbisEngine;
                         break;
 
                     case this.RECORDERJS:
                         // recorder.js
-                        this.engine = new videojs.RecorderjsEngine(this.player());
+                        engineClass = videojs.RecorderjsEngine;
                         break;
 
                     case this.LAMEJS:
                         // lamejs
-                        this.engine = new videojs.LamejsEngine(this.player());
+                        engineClass = videojs.LamejsEngine;
+                        break;
+
+                    case this.OPUSRECORDER:
+                        // opus-recorder
+                        engineClass = videojs.OpusRecorderEngine;
                         break;
 
                     default:
                         // unknown
                         throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
+                // connect stream to recording engine
+                this.engine = new engineClass(this.player());
+
                 // listen for events
                 this.engine.on('recordComplete', this.engineStopCallback);
 
@@ -844,6 +917,7 @@
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
 
+                // initialize recorder
                 this.engine.setup(this.stream, this.mediaType, this.debug);
 
                 // show elements that should never be hidden in animation,

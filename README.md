@@ -43,6 +43,7 @@ Optional dependencies when using [other audio libraries](#other-audio-libraries)
 
 - [libvorbis.js](#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
 - [lamejs](#lamejs) - Converts PCM audio data to compressed MP3 audio.
+- [opus-recorder](#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
 - [recorder.js](#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
 
 Usage
@@ -152,11 +153,11 @@ The available options for this plugin are:
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean or object | `false` | Animated GIF. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
-| `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js`, `lamejs` and `recorder.js`. |
+| `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js`, `lamejs`, `opus-recorder` and `recorder.js`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller filesize. |
-| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `libvorbis.oggvbr.asyncencoder.worker.min.js`. Currently only used for libvorbis.js and lamejs. |
+| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `libvorbis.oggvbr.asyncencoder.worker.min.js`. Currently only used for libvorbis.js, opus-recorder and lamejs. |
 | `audioModuleURL` | string | `''` | URL for the audio module, for example: `libvorbis.asmjs.min.js`. Currently only used for libvorbis.js. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
@@ -307,14 +308,30 @@ Enable lamejs by specifying the `lamejs` `audioEngine` and the `audioWorkerURL` 
 
 Check out the audio-only MP3 example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-mp3.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-mp3.html)).
 
+### opus-recorder
+
+[opus-recorder](https://github.com/chris-rudmin/Recorderjs) provides a Javascript
+implementation of PCM to Opus encoder and exports it into an Ogg container.
+opus-recorder is currently only supported when recording audio-only.
+
+Include the recorder.js script (instead of RecordRTC.js) and place it before
+any other scripts:
+
+```html
+<script src="/path/to/recorder.js"></script>
+```
+
+And specify the `opus-recorder` `audioEngine` and `audioWorkerURL` options.
+
+Check out the audio-only Opus example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-opus.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-opus.html)).
+
 ### recorder.js
 
 [recorder.js](https://github.com/mattdiamond/Recorderjs) is another plugin for
 recording/exporting PCM output of Web Audio API nodes, similar to RecordRTC.
 recorder.js is currently only supported when recording audio-only.
 
-Include the recorder.js library (instead of RecordRTC.js) and include it on the
-page:
+Include the recorder.js library (instead of RecordRTC.js) on the page:
 
 ```html
 <script src="/path/to/recorder.js" async></script>
