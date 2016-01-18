@@ -482,6 +482,17 @@
                     // XXX: below are customizations copied from videojs.wavesurfer that
                     //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
+
+                    // the native controls don't work for this UI so disable
+                    // them no matter what
+                    if (this.player().usingNativeControls_ === true)
+                    {
+                        if (this.player().tech_.el_ !== undefined)
+                        {
+                            this.player().tech_.el_.controls = false;
+                        }
+                    }
+
                     if (this.player().options_.controls)
                     {
                         // progress control isn't used by this plugin

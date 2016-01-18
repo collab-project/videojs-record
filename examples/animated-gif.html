@@ -19,6 +19,12 @@
   #myVideo {
       background-color: #6EF55F;
   }
+  /* make sure the custom controls are always visible because
+     the plugin hides and replace the video.js native mobile
+     controls */
+  .vjs-using-native-controls .vjs-control-bar {
+      display: flex !important;
+  }
   </style>
 </head>
 <body>
