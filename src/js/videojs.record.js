@@ -273,19 +273,21 @@
          */
         onAudioProcess: function(ev)
         {
+            var channelData;
+            var channels = [];
             var inputBuffer = ev.inputBuffer;
             var samples = inputBuffer.length;
 
-            var ch0 = inputBuffer.getChannelData(0);
-            var ch1 = inputBuffer.getChannelData(1);
+            for (var channel = 0; channel < this.audioChannels; channel++)
+            {
+                channelData = inputBuffer.getChannelData(channel);
+                // script processor reuses buffers; we need to make copies
+                channelData = new Float32Array(channelData);
 
-            // script processor reuses buffers; we need to make copies
-            ch0 = new Float32Array(ch0);
-            ch1 = new Float32Array(ch1);
+                channels.push(channelData);
+            }
 
-            var channelData = [ch0, ch1];
-
-            this.encoder.encode(channelData);
+            this.encoder.encode(channels);
         },
 
         onData: function(data)
@@ -331,7 +333,7 @@
             // setup recorder.js
             this.engine = new Recorder(this.audioSourceNode, {
                 bufferLen: this.bufferSize,
-                numChannels: 2
+                numChannels: this.audioChannels
             });
         },
 
