@@ -531,7 +531,6 @@
                 navigator.webkitGetUserMedia ||
                 navigator.mozGetUserMedia ||
                 navigator.msGetUserMedia;
-
             if (getUserMediaFn)
             {
                 this.getUserMedia = getUserMediaFn.bind(navigator);
@@ -571,6 +570,9 @@
             {
                 this.player().controlBar.liveDisplay.el().style.display = 'none';
             }
+
+            // loop feature is not used in this plugin
+            this.player().loop(false);
 
             // tweak player UI based on type
             switch (this.getRecordType())
