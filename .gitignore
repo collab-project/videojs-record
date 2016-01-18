@@ -1,9 +1,16 @@
+# osx
 .DS_Store
+
+# IDE
 .project
+
+# build
 dist
 *.log
 node_modules
 bower_components
+
+# examples
 *.phar
 *.lock
 composer.json
