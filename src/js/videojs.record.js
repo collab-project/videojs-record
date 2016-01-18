@@ -391,7 +391,10 @@
             this.mediaType = mediaType;
             this.debug = debug;
 
-            var config = {debug: this.debug};
+            var config = {
+                debug: this.debug,
+                sampleRate: this.sampleRate
+            };
 
             this.audioContext = new AudioContext();
             this.audioSourceNode = this.audioContext.createMediaStreamSource(
