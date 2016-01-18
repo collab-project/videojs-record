@@ -42,8 +42,8 @@ And when recording audio-only, the following dependencies are also required:
 Optional dependencies when using [other audio libraries](#other-audio-libraries):
 
 - [libvorbis.js](#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
-- [lamejs](#lamejs) - Converts PCM audio data to compressed MP3 audio, resulting a smaller audio files with similar quality.
-- [recorder.js](#recorderjs) - A plugin for recording/exporting the output of Web Audio API nodes.
+- [lamejs](#lamejs) - Converts PCM audio data to compressed MP3 audio.
+- [recorder.js](#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
 
 Usage
 -----
@@ -88,7 +88,7 @@ Check out the full audio/video
 ([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html)),
 image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html)),
 animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html)) or the
-video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) or [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html)) examples.
+video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html)) examples.
 
 Note that recording both audio and video into a single WebM file is currently
 only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
@@ -136,7 +136,8 @@ var player = videojs("myVideo",
             image: false,
             audio: false,
             video: true,
-            maxLength: 5
+            maxLength: 5,
+            debug: true
         }
     }
 });
@@ -223,7 +224,8 @@ var player = videojs("myVideo",
                 width: 1280,
                 height: 720
             },
-            maxLength: 5
+            maxLength: 5,
+            debug: true
         }
     }
 });
@@ -308,7 +310,7 @@ Check out the audio-only MP3 example ([demo](https://collab-project.github.io/vi
 ### recorder.js
 
 [recorder.js](https://github.com/mattdiamond/Recorderjs) is another plugin for
-recording/exporting the output of Web Audio API nodes, similar to RecordRTC.
+recording/exporting PCM output of Web Audio API nodes, similar to RecordRTC.
 recorder.js is currently only supported when recording audio-only.
 
 Include the recorder.js library (instead of RecordRTC.js) and include it on the
