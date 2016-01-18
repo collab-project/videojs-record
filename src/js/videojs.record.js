@@ -97,6 +97,7 @@
             // audio settings
             this.engine.bufferSize = this.bufferSize;
             this.engine.sampleRate = this.sampleRate;
+            this.engine.numberOfAudioChannels = this.audioChannels;
 
             // animated gif settings
             this.engine.quality = this.quality;
@@ -216,7 +217,7 @@
                 workerURL: this.audioWorkerURL,
                 moduleURL: this.audioModuleURL,
                 encoderOptions: {
-                    channels: 2,
+                    channels: this.audioChannels,
                     sampleRate: this.sampleRate,
                     quality: 0.8
                 }
@@ -403,6 +404,7 @@
             this.audioModuleURL = this.options_.options.audioModuleURL;
             this.audioBufferSize = this.options_.options.audioBufferSize;
             this.audioSampleRate = this.options_.options.audioSampleRate;
+            this.audioChannels = this.options_.options.audioChannels;
 
             // animation settings
             this.animationFrameRate = this.options_.options.animationFrameRate;
@@ -716,6 +718,7 @@
                 // audio settings
                 this.engine.bufferSize = this.audioBufferSize;
                 this.engine.sampleRate = this.audioSampleRate;
+                this.engine.audioChannels = this.audioChannels;
                 this.engine.audioWorkerURL = this.audioWorkerURL;
                 this.engine.audioModuleURL = this.audioModuleURL;
 
@@ -1816,6 +1819,9 @@
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
         audioSampleRate: 44100,
+        // Allows you to record single-channel audio, which can reduce the
+        // filesize.
+        audioChannels: 2,
         // URL for the audio worker.
         audioWorkerURL: '',
         // URL for the audio module.
