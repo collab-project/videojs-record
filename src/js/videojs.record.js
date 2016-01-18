@@ -868,32 +868,32 @@
                 }
 
                 // get recorder class
-                var engineClass;
+                var EngineClass;
                 switch (this.audioEngine)
                 {
                     case this.RECORDRTC:
                         // RecordRTC.js (default)
-                        engineClass = videojs.RecordRTCEngine;
+                        EngineClass = videojs.RecordRTCEngine;
                         break;
 
                     case this.LIBVORBISJS:
                         // libvorbis.js
-                        engineClass = videojs.LibVorbisEngine;
+                        EngineClass = videojs.LibVorbisEngine;
                         break;
 
                     case this.RECORDERJS:
                         // recorder.js
-                        engineClass = videojs.RecorderjsEngine;
+                        EngineClass = videojs.RecorderjsEngine;
                         break;
 
                     case this.LAMEJS:
                         // lamejs
-                        engineClass = videojs.LamejsEngine;
+                        EngineClass = videojs.LamejsEngine;
                         break;
 
                     case this.OPUSRECORDER:
                         // opus-recorder
-                        engineClass = videojs.OpusRecorderEngine;
+                        EngineClass = videojs.OpusRecorderEngine;
                         break;
 
                     default:
@@ -901,7 +901,7 @@
                         throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
                 // connect stream to recording engine
-                this.engine = new engineClass(this.player());
+                this.engine = new EngineClass(this.player());
 
                 // listen for events
                 this.engine.on('recordComplete', this.engineStopCallback);
