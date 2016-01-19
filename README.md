@@ -132,11 +132,13 @@ example:
 ```javascript
 var player = videojs("myVideo",
 {
+    // video.js options
     controls: true,
     loop: false,
     width: 320,
     height: 240,
     plugins: {
+        // videojs-record plugin options
         record: {
             image: false,
             audio: false,
@@ -156,7 +158,10 @@ The available options for this plugin are:
 | `audio` | boolean or object | `false` | Include audio in the recorded clip. |
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean or object | `false` | Animated GIF. |
+| `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
+| `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
+| `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js`, `lamejs`, `opus-recorder` and `recorder.js`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
@@ -165,7 +170,6 @@ The available options for this plugin are:
 | `audioModuleURL` | string | `''` | URL for the audio module, for example: `libvorbis.asmjs.min.js`. Currently only used for libvorbis.js. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
-| `debug` | boolean | `false` | Enables console log messages. |
 
 Methods
 -------
@@ -211,26 +215,32 @@ Media Constraints
 [Media stream constraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Parameters)
 allow you to specify the types of media to request, along with any requirements for each type.
 
-Use the `width` and `height` settings to change the camera resolution for example:
+The following example shows how to change the camera resolution to 1280 by 720
+pixels:
 
 ```javascript
 var player = videojs("myVideo",
 {
     controls: true,
     loop: false,
-    // dimensions of player
+    // dimensions of video.js player
     width: 1280,
     height: 720,
     plugins: {
         record: {
+            maxLength: 5,
+            debug: true,
             audio: false,
             video: {
-                // resolution of camera
-                width: 1280,
-                height: 720
+                // video constraints: set resolution of camera
+                mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                },
             },
-            maxLength: 5,
-            debug: true
+            // dimensions of captured video frames
+            frameWidth: 1280,
+            frameHeight: 720
         }
     }
 });

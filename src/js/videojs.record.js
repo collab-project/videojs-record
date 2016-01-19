@@ -119,6 +119,10 @@
             this.engine.sampleRate = this.sampleRate;
             this.engine.numberOfAudioChannels = this.audioChannels;
 
+            // video/canvas settings
+            this.engine.video = this.video;
+            this.engine.canvas = this.canvas;
+
             // animated gif settings
             this.engine.quality = this.quality;
             this.engine.frameRate = this.frameRate;
@@ -241,6 +245,10 @@
             this.recordAnimation = this.options_.options.animation;
             this.maxLength = this.options_.options.maxLength;
             this.debug = this.options_.options.debug;
+
+            // video/canvas settings
+            this.videoFrameWidth = this.options_.options.frameWidth;
+            this.videoFrameHeight = this.options_.options.frameHeight;
 
             // audio settings
             this.audioEngine = this.options_.options.audioEngine;
@@ -592,6 +600,16 @@
                 this.engine.audioChannels = this.audioChannels;
                 this.engine.audioWorkerURL = this.audioWorkerURL;
                 this.engine.audioModuleURL = this.audioModuleURL;
+
+                // video/canvas settings
+                this.engine.video = {
+                    width: this.videoFrameWidth,
+                    height: this.videoFrameHeight
+                }
+                this.engine.canvas = {
+                    width: this.videoFrameWidth,
+                    height: this.videoFrameHeight
+                }
 
                 // animated GIF settings
                 this.engine.quality = this.animationQuality;
@@ -1670,8 +1688,14 @@
         animation: false,
         // Maximum length of the recorded clip.
         maxLength: 10,
+        // Width of the recorded video frames.
+        frameWidth: 320,
+        // Height of the recorded video frames.
+        frameHeight: 240,
+        // Enables console logging for debugging purposes.
+        debug: false,
         // Audio recording library to use. Legal values are 'recordrtc',
-        // 'libvorbis.js' and 'recorder.js'.
+        // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
         audioEngine: 'recordrtc',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
@@ -1707,9 +1731,7 @@
         // and produces good color mapping at reasonable speeds.
         // Values greater than 20 do not yield significant improvements
         // in speed.
-        animationQuality: 10,
-        // Enables console logging for debugging purposes.
-        debug: false
+        animationQuality: 10
     };
 
     /**
