@@ -1,10 +1,31 @@
 videojs-record changelog
 ========================
 
+1.1.0 - unreleased
+------------------
+
+- Moved support for other audio recorders to separate source files
+- Support for Opus using opus-recorder (#43)
+- Support for MP3 using lamejs (#40)
+- Support for recorder.js (#33)
+- New settings: `audioChannels`, `frameWidth` and `frameHeight` (#35)
+- Disable video.js `loop` option permanently (#42)
+- Disable native controls for better Firefox mobile compatibility (#19)
+- Add CSS for controlbar on mobile in examples (#19)
+- Improve check for `getUserMedia` browser support (#38 by @xlc)
+- Close `AudioContext` on stop in libvorbis.js plugin (#36, #37 by @xlc)
+- Required version for RecordRTC is 5.2.7 now
+- Required version for videojs-wavesurfer is 1.0.6 now
+- Required version for wavesurfer.js and wavesurfer.microphone.js is 1.0.50 now
+- Ability to add audio and video constraints (#30 by @alsar)
+- Add filename and timestamp to recorded file object (#29)
+- Added upload examples for the jquery.fileupload and Fine Uploader libraries (#29)
+
+
 1.0.3 - 2015/12/20
 ------------------
 
-- @alsar fixed wrong module require for browserify (#28)
+- Fixed wrong module require for browserify (#28 by @alsar)
 
 
 1.0.2 - 2015/10/19
