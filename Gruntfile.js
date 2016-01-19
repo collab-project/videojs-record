@@ -19,11 +19,6 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: pkg,
-    build: {
-      options: {
-        baseDir: 'src/js/'
-      }
-    },
     banner: '/*! <%= pkg.name %> v<%= pkg.version %>\n' +
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) 2014-<%= grunt.template.today("yyyy") %>' +
@@ -41,13 +36,30 @@ module.exports = function(grunt) {
         dest: 'dist/videojs.record.js'
       }
     },
+    build: {
+      assets: 'src/css/'
+    },
     uglify: {
       options: {
         banner: '<%= banner %>'
       },
       dist: {
+        options: {
+          sourceMap: 'dist/videojs.record.min.js.map',
+          sourceMapRoot: '/'
+        },
         src: '<%= concat.dist.dest %>',
         dest: 'dist/videojs.record.min.js'
+      },
+      plugins: {
+        files: grunt.file.expandMapping(['src/js/plugins/*.js'], 'dist/', {
+          rename: function(destBase, destPath) {
+            var pluginName = destPath.substr(
+              destPath.lastIndexOf('/') + 1).replace('.js', '.min.js');
+            var newPath = destBase + pluginName;
+            return newPath;
+          },
+        })
       }
     },
     jshint: {
@@ -55,7 +67,7 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc'
         },
-        src: ['src/js/*.js']
+        src: ['src/js/**/*.js']
       },
     },
     cssmin: {
@@ -107,22 +119,28 @@ module.exports = function(grunt) {
   grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages', 'sass']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
-  grunt.registerMultiTask('build', 'Building Source', function(){
+  grunt.registerMultiTask('build', 'build and copy css and fonts', function(){
+    var srcDir = this.data;
+    var distStylesheet = 'dist/css/videojs.record.css'
 
     // Copy over CSS
-    grunt.file.copy('src/css/videojs.record.css', 'dist/css/videojs.record.css');
+    grunt.file.copy(srcDir + 'videojs.record.css', distStylesheet);
+    grunt.log.writeln('Stylesheet ' + distStylesheet['yellow'] +
+      ' with version ' + version.full['green'] + ' created.\n');
 
     // Inject version number into css file
-    var css = grunt.file.read('dist/css/videojs.record.css');
+    var css = grunt.file.read(distStylesheet);
     css = css.replace(/GENERATED_AT_BUILD/g, version.full);
-    grunt.file.write('dist/css/videojs.record.css', css);
+    grunt.file.write(distStylesheet, css);
 
     // Copy over font files
-    grunt.file.recurse('src/css/font', function(absdir, rootdir, subdir, filename) {
+    grunt.file.recurse(srcDir + 'font', function(absdir, rootdir, subdir, filename) {
       // only fonts
       var ext = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
       if (['ttf', 'svg', 'eot', 'woff'].indexOf(ext) > -1) {
-        grunt.file.copy(absdir, 'dist/css/font/' + filename);
+        var fpath = 'dist/css/font/' + filename;
+        grunt.file.copy(absdir, fpath);
+        grunt.log.writeln('Font ' + fpath['yellow'] + ' copied.');
       }
     });
 

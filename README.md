@@ -85,11 +85,12 @@ include a `video` element:
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 ```
 
-Check out the full audio/video
-([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html)),
-image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html)),
-animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html)) or the
-video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html)) examples.
+Check out the examples:
+
+- audio/video ([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html))
+- video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html))
+- image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
+- animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 
 Note that recording both audio and video into a single WebM file is currently
 only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
@@ -116,6 +117,9 @@ And define an `audio` element:
 ```
 
 Check out the full audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
+
+There is also support for [additional audio libraries](#other-audio-libraries)
+that allows you to record audio with codecs like Ogg Vorbis, MP3 and Opus.
 
 Options
 -------
@@ -292,6 +296,13 @@ any other scripts:
 <script src="/path/to/libvorbis.oggvbr.asyncencoder.min.js" async></script>
 ```
 
+Also include the `videojs.record.libvorbis.js` plugin:
+
+```html
+<script src="videojs.record.js"></script>
+<script src="videojs.record.libvorbis.js"></script>
+```
+
 And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
 `audioModuleURL` options.
 
@@ -303,6 +314,13 @@ Check out the audio-only Ogg example ([demo](https://collab-project.github.io/vi
 implementation of a PCM to MP3 encoder and you can choose to use this
 instead of RecordRTC. lamejs is currently only supported when recording
 audio-only.
+
+Include the `videojs.record.lamejs.js` plugin:
+
+```html
+<script src="videojs.record.js"></script>
+<script src="videojs.record.lamejs.js"></script>
+```
 
 Enable lamejs by specifying the `lamejs` `audioEngine` and the `audioWorkerURL` options.
 
@@ -321,6 +339,13 @@ any other scripts:
 <script src="/path/to/recorder.js"></script>
 ```
 
+And include the `videojs.record.opus-recorder.js` plugin:
+
+```html
+<script src="videojs.record.js"></script>
+<script src="videojs.record.opus-recorder.js"></script>
+```
+
 And specify the `opus-recorder` `audioEngine` and `audioWorkerURL` options.
 
 Check out the audio-only Opus example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-opus.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-opus.html)).
@@ -335,6 +360,13 @@ Include the recorder.js library (instead of RecordRTC.js) on the page:
 
 ```html
 <script src="/path/to/recorder.js" async></script>
+```
+
+And include the `videojs.record.recorderjs.js` plugin:
+
+```html
+<script src="videojs.record.js"></script>
+<script src="videojs.record.recorderjs.js"></script>
 ```
 
 And specify the `recorder.js` `audioEngine` option.

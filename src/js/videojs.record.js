@@ -33,7 +33,7 @@
         AUDIO_VIDEO: 'audio_video',
         ANIMATION: 'animation',
 
-        // recorder engines
+        // supported recorder plugin engines
         RECORDRTC: 'recordrtc',
         LIBVORBISJS: 'libvorbis.js',
         RECORDERJS: 'recorder.js',
@@ -74,6 +74,24 @@
 
             // use timestamp in filename, e.g. 1451180941326
             fileObj.name = now.getTime() + fileExtension;
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         *
+         * @param {Blob} data Reference to the recorded Blob
+         */
+        onStopRecording: function(data)
+        {
+            this.recordedData = data;
+
+            this.addFileInfo(this.recordedData);
+
+            // store reference to recorded stream URL
+            this.mediaURL = URL.createObjectURL(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
         }
     });
 
@@ -197,352 +215,6 @@
                         break;
                 }
             }.bind(this));
-        }
-    });
-
-    /**
-     * Audio-only engine for the libvorbis.js library.
-     */
-    videojs.LibVorbisEngine = videojs.extend(videojs.RecordBase,
-    {
-        /**
-         * Setup recording engine.
-         */
-        setup: function(stream, mediaType, debug)
-        {
-            this.inputStream = stream;
-            this.mediaType = mediaType;
-            this.debug = debug;
-
-            // setup libvorbis.js
-            this.options = {
-                workerURL: this.audioWorkerURL,
-                moduleURL: this.audioModuleURL,
-                encoderOptions: {
-                    channels: this.audioChannels,
-                    sampleRate: this.sampleRate,
-                    quality: 0.8
-                }
-            };
-        },
-
-        /**
-         * Start recording.
-         */
-        start: function()
-        {
-            this.chunks = [];
-            this.audioContext = new AudioContext();
-            this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);
-            this.scriptProcessorNode = this.audioContext.createScriptProcessor(this.bufferSize);
-
-            libvorbis.OggVbrAsyncEncoder.create(
-                this.options,
-                this.onData.bind(this),
-                this.onStopRecording.bind(this)).then(
-                this.onEngineCreated.bind(this));
-        },
-
-        /**
-         * Stop recording.
-         */
-        stop: function()
-        {
-            this.audioSourceNode.disconnect(this.scriptProcessorNode);
-            this.scriptProcessorNode.disconnect(this.audioContext.destination);
-
-            this.encoder.finish();
-
-            this.audioContext.close();
-            this.audioContext = null;
-        },
-
-        /**
-         * Invoked when the libvorbis encoder is ready for recording.
-         */
-        onEngineCreated: function(encoder)
-        {
-            this.encoder = encoder;
-
-            this.scriptProcessorNode.onaudioprocess = this.onAudioProcess.bind(this);
-
-            this.audioSourceNode.connect(this.scriptProcessorNode);
-            this.scriptProcessorNode.connect(this.audioContext.destination);
-        },
-
-        /**
-         * Continous encoding of audio data.
-         */
-        onAudioProcess: function(ev)
-        {
-            var channelData;
-            var channels = [];
-            var inputBuffer = ev.inputBuffer;
-            var samples = inputBuffer.length;
-
-            for (var channel = 0; channel < this.audioChannels; channel++)
-            {
-                channelData = inputBuffer.getChannelData(channel);
-                // script processor reuses buffers; we need to make copies
-                channelData = new Float32Array(channelData);
-
-                channels.push(channelData);
-            }
-
-            this.encoder.encode(channels);
-        },
-
-        onData: function(data)
-        {
-            this.chunks.push(data);
-        },
-
-        /**
-         * Invoked when recording is stopped and resulting stream is available.
-         */
-        onStopRecording: function()
-        {
-            this.recordedData = new Blob(this.chunks, {type: 'audio/ogg'});
-
-            this.addFileInfo(this.recordedData);
-
-            // store reference to recorded stream URL
-            this.mediaURL = URL.createObjectURL(this.recordedData);
-
-            // notify listeners
-            this.trigger('recordComplete');
-        }
-    });
-
-    /**
-     * Audio-only engine for the recorder.js library.
-     */
-    videojs.RecorderjsEngine = videojs.extend(videojs.RecordBase,
-    {
-        /**
-         * Setup recording engine.
-         */
-        setup: function(stream, mediaType, debug)
-        {
-            this.inputStream = stream;
-            this.mediaType = mediaType;
-            this.debug = debug;
-
-            this.audioContext = new AudioContext();
-            this.audioSourceNode = this.audioContext.createMediaStreamSource(
-                this.inputStream);
-
-            // setup recorder.js
-            this.engine = new Recorder(this.audioSourceNode, {
-                bufferLen: this.bufferSize,
-                numChannels: this.audioChannels
-            });
-        },
-
-        /**
-         * Start recording.
-         */
-        start: function()
-        {
-            this.engine.record();
-        },
-
-        /**
-         * Stop recording.
-         */
-        stop: function()
-        {
-            this.engine.stop();
-
-            this.engine.exportWAV(this.onStopRecording.bind(this));
-
-            this.engine.clear();
-        },
-
-        /**
-         * Invoked when recording is stopped and resulting stream is available.
-         *
-         * @param {Blob} data Reference to the recorded Blob
-         */
-        onStopRecording: function(data)
-        {
-            this.recordedData = data;
-
-            this.addFileInfo(this.recordedData);
-
-            // store reference to recorded stream URL
-            this.mediaURL = URL.createObjectURL(this.recordedData);
-
-            // notify listeners
-            this.trigger('recordComplete');
-        }
-    });
-
-    /**
-     * Audio-only engine for the lamejs library.
-     */
-    videojs.LamejsEngine = videojs.extend(videojs.RecordBase,
-    {
-        /**
-         * Setup recording engine.
-         */
-        setup: function(stream, mediaType, debug)
-        {
-            this.inputStream = stream;
-            this.mediaType = mediaType;
-            this.debug = debug;
-
-            var config = {
-                debug: this.debug,
-                sampleRate: this.sampleRate
-            };
-
-            this.audioContext = new AudioContext();
-            this.audioSourceNode = this.audioContext.createMediaStreamSource(
-                this.inputStream);
-            this.processor = this.audioContext.createScriptProcessor(
-                16384, 1, 1);
-            config.sampleRate = this.audioContext.sampleRate;
-
-            this.engine = new Worker(this.audioWorkerURL);
-            this.engine.onmessage = this.onWorkerMessage.bind(this);
-
-            this.engine.postMessage({cmd: 'init', config: config});
-        },
-
-        /**
-         * Start recording.
-         */
-        start: function()
-        {
-            this.processor.onaudioprocess = this.onAudioProcess.bind(this);
-            this.audioSourceNode.connect(this.processor);
-            this.processor.connect(this.audioContext.destination);
-        },
-
-        /**
-         * Stop recording.
-         */
-        stop: function()
-        {
-            this.audioSourceNode.disconnect();
-            this.processor.disconnect();
-            this.processor.onaudioprocess = null;
-
-            this.engine.postMessage({cmd: 'finish'});
-        },
-
-        /**
-         * Received a message from the worker.
-         */
-        onWorkerMessage: function(e)
-        {
-            switch (e.data.cmd)
-            {
-                case 'end':
-                    this.onStopRecording(new Blob(e.data.buf,
-                        {type: 'audio/mp3'}));
-                    break;
-
-                case 'error':
-                    this.player().trigger('error', e.data.error);
-                    break;
-
-                default:
-                    // invalid message received
-                    this.player().trigger('error', e.data);
-                    break;
-            }
-        },
-
-        /**
-         * Continous encoding of audio data.
-         */
-        onAudioProcess: function(ev)
-        {
-            // send microphone data to LAME for MP3 encoding while recording
-            var data = ev.inputBuffer.getChannelData(0);
-
-            this.engine.postMessage({cmd: 'encode', buf: data});
-        },
-
-        /**
-         * Invoked when recording is stopped and resulting stream is available.
-         *
-         * @param {Blob} data Reference to the recorded Blob
-         */
-        onStopRecording: function(data)
-        {
-            this.recordedData = data;
-
-            this.addFileInfo(this.recordedData);
-
-            // store reference to recorded stream URL
-            this.mediaURL = URL.createObjectURL(this.recordedData);
-
-            // notify listeners
-            this.trigger('recordComplete');
-        }
-    });
-
-    /**
-     * Audio-only engine for the opus-recorder library.
-     */
-    videojs.OpusRecorderEngine = videojs.extend(videojs.RecordBase,
-    {
-        /**
-         * Setup recording engine.
-         */
-        setup: function(stream, mediaType, debug)
-        {
-            this.inputStream = stream;
-            this.mediaType = mediaType;
-            this.debug = debug;
-
-            this.engine = new Recorder({
-                numberOfChannels: this.audioChannels,
-                bufferLength: this.bufferSize,
-                encoderSampleRate: this.sampleRate,
-                encoderPath: this.audioWorkerURL
-            });
-            this.engine.addEventListener('dataAvailable',
-                this.onStopRecording.bind(this));
-
-            this.engine.initStream();
-        },
-
-        /**
-         * Start recording.
-         */
-        start: function()
-        {
-            this.engine.start();
-        },
-
-        /**
-         * Stop recording.
-         */
-        stop: function()
-        {
-            this.engine.stop();
-        },
-
-        /**
-         * Invoked when recording is stopped and resulting stream is available.
-         *
-         * @param {Blob} data Reference to the recorded Blob
-         */
-        onStopRecording: function(data)
-        {
-            this.recordedData = data.detail;
-
-            this.addFileInfo(this.recordedData);
-
-            // store reference to recorded stream URL
-            this.mediaURL = URL.createObjectURL(this.recordedData);
-
-            // notify listeners
-            this.trigger('recordComplete');
         }
     });
 
@@ -897,11 +569,19 @@
                         break;
 
                     default:
-                        // unknown
+                        // unknown engine
                         throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
-                // connect stream to recording engine
-                this.engine = new EngineClass(this.player());
+                try
+                {
+                    // connect stream to recording engine
+                    this.engine = new EngineClass(this.player());
+                }
+                catch (err)
+                {
+                    throw new Error('Could not load ' + this.audioEngine +
+                        ' plugin');
+                }
 
                 // listen for events
                 this.engine.on('recordComplete', this.engineStopCallback);
