@@ -605,11 +605,11 @@
                 this.engine.video = {
                     width: this.videoFrameWidth,
                     height: this.videoFrameHeight
-                }
+                };
                 this.engine.canvas = {
                     width: this.videoFrameWidth,
                     height: this.videoFrameHeight
-                }
+                };
 
                 // animated GIF settings
                 this.engine.quality = this.animationQuality;
