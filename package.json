@@ -36,7 +36,7 @@
     "video.js": ">=5.0.0",
     "wavesurfer.js": ">=1.0.50",
     "videojs-wavesurfer": ">=1.0.6",
-    "recordrtc": ">=5.0.8",
+    "recordrtc": ">=5.2.7",
     "libvorbis.js": ">=0.5.1",
     "recorderjs": "https://github.com/mattdiamond/Recorderjs.git",
     "lamejs": ">=1.0.0",
