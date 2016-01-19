@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-1.1.0 - unreleased
+1.1.0 - 2016/01/19
 ------------------
 
 - Moved support for other audio recorders to separate source files
