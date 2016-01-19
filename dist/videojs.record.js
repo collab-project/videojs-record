@@ -1,6 +1,6 @@
-/*! videojs-record v1.0.3
+/*! videojs-record v1.1.0
 * https://github.com/collab-project/videojs-record
-* Copyright (c) 2014-2015 - Licensed MIT */
+* Copyright (c) 2014-2016 - Licensed MIT */
 (function (root, factory)
 {
     if (typeof define === 'function' && define.amd)
@@ -36,9 +36,12 @@
         AUDIO_VIDEO: 'audio_video',
         ANIMATION: 'animation',
 
-        // recorder engines
+        // supported recorder plugin engines
         RECORDRTC: 'recordrtc',
         LIBVORBISJS: 'libvorbis.js',
+        RECORDERJS: 'recorder.js',
+        LAMEJS: 'lamejs',
+        OPUSRECORDER: 'opus-recorder',
 
         // browser checks
         isEdge: function()
@@ -58,9 +61,46 @@
         constructor: function(player, options)
         {
             VjsComponent.call(this, player, options);
+        },
+
+        /**
+         * Add filename and timestamp to recorded file object.
+         */
+        addFileInfo: function(fileObj)
+        {
+            var now = new Date();
+            fileObj.lastModifiedDate = now;
+
+            // guess extension name from mime-type, e.g. audio/ogg, but
+            // any extension is valid here
+            var fileExtension = '.' + fileObj.type.split('/')[1];
+
+            // use timestamp in filename, e.g. 1451180941326
+            fileObj.name = now.getTime() + fileExtension;
+        },
+
+        /**
+         * Invoked when recording is stopped and resulting stream is available.
+         *
+         * @param {Blob} data Reference to the recorded Blob
+         */
+        onStopRecording: function(data)
+        {
+            this.recordedData = data;
+
+            this.addFileInfo(this.recordedData);
+
+            // store reference to recorded stream URL
+            this.mediaURL = URL.createObjectURL(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
         }
     });
 
+    /**
+     * Engine for the RecordRTC library.
+     */
     videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
     {
         /**
@@ -80,6 +120,11 @@
             // audio settings
             this.engine.bufferSize = this.bufferSize;
             this.engine.sampleRate = this.sampleRate;
+            this.engine.numberOfAudioChannels = this.audioChannels;
+
+            // video/canvas settings
+            this.engine.video = this.video;
+            this.engine.canvas = this.canvas;
 
             // animated gif settings
             this.engine.quality = this.quality;
@@ -127,6 +172,8 @@
                     case this.AUDIO_ONLY:
                         this.recordedData = recording.audio;
 
+                        this.addFileInfo(this.recordedData);
+
                         // notify listeners
                         this.trigger('recordComplete');
                         break;
@@ -149,6 +196,15 @@
                             {
                                 // store both audio and video
                                 this.recordedData = recording;
+
+                                for (var mtype in this.recordedData)
+                                {
+                                    this.addFileInfo(this.recordedData[mtype]);
+                                }
+                            }
+                            else
+                            {
+                                this.addFileInfo(this.recordedData);
                             }
 
                             // notify listeners
@@ -159,120 +215,14 @@
                     case this.ANIMATION:
                         this.recordedData = recording.gif;
 
+                        this.addFileInfo(this.recordedData);
+
                         // notify listeners
                         this.trigger('recordComplete');
                         break;
                 }
             }.bind(this));
         }
-    });
-
-    videojs.LibVorbisEngine = videojs.extend(videojs.RecordBase,
-    {
-        /**
-         * Setup recording engine.
-         */
-        setup: function(stream, mediaType, debug)
-        {
-            this.inputStream = stream;
-            this.mediaType = mediaType;
-            this.debug = debug;
-
-            // setup libvorbis.js
-            this.options = {
-                workerURL: this.audioWorkerURL,
-                moduleURL: this.audioModuleURL,
-                encoderOptions: {
-                    channels: 2,
-                    sampleRate: this.sampleRate,
-                    quality: 0.8
-                }
-            };
-        },
-
-        /**
-         * Start recording.
-         */
-        start: function()
-        {
-            this.chunks = [];
-            this.audioContext = new AudioContext();
-            this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);
-            this.scriptProcessorNode = this.audioContext.createScriptProcessor(this.bufferSize);
-
-            libvorbis.OggVbrAsyncEncoder.create(
-                this.options,
-                this.onData.bind(this),
-                this.onStopRecording.bind(this)).then(
-                this.onEngineCreated.bind(this));
-        },
-
-        /**
-         * Stop recording.
-         */
-        stop: function()
-        {
-            this.audioSourceNode.disconnect(this.scriptProcessorNode);
-            this.scriptProcessorNode.disconnect(this.audioContext.destination);
-
-            this.encoder.finish();
-        },
-
-        /**
-         * Invoked when the libvorbis encoder is ready for recording.
-         */
-        onEngineCreated: function(encoder)
-        {
-            this.encoder = encoder;
-
-            this.scriptProcessorNode.onaudioprocess = this.onAudioProcess.bind(this);
-
-            this.audioSourceNode.connect(this.scriptProcessorNode);
-            this.scriptProcessorNode.connect(this.audioContext.destination);
-        },
-
-        /**
-         * Continous encoding of audio data.
-         */
-        onAudioProcess: function(ev)
-        {
-            var inputBuffer = ev.inputBuffer;
-            var samples = inputBuffer.length;
-
-            var ch0 = inputBuffer.getChannelData(0);
-            var ch1 = inputBuffer.getChannelData(1);
-
-            // script processor reuses buffers; we need to make copies
-            ch0 = new Float32Array(ch0);
-            ch1 = new Float32Array(ch1);
-
-            var channelData = [ch0, ch1];
-
-            this.encoder.encode(channelData);
-        },
-
-        /**
-         *
-         */
-        onData: function(data)
-        {
-            this.chunks.push(data);
-        },
-
-        /**
-         * Invoked when recording is stopped and resulting stream is available.
-         */
-        onStopRecording: function()
-        {
-            this.recordedData = new Blob(this.chunks, {type: 'audio/ogg'});
-
-            // store reference to recorded stream URL
-            this.mediaURL = URL.createObjectURL(this.recordedData);
-
-            // notify listeners
-            this.trigger('recordComplete');
-        }
-
     });
 
     /**
@@ -282,7 +232,7 @@
     {
         /**
          * The constructor function for the class.
-         * 
+         *
          * @param {videojs.Player|Object} player
          * @param {Object} options Player options.
          */
@@ -299,12 +249,17 @@
             this.maxLength = this.options_.options.maxLength;
             this.debug = this.options_.options.debug;
 
+            // video/canvas settings
+            this.videoFrameWidth = this.options_.options.frameWidth;
+            this.videoFrameHeight = this.options_.options.frameHeight;
+
             // audio settings
             this.audioEngine = this.options_.options.audioEngine;
             this.audioWorkerURL = this.options_.options.audioWorkerURL;
             this.audioModuleURL = this.options_.options.audioModuleURL;
             this.audioBufferSize = this.options_.options.audioBufferSize;
             this.audioSampleRate = this.options_.options.audioSampleRate;
+            this.audioChannels = this.options_.options.audioChannels;
 
             // animation settings
             this.animationFrameRate = this.options_.options.animationFrameRate;
@@ -316,12 +271,22 @@
             this._deviceActive = false;
 
             // cross-browser getUserMedia
-            this.getUserMedia = (
+            var getUserMediaFn =
                 navigator.getUserMedia ||
                 navigator.webkitGetUserMedia ||
                 navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia
-            ).bind(navigator);
+                navigator.msGetUserMedia;
+            if (getUserMediaFn)
+            {
+                this.getUserMedia = getUserMediaFn.bind(navigator);
+            }
+            else
+            {
+                this.getUserMedia = function (constraints, successCallback, errorCallback)
+                {
+                    errorCallback(new Error('getUserMedia is not supported'));
+                };
+            }
 
             // wait until player ui is ready
             this.player().one('ready', this.setupUI.bind(this));
@@ -351,6 +316,9 @@
                 this.player().controlBar.liveDisplay.el().style.display = 'none';
             }
 
+            // loop feature is not used in this plugin
+            this.player().loop(false);
+
             // tweak player UI based on type
             switch (this.getRecordType())
             {
@@ -373,6 +341,17 @@
                     // XXX: below are customizations copied from videojs.wavesurfer that
                     //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
+
+                    // the native controls don't work for this UI so disable
+                    // them no matter what
+                    if (this.player().usingNativeControls_ === true)
+                    {
+                        if (this.player().tech_.el_ !== undefined)
+                        {
+                            this.player().tech_.el_.controls = false;
+                        }
+                    }
+
                     if (this.player().options_.controls)
                     {
                         // progress control isn't used by this plugin
@@ -404,7 +383,7 @@
         },
 
         /**
-         * Indicates whether we're currently recording or not.
+         * Indicates whether the plugin is currently recording or not.
          */
         isRecording: function()
         {
@@ -412,7 +391,8 @@
         },
 
         /**
-         * Indicates whether we're currently processing recorded data or not.
+         * Indicates whether the plugin is currently processing recorded data
+         * or not.
          */
         isProcessing: function()
         {
@@ -420,7 +400,7 @@
         },
 
         /**
-         * Indicates whether the player is destroyed or not.
+         * Indicates whether the plugin is destroyed or not.
          */
         isDestroyed: function()
         {
@@ -428,7 +408,7 @@
         },
 
         /**
-         * Open the brower's recording device selection dialog.
+         * Open the browser's recording device selection dialog.
          */
         getDevice: function()
         {
@@ -445,8 +425,8 @@
             {
                 this.engineStopCallback = this.onRecordComplete.bind(this);
             }
-            // ask the browser to give us access to media device and get a
-            // stream reference in the callback function
+            // ask the browser to give the user access to the media device
+            // and get a stream reference in the callback function
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -455,13 +435,13 @@
                         audio: true,
                         video: false
                     };
-                    // remove existing mic listeners
+                    // remove existing microphone listeners
                     this.surfer.microphone.un('deviceReady',
                         this.deviceReadyCallback);
                     this.surfer.microphone.un('deviceError',
                         this.deviceErrorCallback);
 
-                    // setup new mic listeners
+                    // setup new microphone listeners
                     this.surfer.microphone.on('deviceReady',
                         this.deviceReadyCallback);
                     this.surfer.microphone.on('deviceError',
@@ -485,8 +465,10 @@
                         audio: false,
                         video: true
                     };
-                    this.getUserMedia(
-                        this.mediaType,
+                    this.getUserMedia({
+                            audio: false,
+                            video: (this.getRecordType() === this.IMAGE_ONLY) ? this.recordImage : this.recordVideo
+                        },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
                     break;
@@ -497,8 +479,10 @@
                         audio: true,
                         video: true
                     };
-                    this.getUserMedia(
-                        this.mediaType,
+                    this.getUserMedia({
+                            audio: this.recordAudio,
+                            video: this.recordVideo
+                        },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
                     break;
@@ -506,14 +490,14 @@
                 case this.ANIMATION:
                     // setup camera
                     this.mediaType = {
-                        // animated gif
+                        // animated GIF
                         audio: false,
                         video: false,
                         gif: true
                     };
                     this.getUserMedia({
                             audio: false,
-                            video: true
+                            video: this.recordAnimation
                         },
                         this.onDeviceReady.bind(this),
                         this.onDeviceError.bind(this));
@@ -554,39 +538,88 @@
             // setup recording engine
             if (this.getRecordType() !== this.IMAGE_ONLY)
             {
-                // currently libvorbis.js is only supported in
-                // audio-only mode
+                // currently libvorbis.js, recorder.js, opus-recorder and lamejs
+                // are only supported in audio-only mode
                 if (this.getRecordType() !== this.AUDIO_ONLY &&
-                    this.audioEngine === this.LIBVORBISJS)
+                    (this.audioEngine === this.LIBVORBISJS ||
+                     this.audioEngine === this.RECORDERJS ||
+                     this.audioEngine === this.LAMEJS ||
+                     this.audioEngine === this.OPUSRECORDER))
                 {
-                    throw new Error('Currently libvorbis.js is only supported in audio-only mode.');
+                    throw new Error('Currently ' + this.audioEngine +
+                        ' is only supported in audio-only mode.');
                 }
 
-                // connect stream to recording engine
-                if (this.audioEngine === this.RECORDRTC)
+                // get recorder class
+                var EngineClass;
+                switch (this.audioEngine)
                 {
-                    // RecordRTC.js (default)
-                    this.engine = new videojs.RecordRTCEngine(this.player());
+                    case this.RECORDRTC:
+                        // RecordRTC.js (default)
+                        EngineClass = videojs.RecordRTCEngine;
+                        break;
+
+                    case this.LIBVORBISJS:
+                        // libvorbis.js
+                        EngineClass = videojs.LibVorbisEngine;
+                        break;
+
+                    case this.RECORDERJS:
+                        // recorder.js
+                        EngineClass = videojs.RecorderjsEngine;
+                        break;
+
+                    case this.LAMEJS:
+                        // lamejs
+                        EngineClass = videojs.LamejsEngine;
+                        break;
+
+                    case this.OPUSRECORDER:
+                        // opus-recorder
+                        EngineClass = videojs.OpusRecorderEngine;
+                        break;
+
+                    default:
+                        // unknown engine
+                        throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
-                else if (this.audioEngine === this.LIBVORBISJS)
+                try
                 {
-                    // libvorbis.js
-                    this.engine = new videojs.LibVorbisEngine(this.player());
+                    // connect stream to recording engine
+                    this.engine = new EngineClass(this.player());
                 }
+                catch (err)
+                {
+                    throw new Error('Could not load ' + this.audioEngine +
+                        ' plugin');
+                }
+
                 // listen for events
                 this.engine.on('recordComplete', this.engineStopCallback);
 
                 // audio settings
                 this.engine.bufferSize = this.audioBufferSize;
                 this.engine.sampleRate = this.audioSampleRate;
+                this.engine.audioChannels = this.audioChannels;
                 this.engine.audioWorkerURL = this.audioWorkerURL;
                 this.engine.audioModuleURL = this.audioModuleURL;
 
-                // animated gif settings
+                // video/canvas settings
+                this.engine.video = {
+                    width: this.videoFrameWidth,
+                    height: this.videoFrameHeight
+                };
+                this.engine.canvas = {
+                    width: this.videoFrameWidth,
+                    height: this.videoFrameHeight
+                };
+
+                // animated GIF settings
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
 
-                this.engine.setup(this.stream, this.mediaType, !this.debug);
+                // initialize recorder
+                this.engine.setup(this.stream, this.mediaType, this.debug);
 
                 // show elements that should never be hidden in animation,
                 // audio and/or video modus
@@ -777,8 +810,7 @@
             }
             else
             {
-                // stop stream now, since there's no recorded data
-                // being available
+                // stop stream now, since there's no recorded data available
                 this.stopStream();
             }
         },
@@ -865,8 +897,8 @@
                     this.player().trigger('finishRecord');
 
                     // Pausing the player so we can visualize the recorded data
-                    // will trigger an async videojs 'pause' event that we have
-                    // to wait for.
+                    // will trigger an async video.js 'pause' event that we
+                    // have to wait for.
                     this.player().one('pause', function()
                     {
                         // setup events during playback
@@ -909,9 +941,9 @@
                     this.off(this.player(), 'pause', this.onPlayerPause);
                     this.off(this.player(), 'play', this.onPlayerStart);
 
-                    // Pausing the player so we can visualize the recorded data
-                    // will trigger an async videojs 'pause' event that we have
-                    // to wait for.
+                    // pausing the player so we can visualize the recorded data
+                    // will trigger an async video.js 'pause' event that we
+                    // have to wait for.
                     this.player().one('pause', function()
                     {
                         // video data is ready
@@ -1107,9 +1139,9 @@
 
         /**
          * Start loading data.
-         * 
+         *
          * @param {String|Blob|File} url Either the URL of the media file,
-         *     or a Blob or File object.
+         *     a Blob or a File object.
          */
         load: function(url)
         {
@@ -1124,7 +1156,7 @@
                 case this.VIDEO_ONLY:
                 case this.AUDIO_VIDEO:
                 case this.ANIMATION:
-                    // assign stream to audio/video element src
+                    // assign stream to audio/video element source
                     this.mediaElement.src = url;
                     break;
             }
@@ -1177,23 +1209,26 @@
          */
         getRecordType: function()
         {
-            if (this.recordImage)
+            if (this.isModeEnabled(this.recordImage))
             {
                 return this.IMAGE_ONLY;
             }
-            else if (this.recordAnimation)
+            else if (this.isModeEnabled(this.recordAnimation))
             {
                 return this.ANIMATION;
             }
-            else if (this.recordAudio && !this.recordVideo)
+            else if (this.isModeEnabled(this.recordAudio) && !this.isModeEnabled(
+                this.recordVideo))
             {
                 return this.AUDIO_ONLY;
             }
-            else if (this.recordAudio && this.recordVideo)
+            else if (this.isModeEnabled(this.recordAudio) && this.isModeEnabled(
+                this.recordVideo))
             {
                 return this.AUDIO_VIDEO;
             }
-            else if (!this.recordAudio && this.recordVideo)
+            else if (!this.isModeEnabled(this.recordAudio) && this.isModeEnabled(
+                this.recordVideo))
             {
                 return this.VIDEO_ONLY;
             }
@@ -1234,14 +1269,14 @@
         },
 
         /**
-         * Capture frame from camera and copy it to canvas.
+         * Capture frame from camera and copy data to canvas.
          */
         captureFrame: function()
         {
             var recordCanvas = this.player().recordCanvas.el().firstChild;
 
             // set the canvas size to the dimensions of the camera,
-            // which also wipes it
+            // which also wipes the content of the canvas
             recordCanvas.width = this.player().width();
             recordCanvas.height = this.player().height();
 
@@ -1256,7 +1291,7 @@
         },
 
         /**
-         * 
+         * Start preview of video stream.
          */
         startVideoPreview: function()
         {
@@ -1270,7 +1305,7 @@
             // hide volume control to prevent feedback
             this.displayVolumeControl(false);
 
-            // start/resume live preview
+            // start or resume live preview
             this.load(URL.createObjectURL(this.stream));
             this.mediaElement.play();
         },
@@ -1311,7 +1346,7 @@
          */
         onPlayerStart: function()
         {
-            // workaround firefox issue
+            // workaround Firefox issue
             if (this.player().seeking())
             {
                 // There seems to be a Firefox issue
@@ -1352,7 +1387,7 @@
         },
 
         /**
-         * Show/hide the volume menu.
+         * Show or hide the volume menu.
          */
         displayVolumeControl: function(display)
         {
@@ -1372,10 +1407,10 @@
 
         /**
          * Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.
-         * 
+         *
          * Supplying a guide (in seconds) will force a number of leading zeros
          * to cover the length of the guide.
-         * 
+         *
          * @param {Number} seconds Number of seconds to be turned into a string
          * @param {Number} guide Number (in seconds) to model the string after
          * @return {String} Time formatted as H:MM:SS, M:SS or M:SS:MMM.
@@ -1434,6 +1469,14 @@
             s = ((s < 10) ? '0' + s : s);
 
             return h + m + s + ms;
+        },
+
+        /**
+         * Return boolean indicating whether mode is enabled or not.
+        */
+        isModeEnabled: function(mode)
+        {
+            return mode === Object(mode) || mode === true;
         }
 
     });
@@ -1475,7 +1518,7 @@
     };
     RecordToggle.prototype.onStart = function()
     {
-        // add the vjs-record-start class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-start');
         this.addClass('vjs-icon-record-stop');
 
@@ -1484,7 +1527,7 @@
     };
     RecordToggle.prototype.onStop = function()
     {
-        // add the vjs-record-stop class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-stop');
         this.addClass('vjs-icon-record-start');
 
@@ -1531,7 +1574,7 @@
     };
     CameraButton.prototype.onStart = function()
     {
-        // add class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-camera');
         this.addClass('vjs-icon-photo-retry');
 
@@ -1540,7 +1583,7 @@
     };
     CameraButton.prototype.onStop = function()
     {
-        // add class to the element so it can change appearance
+        // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-retry');
         this.addClass('vjs-icon-photo-camera');
 
@@ -1648,8 +1691,14 @@
         animation: false,
         // Maximum length of the recorded clip.
         maxLength: 10,
-        // Audio recording library to use. Legal values are 'recordrtc'
-        // and 'libvorbis.js'.
+        // Width of the recorded video frames.
+        frameWidth: 320,
+        // Height of the recorded video frames.
+        frameHeight: 240,
+        // Enables console logging for debugging purposes.
+        debug: false,
+        // Audio recording library to use. Legal values are 'recordrtc',
+        // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
         audioEngine: 'recordrtc',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
@@ -1669,6 +1718,9 @@
         // An implementation must support sample-rates in at least
         // the range 22050 to 96000.
         audioSampleRate: 44100,
+        // Allows you to record single-channel audio, which can reduce the
+        // filesize.
+        audioChannels: 2,
         // URL for the audio worker.
         audioWorkerURL: '',
         // URL for the audio module.
@@ -1682,9 +1734,7 @@
         // and produces good color mapping at reasonable speeds.
         // Values greater than 20 do not yield significant improvements
         // in speed.
-        animationQuality: 10,
-        // Enables console logging for debugging purposes
-        debug: false
+        animationQuality: 10
     };
 
     /**
