@@ -6,6 +6,7 @@
 
   <link href="//vjs.zencdn.net/5.4.6/video-js.css" rel="stylesheet">
   <link href="../src/css/videojs.record.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
   <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
   <script src="/libvorbis.js/js/libvorbis.oggvbr.asyncencoder.min.js" async></script>
@@ -17,20 +18,9 @@
   <script src="../src/js/plugins/videojs.record.libvorbis.js"></script>
 
   <style>
-  /* place fullscreen control on right side of the player */
-  .video-js .vjs-control.vjs-fullscreen-control {
-      position: absolute;
-      right: 0;
-  }
   /* change player background color */
   #myAudio {
       background-color: #9FD6BA;
-  }
-  /* make sure the custom controls are always visible because
-     the plugin hides and replace the video.js native mobile
-     controls */
-  .vjs-using-native-controls .vjs-control-bar {
-      display: flex !important;
   }
   </style>
 </head>
