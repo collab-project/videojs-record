@@ -23,6 +23,9 @@ this plugin with an older video.js 4.x version, check the
 [archived releases](https://github.com/collab-project/videojs-record/releases)
 for a 0.9.x or older release.
 
+Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
+version of videojs-record.
+
 Dependencies
 ------------
 
