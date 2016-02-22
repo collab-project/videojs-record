@@ -12,6 +12,7 @@
         "libvorbis",
         "Recorder",
         "AudioContext",
+        "Promise",
         "module",
         "require",
         "define"
