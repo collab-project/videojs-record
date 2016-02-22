@@ -961,7 +961,7 @@
                         // stream in a new extra audio element and the video
                         // stream in the regular video.js player.
                         if (this.getRecordType() === this.AUDIO_VIDEO &&
-                            this.isChrome())
+                            this.isChrome() && this.player().recordedData.audio)
                         {
                             if (this.extraAudio === undefined)
                             {
@@ -1053,7 +1053,10 @@
                 volume = 0;
             }
 
-            this.extraAudio.volume = volume;
+            if (this.extraAudio !== undefined)
+            {
+                this.extraAudio.volume = volume;
+            }
         },
 
         /**
@@ -1357,7 +1360,7 @@
 
             // workaround chrome issue
             if (this.getRecordType() === this.AUDIO_VIDEO &&
-                this.isChrome() && !this._recording)
+                this.isChrome() && !this._recording && this.extraAudio !== undefined)
             {
                 // sync extra audio playhead position with video.js player
                 this.extraAudio.currentTime = this.player().currentTime();
@@ -1371,7 +1374,10 @@
         onPlayerPause: function()
         {
             // pause extra audio when video.js player pauses
-            this.extraAudio.pause();
+            if (this.extraAudio !== undefined)
+            {
+                this.extraAudio.pause();
+            }
         },
 
         /**
