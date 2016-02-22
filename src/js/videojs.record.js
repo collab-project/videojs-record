@@ -961,7 +961,7 @@
                         // stream in a new extra audio element and the video
                         // stream in the regular video.js player.
                         if (this.getRecordType() === this.AUDIO_VIDEO &&
-                            this.isChrome())
+                            this.isChrome() && this.player().recordedData.audio)
                         {
                             if (this.extraAudio === undefined)
                             {
