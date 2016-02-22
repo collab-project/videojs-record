@@ -268,21 +268,42 @@
             this._deviceActive = false;
 
             // cross-browser getUserMedia
-            var getUserMediaFn =
-                navigator.getUserMedia ||
-                navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia;
-            if (getUserMediaFn)
+            var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
             {
-                this.getUserMedia = getUserMediaFn.bind(navigator);
-            }
-            else
-            {
-                this.getUserMedia = function (constraints, successCallback, errorCallback)
+                // get ahold of getUserMedia, if present
+                var getUserMedia = (navigator.getUserMedia ||
+                    navigator.webkitGetUserMedia ||
+                    navigator.mozGetUserMedia ||
+                    navigator.msGetUserMedia);
+                // Some browsers just don't implement it - return a rejected
+                // promise with an error to keep a consistent interface
+                if (!getUserMedia)
                 {
-                    errorCallback(new Error('getUserMedia is not supported'));
-                };
+                    return Promise.reject(
+                        new Error('getUserMedia is not implemented in this browser')
+                    );
+                }
+                // otherwise, wrap the call to the old navigator.getUserMedia with
+                // a Promise
+                return new Promise(function(successCallback, errorCallback)
+                {
+                    getUserMedia.call(navigator, constraints, successCallback,
+                        errorCallback);
+                });
+            }
+            // Older browsers might not implement mediaDevices at all, so we set an
+            // empty object first
+            if (navigator.mediaDevices === undefined)
+            {
+                navigator.mediaDevices = {};
+            }
+            // Some browsers partially implement mediaDevices. We can't just assign
+            // an object with getUserMedia as it would overwrite existing
+            // properties. Here, we will just add the getUserMedia property if it's
+            // missing.
+            if (navigator.mediaDevices.getUserMedia === undefined)
+            {
+                navigator.mediaDevices.getUserMedia = promisifiedOldGUM;
             }
 
             // wait until player ui is ready
@@ -462,12 +483,14 @@
                         audio: false,
                         video: true
                     };
-                    this.getUserMedia({
-                            audio: false,
-                            video: (this.getRecordType() === this.IMAGE_ONLY) ? this.recordImage : this.recordVideo
-                        },
-                        this.onDeviceReady.bind(this),
-                        this.onDeviceError.bind(this));
+                    navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: (this.getRecordType() === this.IMAGE_ONLY) ? this.recordImage : this.recordVideo
+                    }).then(
+                        this.onDeviceReady.bind(this)
+                    ).catch(
+                        this.onDeviceError.bind(this)
+                    );
                     break;
 
                 case this.AUDIO_VIDEO:
@@ -476,12 +499,14 @@
                         audio: true,
                         video: true
                     };
-                    this.getUserMedia({
-                            audio: this.recordAudio,
-                            video: this.recordVideo
-                        },
-                        this.onDeviceReady.bind(this),
-                        this.onDeviceError.bind(this));
+                    navigator.mediaDevices.getUserMedia({
+                        audio: this.recordAudio,
+                        video: this.recordVideo
+                    }).then(
+                        this.onDeviceReady.bind(this)
+                    ).catch(
+                        this.onDeviceError.bind(this)
+                    );
                     break;
 
                 case this.ANIMATION:
@@ -492,12 +517,14 @@
                         video: false,
                         gif: true
                     };
-                    this.getUserMedia({
-                            audio: false,
-                            video: this.recordAnimation
-                        },
-                        this.onDeviceReady.bind(this),
-                        this.onDeviceError.bind(this));
+                    navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: this.recordAnimation
+                    }).then(
+                        this.onDeviceReady.bind(this)
+                    ).catch(
+                        this.onDeviceError.bind(this)
+                    );
                     break;
             }
         },
