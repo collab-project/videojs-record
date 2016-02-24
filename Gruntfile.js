@@ -89,7 +89,7 @@ module.exports = function(grunt) {
       }
     },
     jscs: {
-      src: ['<%= concat.dist.src %>'],
+      src: ['<%= jshint.src.src %>'],
       options: {
         config: '.jscsrc',
         esnext: false, // If you use ES6 http://jscs.info/overview.html#esnext
