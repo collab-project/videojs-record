@@ -441,12 +441,6 @@ Install dependencies using npm:
 npm install
 ```
 
-Or using bower:
-
-```
-bower install
-```
-
 Build a minified version:
 
 ```
