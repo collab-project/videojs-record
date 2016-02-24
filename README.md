@@ -96,8 +96,9 @@ Check out the examples:
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 
 Note that recording both audio and video into a single WebM file is currently
-only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
-Blob objects are created: one for audio and one for video.
+only supported in Mozilla Firefox >= 29 and Chrome >= 49. In older versions of
+the Chrome browser two separate Blob objects are created: one for audio and one
+for video.
 
 ### Audio-only
 
