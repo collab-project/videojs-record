@@ -88,6 +88,16 @@ module.exports = function(grunt) {
         }
       }
     },
+    jscs: {
+      src: ['<%= concat.dist.src %>'],
+      options: {
+        config: '.jscsrc',
+        esnext: false, // If you use ES6 http://jscs.info/overview.html#esnext
+        verbose: true, // If you need output with rule names http://jscs.info/overview.html#verbose
+        fix: false, // Autofix code style violations when possible.
+        requireCurlyBraces: [ "if" ]
+      }
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -114,9 +124,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-videojs-languages');
   grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-jscs');
 
   grunt.registerTask('font', ['generate-font', 'update-base64']);
-  grunt.registerTask('pretask', ['jshint', 'concat', 'vjslanguages', 'sass']);
+  grunt.registerTask('pretask', ['jshint', 'jscs', 'concat', 'vjslanguages', 'sass']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'build and copy css and fonts', function(){

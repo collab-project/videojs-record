@@ -378,7 +378,7 @@
                         // prevent controlbar fadeout
                         this.player().on('userinactive', function(event)
                         {
-                           this.player().userActive(true);
+                            this.player().userActive(true);
                         });
 
                         // videojs automatically hides the controls when no valid 'source'
@@ -943,7 +943,6 @@
 
                         // visualize recorded stream
                         this.load(this.player().recordedData);
-
                     }.bind(this));
 
                     // pause player so user can start playback
@@ -1023,7 +1022,6 @@
 
                         // load recorded media
                         this.load(this.mediaURL);
-
                     }.bind(this));
 
                     // pause player so user can start playback
@@ -1849,5 +1847,4 @@
 
     // return a function to define the module export
     return record;
-
 }));
