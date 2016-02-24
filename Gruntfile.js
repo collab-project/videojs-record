@@ -98,6 +98,11 @@ module.exports = function(grunt) {
         requireCurlyBraces: [ "if" ]
       }
     },
+    jsonlint: {
+      language: {
+        src: ['lang/*.json']
+      }
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -125,9 +130,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-videojs-languages');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-jscs');
+  grunt.loadNpmTasks('grunt-jsonlint');
 
   grunt.registerTask('font', ['generate-font', 'update-base64']);
-  grunt.registerTask('pretask', ['jshint', 'jscs', 'concat', 'vjslanguages', 'sass']);
+  grunt.registerTask('pretask', ['jshint', 'jscs', 'jsonlint', 'concat', 'vjslanguages', 'sass']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'build and copy css and fonts', function(){

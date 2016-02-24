@@ -50,6 +50,7 @@
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-watch": ">=0.6.1",
     "grunt-jscs": "^2.7.0",
+    "grunt-jsonlint": "^1.0.7",
     "grunt-sass": "^1.0.0",
     "grunt-videojs-languages": ">=0.0.4",
     "lodash": "^3.9.3",
