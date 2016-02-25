@@ -40,10 +40,81 @@
         LAMEJS: 'lamejs',
         OPUSRECORDER: 'opus-recorder',
 
-        // browser checks
+        /** @constructor */
+        constructor: function(player, options)
+        {
+            VjsComponent.call(this, player, options);
+        },
+
+        /**
+         * Browser detector.
+         * @return {object} result containing browser, version and minVersion
+         *     properties.
+         */
+        detectBrowser: function()
+        {
+            // Returned result object.
+            var result = {};
+            result.browser = null;
+            result.version = null;
+            result.minVersion = null;
+
+            // Non supported browser.
+            if (typeof window === 'undefined' || !window.navigator)
+            {
+                result.browser = 'Not a supported browser.';
+                return result;
+            }
+
+            // Firefox.
+            if (navigator.mozGetUserMedia)
+            {
+                result.browser = 'firefox';
+                result.version = this.extractVersion(navigator.userAgent,
+                    /Firefox\/([0-9]+)\./, 1);
+                result.minVersion = 31;
+                return result;
+            }
+
+            // Chrome/Chromium/Webview.
+            if (navigator.webkitGetUserMedia && window.webkitRTCPeerConnection)
+            {
+                result.browser = 'chrome';
+                result.version = this.extractVersion(navigator.userAgent,
+                    /Chrom(e|ium)\/([0-9]+)\./, 2);
+                result.minVersion = 38;
+                return result;
+            }
+
+            // Edge.
+            if (navigator.mediaDevices &&
+                navigator.userAgent.match(/Edge\/(\d+).(\d+)$/))
+            {
+                result.browser = 'edge';
+                result.version = this.extractVersion(navigator.userAgent,
+                    /Edge\/(\d+).(\d+)$/, 2);
+                result.minVersion = 10547;
+                return result;
+            }
+            // Non supported browser default.
+            result.browser = 'Not a supported browser.';
+            return result;
+        },
+        /**
+         * Extract browser version out of the provided user agent string.
+         * @param {!string} uastring userAgent string.
+         * @param {!string} expr Regular expression used as match criteria.
+         * @param {!number} pos position in the version string to be returned.
+         * @return {!number} browser version.
+         */
+        extractVersion: function(uastring, expr, pos)
+        {
+            var match = uastring.match(expr);
+            return match && match.length >= pos && parseInt(match[pos], 10);
+        },
         isEdge: function()
         {
-            return navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveBlob || !!navigator.msSaveOrOpenBlob);
+            return this.detectBrowser().browser === 'edge';
         },
         isOpera: function()
         {
@@ -51,13 +122,7 @@
         },
         isChrome: function()
         {
-            return !this.isOpera() && !this.isEdge() && !!navigator.webkitGetUserMedia;
-        },
-
-        /** @constructor */
-        constructor: function(player, options)
-        {
-            VjsComponent.call(this, player, options);
+            return this.detectBrowser().browser === 'chrome';
         },
 
         /**
@@ -847,54 +912,40 @@
             // stop stream and device
             if (this.stream)
             {
-                // use MediaStream.stop in browsers other than Chrome for now
-                // This will be deprecated in Firefox 44 (see
-                // https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/
-                // https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
-                // https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
-                if (!this.isChrome())
+                this._deviceActive = false;
+
+                if (this.getRecordType() === this.AUDIO_ONLY)
                 {
-                    if (this.getRecordType() === this.AUDIO_ONLY)
-                    {
-                        // make the microphone plugin stop it's device
-                        this.surfer.microphone.stopDevice();
-                    }
-                    else
-                    {
-                        // stop MediaStream
-                        this.stream.stop();
-                    }
+                    // make the microphone plugin stop it's device
+                    this.surfer.microphone.stopDevice();
+                    return;
                 }
-                else
+                // MediaStream.stop is deprecated since:
+                // - Chrome 45 (https://developers.google.com/web/updates/2015/07/mediastream-deprecations)
+                // - Firefox 44 (https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/,
+                //   https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
+                //   https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
+                var result = this.detectBrowser();
+                if ((result.browser === 'chrome' && result.version >= 45) ||
+                    (result.browser === 'firefox' && result.version >= 44) ||
+                    (result.browser === 'edge'))
                 {
-                    // use MediaStreamTrack.stop() in Chrome instead of
-                    // MediaStream.stop() (deprecated since Chrome 45)
-                    // https://developers.google.com/web/updates/2015/07/mediastream-deprecations
-                    var track;
                     switch (this.getRecordType())
                     {
-                        case this.AUDIO_ONLY:
-                            // make the microphone plugin stop it's device
-                            this.surfer.microphone.stopDevice();
-                            break;
-
                         case this.VIDEO_ONLY:
                         case this.ANIMATION:
                         case this.IMAGE_ONLY:
-                            track = this.stream.getVideoTracks()[0];
-                            track.stop();
-                            break;
-
                         case this.AUDIO_VIDEO:
-                            track = this.stream.getTracks();
-                            for (var index in track)
+                            this.stream.getTracks().forEach(function(stream)
                             {
-                                track[index].stop();
-                            }
+                                stream.stop();
+                            });
                             break;
                     }
+                    return;
                 }
-                this._deviceActive = false;
+                // fallback for older browsers
+                this.stream.stop();
             }
         },
 
