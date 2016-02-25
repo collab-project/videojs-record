@@ -314,9 +314,11 @@
             // video/canvas settings
             this.videoFrameWidth = this.options_.options.frameWidth;
             this.videoFrameHeight = this.options_.options.frameHeight;
+            this.videoRecorderType = this.options_.options.videoRecorderType;
 
             // audio settings
             this.audioEngine = this.options_.options.audioEngine;
+            this.audioRecorderType = this.options_.options.audioRecorderType;
             this.audioWorkerURL = this.options_.options.audioWorkerURL;
             this.audioModuleURL = this.options_.options.audioModuleURL;
             this.audioBufferSize = this.options_.options.audioBufferSize;
@@ -515,7 +517,7 @@
                 case this.AUDIO_ONLY:
                     // setup microphone
                     this.mediaType = {
-                        audio: true,
+                        audio: (this.audioRecorderType === 'auto') ? true : this.audioRecorderType,
                         video: false
                     };
                     // remove existing microphone listeners
@@ -546,7 +548,7 @@
                     // setup camera
                     this.mediaType = {
                         audio: false,
-                        video: true
+                        video: (this.videoRecorderType === 'auto') ? true : this.videoRecorderType
                     };
                     navigator.mediaDevices.getUserMedia({
                         audio: false,
@@ -561,8 +563,8 @@
                 case this.AUDIO_VIDEO:
                     // setup camera and microphone
                     this.mediaType = {
-                        audio: true,
-                        video: true
+                        audio: (this.audioRecorderType === 'auto') ? true : this.audioRecorderType,
+                        video: (this.videoRecorderType === 'auto') ? true : this.videoRecorderType
                     };
                     navigator.mediaDevices.getUserMedia({
                         audio: this.recordAudio,
@@ -1779,6 +1781,11 @@
         // Audio recording library to use. Legal values are 'recordrtc',
         // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
         audioEngine: 'recordrtc',
+        // Audio recorder type to use. This allows you to specify an alternative
+        // recorder class, e.g. StereoAudioRecorder. Defaults to 'auto' which let's
+        // recordrtc specify the best available recorder type. Currently this
+        // setting is only used with the 'recordrtc' audioEngine.
+        audioRecorderType: 'auto',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
         // From the spec: This value controls how frequently the audioprocess event is
@@ -1804,6 +1811,10 @@
         audioWorkerURL: '',
         // URL for the audio module.
         audioModuleURL: '',
+        // Video recorder type to use. This allows you to specify an alternative
+        // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
+        // recordrtc specify the best available recorder type.
+        videoRecorderType: 'auto',
         // Frame rate in frames per second.
         animationFrameRate: 200,
         // Sets quality of color quantization (conversion of images to the
