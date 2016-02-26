@@ -320,7 +320,6 @@
             this.audioEngine = this.options_.options.audioEngine;
             this.audioRecorderType = this.options_.options.audioRecorderType;
             this.audioWorkerURL = this.options_.options.audioWorkerURL;
-            this.audioModuleURL = this.options_.options.audioModuleURL;
             this.audioBufferSize = this.options_.options.audioBufferSize;
             this.audioSampleRate = this.options_.options.audioSampleRate;
             this.audioChannels = this.options_.options.audioChannels;
@@ -693,7 +692,6 @@
                 this.engine.sampleRate = this.audioSampleRate;
                 this.engine.audioChannels = this.audioChannels;
                 this.engine.audioWorkerURL = this.audioWorkerURL;
-                this.engine.audioModuleURL = this.audioModuleURL;
 
                 // video/canvas settings
                 this.engine.video = {
@@ -1809,8 +1807,6 @@
         audioChannels: 2,
         // URL for the audio worker.
         audioWorkerURL: '',
-        // URL for the audio module.
-        audioModuleURL: '',
         // Video recorder type to use. This allows you to specify an alternative
         // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
         // recordrtc specify the best available recorder type.
