@@ -9,7 +9,7 @@
         "videojs",
         "RecordRTC",
         "MRecordRTC",
-        "libvorbis",
+        "VorbisMediaRecorder",
         "Recorder",
         "AudioContext",
         "Promise",

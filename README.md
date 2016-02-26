@@ -171,8 +171,7 @@ The available options for this plugin are:
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller filesize. |
-| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `libvorbis.oggvbr.asyncencoder.worker.min.js`. Currently only used for libvorbis.js, opus-recorder and lamejs. |
-| `audioModuleURL` | string | `''` | URL for the audio module, for example: `libvorbis.asmjs.min.js`. Currently only used for libvorbis.js. |
+| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/oggopusEncoder.js`. Currently only used for opus-recorder and lamejs. |
 | `videoRecorderType` | string or function | `auto` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
@@ -309,7 +308,7 @@ Include the libvorbis.js library (instead of RecordRTC.js) and place it before
 any other scripts:
 
 ```html
-<script src="/path/to/libvorbis.oggvbr.asyncencoder.min.js" async></script>
+<script src="/path/to/libvorbis.min.js"></script>
 ```
 
 Also include the `videojs.record.libvorbis.js` plugin:
@@ -319,8 +318,7 @@ Also include the `videojs.record.libvorbis.js` plugin:
 <script src="videojs.record.libvorbis.js"></script>
 ```
 
-And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
-`audioModuleURL` options.
+And use `libvorbis.js` for the `audioEngine` option.
 
 Check out the audio-only Ogg example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
 
