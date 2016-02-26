@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-x.x.x - xxxx/xx/xx
+1.2.0 - 2016/02/27
 ------------------
 
 - Add compatibility for single file recording introduced in Chrome 49+ (by
@@ -11,8 +11,8 @@ x.x.x - xxxx/xx/xx
 - Stop using deprecated `MediaStream.stop()`; use `MediaStreamTrack.stop()`
   instead
 - Add `audioRecorderType` and `videoRecorderType` options
-- Bump required version for videojs-wavesurfer to 1.1.0 and wavesurfer.js to
-  1.0.57 for microphone fixes
+- Bump required version for videojs-wavesurfer to 1.1.0, wavesurfer.js to
+  1.0.57 and recordrtc to 5.2.9 for microphone and Chrome fixes
 - Fixes for latest release of the libvorbis.js plugin (1.1.1). This also
   removes the `audioModuleURL` option
 - IE8 font fixes
