@@ -5,6 +5,8 @@ var path = require('path');
 var _ = require('lodash');
 
 module.exports = function(grunt) {
+  require('time-grunt')(grunt);
+
   var pkg, version, verParts;
   pkg = grunt.file.readJSON('package.json');
 
@@ -84,7 +86,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'src/css/videojs.record.css': 'src/css/font/scss/videojs-icons.scss'
+          'src/css/videojs.record.css': 'src/css/font/scss/videojs-icons-codepoints.scss'
         }
       }
     },
@@ -132,8 +134,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-jsonlint');
 
-  grunt.registerTask('font', ['generate-font', 'update-base64']);
-  grunt.registerTask('pretask', ['jshint', 'jscs', 'jsonlint', 'concat', 'vjslanguages', 'sass']);
+  grunt.registerTask('font', ['generate-font', 'update-base64', 'sass', 'wrapcodepoints']);
+  grunt.registerTask('pretask', ['jshint', 'jscs', 'jsonlint', 'concat', 'vjslanguages', 'sass', 'wrapcodepoints']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'build and copy css and fonts', function(){
@@ -187,7 +189,7 @@ module.exports = function(grunt) {
       files: iconFiles,
       dest: 'src/css/font/',
       fontName: iconConfig['font-name'],
-      cssDest: 'src/css/font/scss/_icons.scss',
+      cssDest: 'src/css/font/scss/_icons-codepoints.scss',
       cssTemplate: 'src/css/font/templates/scss.hbs',
       htmlDest: 'src/css/font/preview.html',
       htmlTemplate: 'src/css/font/templates/html.hbs',
@@ -215,8 +217,23 @@ module.exports = function(grunt) {
 
   });
 
+  // Sass turns unicode codepoints into utf8 characters.
+  // We don't want that so we unwrapped them in the templates/scss.hbs file.
+  // After sass has generated our css file, we need to wrap the codepoints
+  // in quotes for it to work.
+  grunt.registerTask('wrapcodepoints', function() {
+    var cssPath = path.normalize('./src/css/videojs.record.css');
+    var css = grunt.file.read(cssPath);
+    grunt.file.write(cssPath, css.replace(/(\\f\w+);/g, "'$1';"));
+
+    var sassPath = path.normalize('./src/css/font/scss/_icons-codepoints.scss');
+    var normalSassPath = path.normalize('./src/css/font/scss/_icons.scss');
+    var sass = grunt.file.read(sassPath);
+    grunt.file.write(normalSassPath, sass.replace(/(\\f\w+),/g, "'$1',"));
+  });
+
   grunt.registerTask('update-base64', function() {
-    var iconScssFile = './src/css/font/scss/_icons.scss';
+    var iconScssFile = './src/css/font/scss/_icons-codepoints.scss';
     var fontFiles = {
       ttf: './src/css/font/videojs-record.ttf',
       woff: './src/css/font/videojs-record.woff'

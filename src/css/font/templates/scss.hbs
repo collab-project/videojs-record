@@ -12,7 +12,7 @@ $icon-font-path: 'font' !default;
 
 @font-face {
   font-family: $icon-font-family;
-  src: url('#{$icon-font-path}/{{fontName}}.eot?') format('eot');
+  src: url('#{$icon-font-path}/{{fontName}}.eot?#iefix') format('eot');
 }
 @font-face {
   font-family: $icon-font-family;
@@ -24,8 +24,8 @@ $icon-font-path: 'font' !default;
 
 // http://sass-lang.com/documentation/file.SASS_REFERENCE.html#maps
 $icons: (
-	{{#each codepoints}}
-		{{@key}}: '\\{{this}}',
+  {{#each codepoints}}
+		{{@key}}: \\{{this}},
 	{{/each}}
 );
 
