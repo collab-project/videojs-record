@@ -332,6 +332,7 @@
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+            this.devices = [];
 
             // cross-browser getUserMedia
             var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
@@ -1463,6 +1464,40 @@
         {
             this.setCurrentTime(this.player().currentTime(),
                 this.streamDuration);
+        },
+
+        /**
+         * Collects information about the media input and output devices
+         * available on the system.
+         *
+         * Returns an array.
+         */
+        enumerateDevices: function()
+        {
+            var self = this;
+            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
+            {
+                self.player().enumerateErrorCode = 'enumerateDevices() not supported.';
+                self.player().trigger('enumerateError');
+                return;
+            }
+
+            // List cameras and microphones.
+            navigator.mediaDevices.enumerateDevices(this).then(function(devices)
+            {
+                self.devices = [];
+                devices.forEach(function(device)
+                {
+                    self.devices.push(device);
+                });
+
+                // notify listeners
+                self.player().trigger('enumerateReady');
+            }).catch(function(err)
+            {
+                self.player().enumerateErrorCode = err;
+                self.player().trigger('enumerateError');
+            });
         },
 
         /**

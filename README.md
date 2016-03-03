@@ -193,6 +193,7 @@ player.recorder.destroy();
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
 | `getDevice` | Start the audio and/or video device(s). |
+| `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
 
 Events
 ------
@@ -213,12 +214,15 @@ player.on('startRecord', function()
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
+| `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.recorder.devices` array. |
+| `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 
 Media Constraints
 -----------------
 
 [Media stream constraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Parameters)
-allow you to specify the types of media to request, along with any requirements for each type.
+allow you to specify the types of media to request, along with any requirements
+for each type.
 
 The following example shows how to change the camera resolution to 1280 by 720
 pixels:
@@ -267,12 +271,21 @@ player.on('finishRecord', function()
 });
 ```
 
-Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html) examples on how to upload the
-data to a server.
-
 Note that in the Chrome browser `player.recordedData` returns an object with
 `audio` and `video` properties when recording both audio/video. In Firefox
 it returns a single WebM Blob object containing both audio and video.
+
+Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
+examples on how to upload the data to a server.
+
+Controlling the input and output devices
+----------------------------------------
+
+Use `enumerateDevices` to get a list of the available input and output devices
+on the user's system, e.g. `FaceTime HD-camera`, `default (Built-in microphone)`
+etc.
+
+Check out the `enumerateDevices` example ([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
 
 Customizing controls
 --------------------
