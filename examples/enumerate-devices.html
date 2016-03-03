@@ -28,6 +28,8 @@
 
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
+<button id="enumBtn">Enumerate input and output devices</button>
+
 <script>
 var player = videojs("myAudio",
 {
@@ -52,6 +54,36 @@ var player = videojs("myAudio",
     }
 });
 
+// user requested to enumerate devices
+document.getElementById('enumBtn').onclick = function(ev)
+{
+    player.recorder.enumerateDevices();
+}
+
+player.on('enumerateReady', function()
+{
+    console.log('input and output devices:', player.recorder.devices.length);
+
+    // The user must have already granted permission to the page
+    // to use the media devices in order to get the device label
+    // populated. When served over HTTPS, the browser will remember
+    // permission granted on subsequent loads, so the permission
+    // will have been granted before requesting media. When using
+    // HTTP, not HTTPS, the getUserMedia request must be made and
+    // accepted before enumerateDevices will populate labels.
+    player.recorder.devices.forEach(function(device)
+    {
+        console.log(device.kind + ": " + device.label +
+                " id = " + device.deviceId);
+    });
+});
+
+// enumerate error handling
+player.on('enumerateError', function()
+{
+    console.log('enumerate error:', player.enumerateErrorCode);
+});
+
 // error handling
 player.on('deviceError', function()
 {
@@ -71,26 +103,7 @@ player.on('finishRecord', function()
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
 });
-
-// user requested to enumerate devices
-player.on('enumerateReady', function()
-{
-    console.log('input and output devices:', player.recorder.devices);
-});
-
-// error handling
-player.on('enumerateError', function()
-{
-    console.log('enumerate error:', player.enumerateErrorCode);
-});
-
-function enumerateDevices(ev)
-{
-    player.recorder.enumerateDevices();
-}
 </script>
-
-<button onclick="enumerateDevices()">Enumerate input and output devices</button>
 
 </body>
 </html>

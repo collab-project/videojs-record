@@ -332,6 +332,7 @@
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+            this.devices = [];
 
             // cross-browser getUserMedia
             var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
@@ -1471,79 +1472,32 @@
          *
          * Returns an array.
          */
-        enumerateDevices: function(kind)
+        enumerateDevices: function()
         {
-            var enumerator;
-            // MediaStreamTrack.enumerateDevices() is available since Firefox 36
-            // and Chrome 45.0.2441.x or later (over HTTPS, with
-            // "Enable experimental Web Platform features" flag enabled).
+            var self = this;
             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
             {
-                // MediaStreamTrack.getSources() is not present in current
-                // Firefox but available in Chrome since v30.
-                if (typeof MediaStreamTrack === 'undefined' ||
-                    typeof MediaStreamTrack.getSources === 'undefined')
-                {
-                    // MediaStreamTrack.getSources() not available
-                    this.player().enumerateErrorCode = 'getSources() and enumerateDevices() not supported.'
-                    this.trigger('enumerateError');
-                    return;
-                }
-                else
-                {
-                    // use getSources
-                    enumerator = MediaStreamTrack.getSources;
-                }
-            }
-            else
-            {
-                console.log('foo');
-                // use enumerateDevices
-                enumerator = navigator.mediaDevices.enumerateDevices;
+                self.player().enumerateErrorCode = 'enumerateDevices() not supported.';
+                self.player().trigger('enumerateError');
+                return;
             }
 
-            // filter devices by kind
-            if (!kind)
+            // List cameras and microphones.
+            navigator.mediaDevices.enumerateDevices(this).then(function(devices)
             {
-                kind = 'all';
-            }
-            console.log(enumerator);
-
-            enumerator(this).then(function(deviceInfos)
-            {
-                this.devices = [];
-                for (var i = 0; i !== deviceInfos.length; ++i)
+                self.devices = [];
+                devices.forEach(function(device)
                 {
-                    var deviceInfo = deviceInfos[i];
-                    var device = {};
-                    device.deviceId = deviceInfo.deviceId;
-                    device.kind = deviceInfo.kind;
-
-                    if (deviceInfo.kind === kind || kind === 'all')
-                    {
-                        // the user must have already granted permission to the page
-                        // to use the media devices in order to get the device label
-                        // populated. When served over HTTPS, the browser will remember
-                        // permission granted on subsequent loads, so the permission
-                        // will have been granted before requesting media. When using
-                        // HTTP, not HTTPS, the getUserMedia request must be made and
-                        // accepted before enumerateDevices will populate labels.
-                        device.label = deviceInfo.label || deviceInfo.kind + ' ' +
-                            (this.devices.length + 1);
-
-                        this.devices.push(device);
-                    }
-                }
+                    self.devices.push(device);
+                });
 
                 // notify listeners
-                this.trigger('enumerateReady');
-
-            }.bind(this)).catch(function(err)
+                self.player().trigger('enumerateReady');
+            }).catch(function(err)
             {
-                this.player().enumerateErrorCode = err;
-                this.trigger('enumerateError');
-                return;
-            }.bind(this));
+                self.player().enumerateErrorCode = err;
+                self.player().trigger('enumerateError');
+            });
         },
 
         /**
