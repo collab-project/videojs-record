@@ -4,16 +4,23 @@
   <meta charset="utf-8">
   <title>Animated GIF Example - Record Plugin for Video.js</title>
 
-  <link href="//vjs.zencdn.net/4.12.15/video-js.css" rel="stylesheet">
+  <link href="//vjs.zencdn.net/5.7.1/video-js.css" rel="stylesheet">
   <link href="../src/css/videojs.record.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-  <script src="//vjs.zencdn.net/4.12.15/video.js"></script>
+  <script src="//vjs.zencdn.net/5.7.1/video.min.js"></script>
 
   <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
   <script src="//cdn.webrtc-experiment.com/gif-recorder.js"></script>
 
   <script src="../src/js/videojs.record.js"></script>
 
+  <style>
+  /* change player background color */
+  #myVideo {
+      background-color: #6EF55F;
+  }
+  </style>
 </head>
 <body>
 
@@ -25,27 +32,20 @@ var player = videojs('myVideo',
     controls: true,
     width: 320,
     height: 240,
-    children: {
-        controlBar: {
-            children: {
-                muteToggle: false,
-                volumeControl: false,
-                fullscreenToggle: false
-            }
-        }
+    controlBar: {
+        volumeMenuButton: false,
+        fullscreenToggle: false
     },
     plugins: {
         record: {
             animation: true,
             animationQuality: 20,
             animationFrameRate: 200,
-            maxLength: 5
+            maxLength: 5,
+            debug: true
         }
     }
 });
-
-// change player background color
-player.el().style.backgroundColor = '#6EF55F';
 
 // error handling
 player.on('deviceError', function()
