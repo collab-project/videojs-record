@@ -1,7 +1,7 @@
 Video.js Record
 ===============
 
-A Video.js plugin for recording audio/video/image files.
+Video.js plugin for recording audio/video/image files.
 
 <img title="Screenshot" src="examples/img/screenshot.png?raw=true" width="329">
 
