@@ -112,8 +112,12 @@ module.exports = function(grunt) {
       },
       src: {
         files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src']
+        tasks: ['jshint:src', 'jscs']
       },
+      languages: {
+        files: 'lang/*.json',
+        tasks: ['jsonlint', 'vjslanguages']
+      }
     },
     vjslanguages: {
       defaults: {
@@ -138,7 +142,7 @@ module.exports = function(grunt) {
   grunt.registerTask('pretask', ['jshint', 'jscs', 'jsonlint', 'concat', 'vjslanguages', 'sass', 'wrapcodepoints']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
-  grunt.registerMultiTask('build', 'build and copy css and fonts', function(){
+  grunt.registerMultiTask('build', 'build and copy css and fonts', function() {
     var srcDir = this.data;
     var distStylesheet = 'dist/css/videojs.record.css'
 
