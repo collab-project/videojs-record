@@ -105,6 +105,9 @@ module.exports = function(grunt) {
         src: ['lang/*.json']
       }
     },
+    htmllint: {
+      all: ['examples/**/*.html']
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -114,9 +117,17 @@ module.exports = function(grunt) {
         files: '<%= jshint.src.src %>',
         tasks: ['jshint:src', 'jscs']
       },
+      examples: {
+        files: '<%= htmllint.all %>',
+        tasks: ['htmllint']
+      },
+      json: {
+        files: ['lang/*.json', 'src/css/font/icons.json'],
+        tasks: ['jsonlint']
+      },
       languages: {
         files: 'lang/*.json',
-        tasks: ['jsonlint', 'vjslanguages']
+        tasks: ['vjslanguages']
       }
     },
     vjslanguages: {
@@ -136,10 +147,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-videojs-languages');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-jscs');
+  grunt.loadNpmTasks('grunt-html');
   grunt.loadNpmTasks('grunt-jsonlint');
 
-  grunt.registerTask('font', ['generate-font', 'update-base64', 'sass', 'wrapcodepoints']);
-  grunt.registerTask('pretask', ['jshint', 'jscs', 'jsonlint', 'concat', 'vjslanguages', 'sass', 'wrapcodepoints']);
+  grunt.registerTask('font', ['generate-font', 'update-base64', 'sass',
+    'wrapcodepoints']);
+  grunt.registerTask('pretask', ['jshint', 'jscs', 'jsonlint', 'htmllint',
+    'concat', 'vjslanguages', 'sass', 'wrapcodepoints']);
   grunt.registerTask('default', ['pretask', 'build', 'uglify']);
 
   grunt.registerMultiTask('build', 'build and copy css and fonts', function() {
