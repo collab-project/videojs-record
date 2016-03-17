@@ -1,9 +1,10 @@
 language: node_js
+sudo: true
 node_js:
   - "0.12"
 before_install:
   - npm install -g grunt-cli
-  - apt-get install oraclejdk8
+  - sudo apt-get install oraclejdk8
 install: npm install
 before_script: grunt font
 script: grunt
