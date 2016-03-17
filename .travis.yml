@@ -1,9 +1,9 @@
 language: node_js
 node_js:
   - "0.12"
-jdk:
-  - oraclejdk8
-before_install: npm install -g grunt-cli
+before_install:
+  - npm install -g grunt-cli
+  - java install oraclejdk8
 install: npm install
 before_script: grunt font
 script: grunt
