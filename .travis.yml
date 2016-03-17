@@ -3,7 +3,7 @@ node_js:
   - "0.12"
 before_install:
   - npm install -g grunt-cli
-  - java install oraclejdk8
+  - apt-get install oraclejdk8
 install: npm install
 before_script: grunt font
 script: grunt
