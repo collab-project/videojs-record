@@ -427,6 +427,14 @@
                     //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
 
+                    // loadedmetadata resets the durationDisplay for the
+                    // first time
+                    this.player().one('loadedmetadata', function()
+                    {
+                        // display max record time
+                        this.setDuration(this.maxLength);
+                    }.bind(this));
+
                     // the native controls don't work for this UI so disable
                     // them no matter what
                     if (this.player().usingNativeControls_ === true)
@@ -1171,6 +1179,9 @@
          */
         setCurrentTime: function(currentTime, duration)
         {
+            currentTime = isNaN(currentTime) ? 0 : currentTime;
+            duration = isNaN(duration) ? 0 : duration;
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -1197,6 +1208,8 @@
          */
         setDuration: function(duration)
         {
+            duration = isNaN(duration) ? 0 : duration;
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
