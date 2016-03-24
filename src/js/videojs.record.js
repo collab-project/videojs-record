@@ -40,10 +40,81 @@
         LAMEJS: 'lamejs',
         OPUSRECORDER: 'opus-recorder',
 
-        // browser checks
+        /** @constructor */
+        constructor: function(player, options)
+        {
+            VjsComponent.call(this, player, options);
+        },
+
+        /**
+         * Browser detector.
+         * @return {object} result containing browser, version and minVersion
+         *     properties.
+         */
+        detectBrowser: function()
+        {
+            // Returned result object.
+            var result = {};
+            result.browser = null;
+            result.version = null;
+            result.minVersion = null;
+
+            // Non supported browser.
+            if (typeof window === 'undefined' || !window.navigator)
+            {
+                result.browser = 'Not a supported browser.';
+                return result;
+            }
+
+            // Firefox.
+            if (navigator.mozGetUserMedia)
+            {
+                result.browser = 'firefox';
+                result.version = this.extractVersion(navigator.userAgent,
+                    /Firefox\/([0-9]+)\./, 1);
+                result.minVersion = 31;
+                return result;
+            }
+
+            // Chrome/Chromium/Webview.
+            if (navigator.webkitGetUserMedia && window.webkitRTCPeerConnection)
+            {
+                result.browser = 'chrome';
+                result.version = this.extractVersion(navigator.userAgent,
+                    /Chrom(e|ium)\/([0-9]+)\./, 2);
+                result.minVersion = 38;
+                return result;
+            }
+
+            // Edge.
+            if (navigator.mediaDevices &&
+                navigator.userAgent.match(/Edge\/(\d+).(\d+)$/))
+            {
+                result.browser = 'edge';
+                result.version = this.extractVersion(navigator.userAgent,
+                    /Edge\/(\d+).(\d+)$/, 2);
+                result.minVersion = 10547;
+                return result;
+            }
+            // Non supported browser default.
+            result.browser = 'Not a supported browser.';
+            return result;
+        },
+        /**
+         * Extract browser version out of the provided user agent string.
+         * @param {!string} uastring userAgent string.
+         * @param {!string} expr Regular expression used as match criteria.
+         * @param {!number} pos position in the version string to be returned.
+         * @return {!number} browser version.
+         */
+        extractVersion: function(uastring, expr, pos)
+        {
+            var match = uastring.match(expr);
+            return match && match.length >= pos && parseInt(match[pos], 10);
+        },
         isEdge: function()
         {
-            return navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveBlob || !!navigator.msSaveOrOpenBlob);
+            return this.detectBrowser().browser === 'edge';
         },
         isOpera: function()
         {
@@ -51,13 +122,7 @@
         },
         isChrome: function()
         {
-            return !this.isOpera() && !this.isEdge() && !!navigator.webkitGetUserMedia;
-        },
-
-        /** @constructor */
-        constructor: function(player, options)
-        {
-            VjsComponent.call(this, player, options);
+            return this.detectBrowser().browser === 'chrome';
         },
 
         /**
@@ -249,9 +314,11 @@
             // video/canvas settings
             this.videoFrameWidth = this.options_.options.frameWidth;
             this.videoFrameHeight = this.options_.options.frameHeight;
+            this.videoRecorderType = this.options_.options.videoRecorderType;
 
             // audio settings
             this.audioEngine = this.options_.options.audioEngine;
+            this.audioRecorderType = this.options_.options.audioRecorderType;
             this.audioWorkerURL = this.options_.options.audioWorkerURL;
             this.audioModuleURL = this.options_.options.audioModuleURL;
             this.audioBufferSize = this.options_.options.audioBufferSize;
@@ -268,21 +335,42 @@
             this._deviceActive = false;
 
             // cross-browser getUserMedia
-            var getUserMediaFn =
-                navigator.getUserMedia ||
-                navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia;
-            if (getUserMediaFn)
+            var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
             {
-                this.getUserMedia = getUserMediaFn.bind(navigator);
-            }
-            else
-            {
-                this.getUserMedia = function (constraints, successCallback, errorCallback)
+                // get ahold of getUserMedia, if present
+                var getUserMedia = (navigator.getUserMedia ||
+                    navigator.webkitGetUserMedia ||
+                    navigator.mozGetUserMedia ||
+                    navigator.msGetUserMedia);
+                // Some browsers just don't implement it - return a rejected
+                // promise with an error to keep a consistent interface
+                if (!getUserMedia)
                 {
-                    errorCallback(new Error('getUserMedia is not supported'));
-                };
+                    return Promise.reject(
+                        new Error('getUserMedia is not implemented in this browser')
+                    );
+                }
+                // otherwise, wrap the call to the old navigator.getUserMedia with
+                // a Promise
+                return new Promise(function(successCallback, errorCallback)
+                {
+                    getUserMedia.call(navigator, constraints, successCallback,
+                        errorCallback);
+                });
+            };
+            // Older browsers might not implement mediaDevices at all, so we set an
+            // empty object first
+            if (navigator.mediaDevices === undefined)
+            {
+                navigator.mediaDevices = {};
+            }
+            // Some browsers partially implement mediaDevices. We can't just assign
+            // an object with getUserMedia as it would overwrite existing
+            // properties. Here, we will just add the getUserMedia property if it's
+            // missing.
+            if (navigator.mediaDevices.getUserMedia === undefined)
+            {
+                navigator.mediaDevices.getUserMedia = promisifiedOldGUM;
             }
 
             // wait until player ui is ready
@@ -357,7 +445,7 @@
                         // prevent controlbar fadeout
                         this.player().on('userinactive', function(event)
                         {
-                           this.player().userActive(true);
+                            this.player().userActive(true);
                         });
 
                         // videojs automatically hides the controls when no valid 'source'
@@ -429,7 +517,7 @@
                 case this.AUDIO_ONLY:
                     // setup microphone
                     this.mediaType = {
-                        audio: true,
+                        audio: (this.audioRecorderType === 'auto') ? true : this.audioRecorderType,
                         video: false
                     };
                     // remove existing microphone listeners
@@ -460,28 +548,32 @@
                     // setup camera
                     this.mediaType = {
                         audio: false,
-                        video: true
+                        video: (this.videoRecorderType === 'auto') ? true : this.videoRecorderType
                     };
-                    this.getUserMedia({
-                            audio: false,
-                            video: (this.getRecordType() === this.IMAGE_ONLY) ? this.recordImage : this.recordVideo
-                        },
-                        this.onDeviceReady.bind(this),
-                        this.onDeviceError.bind(this));
+                    navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: (this.getRecordType() === this.IMAGE_ONLY) ? this.recordImage : this.recordVideo
+                    }).then(
+                        this.onDeviceReady.bind(this)
+                    ).catch(
+                        this.onDeviceError.bind(this)
+                    );
                     break;
 
                 case this.AUDIO_VIDEO:
                     // setup camera and microphone
                     this.mediaType = {
-                        audio: true,
-                        video: true
+                        audio: (this.audioRecorderType === 'auto') ? true : this.audioRecorderType,
+                        video: (this.videoRecorderType === 'auto') ? true : this.videoRecorderType
                     };
-                    this.getUserMedia({
-                            audio: this.recordAudio,
-                            video: this.recordVideo
-                        },
-                        this.onDeviceReady.bind(this),
-                        this.onDeviceError.bind(this));
+                    navigator.mediaDevices.getUserMedia({
+                        audio: this.recordAudio,
+                        video: this.recordVideo
+                    }).then(
+                        this.onDeviceReady.bind(this)
+                    ).catch(
+                        this.onDeviceError.bind(this)
+                    );
                     break;
 
                 case this.ANIMATION:
@@ -492,12 +584,14 @@
                         video: false,
                         gif: true
                     };
-                    this.getUserMedia({
-                            audio: false,
-                            video: this.recordAnimation
-                        },
-                        this.onDeviceReady.bind(this),
-                        this.onDeviceError.bind(this));
+                    navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: this.recordAnimation
+                    }).then(
+                        this.onDeviceReady.bind(this)
+                    ).catch(
+                        this.onDeviceError.bind(this)
+                    );
                     break;
             }
         },
@@ -820,54 +914,40 @@
             // stop stream and device
             if (this.stream)
             {
-                // use MediaStream.stop in browsers other than Chrome for now
-                // This will be deprecated in Firefox 44 (see
-                // https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/
-                // https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
-                // https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
-                if (!this.isChrome())
+                this._deviceActive = false;
+
+                if (this.getRecordType() === this.AUDIO_ONLY)
                 {
-                    if (this.getRecordType() === this.AUDIO_ONLY)
-                    {
-                        // make the microphone plugin stop it's device
-                        this.surfer.microphone.stopDevice();
-                    }
-                    else
-                    {
-                        // stop MediaStream
-                        this.stream.stop();
-                    }
+                    // make the microphone plugin stop it's device
+                    this.surfer.microphone.stopDevice();
+                    return;
                 }
-                else
+                // MediaStream.stop is deprecated since:
+                // - Chrome 45 (https://developers.google.com/web/updates/2015/07/mediastream-deprecations)
+                // - Firefox 44 (https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/,
+                //   https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
+                //   https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
+                var result = this.detectBrowser();
+                if ((result.browser === 'chrome' && result.version >= 45) ||
+                    (result.browser === 'firefox' && result.version >= 44) ||
+                    (result.browser === 'edge'))
                 {
-                    // use MediaStreamTrack.stop() in Chrome instead of
-                    // MediaStream.stop() (deprecated since Chrome 45)
-                    // https://developers.google.com/web/updates/2015/07/mediastream-deprecations
-                    var track;
                     switch (this.getRecordType())
                     {
-                        case this.AUDIO_ONLY:
-                            // make the microphone plugin stop it's device
-                            this.surfer.microphone.stopDevice();
-                            break;
-
                         case this.VIDEO_ONLY:
                         case this.ANIMATION:
                         case this.IMAGE_ONLY:
-                            track = this.stream.getVideoTracks()[0];
-                            track.stop();
-                            break;
-
                         case this.AUDIO_VIDEO:
-                            track = this.stream.getTracks();
-                            for (var index in track)
+                            this.stream.getTracks().forEach(function(stream)
                             {
-                                track[index].stop();
-                            }
+                                stream.stop();
+                            });
                             break;
                     }
+                    return;
                 }
-                this._deviceActive = false;
+                // fallback for older browsers
+                this.stream.stop();
             }
         },
 
@@ -916,7 +996,6 @@
 
                         // visualize recorded stream
                         this.load(this.player().recordedData);
-
                     }.bind(this));
 
                     // pause player so user can start playback
@@ -996,7 +1075,6 @@
 
                         // load recorded media
                         this.load(this.mediaURL);
-
                     }.bind(this));
 
                     // pause player so user can start playback
@@ -1466,7 +1544,7 @@
 
             // If hours are showing, we may need to add a leading zero.
             // Always show at least one digit of minutes.
-            m = (((h || gm >= 10) && m < 10) ? '0' + m : m) + ':';
+            m = ((h && m < 10) ? '0' + m : m) + ':';
 
             // Check if leading zero is need for seconds
             s = ((s < 10) ? '0' + s : s);
@@ -1703,6 +1781,11 @@
         // Audio recording library to use. Legal values are 'recordrtc',
         // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
         audioEngine: 'recordrtc',
+        // Audio recorder type to use. This allows you to specify an alternative
+        // recorder class, e.g. StereoAudioRecorder. Defaults to 'auto' which let's
+        // recordrtc specify the best available recorder type. Currently this
+        // setting is only used with the 'recordrtc' audioEngine.
+        audioRecorderType: 'auto',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
         // From the spec: This value controls how frequently the audioprocess event is
@@ -1728,6 +1811,10 @@
         audioWorkerURL: '',
         // URL for the audio module.
         audioModuleURL: '',
+        // Video recorder type to use. This allows you to specify an alternative
+        // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
+        // recordrtc specify the best available recorder type.
+        videoRecorderType: 'auto',
         // Frame rate in frames per second.
         animationFrameRate: 200,
         // Sets quality of color quantization (conversion of images to the
@@ -1822,5 +1909,4 @@
 
     // return a function to define the module export
     return record;
-
 }));
