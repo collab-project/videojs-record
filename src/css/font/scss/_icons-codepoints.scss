@@ -24,11 +24,11 @@ $icon-font-path: 'font' !default;
 
 // http://sass-lang.com/documentation/file.SASS_REFERENCE.html#maps
 $icons: (
-		device-perm: '\f101',
-		record-start: '\f102',
-		record-stop: '\f103',
-		photo-retry: '\f104',
-		photo-camera: '\f105',
+		device-perm: \f101,
+		record-start: \f102,
+		record-stop: \f103,
+		photo-retry: \f104,
+		photo-camera: \f105,
 );
 
 // NOTE: This is as complex as we want to get with SCSS functionality.

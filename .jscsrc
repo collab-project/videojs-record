@@ -1,0 +1,14 @@
+{
+    "disallowTrailingWhitespace": true,
+    "disallowMixedSpacesAndTabs": true,
+    "disallowMultipleSpaces": true,
+    "disallowTabs": true,
+    "disallowSpaceBeforeSemicolon": true,
+    "requireNewlineBeforeBlockStatements": true,
+    "validateIndentation": 4,
+    "requireSpacesInForStatement": true,
+    "requireSpacesInConditionalExpression": true,
+    "requireSpaceAfterLineComment": true,
+    "requireNewlineBeforeBlockStatements": true,
+    "requireBlocksOnNewline": true
+}

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Audio-only Example - Record Plugin for Video.js</title>
+  <title>Enumerate Devices Example - Record Plugin for Video.js</title>
 
   <link href="//vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet">
   <link href="../src/css/videojs.record.css" rel="stylesheet">
@@ -19,7 +19,7 @@
   <style>
   /* change player background color */
   #myAudio {
-      background-color: #9FD6BA;
+      background-color: #8EDBE6;
   }
   </style>
 
@@ -27,6 +27,11 @@
 <body>
 
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+<div>
+    <button id="enumBtn">Enumerate input and output devices</button>
+    <ul id="devices"></ul>
+</div>
 
 <script>
 var player = videojs("myAudio",
@@ -52,6 +57,53 @@ var player = videojs("myAudio",
     }
 });
 
+// user requested to enumerate devices
+document.getElementById('enumBtn').onclick = function(ev)
+{
+    player.recorder.enumerateDevices();
+}
+
+player.on('enumerateReady', function()
+{
+    var devices = player.recorder.devices;
+    var list = document.getElementById('devices');
+    var node, textnode;
+
+    // remove existing list items
+    while (list.firstChild)
+    {
+        list.removeChild(list.firstChild);
+    }
+    console.log('total devices:', devices.length);
+
+    // The user must have already granted permission to the page
+    // to use the media devices in order to get the device label
+    // populated. When served over HTTPS, the browser will remember
+    // permission granted on subsequent loads, so the permission
+    // will have been granted before requesting media. When using
+    // HTTP, not HTTPS, the getUserMedia request must be made and
+    // accepted before enumerateDevices will populate labels.
+    devices.forEach(function(device)
+    {
+        description = device.kind + ' - label: ' +
+            (device.label || 'unknown') +
+            ' (id: ' + device.deviceId + ')';
+        console.log(description);
+
+        // add device to list
+        node = document.createElement('li');
+        textnode = document.createTextNode(description);
+        node.appendChild(textnode);
+        list.appendChild(node);
+    });
+});
+
+// enumerate error handling
+player.on('enumerateError', function()
+{
+    console.log('enumerate error:', player.enumerateErrorCode);
+});
+
 // error handling
 player.on('deviceError', function()
 {
@@ -72,5 +124,6 @@ player.on('finishRecord', function()
     console.log('finished recording: ', player.recordedData);
 });
 </script>
+
 </body>
 </html>

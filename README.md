@@ -1,7 +1,7 @@
 Video.js Record
 ===============
 
-A Video.js plugin for recording audio/video/image files.
+Video.js plugin for recording audio/video/image files.
 
 <img title="Screenshot" src="examples/img/screenshot.png?raw=true" width="329">
 
@@ -55,8 +55,8 @@ Usage
 Start by including the video.js stylesheet and library:
 
 ```html
-<link href="//vjs.zencdn.net/5.6.0/video-js.css" rel="stylesheet">
-<script src="//vjs.zencdn.net/5.6.0/video.min.js"></script>
+<link href="//vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/5.8.0/video.min.js"></script>
 ```
 
 If you're going to record audio and/or video you need to include RecordRTC as well:
@@ -96,8 +96,9 @@ Check out the examples:
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 
 Note that recording both audio and video into a single WebM file is currently
-only supported in Mozilla Firefox >= 29. In the Chrome browser two separate
-Blob objects are created: one for audio and one for video.
+only supported in Mozilla Firefox >= 29 and Chrome >= 49. In older versions of
+the Chrome browser two separate Blob objects are created: one for audio and one
+for video.
 
 ### Audio-only
 
@@ -166,11 +167,12 @@ The available options for this plugin are:
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js`, `lamejs`, `opus-recorder` and `recorder.js`. |
+| `audioRecorderType` | string or function | `auto` | Audio recorder type to use. This allows you to specify an alternative recorder class, e.g. `StereoAudioRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. Currently this setting is only used with the 'recordrtc' `audioEngine`. |
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller filesize. |
-| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `libvorbis.oggvbr.asyncencoder.worker.min.js`. Currently only used for libvorbis.js, opus-recorder and lamejs. |
-| `audioModuleURL` | string | `''` | URL for the audio module, for example: `libvorbis.asmjs.min.js`. Currently only used for libvorbis.js. |
+| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/oggopusEncoder.js`. Currently only used for opus-recorder and lamejs. |
+| `videoRecorderType` | string or function | `auto` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 
@@ -191,6 +193,7 @@ player.recorder.destroy();
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
 | `getDevice` | Start the audio and/or video device(s). |
+| `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
 
 Events
 ------
@@ -211,12 +214,15 @@ player.on('startRecord', function()
 | `startRecord` | User pressed the record or camera button to start recording. |
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
+| `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.recorder.devices` array. |
+| `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 
 Media Constraints
 -----------------
 
 [Media stream constraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Parameters)
-allow you to specify the types of media to request, along with any requirements for each type.
+allow you to specify the types of media to request, along with any requirements
+for each type.
 
 The following example shows how to change the camera resolution to 1280 by 720
 pixels:
@@ -265,12 +271,21 @@ player.on('finishRecord', function()
 });
 ```
 
-Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html) examples on how to upload the
-data to a server.
-
 Note that in the Chrome browser `player.recordedData` returns an object with
 `audio` and `video` properties when recording both audio/video. In Firefox
 it returns a single WebM Blob object containing both audio and video.
+
+Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
+examples on how to upload the data to a server.
+
+Controlling the input and output devices
+----------------------------------------
+
+Use `enumerateDevices` to get a list of the available input and output devices
+on the user's system, e.g. `FaceTime HD-camera`, `default (Built-in microphone)`
+etc.
+
+Check out the `enumerateDevices` example ([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
 
 Customizing controls
 --------------------
@@ -306,7 +321,7 @@ Include the libvorbis.js library (instead of RecordRTC.js) and place it before
 any other scripts:
 
 ```html
-<script src="/path/to/libvorbis.oggvbr.asyncencoder.min.js" async></script>
+<script src="/path/to/libvorbis.min.js"></script>
 ```
 
 Also include the `videojs.record.libvorbis.js` plugin:
@@ -316,8 +331,7 @@ Also include the `videojs.record.libvorbis.js` plugin:
 <script src="videojs.record.libvorbis.js"></script>
 ```
 
-And specify the `libvorbis.js` `audioEngine`, `audioWorkerURL` and
-`audioModuleURL` options.
+And use `libvorbis.js` for the `audioEngine` option.
 
 Check out the audio-only Ogg example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html)).
 
@@ -397,7 +411,7 @@ the Video.js language file and the plugin's language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="//vjs.zencdn.net/5.6.0/lang/nl.js"></script>
+<script src="//vjs.zencdn.net/5.8.0/lang/nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:
@@ -438,12 +452,6 @@ Install dependencies using npm:
 
 ```
 npm install
-```
-
-Or using bower:
-
-```
-bower install
 ```
 
 Build a minified version:
