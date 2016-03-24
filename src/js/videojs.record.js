@@ -320,7 +320,6 @@
             this.audioEngine = this.options_.options.audioEngine;
             this.audioRecorderType = this.options_.options.audioRecorderType;
             this.audioWorkerURL = this.options_.options.audioWorkerURL;
-            this.audioModuleURL = this.options_.options.audioModuleURL;
             this.audioBufferSize = this.options_.options.audioBufferSize;
             this.audioSampleRate = this.options_.options.audioSampleRate;
             this.audioChannels = this.options_.options.audioChannels;
@@ -333,6 +332,7 @@
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+            this.devices = [];
 
             // cross-browser getUserMedia
             var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
@@ -426,6 +426,14 @@
                     // XXX: below are customizations copied from videojs.wavesurfer that
                     //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
+
+                    // loadedmetadata resets the durationDisplay for the
+                    // first time
+                    this.player().one('loadedmetadata', function()
+                    {
+                        // display max record time
+                        this.setDuration(this.maxLength);
+                    }.bind(this));
 
                     // the native controls don't work for this UI so disable
                     // them no matter what
@@ -693,7 +701,6 @@
                 this.engine.sampleRate = this.audioSampleRate;
                 this.engine.audioChannels = this.audioChannels;
                 this.engine.audioWorkerURL = this.audioWorkerURL;
-                this.engine.audioModuleURL = this.audioModuleURL;
 
                 // video/canvas settings
                 this.engine.video = {
@@ -1172,6 +1179,9 @@
          */
         setCurrentTime: function(currentTime, duration)
         {
+            currentTime = isNaN(currentTime) ? 0 : currentTime;
+            duration = isNaN(duration) ? 0 : duration;
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -1198,6 +1208,8 @@
          */
         setDuration: function(duration)
         {
+            duration = isNaN(duration) ? 0 : duration;
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -1465,6 +1477,40 @@
         {
             this.setCurrentTime(this.player().currentTime(),
                 this.streamDuration);
+        },
+
+        /**
+         * Collects information about the media input and output devices
+         * available on the system.
+         *
+         * Returns an array.
+         */
+        enumerateDevices: function()
+        {
+            var self = this;
+            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
+            {
+                self.player().enumerateErrorCode = 'enumerateDevices() not supported.';
+                self.player().trigger('enumerateError');
+                return;
+            }
+
+            // List cameras and microphones.
+            navigator.mediaDevices.enumerateDevices(this).then(function(devices)
+            {
+                self.devices = [];
+                devices.forEach(function(device)
+                {
+                    self.devices.push(device);
+                });
+
+                // notify listeners
+                self.player().trigger('enumerateReady');
+            }).catch(function(err)
+            {
+                self.player().enumerateErrorCode = err;
+                self.player().trigger('enumerateError');
+            });
         },
 
         /**
@@ -1809,8 +1855,6 @@
         audioChannels: 2,
         // URL for the audio worker.
         audioWorkerURL: '',
-        // URL for the audio module.
-        audioModuleURL: '',
         // Video recorder type to use. This allows you to specify an alternative
         // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
         // recordrtc specify the best available recorder type.
