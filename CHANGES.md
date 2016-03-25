@@ -1,6 +1,13 @@
 videojs-record changelog
 ========================
 
+x.x.x - xxxx/xx/xx
+------------------
+
+- add `enumerateDevices` API (#16)
+- prevent invalid or negative value in `formatTime` (#46 by @zang)
+
+
 1.2.0 - 2016/02/27
 ------------------
 
