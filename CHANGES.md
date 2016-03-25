@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-x.x.x - xxxx/xx/xx
+1.3.0 - 2016/03/25
 ------------------
 
 - add `enumerateDevices` API (#16)
