@@ -1544,9 +1544,8 @@
          */
         formatTime: function(seconds, guide)
         {
-            // XXX: integrate method changes in video.js, see
-            //      https://github.com/videojs/video.js/issues/1922
             // Default to using seconds as guide
+            seconds = seconds < 0 ? 0 : seconds;
             guide = guide || seconds;
             var s = Math.floor(seconds % 60),
                 m = Math.floor(seconds / 60 % 60),
@@ -1555,7 +1554,7 @@
                 gh = Math.floor(guide / 3600),
                 ms = Math.floor((seconds - s) * 1000);
 
-            // handle invalid times
+            // Handle invalid times
             if (isNaN(seconds) || seconds === Infinity)
             {
                 // '-' is false for all relational operators (e.g. <, >=) so this
