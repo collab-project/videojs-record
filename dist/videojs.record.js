@@ -1,4 +1,4 @@
-/*! videojs-record v1.2.0
+/*! videojs-record v1.3.0
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2016 - Licensed MIT */
 (function (root, factory)
@@ -335,6 +335,7 @@
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+            this.devices = [];
 
             // cross-browser getUserMedia
             var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
@@ -428,6 +429,14 @@
                     // XXX: below are customizations copied from videojs.wavesurfer that
                     //      tweak the video.js UI...
                     this.player().bigPlayButton.hide();
+
+                    // loadedmetadata resets the durationDisplay for the
+                    // first time
+                    this.player().one('loadedmetadata', function()
+                    {
+                        // display max record time
+                        this.setDuration(this.maxLength);
+                    }.bind(this));
 
                     // the native controls don't work for this UI so disable
                     // them no matter what
@@ -1173,6 +1182,9 @@
          */
         setCurrentTime: function(currentTime, duration)
         {
+            currentTime = isNaN(currentTime) ? 0 : currentTime;
+            duration = isNaN(duration) ? 0 : duration;
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -1199,6 +1211,8 @@
          */
         setDuration: function(duration)
         {
+            duration = isNaN(duration) ? 0 : duration;
+
             switch (this.getRecordType())
             {
                 case this.AUDIO_ONLY:
@@ -1469,6 +1483,40 @@
         },
 
         /**
+         * Collects information about the media input and output devices
+         * available on the system.
+         *
+         * Returns an array.
+         */
+        enumerateDevices: function()
+        {
+            var self = this;
+            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
+            {
+                self.player().enumerateErrorCode = 'enumerateDevices() not supported.';
+                self.player().trigger('enumerateError');
+                return;
+            }
+
+            // List cameras and microphones.
+            navigator.mediaDevices.enumerateDevices(this).then(function(devices)
+            {
+                self.devices = [];
+                devices.forEach(function(device)
+                {
+                    self.devices.push(device);
+                });
+
+                // notify listeners
+                self.player().trigger('enumerateReady');
+            }).catch(function(err)
+            {
+                self.player().enumerateErrorCode = err;
+                self.player().trigger('enumerateError');
+            });
+        },
+
+        /**
          * Show or hide the volume menu.
          */
         displayVolumeControl: function(display)
@@ -1499,9 +1547,8 @@
          */
         formatTime: function(seconds, guide)
         {
-            // XXX: integrate method changes in video.js, see
-            //      https://github.com/videojs/video.js/issues/1922
             // Default to using seconds as guide
+            seconds = seconds < 0 ? 0 : seconds;
             guide = guide || seconds;
             var s = Math.floor(seconds % 60),
                 m = Math.floor(seconds / 60 % 60),
@@ -1510,7 +1557,7 @@
                 gh = Math.floor(guide / 3600),
                 ms = Math.floor((seconds - s) * 1000);
 
-            // handle invalid times
+            // Handle invalid times
             if (isNaN(seconds) || seconds === Infinity)
             {
                 // '-' is false for all relational operators (e.g. <, >=) so this
@@ -1545,7 +1592,7 @@
 
             // If hours are showing, we may need to add a leading zero.
             // Always show at least one digit of minutes.
-            m = (((h || gm >= 10) && m < 10) ? '0' + m : m) + ':';
+            m = ((h && m < 10) ? '0' + m : m) + ':';
 
             // Check if leading zero is need for seconds
             s = ((s < 10) ? '0' + s : s);
