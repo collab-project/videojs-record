@@ -1589,7 +1589,7 @@
 
             // If hours are showing, we may need to add a leading zero.
             // Always show at least one digit of minutes.
-            m = (((h || gm >= 10) && m < 10) ? '0' + m : m) + ':';
+            m = ((h && m < 10) ? '0' + m : m) + ':';
 
             // Check if leading zero is need for seconds
             s = ((s < 10) ? '0' + s : s);
