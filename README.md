@@ -426,6 +426,7 @@ a filename that consists of the countrycode and the `.json` extension, eg.
 language file, eg. `fr.js`. Check the Video.js wiki for a
 [list of supported countrycodes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
 Pull requests to add more languages to this plugin are always welcome!
+You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
 More features using other plugins
 ---------------------------------
