@@ -98,16 +98,18 @@ player.on('enumerateReady', function()
     });
 });
 
-// enumerate error handling
+// error handling
 player.on('enumerateError', function()
 {
     console.log('enumerate error:', player.enumerateErrorCode);
 });
-
-// error handling
 player.on('deviceError', function()
 {
     console.log('device error:', player.deviceErrorCode);
+});
+player.on('error', function(error)
+{
+    console.log('error:', error);
 });
 
 // user clicked the record button and started recording

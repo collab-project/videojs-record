@@ -67,6 +67,10 @@
             {
                 console.warn('device error:', player.deviceErrorCode);
             });
+            player.on('error', function(error)
+            {
+                console.log('error:', error);
+            });
 
             // data is available
             player.on('finishRecord', function()
