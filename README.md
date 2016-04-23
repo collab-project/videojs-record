@@ -55,8 +55,8 @@ Usage
 Start by including the video.js stylesheet and library:
 
 ```html
-<link href="//vjs.zencdn.net/5.8.7/video-js.css" rel="stylesheet">
-<script src="//vjs.zencdn.net/5.8.7/video.min.js"></script>
+<link href="//vjs.zencdn.net/5.9.2/video-js.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/5.9.2/video.min.js"></script>
 ```
 
 If you're going to record audio and/or video you need to include RecordRTC as well:
@@ -411,7 +411,7 @@ the Video.js language file and the plugin's language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="//vjs.zencdn.net/5.8.7/lang/nl.js"></script>
+<script src="//vjs.zencdn.net/5.9.2/lang/nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:
