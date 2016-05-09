@@ -126,6 +126,19 @@
         },
 
         /**
+         * Remove any temporary data and references to streams.
+         */
+        dispose: function()
+        {
+            // remove previous recording
+            if (this.mediaURL !== undefined)
+            {
+                URL.revokeObjectURL(this.mediaURL);
+            }
+            this.recordedData = null;
+        },
+
+        /**
          * Add filename and timestamp to recorded file object.
          */
         addFileInfo: function(fileObj)
@@ -153,6 +166,7 @@
             this.addFileInfo(this.recordedData);
 
             // store reference to recorded stream URL
+            this.dispose();
             this.mediaURL = URL.createObjectURL(this.recordedData);
 
             // notify listeners
@@ -762,7 +776,12 @@
                 this.displayVolumeControl(false);
 
                 // start stream
-                this.load(URL.createObjectURL(this.stream));
+                if (this.streamURL !== undefined)
+                {
+                    URL.revokeObjectURL(this.streamURL);
+                }
+                this.streamURL = URL.createObjectURL(this.stream);
+                this.load(this.streamURL);
                 this.mediaElement.play();
             }
         },
@@ -842,6 +861,12 @@
                     this.startTime = new Date().getTime();
                     this.countDown = this.setInterval(
                         this.onCountDown.bind(this), 100);
+
+                    // cleanup previous recording
+                    if (this.engine !== undefined)
+                    {
+                        this.engine.dispose();
+                    }
 
                     // start recording stream
                     this.engine.start();
@@ -1396,7 +1421,12 @@
             this.displayVolumeControl(false);
 
             // start or resume live preview
-            this.load(URL.createObjectURL(this.stream));
+            if (this.streamURL !== undefined)
+            {
+                URL.revokeObjectURL(this.streamURL);
+            }
+            this.streamURL = URL.createObjectURL(this.stream);
+            this.load(this.streamURL);
             this.mediaElement.play();
         },
 
