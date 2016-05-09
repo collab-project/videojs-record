@@ -135,7 +135,6 @@
             {
                 URL.revokeObjectURL(this.mediaURL);
             }
-            this.recordedData = null;
         },
 
         /**
@@ -1084,9 +1083,13 @@
                                 this.player().on('volumechange',
                                     this.onVolumeChange.bind(this));
                             }
-
-                            this.extraAudio.src = URL.createObjectURL(
+                            if (this.extraAudioURL !== undefined)
+                            {
+                                URL.revokeObjectURL(this.extraAudioURL);
+                            }
+                            this.extraAudioURL = URL.createObjectURL(
                                 this.player().recordedData.audio);
+                            this.extraAudio.src = this.extraAudioURL;
 
                             // pause extra audio when player pauses
                             this.on(this.player(), 'pause',
@@ -1285,6 +1288,7 @@
             // prevent callbacks if recording is in progress
             if (this.engine)
             {
+                this.engine.dispose();
                 this.engine.off('recordComplete', this.engineStopCallback);
             }
 
