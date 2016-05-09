@@ -1321,6 +1321,17 @@
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+
+        },
+
+        /**
+         * Release variables for js garbage collection and hide playback button
+         */
+        restore: function()
+        {
+            if (this.mediaURL)  URL.revokeObjectURL(this.mediaURL);
+            this.recordedData = null;
+            this.player().controlBar.playToggle.hide();
         },
 
         /**
