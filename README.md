@@ -191,6 +191,7 @@ player.recorder.destroy();
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
 | `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
+| `reset` | Not as destructive as `destroy`: use this if you want to reset the player interface and recorder state. |
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
 | `getDevice` | Start the audio and/or video device(s). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |

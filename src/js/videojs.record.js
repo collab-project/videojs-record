@@ -316,36 +316,11 @@
             // run base component initializing with new options.
             VjsComponent.call(this, player, options);
 
-            // record settings
-            this.recordImage = this.options_.options.image;
-            this.recordAudio = this.options_.options.audio;
-            this.recordVideo = this.options_.options.video;
-            this.recordAnimation = this.options_.options.animation;
-            this.maxLength = this.options_.options.maxLength;
-            this.debug = this.options_.options.debug;
+            // setup plugin options
+            this.loadOptions();
 
-            // video/canvas settings
-            this.videoFrameWidth = this.options_.options.frameWidth;
-            this.videoFrameHeight = this.options_.options.frameHeight;
-            this.videoRecorderType = this.options_.options.videoRecorderType;
-
-            // audio settings
-            this.audioEngine = this.options_.options.audioEngine;
-            this.audioRecorderType = this.options_.options.audioRecorderType;
-            this.audioWorkerURL = this.options_.options.audioWorkerURL;
-            this.audioBufferSize = this.options_.options.audioBufferSize;
-            this.audioSampleRate = this.options_.options.audioSampleRate;
-            this.audioChannels = this.options_.options.audioChannels;
-
-            // animation settings
-            this.animationFrameRate = this.options_.options.animationFrameRate;
-            this.animationQuality = this.options_.options.animationQuality;
-
-            // recorder state
-            this._recording = false;
-            this._processing = false;
-            this._deviceActive = false;
-            this.devices = [];
+            // (re)set recorder state
+            this.resetState();
 
             // cross-browser getUserMedia
             var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
@@ -388,6 +363,37 @@
 
             // wait until player ui is ready
             this.player().one('ready', this.setupUI.bind(this));
+        },
+
+        /**
+         * Setup plugin options.
+         */
+        loadOptions: function()
+        {
+            // record settings
+            this.recordImage = this.options_.options.image;
+            this.recordAudio = this.options_.options.audio;
+            this.recordVideo = this.options_.options.video;
+            this.recordAnimation = this.options_.options.animation;
+            this.maxLength = this.options_.options.maxLength;
+            this.debug = this.options_.options.debug;
+
+            // video/canvas settings
+            this.videoFrameWidth = this.options_.options.frameWidth;
+            this.videoFrameHeight = this.options_.options.frameHeight;
+            this.videoRecorderType = this.options_.options.videoRecorderType;
+
+            // audio settings
+            this.audioEngine = this.options_.options.audioEngine;
+            this.audioRecorderType = this.options_.options.audioRecorderType;
+            this.audioWorkerURL = this.options_.options.audioWorkerURL;
+            this.audioBufferSize = this.options_.options.audioBufferSize;
+            this.audioSampleRate = this.options_.options.audioSampleRate;
+            this.audioChannels = this.options_.options.audioChannels;
+
+            // animation settings
+            this.animationFrameRate = this.options_.options.animationFrameRate;
+            this.animationQuality = this.options_.options.animationQuality;
         },
 
         /**
@@ -1281,7 +1287,7 @@
         },
 
         /**
-         * Cleanup resources.
+         * Destroy plugin and players and cleanup resources.
          */
         destroy: function()
         {
@@ -1318,9 +1324,85 @@
                     break;
             }
 
+            this.resetState();
+        },
+
+        /**
+         * Reset the plugin.
+         */
+        reset: function()
+        {
+            // prevent callbacks if recording is in progress
+            if (this.engine)
+            {
+                this.engine.dispose();
+                this.engine.off('recordComplete', this.engineStopCallback);
+            }
+
+            // stop recording and device
+            this.stop();
+            this.stopDevice();
+
+            // stop countdown
+            this.clearInterval(this.countDown);
+
+            // reset options
+            this.loadOptions();
+
+            // reset recorder state
+            this.resetState();
+
+            // reset record time
+            this.setDuration(this.maxLength);
+            this.setCurrentTime(0);
+
+            // reset player
+            this.player().reset();
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    if (this.surfer && this.surfer.surfer)
+                    {
+                        // empty last frame
+                        this.surfer.surfer.empty();
+                    }
+                    break;
+
+                case this.IMAGE_ONLY:
+                case this.ANIMATION:
+                    // reset UI
+                    this.player().recordCanvas.hide();
+                    this.player().cameraButton.hide();
+                    break;
+            }
+
+            // hide play control
+            this.player().controlBar.playToggle.hide();
+
+            // show device selection button
+            this.player().deviceButton.show();
+
+            // hide record button
+            this.player().recordToggle.hide();
+
+            // loadedmetadata resets the durationDisplay for the
+            // first time
+            this.player().one('loadedmetadata', function()
+            {
+                // display max record time
+                this.setDuration(this.maxLength);
+            }.bind(this));
+        },
+
+        /**
+         * Reset the plugin recorder state.
+         */
+        resetState: function()
+        {
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+            this.devices = [];
         },
 
         /**
