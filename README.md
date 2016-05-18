@@ -55,7 +55,7 @@ Usage
 Start by including the video.js stylesheet and library:
 
 ```html
-<link href="//vjs.zencdn.net/5.9.2/video-js.css" rel="stylesheet">
+<link href="//vjs.zencdn.net/5.9.2/video-js.min.css" rel="stylesheet">
 <script src="//vjs.zencdn.net/5.9.2/video.min.js"></script>
 ```
 
