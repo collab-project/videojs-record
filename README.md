@@ -55,14 +55,14 @@ Usage
 Start by including the video.js stylesheet and library:
 
 ```html
-<link href="//vjs.zencdn.net/5.9.2/video-js.min.css" rel="stylesheet">
-<script src="//vjs.zencdn.net/5.9.2/video.min.js"></script>
+<link href="video-js.min.css" rel="stylesheet">
+<script src="video.min.js"></script>
 ```
 
 If you're going to record audio and/or video you need to include RecordRTC as well:
 
 ```html
-<script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
+<script src="RecordRTC.js"></script>
 ```
 
 The videojs-record plugin automatically registers itself when the script
@@ -322,7 +322,7 @@ Include the libvorbis.js library (instead of RecordRTC.js) and place it before
 any other scripts:
 
 ```html
-<script src="/path/to/libvorbis.min.js"></script>
+<script src="libvorbis.min.js"></script>
 ```
 
 Also include the `videojs.record.libvorbis.js` plugin:
@@ -364,7 +364,7 @@ Include the recorder.js script (instead of RecordRTC.js) and place it before
 any other scripts:
 
 ```html
-<script src="/path/to/recorder.js"></script>
+<script src="recorder.js"></script>
 ```
 
 And include the `videojs.record.opus-recorder.js` plugin:
@@ -387,7 +387,7 @@ recorder.js is currently only supported when recording audio-only.
 Include the recorder.js library (instead of RecordRTC.js) on the page:
 
 ```html
-<script src="/path/to/recorder.js" async></script>
+<script src="recorder.js" async></script>
 ```
 
 And include the `videojs.record.recorderjs.js` plugin:
@@ -408,11 +408,11 @@ This plugin supports multiple languages. Each language has it's own file
 (found in the `lang` directory) that contains the translated text.
 
 Using a different language, for example Dutch (`nl`), is done by including
-the Video.js language file and the plugin's language file:
+the plugin's language file and the Video.js language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="//vjs.zencdn.net/5.9.2/lang/nl.js"></script>
+<script src="nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:
