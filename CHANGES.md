@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-1.4.0 - unreleased
+1.4.0 - 2016/05/25
 ------------------
 
 - Add `reset` method to reset the plugin without destroying it (#73)
