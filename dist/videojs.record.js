@@ -1,4 +1,4 @@
-/*! videojs-record v1.3.0
+/*! videojs-record v1.4.0
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2016 - Licensed MIT */
 (function (root, factory)
@@ -129,6 +129,18 @@
         },
 
         /**
+         * Remove any temporary data and references to streams.
+         */
+        dispose: function()
+        {
+            // remove previous recording
+            if (this.mediaURL !== undefined)
+            {
+                URL.revokeObjectURL(this.mediaURL);
+            }
+        },
+
+        /**
          * Add filename and timestamp to recorded file object.
          */
         addFileInfo: function(fileObj)
@@ -156,6 +168,7 @@
             this.addFileInfo(this.recordedData);
 
             // store reference to recorded stream URL
+            this.dispose();
             this.mediaURL = URL.createObjectURL(this.recordedData);
 
             // notify listeners
@@ -306,36 +319,11 @@
             // run base component initializing with new options.
             VjsComponent.call(this, player, options);
 
-            // record settings
-            this.recordImage = this.options_.options.image;
-            this.recordAudio = this.options_.options.audio;
-            this.recordVideo = this.options_.options.video;
-            this.recordAnimation = this.options_.options.animation;
-            this.maxLength = this.options_.options.maxLength;
-            this.debug = this.options_.options.debug;
+            // setup plugin options
+            this.loadOptions();
 
-            // video/canvas settings
-            this.videoFrameWidth = this.options_.options.frameWidth;
-            this.videoFrameHeight = this.options_.options.frameHeight;
-            this.videoRecorderType = this.options_.options.videoRecorderType;
-
-            // audio settings
-            this.audioEngine = this.options_.options.audioEngine;
-            this.audioRecorderType = this.options_.options.audioRecorderType;
-            this.audioWorkerURL = this.options_.options.audioWorkerURL;
-            this.audioBufferSize = this.options_.options.audioBufferSize;
-            this.audioSampleRate = this.options_.options.audioSampleRate;
-            this.audioChannels = this.options_.options.audioChannels;
-
-            // animation settings
-            this.animationFrameRate = this.options_.options.animationFrameRate;
-            this.animationQuality = this.options_.options.animationQuality;
-
-            // recorder state
-            this._recording = false;
-            this._processing = false;
-            this._deviceActive = false;
-            this.devices = [];
+            // (re)set recorder state
+            this.resetState();
 
             // cross-browser getUserMedia
             var promisifiedOldGUM = function(constraints, successCallback, errorCallback)
@@ -378,6 +366,37 @@
 
             // wait until player ui is ready
             this.player().one('ready', this.setupUI.bind(this));
+        },
+
+        /**
+         * Setup plugin options.
+         */
+        loadOptions: function()
+        {
+            // record settings
+            this.recordImage = this.options_.options.image;
+            this.recordAudio = this.options_.options.audio;
+            this.recordVideo = this.options_.options.video;
+            this.recordAnimation = this.options_.options.animation;
+            this.maxLength = this.options_.options.maxLength;
+            this.debug = this.options_.options.debug;
+
+            // video/canvas settings
+            this.videoFrameWidth = this.options_.options.frameWidth;
+            this.videoFrameHeight = this.options_.options.frameHeight;
+            this.videoRecorderType = this.options_.options.videoRecorderType;
+
+            // audio settings
+            this.audioEngine = this.options_.options.audioEngine;
+            this.audioRecorderType = this.options_.options.audioRecorderType;
+            this.audioWorkerURL = this.options_.options.audioWorkerURL;
+            this.audioBufferSize = this.options_.options.audioBufferSize;
+            this.audioSampleRate = this.options_.options.audioSampleRate;
+            this.audioChannels = this.options_.options.audioChannels;
+
+            // animation settings
+            this.animationFrameRate = this.options_.options.animationFrameRate;
+            this.animationQuality = this.options_.options.animationQuality;
         },
 
         /**
@@ -765,7 +784,12 @@
                 this.displayVolumeControl(false);
 
                 // start stream
-                this.load(URL.createObjectURL(this.stream));
+                if (this.streamURL !== undefined)
+                {
+                    URL.revokeObjectURL(this.streamURL);
+                }
+                this.streamURL = URL.createObjectURL(this.stream);
+                this.load(this.streamURL);
                 this.mediaElement.play();
             }
         },
@@ -845,6 +869,12 @@
                     this.startTime = new Date().getTime();
                     this.countDown = this.setInterval(
                         this.onCountDown.bind(this), 100);
+
+                    // cleanup previous recording
+                    if (this.engine !== undefined)
+                    {
+                        this.engine.dispose();
+                    }
 
                     // start recording stream
                     this.engine.start();
@@ -1062,9 +1092,13 @@
                                 this.player().on('volumechange',
                                     this.onVolumeChange.bind(this));
                             }
-
-                            this.extraAudio.src = URL.createObjectURL(
+                            if (this.extraAudioURL !== undefined)
+                            {
+                                URL.revokeObjectURL(this.extraAudioURL);
+                            }
+                            this.extraAudioURL = URL.createObjectURL(
                                 this.player().recordedData.audio);
+                            this.extraAudio.src = this.extraAudioURL;
 
                             // pause extra audio when player pauses
                             this.on(this.player(), 'pause',
@@ -1256,13 +1290,14 @@
         },
 
         /**
-         * Cleanup resources.
+         * Destroy plugin and players and cleanup resources.
          */
         destroy: function()
         {
             // prevent callbacks if recording is in progress
             if (this.engine)
             {
+                this.engine.dispose();
                 this.engine.off('recordComplete', this.engineStopCallback);
             }
 
@@ -1292,9 +1327,85 @@
                     break;
             }
 
+            this.resetState();
+        },
+
+        /**
+         * Reset the plugin.
+         */
+        reset: function()
+        {
+            // prevent callbacks if recording is in progress
+            if (this.engine)
+            {
+                this.engine.dispose();
+                this.engine.off('recordComplete', this.engineStopCallback);
+            }
+
+            // stop recording and device
+            this.stop();
+            this.stopDevice();
+
+            // stop countdown
+            this.clearInterval(this.countDown);
+
+            // reset options
+            this.loadOptions();
+
+            // reset recorder state
+            this.resetState();
+
+            // reset record time
+            this.setDuration(this.maxLength);
+            this.setCurrentTime(0);
+
+            // reset player
+            this.player().reset();
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    if (this.surfer && this.surfer.surfer)
+                    {
+                        // empty last frame
+                        this.surfer.surfer.empty();
+                    }
+                    break;
+
+                case this.IMAGE_ONLY:
+                case this.ANIMATION:
+                    // reset UI
+                    this.player().recordCanvas.hide();
+                    this.player().cameraButton.hide();
+                    break;
+            }
+
+            // hide play control
+            this.player().controlBar.playToggle.hide();
+
+            // show device selection button
+            this.player().deviceButton.show();
+
+            // hide record button
+            this.player().recordToggle.hide();
+
+            // loadedmetadata resets the durationDisplay for the
+            // first time
+            this.player().one('loadedmetadata', function()
+            {
+                // display max record time
+                this.setDuration(this.maxLength);
+            }.bind(this));
+        },
+
+        /**
+         * Reset the plugin recorder state.
+         */
+        resetState: function()
+        {
             this._recording = false;
             this._processing = false;
             this._deviceActive = false;
+            this.devices = [];
         },
 
         /**
@@ -1399,7 +1510,12 @@
             this.displayVolumeControl(false);
 
             // start or resume live preview
-            this.load(URL.createObjectURL(this.stream));
+            if (this.streamURL !== undefined)
+            {
+                URL.revokeObjectURL(this.streamURL);
+            }
+            this.streamURL = URL.createObjectURL(this.stream);
+            this.load(this.streamURL);
             this.mediaElement.play();
         },
 
