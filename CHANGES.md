@@ -4,15 +4,15 @@ videojs-record changelog
 1.4.0 - unreleased
 ------------------
 
-- add `reset` method to reset the plugin without destroying it (#73)
-- release existing object URLs (#70)
+- Add `reset` method to reset the plugin without destroying it (#73)
+- Release existing object URLs (#70)
 
 
 1.3.0 - 2016/03/25
 ------------------
 
-- add `enumerateDevices` API (#16)
-- prevent invalid or negative value in `formatTime` (#46 by @zang)
+- Add `enumerateDevices` API (#16)
+- Prevent invalid or negative value in `formatTime` (#46 by @zang)
 
 
 1.2.0 - 2016/02/27
