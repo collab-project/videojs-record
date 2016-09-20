@@ -1738,6 +1738,7 @@
             VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
+            this.on('tap', this.onClick);
             this.on(player, 'startRecord', this.onStart);
             this.on(player, 'stopRecord', this.onStop);
         }
@@ -1789,6 +1790,7 @@
             VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
+            this.on('tap', this.onClick);
             this.on(player, 'startRecord', this.onStart);
             this.on(player, 'stopRecord', this.onStop);
         }
@@ -1845,6 +1847,7 @@
             VjsButton.call(this, player, options);
 
             this.on('click', this.onClick);
+            this.on('tap', this.onClick);
         }
     });
     DeviceButton.prototype.onClick = function(e)
