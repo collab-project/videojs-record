@@ -434,12 +434,7 @@ More features using other plugins
 
 The Video.js community created
 [lots of plugins](https://github.com/videojs/video.js/wiki/Plugins)
-that can be used to enhance the player's functionality. Plugins actually
-tested with `videojs-record`:
-
-- [videojs-persistvolume](https://github.com/theonion/videojs-persistvolume) -
-  Saves user's volume setting using `localStorage`, but falls back to cookies
-  if necessary.
+that can be used to enhance the player's functionality.
 
 Development
 -----------
