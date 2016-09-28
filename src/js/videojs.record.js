@@ -145,7 +145,7 @@
             var now = new Date();
             fileObj.lastModifiedDate = now;
 
-            // guess extension name from mime-type, e.g. audio/ogg, but
+            // guess extension name from mime type, e.g. audio/ogg, but
             // any extension is valid here
             var fileExtension = '.' + fileObj.type.split('/')[1];
 
@@ -191,6 +191,7 @@
             this.engine = new MRecordRTC();
             this.engine.mediaType = this.mediaType;
             this.engine.disableLogs = !this.debug;
+            this.engine.mimeType = this.mimeType;
 
             // audio settings
             this.engine.bufferSize = this.bufferSize;
@@ -382,6 +383,7 @@
             this.videoFrameWidth = this.options_.options.frameWidth;
             this.videoFrameHeight = this.options_.options.frameHeight;
             this.videoRecorderType = this.options_.options.videoRecorderType;
+            this.videoMimeType = this.options_.options.videoMimeType;
 
             // audio settings
             this.audioEngine = this.options_.options.audioEngine;
@@ -390,6 +392,7 @@
             this.audioBufferSize = this.options_.options.audioBufferSize;
             this.audioSampleRate = this.options_.options.audioSampleRate;
             this.audioChannels = this.options_.options.audioChannels;
+            this.audioMimeType = this.options_.options.audioMimeType;
 
             // animation settings
             this.animationFrameRate = this.options_.options.animationFrameRate;
@@ -720,6 +723,16 @@
                 this.engine.sampleRate = this.audioSampleRate;
                 this.engine.audioChannels = this.audioChannels;
                 this.engine.audioWorkerURL = this.audioWorkerURL;
+
+                // mime type
+                this.engine.mimeType = {
+                    video: this.videoMimeType,
+                    gif: 'image/gif'
+                };
+                if (this.audioMimeType !== null)
+                {
+                    this.engine.mimeType.audio = this.audioMimeType;
+                }
 
                 // video/canvas settings
                 this.engine.video = {
@@ -1942,6 +1955,14 @@
         frameHeight: 240,
         // Enables console logging for debugging purposes.
         debug: false,
+        // The mime type for the video recorder. Default to 'video/webm'.
+        // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
+        // newer) for MP4.
+        videoMimeType: 'video/webm',
+        // Video recorder type to use. This allows you to specify an alternative
+        // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
+        // recordrtc specify the best available recorder type.
+        videoRecorderType: 'auto',
         // Audio recording library to use. Legal values are 'recordrtc',
         // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
         audioEngine: 'recordrtc',
@@ -1950,6 +1971,10 @@
         // recordrtc specify the best available recorder type. Currently this
         // setting is only used with the 'recordrtc' audioEngine.
         audioRecorderType: 'auto',
+        // The mime type for the audio recorder. Defaults to 'auto' which will pick
+        // the best option available in the browser (e.g. either 'audio/wav',
+        // 'audio/ogg' or 'audio/webm').
+        audioMimeType: 'auto',
         // The size of the audio buffer (in sample-frames) which needs to
         // be processed each time onprocessaudio is called.
         // From the spec: This value controls how frequently the audioprocess event is
@@ -1973,10 +1998,6 @@
         audioChannels: 2,
         // URL for the audio worker.
         audioWorkerURL: '',
-        // Video recorder type to use. This allows you to specify an alternative
-        // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
-        // recordrtc specify the best available recorder type.
-        videoRecorderType: 'auto',
         // Frame rate in frames per second.
         animationFrameRate: 200,
         // Sets quality of color quantization (conversion of images to the
