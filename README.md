@@ -42,7 +42,7 @@ And when recording audio-only, the following dependencies are also required:
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
-Optional dependencies when using [other audio libraries](#other-audio-libraries):
+Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
 - [libvorbis.js](#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
 - [lamejs](#lamejs) - Converts PCM audio data to compressed MP3 audio.
@@ -134,7 +134,7 @@ and enable the plugin by adding a `record` configuration to `plugins`. For
 example:
 
 ```javascript
-var player = videojs("myVideo",
+var player = videojs('myVideo',
 {
     // video.js options
     controls: true,
@@ -161,20 +161,20 @@ The available options for this plugin are:
 | `image` | boolean or object | `false` | Create single snapshot image. |
 | `audio` | boolean or object | `false` | Include audio in the recorded clip. |
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
-| `animation` | boolean or object | `false` | Animated GIF. |
+| `animation` | boolean or object | `false` | Animated GIF without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
-| `audioEngine` | string | `recordrtc` | Audio recording library to use. Legal values are `recordrtc`, `libvorbis.js`, `lamejs`, `opus-recorder` and `recorder.js`. |
-| `audioRecorderType` | string or function | `'auto'` | Audio recorder type to use. This allows you to specify an alternative recorder class, e.g. `StereoAudioRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. Currently this setting is only used with the 'recordrtc' `audioEngine`. |
+| `audioEngine` | string | `'recordrtc'` | Audio recording library/plugin to use. Legal values are `recordrtc`, `libvorbis.js`, `lamejs`, `opus-recorder` and `recorder.js`. |
+| `audioRecorderType` | string or function | `'auto'` | Audio recorder type to use. This allows you to specify an alternative recorder class, e.g. `StereoAudioRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. Currently this setting is only used with the `recordrtc` `audioEngine`. |
 | `audioMimeType` | string | `'auto'` | The mime type for the audio recorder. Defaults to `auto` which will pick the best option available in the browser (e.g. either `audio/wav`, `audio/ogg` or `audio/webm`). A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html).|
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller filesize. |
-| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/oggopusEncoder.js`. Currently only used for opus-recorder and lamejs. |
+| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/oggopusEncoder.js`. Currently only used for opus-recorder and lamejs plugins. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 
@@ -231,7 +231,7 @@ The following example shows how to change the camera resolution to 1280 by 720
 pixels:
 
 ```javascript
-var player = videojs("myVideo",
+var player = videojs('myVideo',
 {
     controls: true,
     loop: false,

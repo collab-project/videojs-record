@@ -729,7 +729,8 @@
                     video: this.videoMimeType,
                     gif: 'image/gif'
                 };
-                if (this.audioMimeType !== null)
+                if (this.audioMimeType !== null &&
+                    this.audioMimeType !== 'auto')
                 {
                     this.engine.mimeType.audio = this.audioMimeType;
                 }
