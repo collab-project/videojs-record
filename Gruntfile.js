@@ -94,10 +94,8 @@ module.exports = function(grunt) {
       src: ['<%= jshint.src.src %>'],
       options: {
         config: '.jscsrc',
-        esnext: false, // If you use ES6 http://jscs.info/overview.html#esnext
-        verbose: true, // If you need output with rule names http://jscs.info/overview.html#verbose
         fix: false, // Autofix code style violations when possible.
-        requireCurlyBraces: [ "if" ]
+        requireCurlyBraces: [ 'if' ]
       }
     },
     jsonlint: {

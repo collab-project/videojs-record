@@ -5,7 +5,6 @@
     "disallowTabs": true,
     "disallowSpaceBeforeSemicolon": true,
     "requireNewlineBeforeBlockStatements": true,
-    "validateIndentation": 4,
     "requireSpacesInForStatement": true,
     "requireSpacesInConditionalExpression": true,
     "requireSpaceAfterLineComment": true,
