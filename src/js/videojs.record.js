@@ -266,14 +266,14 @@
          * Invoked when recording is stopped and resulting stream is available.
          *
          * @private
-         * @param {string} audioVideoWebMURL - Reference to the recorded Blob
+         * @param {string} audioVideoURL - Reference to the recorded Blob
          *     object, e.g. 'blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba'
          * @param {string} type - Media type, eg. 'video' or 'audio'.
          */
-        onStopRecording: function(audioVideoWebMURL, type)
+        onStopRecording: function(audioVideoURL, type)
         {
             // store reference to recorded stream URL
-            this.mediaURL = audioVideoWebMURL;
+            this.mediaURL = audioVideoURL;
 
             // store reference to recorded stream data
             var recordType = this.player().recorder.getRecordType();
@@ -295,7 +295,7 @@
                         // when recording both audio and video, recordrtc
                         // calls this twice on chrome, first with audio data
                         // and then with video data.
-                        // on firefox it's called once but with a single webm
+                        // on firefox it's called once but with a single
                         // blob that includes both audio and video data.
                         if (recording.video !== undefined)
                         {
