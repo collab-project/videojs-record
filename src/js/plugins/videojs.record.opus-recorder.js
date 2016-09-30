@@ -21,6 +21,9 @@
 {
     /**
      * Audio-only engine for the opus-recorder library.
+     *
+     * @class
+     * @augments videojs.RecordBase
      */
     videojs.OpusRecorderEngine = videojs.extend(videojs.RecordBase,
     {

@@ -24,6 +24,12 @@
     var VjsComponent = videojs.getComponent('Component');
     var VjsButton = videojs.getComponent('Button');
 
+    /**
+     * Base class for recorder backends.
+     * @class
+     * @augments videojs.Component
+     * @private
+     */
     videojs.RecordBase = videojs.extend(VjsComponent,
     {
         // recorder modes
@@ -40,7 +46,13 @@
         LAMEJS: 'lamejs',
         OPUSRECORDER: 'opus-recorder',
 
-        /** @constructor */
+        /**
+         * The constructor function for the class.
+         *
+         * @private
+         * @param {(videojs.Player|Object)} player - Video.js player instance.
+         * @param {Object} options - Player options.
+         */
         constructor: function(player, options)
         {
             VjsComponent.call(this, player, options);
@@ -48,6 +60,8 @@
 
         /**
          * Browser detector.
+         *
+         * @private
          * @return {object} result containing browser, version and minVersion
          *     properties.
          */
@@ -100,11 +114,15 @@
             result.browser = 'Not a supported browser.';
             return result;
         },
+
         /**
          * Extract browser version out of the provided user agent string.
-         * @param {!string} uastring userAgent string.
-         * @param {!string} expr Regular expression used as match criteria.
-         * @param {!number} pos position in the version string to be returned.
+         *
+         * @private
+         * @param {!string} uastring - userAgent string.
+         * @param {!string} expr - Regular expression used as match criteria.
+         * @param {!number} pos - position in the version string to be
+         *     returned.
          * @return {!number} browser version.
          */
         extractVersion: function(uastring, expr, pos)
@@ -127,6 +145,7 @@
 
         /**
          * Remove any temporary data and references to streams.
+         * @private
          */
         dispose: function()
         {
@@ -139,6 +158,9 @@
 
         /**
          * Add filename and timestamp to recorded file object.
+         *
+         * @param {(blob|file)} fileObj - Blob of File object.
+         * @private
          */
         addFileInfo: function(fileObj)
         {
@@ -161,7 +183,8 @@
         /**
          * Invoked when recording is stopped and resulting stream is available.
          *
-         * @param {Blob} data Reference to the recorded Blob
+         * @param {blob} data - Reference to the recorded Blob.
+         * @private
          */
         onStopRecording: function(data)
         {
@@ -180,11 +203,16 @@
 
     /**
      * Engine for the RecordRTC library.
+     *
+     * @private
+     * @class
+     * @augments videojs.RecordBase
      */
     videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
     {
         /**
          * Setup recording engine.
+         * @private
          */
         setup: function(stream, mediaType, debug)
         {
@@ -217,6 +245,7 @@
 
         /**
          * Start recording.
+         * @private
          */
         start: function()
         {
@@ -226,6 +255,7 @@
         /**
          * Stop recording. Result will be available async when onStopRecording
          * is called.
+         * @private
          */
         stop: function()
         {
@@ -235,9 +265,10 @@
         /**
          * Invoked when recording is stopped and resulting stream is available.
          *
-         * @param {string} audioVideoWebMURL Reference to the recorded Blob
-         *     object, eg. blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba
-         * @param {string} type Media type, eg. 'video' or 'audio'.
+         * @private
+         * @param {string} audioVideoWebMURL - Reference to the recorded Blob
+         *     object, e.g. 'blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba'
+         * @param {string} type - Media type, eg. 'video' or 'audio'.
          */
         onStopRecording: function(audioVideoWebMURL, type)
         {
@@ -308,14 +339,17 @@
 
     /**
      * Record audio/video/images using the Video.js player.
+     *
+     * @class
+     * @augments videojs.RecordBase
      */
     videojs.Recorder = videojs.extend(videojs.RecordBase,
     {
         /**
          * The constructor function for the class.
          *
-         * @param {videojs.Player|Object} player
-         * @param {Object} options Player options.
+         * @param {(videojs.Player|Object)} player
+         * @param {Object} options - Player options.
          */
         constructor: function(player, options)
         {
@@ -406,6 +440,7 @@
 
         /**
          * Player UI is ready.
+         * @private
          */
         setupUI: function()
         {
@@ -504,6 +539,8 @@
 
         /**
          * Indicates whether the plugin is currently recording or not.
+         *
+         * @return {boolean} Plugin currently recording or not.
          */
         isRecording: function()
         {
@@ -513,6 +550,8 @@
         /**
          * Indicates whether the plugin is currently processing recorded data
          * or not.
+         *
+         * @return {boolean} Plugin processing or not.
          */
         isProcessing: function()
         {
@@ -521,6 +560,8 @@
 
         /**
          * Indicates whether the plugin is destroyed or not.
+         *
+         * @return {boolean} Plugin destroyed or not.
          */
         isDestroyed: function()
         {
@@ -633,7 +674,7 @@
 
         /**
          * Invoked when the device is ready.
-         *
+         * @private
          * @param stream: LocalMediaStream instance.
          */
         onDeviceReady: function(stream)
@@ -812,6 +853,7 @@
 
         /**
          * Invoked when an device error occurred.
+         * @private
          */
         onDeviceError: function(code)
         {
@@ -1010,6 +1052,7 @@
         /**
          * Invoked when recording completed and the resulting stream is
          * available.
+         * @private
          */
         onRecordComplete: function()
         {
@@ -1181,6 +1224,7 @@
         /**
          * Fired when the volume in the temporary audio element
          * for Chrome in audio+video mode is present.
+         * @private
          */
         onVolumeChange: function()
         {
@@ -1199,6 +1243,7 @@
 
         /**
          * Invoked during recording and displays the remaining time.
+         * @private
          */
         onCountDown: function()
         {
@@ -1226,9 +1271,10 @@
         /**
          * Updates the player's element displaying the current time.
          *
-         * @param {Number} currentTime (optional) Current position of the
+         * @private
+         * @param {number} [currentTime=0] - Current position of the
          *    playhead (in seconds).
-         * @param {Number} duration (optional) Duration in seconds.
+         * @param {number} [duration=0] - Duration in seconds.
          */
         setCurrentTime: function(currentTime, duration)
         {
@@ -1257,7 +1303,8 @@
         /**
          * Updates the player's element displaying the duration time.
          *
-         * @param {Number} duration (optional) Duration in seconds.
+         * @private
+         * @param {number} [duration=0] - Duration in seconds.
          */
         setDuration: function(duration)
         {
@@ -1283,7 +1330,7 @@
         /**
          * Start loading data.
          *
-         * @param {String|Blob|File} url Either the URL of the media file,
+         * @param {(string|blob|file)} url - Either the URL of the media file,
          *     a Blob or a File object.
          */
         load: function(url)
@@ -1415,6 +1462,7 @@
 
         /**
          * Reset the plugin recorder state.
+         * @private
          */
         resetState: function()
         {
@@ -1456,6 +1504,7 @@
 
         /**
          * Create and display snapshot image.
+         * @private
          */
         createSnapshot: function()
         {
@@ -1476,6 +1525,7 @@
 
         /**
          * Reset UI for retrying a snapshot image.
+         * @private
          */
         retrySnapshot: function()
         {
@@ -1490,6 +1540,7 @@
 
         /**
          * Capture frame from camera and copy data to canvas.
+         * @private
          */
         captureFrame: function()
         {
@@ -1512,6 +1563,7 @@
 
         /**
          * Start preview of video stream.
+         * @private
          */
         startVideoPreview: function()
         {
@@ -1537,6 +1589,7 @@
 
         /**
          * Show animated GIF.
+         * @private
          */
         showAnimation: function()
         {
@@ -1556,6 +1609,7 @@
 
         /**
          * Hide animated GIF.
+         * @private
          */
         hideAnimation: function()
         {
@@ -1568,6 +1622,7 @@
 
         /**
          * Player started playback.
+         * @private
          */
         onPlayerStart: function()
         {
@@ -1595,6 +1650,7 @@
 
         /**
          * Player is paused.
+         * @private
          */
         onPlayerPause: function()
         {
@@ -1607,6 +1663,7 @@
 
         /**
          * Update time during playback.
+         * @private
          */
         playbackTimeUpdate: function()
         {
@@ -1650,6 +1707,9 @@
 
         /**
          * Show or hide the volume menu.
+         *
+         * @private
+         * @param {boolean} display - Hide/show volume control.
          */
         displayVolumeControl: function(display)
         {
@@ -1673,9 +1733,13 @@
          * Supplying a guide (in seconds) will force a number of leading zeros
          * to cover the length of the guide.
          *
-         * @param {Number} seconds Number of seconds to be turned into a string
-         * @param {Number} guide Number (in seconds) to model the string after
-         * @return {String} Time formatted as H:MM:SS, M:SS or M:SS:MMM.
+         * @param {number} seconds - Number of seconds to be turned into a
+         *     string.
+         * @param {number} guide - Number (in seconds) to model the string
+         *     after.
+         * @return {string} Time formatted as H:MM:SS, M:SS or M:SS:MMM, e.g.
+         *     0:00:12.
+         * @private
          */
         formatTime: function(seconds, guide)
         {
@@ -1746,8 +1810,10 @@
         AnimationDisplay;
 
     /**
-     * Button to toggle between start and stop recording
+     * Button to toggle between start and stop recording.
+     * @private
      * @class
+     * @augments videojs.Button
     */
     RecordToggle = videojs.extend(VjsButton,
     {
@@ -1798,8 +1864,10 @@
     };
 
     /**
-     * Button to toggle between create and retry snapshot image
+     * Button to toggle between create and retry snapshot image.
+     * @private
      * @class
+     * @augments videojs.Button
     */
     CameraButton = videojs.extend(VjsButton,
     {
@@ -1855,8 +1923,10 @@
     };
 
     /**
-     * Button to select recording device
+     * Button to select recording device.
+     * @private
      * @class
+     * @augments videojs.Button
     */
     DeviceButton = videojs.extend(VjsButton,
     {
@@ -1880,7 +1950,9 @@
 
     /**
      * Icon indicating recording is active.
+     * @private
      * @class
+     * @augments videojs.Component
     */
     RecordIndicator = videojs.extend(VjsComponent,
     {
@@ -1902,20 +1974,26 @@
 
     /**
      * Canvas for displaying snapshot image.
+     * @private
      * @class
+     * @augments videojs.Component
     */
     RecordCanvas = videojs.extend(VjsComponent);
 
     /**
      * Image for displaying animated GIF image.
+     * @private
      * @class
+     * @augments videojs.Component
     */
     AnimationDisplay = videojs.extend(VjsComponent);
 
     /**
-     * Create a custom button
-     * @param className {string} class name for the new button
-     * @param label {string} label for the new button
+     * Create a custom button.
+     * @private
+     * @param {string} className - Class name for the new button.
+     * @param {string} label - Label for the new button.
+     * @param {string} iconName - Icon for the new button.
      */
     var createButton = function(className, label, iconName)
     {
@@ -2018,7 +2096,9 @@
 
     /**
      * Initialize the plugin.
-     * @param options (optional) {object} configuration for the plugin
+     *
+     * @param {object} [options] - Configuration for the plugin.
+     * @private
      */
     var record = function(options)
     {

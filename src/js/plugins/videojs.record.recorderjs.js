@@ -21,6 +21,9 @@
 {
     /**
      * Audio-only engine for the recorder.js library.
+     *
+     * @class
+     * @augments videojs.RecordBase
      */
     videojs.RecorderjsEngine = videojs.extend(videojs.RecordBase,
     {

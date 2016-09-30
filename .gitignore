@@ -9,6 +9,7 @@ dist
 *.log
 node_modules
 bower_components
+doc
 
 # examples
 *.phar

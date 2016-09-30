@@ -21,6 +21,9 @@
 {
     /**
      * Audio-only engine for the lamejs library.
+     *
+     * @class
+     * @augments videojs.RecordBase
      */
     videojs.LamejsEngine = videojs.extend(videojs.RecordBase,
     {

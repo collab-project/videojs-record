@@ -21,6 +21,9 @@
 {
     /**
      * Audio-only engine for the libvorbis.js library.
+     *
+     * @class
+     * @augments videojs.RecordBase
      */
     videojs.LibVorbisEngine = videojs.extend(videojs.RecordBase,
     {
