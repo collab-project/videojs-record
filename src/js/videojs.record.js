@@ -146,10 +146,15 @@
             fileObj.lastModifiedDate = now;
 
             // guess extension name from mime type, e.g. audio/ogg, but
-            // any extension is valid here
+            // any extension is valid here. Chrome also accepts extended
+            // mime types like video/webm;codecs=h264,vp9,opus
             var fileExtension = '.' + fileObj.type.split('/')[1];
+            if (fileExtension.indexOf(';') > -1)
+            {
+                fileExtension = fileExtension.split(';')[0]
+            }
 
-            // use timestamp in filename, e.g. 1451180941326
+            // use timestamp in filename, e.g. 1451180941326.ogg
             fileObj.name = now.getTime() + fileExtension;
         },
 
