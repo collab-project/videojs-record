@@ -1,8 +1,8 @@
 videojs-record changelog
 ========================
 
-1.5.0 - (unreleased)
---------------------
+1.5.0 - 2016/09/30
+------------------
 
 - Added `audioMimeType` and `videoMimeType` settings for H264 support (#92)
 - Listening for `tap` events to support touch on mobile now (#71)
