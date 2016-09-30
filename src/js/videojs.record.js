@@ -151,7 +151,7 @@
             var fileExtension = '.' + fileObj.type.split('/')[1];
             if (fileExtension.indexOf(';') > -1)
             {
-                fileExtension = fileExtension.split(';')[0]
+                fileExtension = fileExtension.split(';')[0];
             }
 
             // use timestamp in filename, e.g. 1451180941326.ogg
