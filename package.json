@@ -35,7 +35,7 @@
   "dependencies": {
     "video.js": ">=5.0.0",
     "wavesurfer.js": ">=1.2.0",
-    "videojs-wavesurfer": ">=1.2.4",
+    "videojs-wavesurfer": ">=1.2.6",
     "recordrtc": ">=5.2.9"
   },
   "devDependencies": {

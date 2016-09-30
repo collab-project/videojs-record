@@ -6,7 +6,7 @@ videojs-record changelog
 
 - Add `audioMimeType` and `videoMimeType` settings for H264 support (#92)
 - Listen for `tap` events to support touch on mobile (#71)
-- Bump required version for videojs-wavesurfer to 1.2.4 and wavesurfer.js to
+- Bump required version for videojs-wavesurfer to 1.2.6 and wavesurfer.js to
   1.2.0 for access to their `exportImage` method (#91)
 
 
