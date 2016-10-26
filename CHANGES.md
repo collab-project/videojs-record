@@ -5,7 +5,7 @@ videojs-record changelog
 ------------------
 
 - Added `audioMimeType` and `videoMimeType` settings for H264 support (#92)
-- Listening for `tap` events to support touch on mobile now (#71)
+- Listening for `tap` events to support touch on mobile (#71)
 - Bumped required version for videojs-wavesurfer to 1.2.6 and wavesurfer.js to
   1.2.0 for access to their `exportImage` method (#91)
 
@@ -14,14 +14,14 @@ videojs-record changelog
 ------------------
 
 - Added `reset` method to reset the plugin without destroying it (#73)
-- Releasing existing object URLs now (#70)
+- Releasing existing object URLs (#70)
 
 
 1.3.0 - 2016/03/25
 ------------------
 
 - Added `enumerateDevices` API (#16)
-- Preventing invalid or negative value in `formatTime` now (#46 by @zang)
+- Preventing invalid or negative value in `formatTime` (#46 by @zang)
 
 
 1.2.0 - 2016/02/27
