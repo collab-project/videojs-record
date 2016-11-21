@@ -291,6 +291,21 @@ etc.
 
 Check out the `enumerateDevices` example ([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
 
+After you aquired the device id (called `deviceId` in the example below) specify it in the player configuration
+using [constraints](#media-constraints):
+
+```javascript
+record: {
+    maxLength: 20,
+    debug: true,
+    audio: true,
+    video: {
+        // video constraints: use preset device
+        optional: [{sourceId: deviceId}]
+    },
+}
+```
+
 Customizing controls
 --------------------
 
