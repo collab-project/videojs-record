@@ -3,7 +3,7 @@ Video.js Record
 
 Video.js plugin for recording audio/video/image files.
 
-<img title="Screenshot" src="examples/img/screenshot.png?raw=true" width="325">
+<img title="Screenshot" src="examples/assets/img/screenshot.png?raw=true" width="325">
 
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
@@ -102,7 +102,7 @@ for video.
 
 ### Audio-only
 
-![Audio-only screenshot](examples/img/audio-only.png?raw=true "Audio-only screenshot")
+![Audio-only screenshot](examples/assets/img/audio-only.png?raw=true "Audio-only screenshot")
 
 When recording audio-only, also include the wavesurfer.js library and
 the videojs-wavesurfer and microphone plugins. Make sure to place this before
@@ -123,7 +123,8 @@ And define an `audio` element:
 Check out the full audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
 
 There is also support for [additional audio libraries](#other-audio-libraries)
-that allows you to record audio with codecs like Ogg Vorbis, MP3 and Opus.
+that allows you to record audio with alternative codecs (that otherwise might not
+be supported in the browser) like Ogg Vorbis, MP3 and Opus.
 
 Options
 -------
