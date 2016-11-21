@@ -44,10 +44,10 @@ And when recording audio-only, the following dependencies are also required:
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
-- [libvorbis.js](#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
-- [lamejs](#lamejs) - Converts PCM audio data to compressed MP3 audio.
-- [opus-recorder](#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
-- [recorder.js](#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
+- [libvorbis.js](https://github.com/collab-project/videojs-record/wiki/Plugins#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
+- [lamejs](https://github.com/collab-project/videojs-record/wiki/Plugins#lamejs) - Converts PCM audio data to compressed MP3 audio.
+- [opus-recorder](https://github.com/collab-project/videojs-record/wiki/Plugins#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
+- [recorder.js](https://github.com/collab-project/videojs-record/wiki/Plugins#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
 
 Usage
 -----
