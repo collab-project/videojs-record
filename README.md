@@ -193,6 +193,7 @@ player.recorder.destroy();
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
 | `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
+| `saveAs` | Show save as dialog in browser so the user can [store the recorded media locally](#save-data). |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `reset` | Not as destructive as `destroy`: use this if you want to reset the player interface and recorder state. |
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
@@ -278,6 +279,22 @@ player.on('finishRecord', function()
 Note that in the Chrome browser `player.recordedData` returns an object with
 `audio` and `video` properties when recording both audio/video. In Firefox
 it returns a single WebM Blob object containing both audio and video.
+
+### Save data
+
+Use the `saveAs` method to show a 'Save as' browser dialog where the user can
+choose the storage location for the recorded data. It accepts a `name` object that
+contains a mapping between the media type and the filename. For example::
+
+```javascript
+player.on('finishRecord', function()
+{
+    // show save as dialog
+    player.recorder.saveAs({'video': 'my-video-file-name'});
+});
+```
+
+### Upload data
 
 Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
 examples on how to upload the data to a server.
