@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-1.6.0 - unreleased
+1.5.1 - 2016/12/02
 ------------------
 
 - Added `saveAs` method that shows a browser dialog window where the user can store
