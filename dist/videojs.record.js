@@ -1,4 +1,4 @@
-/*! videojs-record v1.5.0
+/*! videojs-record v1.5.1
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2016 - Licensed MIT */
 (function (root, factory)
@@ -266,17 +266,35 @@
         },
 
         /**
+         * Show save as dialog in browser so the user can store the recorded media
+         * locally.
+         *
+         * @private
+         * @param {object} name - Object with names for the particular blob(s)
+         *     you want to save. File extensions are added automatically. For
+         *     example: {'video': 'name-of-video-file'}. Supported keys are
+         *     'audio', 'video' and 'gif'.
+         */
+        saveAs: function(name)
+        {
+            if (this.engine && name !== undefined)
+            {
+                this.engine.save(name);
+            }
+        },
+
+        /**
          * Invoked when recording is stopped and resulting stream is available.
          *
          * @private
-         * @param {string} audioVideoWebMURL - Reference to the recorded Blob
+         * @param {string} audioVideoURL - Reference to the recorded Blob
          *     object, e.g. 'blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba'
          * @param {string} type - Media type, eg. 'video' or 'audio'.
          */
-        onStopRecording: function(audioVideoWebMURL, type)
+        onStopRecording: function(audioVideoURL, type)
         {
             // store reference to recorded stream URL
-            this.mediaURL = audioVideoWebMURL;
+            this.mediaURL = audioVideoURL;
 
             // store reference to recorded stream data
             var recordType = this.player().recorder.getRecordType();
@@ -298,7 +316,7 @@
                         // when recording both audio and video, recordrtc
                         // calls this twice on chrome, first with audio data
                         // and then with video data.
-                        // on firefox it's called once but with a single webm
+                        // on firefox it's called once but with a single
                         // blob that includes both audio and video data.
                         if (recording.video !== undefined)
                         {
@@ -1352,6 +1370,24 @@
                     // assign stream to audio/video element source
                     this.mediaElement.src = url;
                     break;
+            }
+        },
+
+        /**
+         * Show save as dialog in browser so the user can store the recorded media
+         * locally.
+         *
+         * @private
+         * @param {object} name - Object with one or more names for the particular
+         *     blob(s) you want to save. File extensions are added automatically.
+         *     For example: {'video': 'name-of-video-file'}. Supported keys are
+         *     'audio', 'video' and 'gif'.
+         */
+        saveAs: function(name)
+        {
+            if (this.engine && name !== undefined)
+            {
+                this.engine.saveAs(name);
             }
         },
 
