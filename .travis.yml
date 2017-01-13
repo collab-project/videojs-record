@@ -1,5 +1,7 @@
 language: node_js
 sudo: required
+jdk:
+  - oraclejdk8
 node_js:
   - "0.12"
 before_install:
