@@ -1,7 +1,11 @@
 language: node_js
 sudo: required
-jdk:
-  - oraclejdk8
+addons:
+  apt:
+    sources:
+      - ppa:webupd8team/java
+    packages:
+      - oracle-java8-installer
 node_js:
   - "0.12"
 before_install:
