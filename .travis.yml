@@ -2,10 +2,9 @@ language: node_js
 sudo: required
 addons:
   apt:
-    sources:
-      - ppa:webupd8team/java
     packages:
       - oracle-java8-installer
+      - oracle-java8-set-default
 node_js:
   - "0.12"
 before_install:
