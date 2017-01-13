@@ -3,7 +3,7 @@
   "version": "1.5.1",
   "homepage": "https://github.com/collab-project/videojs-record",
   "description": "A video.js plugin for recording audio/video/image files.",
-  "main": "src/js/videojs.record.js",
+  "main": ["src/js/videojs.record.js","src/css/videojs.record.css"],
   "keywords": [
     "waveform",
     "audio",
