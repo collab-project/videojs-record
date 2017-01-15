@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+1.5.2 - 2017/01/15
+------------------
+
+- Include CSS file for bower (#107 by @abrarahmedbcg)
+
+
 1.5.1 - 2016/12/02
 ------------------
 
