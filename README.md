@@ -3,7 +3,7 @@ Video.js Record
 
 Video.js plugin for recording audio/video/image files.
 
-<img title="Screenshot" src="examples/assets/img/screenshot.png?raw=true" width="325">
+![Screenshot](examples/assets/img/screenshot.png?raw=true "Screenshot")
 
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
