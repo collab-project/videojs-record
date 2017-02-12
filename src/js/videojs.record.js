@@ -263,6 +263,24 @@
         },
 
         /**
+         * Pause recording.
+         * @private
+         */
+        pause: function()
+        {
+            this.engine.pauseRecording();
+        },
+
+        /**
+         * Resume recording.
+         * @private
+         */
+        resume: function()
+        {
+            this.engine.resumeRecording();
+        },
+
+        /**
          * Show save as dialog in browser so the user can store the recorded media
          * locally.
          *
@@ -1065,6 +1083,22 @@
                 // fallback for older browsers
                 this.stream.stop();
             }
+        },
+
+        /**
+         * Pause recording.
+         */
+        pause: function()
+        {
+            this.engine.pause();
+        },
+
+        /**
+         * Resume recording.
+         */
+        resume: function()
+        {
+            this.engine.resume();
         },
 
         /**
