@@ -199,6 +199,10 @@ player.recorder.destroy();
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
 | `getDevice` | Start the audio and/or video device(s). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
+| `start` | Start recording. |
+| `stop` | Stop recording. |
+| `pause` | Pause recording. |
+| `resume` | Resume recording. |
 
 Events
 ------

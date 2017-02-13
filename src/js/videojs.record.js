@@ -1113,7 +1113,6 @@
             if (this.paused)
             {
                 this.pausedTime += new Date().getTime() - this.pauseTime;
-                console.log('resume - paused time:', this.pausedTime);
 
                 this.engine.resume();
                 this.paused = false;
