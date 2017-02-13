@@ -7,7 +7,7 @@
   console.log('MP3 conversion worker started.');
   importScripts('../lame.min.js');
 
-  var mp3Encoder, maxSamples = 1152, samplesMono, lame, config, dataBuffer;
+  var mp3Encoder, maxSamples = 1152, samplesMono, config, dataBuffer;
   var clearBuffer = function () {
     dataBuffer = [];
   };
@@ -19,8 +19,8 @@
 
   var init = function (prefConfig) {
     config = prefConfig || {debug: true};
-    lame = new lamejs();
-    mp3Encoder = new lame.Mp3Encoder(1, config.sampleRate || 44100, config.bitRate || 123);
+
+    mp3Encoder = new lamejs.Mp3Encoder(1, config.sampleRate || 44100, config.bitRate || 123);
     clearBuffer();
   };
 
