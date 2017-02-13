@@ -22,6 +22,8 @@
     /**
      * Audio-only engine for the opus-recorder library.
      *
+     * Audio is encoded using libopus.
+     *
      * @class
      * @augments videojs.RecordBase
      */
@@ -73,7 +75,10 @@
 
         onRecordingAvailable: function(data)
         {
-            this.onStopRecording(data.detail);
+            // Opus format stored in an Ogg container
+            var blob = new Blob([data.detail], {type: 'audio/ogg'});
+
+            this.onStopRecording(blob);
         }
     });
 

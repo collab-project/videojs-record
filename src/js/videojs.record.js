@@ -562,9 +562,11 @@
                     break;
             }
 
-            // disable currentTimeDisplay's 'timeupdate' event listener that
-            // constantly tries to reset the current time value to 0
+            // disable time display events that constantly try to reset the current time
+            // and duration values
             this.player().off('timeupdate');
+            this.player().off('durationchange');
+            this.player().off('loadedmetadata');
 
             // display max record time
             this.setDuration(this.maxLength);
@@ -959,8 +961,12 @@
                 // start recording
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
-                    // start countdown
+                    // register starting point
+                    this.paused = false;
+                    this.pauseTime = this.pausedTime = 0;
                     this.startTime = new Date().getTime();
+
+                    // start countdown
                     this.countDown = this.setInterval(
                         this.onCountDown.bind(this), 100);
 
@@ -1090,7 +1096,13 @@
          */
         pause: function()
         {
-            this.engine.pause();
+            if (!this.paused)
+            {
+                this.pauseTime = new Date().getTime();
+                this.paused = true;
+
+                this.engine.pause();
+            }
         },
 
         /**
@@ -1098,7 +1110,13 @@
          */
         resume: function()
         {
-            this.engine.resume();
+            if (this.paused)
+            {
+                this.pausedTime += new Date().getTime() - this.pauseTime;
+
+                this.engine.resume();
+                this.paused = false;
+            }
         },
 
         /**
@@ -1299,25 +1317,29 @@
          */
         onCountDown: function()
         {
-            var currentTime = (new Date().getTime() - this.startTime) / 1000;
-            var duration = this.maxLength;
-
-            this.streamDuration = currentTime;
-
-            if (currentTime >= duration)
+            if (!this.paused)
             {
-                // at the end
-                currentTime = duration;
+                var now = new Date().getTime();
+                var duration = this.maxLength;
+                var currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
 
-                // stop recording
-                this.stop();
+                this.streamDuration = currentTime;
+
+                if (currentTime >= duration)
+                {
+                    // at the end
+                    currentTime = duration;
+
+                    // stop recording
+                    this.stop();
+                }
+
+                // update duration
+                this.setDuration(duration);
+
+                // update current time
+                this.setCurrentTime(currentTime, duration);
             }
-
-            // update duration
-            this.setDuration(duration);
-
-            // update current time
-            this.setCurrentTime(currentTime, duration);
         },
 
         /**
@@ -1639,6 +1661,8 @@
         {
             // disable playback events
             this.off('timeupdate');
+            this.off('durationchange');
+            this.off('loadedmetadata');
             this.off('play');
 
             // mute local audio
