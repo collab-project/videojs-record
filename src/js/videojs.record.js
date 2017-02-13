@@ -159,7 +159,7 @@
         /**
          * Add filename and timestamp to recorded file object.
          *
-         * @param {(blob|file)} fileObj - Blob of File object.
+         * @param {(blob|file)} fileObj - Blob or File object.
          * @private
          */
         addFileInfo: function(fileObj)
