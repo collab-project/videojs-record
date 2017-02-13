@@ -6,6 +6,7 @@ videojs-record changelog
 
 - Added `pause` and `resume` methods (#61)
 - Plugin fixes for opus-recorder 0.5.0
+- NPM package now includes `dist` directory with minified files
 
 
 1.5.2 - 2017/01/15
