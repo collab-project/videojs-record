@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+1.6.0 - unreleased
+------------------
+
+- Plugin fixes to support opus-recorder 0.5.0
+
+
 1.5.2 - 2017/01/15
 ------------------
 
