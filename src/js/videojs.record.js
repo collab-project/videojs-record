@@ -562,8 +562,8 @@
                     break;
             }
 
-            // disable currentTimeDisplay's 'timeupdate' event listener that
-            // constantly tries to reset the current time value to 0
+            // disable time display events that constantly try to reset the current time
+            // and duration values
             this.player().off('timeupdate');
             this.player().off('durationchange');
             this.player().off('loadedmetadata');
@@ -961,10 +961,12 @@
                 // start recording
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
-                    // start countdown
-                    this.startTime = new Date().getTime();
-                    this.pauseTime = 0;
+                    // register starting point
                     this.paused = false;
+                    this.pauseTime = this.pausedTime = 0;
+                    this.startTime = new Date().getTime();
+
+                    // start countdown
                     this.countDown = this.setInterval(
                         this.onCountDown.bind(this), 100);
 
@@ -1110,8 +1112,8 @@
         {
             if (this.paused)
             {
-                this.pauseTime = new Date().getTime() - this.pauseTime;
-                console.log('resume time:', this.pauseTime);
+                this.pausedTime += new Date().getTime() - this.pauseTime;
+                console.log('resume - paused time:', this.pausedTime);
 
                 this.engine.resume();
                 this.paused = false;
@@ -1320,7 +1322,7 @@
             {
                 var now = new Date().getTime();
                 var duration = this.maxLength;
-                var currentTime = (now - (this.startTime + this.pauseTime)) / 1000;
+                var currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
 
                 this.streamDuration = currentTime;
 
