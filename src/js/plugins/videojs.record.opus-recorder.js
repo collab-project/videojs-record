@@ -73,6 +73,22 @@
             this.engine.stop();
         },
 
+        /**
+         * Pause recording.
+         */
+        pause: function()
+        {
+            this.engine.pause();
+        },
+
+        /**
+         * Resume recording.
+         */
+        resume: function()
+        {
+            this.engine.resume();
+        },
+
         onRecordingAvailable: function(data)
         {
             // Opus format stored in an Ogg container
