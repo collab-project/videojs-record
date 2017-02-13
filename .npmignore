@@ -1,4 +1,5 @@
-examples
-CHANGES.md
-Gruntfile.js
-bower.json
+# exclude everything except dist, lang and src
+**/*
+!dist/**
+!lang/**
+!src/**
