@@ -4,6 +4,7 @@ videojs-record changelog
 1.6.0 - unreleased
 ------------------
 
+- Added `pause` and `resume` methods (#61)
 - Plugin fixes for opus-recorder 0.5.0
 
 
