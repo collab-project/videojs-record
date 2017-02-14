@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Added `pause` and `resume` methods (#61)
+- Added support for `MediaStreamTrack.takePhoto` (#96)
 - Plugin fixes for opus-recorder 0.5.0
 - NPM package now includes `dist` directory with minified files
 

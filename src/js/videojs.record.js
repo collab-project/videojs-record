@@ -951,10 +951,12 @@
                         // for animations, capture the first frame
                         // that can be displayed as soon as recording
                         // is complete
-                        this.captureFrame();
-
-                        // start video preview **after** capturing first frame
-                        this.startVideoPreview();
+                        var here = this;
+                        this.captureFrame().then(function(result)
+                        {
+                            // start video preview **after** capturing first frame
+                            here.startVideoPreview();
+                        });
                         break;
                 }
 
@@ -1000,11 +1002,11 @@
                 this._recording = false;
                 this._processing = true;
 
-                // notify UI
-                this.player().trigger('stopRecord');
-
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
+                    // notify UI
+                    this.player().trigger('stopRecord');
+
                     // stop countdown
                     this.clearInterval(this.countDown);
 
@@ -1600,19 +1602,21 @@
          */
         createSnapshot: function()
         {
-            var recordCanvas = this.captureFrame();
+            var here = this;
+            this.captureFrame().then(function(result)
+            {
+                // turn the canvas data into base-64 data with a PNG header
+                here.player().recordedData = result.toDataURL('image/png');
 
-            // turn the canvas data into base-64 data with a PNG header
-            this.player().recordedData = recordCanvas.toDataURL('image/png');
+                // hide preview video
+                here.mediaElement.style.display = 'none';
 
-            // hide preview video
-            this.mediaElement.style.display = 'none';
+                // show the snapshot
+                here.player().recordCanvas.show();
 
-            // show the snapshot
-            this.player().recordCanvas.show();
-
-            // stop recording
-            this.stop();
+                // stop recording
+                here.stop();
+            });
         },
 
         /**
@@ -1636,6 +1640,8 @@
          */
         captureFrame: function()
         {
+            var here = this;
+            var detected = this.detectBrowser();
             var recordCanvas = this.player().recordCanvas.el().firstChild;
 
             // set the canvas size to the dimensions of the camera,
@@ -1643,14 +1649,57 @@
             recordCanvas.width = this.player().width();
             recordCanvas.height = this.player().height();
 
-            // get a frame of the stream and copy it onto the canvas
-            recordCanvas.getContext('2d').drawImage(
-                this.mediaElement, 0, 0,
-                recordCanvas.width,
-                recordCanvas.height
-            );
+            return new Promise(function(resolve, reject)
+            {
+                // MediaCapture is only supported on:
+                // - Chrome 56 (https://developers.google.com/web/updates/2016/12/imagecapture)
+                // - Firefox behind flag (https://bugzilla.mozilla.org/show_bug.cgi?id=888177)
+                // importing ImageCapture can fail when enabling chrome
+                // flag is still required. if so; ignore and continue
+                if ((detected.browser === 'chrome' && detected.version >= 56) &&
+                   (typeof ImageCapture === typeof Function))
+                {
+                    try
+                    {
+                        var track = here.stream.getVideoTracks()[0];
+                        var imageCapture = new ImageCapture(track);
 
-            return recordCanvas;
+                        imageCapture.takePhoto().then(function(blob)
+                        {
+                            return createImageBitmap(blob);
+                        }
+                        ).then(function(imageBitmap)
+                        {
+                            // get a frame and copy it onto the canvas
+                            here.drawCanvas(recordCanvas, imageBitmap);
+
+                            // notify others
+                            resolve(recordCanvas);
+                        });
+                        return;
+                    }
+                    catch(err){}
+                }
+
+                // get a frame and copy it onto the canvas
+                here.drawCanvas(recordCanvas, here.mediaElement);
+
+                // notify others
+                resolve(recordCanvas);
+          });
+        },
+
+        /**
+         * Draw image frame on canvas element.
+         * @private
+         */
+        drawCanvas: function(canvas, element)
+        {
+            canvas.getContext('2d').drawImage(
+                element, 0, 0,
+                canvas.width,
+                canvas.height
+            );
         },
 
         /**
