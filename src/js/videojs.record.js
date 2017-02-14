@@ -1678,7 +1678,8 @@
                         });
                         return;
                     }
-                    catch(err){}
+                    catch(err)
+                    {}
                 }
 
                 // get a frame and copy it onto the canvas
