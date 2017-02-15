@@ -8,6 +8,7 @@ videojs-record changelog
 - Added support for `MediaStreamTrack.takePhoto` (#96)
 - Plugin fixes for opus-recorder 0.5.0
 - NPM package now includes `dist` directory with minified files
+- Fix for ignoring missing player elements (#118 by @stragari)
 
 
 1.5.2 - 2017/01/15
