@@ -1380,6 +1380,18 @@
         },
 
         /**
+         * Get the length of the recorded stream in seconds.
+         *
+         * Returns 0 if no recording is available (yet).
+         */
+        getDuration: function()
+        {
+            var duration = isNaN(this.streamDuration) ? 0 : this.streamDuration;
+
+            return duration;
+        },
+
+        /**
          * Updates the player's element displaying the duration time.
          *
          * @private
