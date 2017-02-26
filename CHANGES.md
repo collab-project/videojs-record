@@ -5,12 +5,13 @@ videojs-record changelog
 ------------------
 
 - Added `pause` and `resume` methods (#61)
-- Added support for `MediaStreamTrack.takePhoto` (#96)
+- Added `getDuration` and `getCurrentTime` methods (#129)
+- Added support for `MediaStreamTrack.takePhoto` for image-only mode (#96)
 - Plugin fixes for opus-recorder 0.5.0
 - NPM package now includes `dist` directory with minified files
 - Fix for ignoring missing player elements (#118 by @stragari)
-- Bumped required version for videojs-wavesurfer to 1.3.1 for
-  `getDuration` and `getCurrentTime` methods
+- Bumped required version for videojs-wavesurfer to 1.3.1 for `getDuration`
+  and `getCurrentTime` methods
 
 
 1.5.2 - 2017/01/15
