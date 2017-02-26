@@ -6,7 +6,7 @@ videojs-record changelog
 
 - Added `pause` and `resume` methods (#61)
 - Added `getDuration` and `getCurrentTime` methods (#129)
-- Added `progressRecord` event that fires continuously during recording (#129)
+- Added `progressRecord` event that fires continuously during recording (#128)
 - Added support for `MediaStreamTrack.takePhoto` for image-only mode (#96)
 - Plugin fixes for opus-recorder 0.5.0
 - NPM package now includes `dist` directory with minified files
