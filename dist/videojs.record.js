@@ -1,4 +1,4 @@
-/*! videojs-record v1.5.2
+/*! videojs-record v1.6.0
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2017 - Licensed MIT */
 (function (root, factory)
@@ -162,7 +162,7 @@
         /**
          * Add filename and timestamp to recorded file object.
          *
-         * @param {(blob|file)} fileObj - Blob of File object.
+         * @param {(blob|file)} fileObj - Blob or File object.
          * @private
          */
         addFileInfo: function(fileObj)
@@ -263,6 +263,24 @@
         stop: function()
         {
             this.engine.stopRecording(this.onStopRecording.bind(this));
+        },
+
+        /**
+         * Pause recording.
+         * @private
+         */
+        pause: function()
+        {
+            this.engine.pauseRecording();
+        },
+
+        /**
+         * Resume recording.
+         * @private
+         */
+        resume: function()
+        {
+            this.engine.resumeRecording();
         },
 
         /**
@@ -547,9 +565,11 @@
                     break;
             }
 
-            // disable currentTimeDisplay's 'timeupdate' event listener that
-            // constantly tries to reset the current time value to 0
+            // disable time display events that constantly try to reset the current time
+            // and duration values
             this.player().off('timeupdate');
+            this.player().off('durationchange');
+            this.player().off('loadedmetadata');
 
             // display max record time
             this.setDuration(this.maxLength);
@@ -827,8 +847,11 @@
                                   this.player().controlBar.durationDisplay];
                 for (element in uiElements)
                 {
-                    uiElements[element].el().style.display = 'block';
-                    uiElements[element].show();
+                    if (uiElements.hasOwnProperty(element))
+                    {
+                        uiElements[element].el().style.display = 'block';
+                        uiElements[element].show();
+                    }
                 }
 
                 // show record button
@@ -934,18 +957,24 @@
                         // for animations, capture the first frame
                         // that can be displayed as soon as recording
                         // is complete
-                        this.captureFrame();
-
-                        // start video preview **after** capturing first frame
-                        this.startVideoPreview();
+                        var here = this;
+                        this.captureFrame().then(function(result)
+                        {
+                            // start video preview **after** capturing first frame
+                            here.startVideoPreview();
+                        });
                         break;
                 }
 
                 // start recording
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
-                    // start countdown
+                    // register starting point
+                    this.paused = false;
+                    this.pauseTime = this.pausedTime = 0;
                     this.startTime = new Date().getTime();
+
+                    // start countdown
                     this.countDown = this.setInterval(
                         this.onCountDown.bind(this), 100);
 
@@ -979,11 +1008,11 @@
                 this._recording = false;
                 this._processing = true;
 
-                // notify UI
-                this.player().trigger('stopRecord');
-
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
+                    // notify UI
+                    this.player().trigger('stopRecord');
+
                     // stop countdown
                     this.clearInterval(this.countDown);
 
@@ -1067,6 +1096,34 @@
                 }
                 // fallback for older browsers
                 this.stream.stop();
+            }
+        },
+
+        /**
+         * Pause recording.
+         */
+        pause: function()
+        {
+            if (!this.paused)
+            {
+                this.pauseTime = new Date().getTime();
+                this.paused = true;
+
+                this.engine.pause();
+            }
+        },
+
+        /**
+         * Resume recording.
+         */
+        resume: function()
+        {
+            if (this.paused)
+            {
+                this.pausedTime += new Date().getTime() - this.pauseTime;
+
+                this.engine.resume();
+                this.paused = false;
             }
         },
 
@@ -1268,25 +1325,49 @@
          */
         onCountDown: function()
         {
-            var currentTime = (new Date().getTime() - this.startTime) / 1000;
-            var duration = this.maxLength;
-
-            this.streamDuration = currentTime;
-
-            if (currentTime >= duration)
+            if (!this.paused)
             {
-                // at the end
-                currentTime = duration;
+                var now = new Date().getTime();
+                var duration = this.maxLength;
+                var currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
 
-                // stop recording
-                this.stop();
+                this.streamDuration = currentTime;
+
+                if (currentTime >= duration)
+                {
+                    // at the end
+                    currentTime = duration;
+
+                    // stop recording
+                    this.stop();
+                }
+
+                // update duration
+                this.setDuration(duration);
+
+                // update current time
+                this.setCurrentTime(currentTime, duration);
+
+                // notify listeners
+                this.player().trigger('progressRecord');
+            }
+        },
+
+        /**
+         * Get the current time of the recorded stream during playback.
+         *
+         * Returns 0 if no recording is available (yet).
+         */
+        getCurrentTime: function()
+        {
+            var currentTime = isNaN(this.streamCurrentTime) ? 0 : this.streamCurrentTime;
+
+            if (this.getRecordType() === this.AUDIO_ONLY)
+            {
+                currentTime = this.surfer.getCurrentTime();
             }
 
-            // update duration
-            this.setDuration(duration);
-
-            // update current time
-            this.setCurrentTime(currentTime, duration);
+            return currentTime;
         },
 
         /**
@@ -1311,14 +1392,26 @@
                 case this.VIDEO_ONLY:
                 case this.AUDIO_VIDEO:
                 case this.ANIMATION:
-                    var time = Math.min(currentTime, duration);
+                    this.streamCurrentTime = Math.min(currentTime, duration);
 
                     // update control
                     this.player().controlBar.currentTimeDisplay.el(
                         ).firstChild.innerHTML = this.formatTime(
-                        time, duration);
+                        this.streamCurrentTime, duration);
                     break;
             }
+        },
+
+        /**
+         * Get the length of the recorded stream in seconds.
+         *
+         * Returns 0 if no recording is available (yet).
+         */
+        getDuration: function()
+        {
+            var duration = isNaN(this.streamDuration) ? 0 : this.streamDuration;
+
+            return duration;
         },
 
         /**
@@ -1547,19 +1640,21 @@
          */
         createSnapshot: function()
         {
-            var recordCanvas = this.captureFrame();
+            var here = this;
+            this.captureFrame().then(function(result)
+            {
+                // turn the canvas data into base-64 data with a PNG header
+                here.player().recordedData = result.toDataURL('image/png');
 
-            // turn the canvas data into base-64 data with a PNG header
-            this.player().recordedData = recordCanvas.toDataURL('image/png');
+                // hide preview video
+                here.mediaElement.style.display = 'none';
 
-            // hide preview video
-            this.mediaElement.style.display = 'none';
+                // show the snapshot
+                here.player().recordCanvas.show();
 
-            // show the snapshot
-            this.player().recordCanvas.show();
-
-            // stop recording
-            this.stop();
+                // stop recording
+                here.stop();
+            });
         },
 
         /**
@@ -1583,6 +1678,8 @@
          */
         captureFrame: function()
         {
+            var here = this;
+            var detected = this.detectBrowser();
             var recordCanvas = this.player().recordCanvas.el().firstChild;
 
             // set the canvas size to the dimensions of the camera,
@@ -1590,14 +1687,58 @@
             recordCanvas.width = this.player().width();
             recordCanvas.height = this.player().height();
 
-            // get a frame of the stream and copy it onto the canvas
-            recordCanvas.getContext('2d').drawImage(
-                this.mediaElement, 0, 0,
-                recordCanvas.width,
-                recordCanvas.height
-            );
+            return new Promise(function(resolve, reject)
+            {
+                // MediaCapture is only supported on:
+                // - Chrome 56 (https://developers.google.com/web/updates/2016/12/imagecapture)
+                // - Firefox behind flag (https://bugzilla.mozilla.org/show_bug.cgi?id=888177)
+                // importing ImageCapture can fail when enabling chrome
+                // flag is still required. if so; ignore and continue
+                if ((detected.browser === 'chrome' && detected.version >= 56) &&
+                   (typeof ImageCapture === typeof Function))
+                {
+                    try
+                    {
+                        var track = here.stream.getVideoTracks()[0];
+                        var imageCapture = new ImageCapture(track);
 
-            return recordCanvas;
+                        imageCapture.takePhoto().then(function(blob)
+                        {
+                            return createImageBitmap(blob);
+                        }
+                        ).then(function(imageBitmap)
+                        {
+                            // get a frame and copy it onto the canvas
+                            here.drawCanvas(recordCanvas, imageBitmap);
+
+                            // notify others
+                            resolve(recordCanvas);
+                        });
+                        return;
+                    }
+                    catch(err)
+                    {}
+                }
+
+                // get a frame and copy it onto the canvas
+                here.drawCanvas(recordCanvas, here.mediaElement);
+
+                // notify others
+                resolve(recordCanvas);
+          });
+        },
+
+        /**
+         * Draw image frame on canvas element.
+         * @private
+         */
+        drawCanvas: function(canvas, element)
+        {
+            canvas.getContext('2d').drawImage(
+                element, 0, 0,
+                canvas.width,
+                canvas.height
+            );
         },
 
         /**
@@ -1608,6 +1749,8 @@
         {
             // disable playback events
             this.off('timeupdate');
+            this.off('durationchange');
+            this.off('loadedmetadata');
             this.off('play');
 
             // mute local audio
