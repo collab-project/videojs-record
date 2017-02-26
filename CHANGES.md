@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-1.6.0 - unreleased
+1.6.0 - 2017/02/26
 ------------------
 
 - Added `pause` and `resume` methods (#61)
