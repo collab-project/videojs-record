@@ -199,6 +199,7 @@ player.recorder.destroy();
 | `stopDevice` | Stop the recording and the active audio and/or video device(s). |
 | `getDevice` | Start the audio and/or video device(s). |
 | `getDuration` | Get the length of the recorded stream in seconds. Returns 0 if no recording is available (yet). |
+| `getCurrentTime` | Get the current time of the recorded stream during playback. Returns 0 if no recording is available (yet). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
 | `start` | Start recording. |
 | `stop` | Stop recording. |

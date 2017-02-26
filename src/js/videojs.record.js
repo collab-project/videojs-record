@@ -1348,6 +1348,23 @@
         },
 
         /**
+         * Get the current time of the recorded stream during playback.
+         *
+         * Returns 0 if no recording is available (yet).
+         */
+        getCurrentTime: function()
+        {
+            var currentTime = isNaN(this.streamCurrentTime) ? 0 : this.streamCurrentTime;
+
+            if (this.getRecordType() === this.AUDIO_ONLY)
+            {
+                currentTime = this.surfer.getCurrentTime();
+            }
+
+            return currentTime;
+        },
+
+        /**
          * Updates the player's element displaying the current time.
          *
          * @private
@@ -1369,12 +1386,12 @@
                 case this.VIDEO_ONLY:
                 case this.AUDIO_VIDEO:
                 case this.ANIMATION:
-                    var time = Math.min(currentTime, duration);
+                    this.streamCurrentTime = Math.min(currentTime, duration);
 
                     // update control
                     this.player().controlBar.currentTimeDisplay.el(
                         ).firstChild.innerHTML = this.formatTime(
-                        time, duration);
+                        this.streamCurrentTime, duration);
                     break;
             }
         },
