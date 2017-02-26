@@ -1344,6 +1344,9 @@
 
                 // update current time
                 this.setCurrentTime(currentTime, duration);
+
+                // notify listeners
+                this.player().trigger('progressRecord');
             }
         },
 
