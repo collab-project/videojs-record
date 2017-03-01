@@ -20,7 +20,7 @@ the library and dependencies elsewhere.
 
 Since v1.0 this plugin is compatible with video.js 5.0 and newer. If you want to use
 this plugin with an older video.js 4.x version, check the
-[archived releases](https://github.com/collab-project/videojs-record/releases)
+[archived releases](https://github.com/collab-project/videojs-record/releases?after=1.0.0)
 for a 0.9.x or older release.
 
 Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
