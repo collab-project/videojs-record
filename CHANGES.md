@@ -199,7 +199,7 @@ videojs-record changelog
 ------------------
 
 - Added `destroy` method for cleaning up
-- Added `debug` option to control for console logging (in RecordRTC)
+- Added `debug` option to control console logging (in RecordRTC)
 
 
 0.4.0 - 2015/02/19
