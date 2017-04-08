@@ -51,6 +51,7 @@
     "grunt-jscs": "^3.0.1",
     "grunt-jsonlint": "^1.0.7",
     "grunt-sass": "^1.0.0",
+    "grunt-serve": "^0.1.6",
     "grunt-videojs-languages": ">=0.0.4",
     "lamejs": ">=1.0.0",
     "libvorbis.js": ">=1.1.1",

@@ -6,7 +6,7 @@ addons:
       - oracle-java8-installer
       - oracle-java8-set-default
 node_js:
-  - "0.12"
+  - "node"
 before_install:
   - npm install -g grunt-cli
 install: npm install

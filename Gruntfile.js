@@ -128,6 +128,11 @@ module.exports = function(grunt) {
         tasks: ['vjslanguages']
       }
     },
+    serve: {
+      options: {
+        port: 9000
+      }
+    },
     vjslanguages: {
       defaults: {
         files: {
@@ -147,6 +152,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-html');
   grunt.loadNpmTasks('grunt-jsonlint');
+  grunt.loadNpmTasks('grunt-serve');
 
   grunt.registerTask('font', ['generate-font', 'update-base64', 'sass',
     'wrapcodepoints']);
