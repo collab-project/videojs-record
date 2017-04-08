@@ -1,4 +1,4 @@
-/*! videojs-record v1.6.0
+/*! videojs-record v1.6.1
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2017 - Licensed MIT */
 (function (root, factory)
@@ -2356,7 +2356,13 @@
     };
 
     // register the plugin
-    videojs.plugin('record', record);
+    var registerPlugin = videojs.plugin;
+    if (typeof videojs.registerPlugin === 'function')
+    {
+        // video.js >= 6.0.0
+        registerPlugin = videojs.registerPlugin;
+    }
+    registerPlugin('record', record);
 
     // return a function to define the module export
     return record;
