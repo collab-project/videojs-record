@@ -5,6 +5,8 @@ videojs-record changelog
 ------------------
 
 - Use `videojs.registerPlugin` in video.js 6.0.0 and newer
+- Bumped required version for videojs-wavesurfer to 1.3.2 to support video.js
+  6.0.0 and newer
 
 
 1.6.0 - 2017/02/26
