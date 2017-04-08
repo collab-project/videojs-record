@@ -142,7 +142,7 @@ Start the local webserver for the examples:
 grunt serve
 ```
 
-And open http://localhost:9000/examples/ in a browser.
+And open http://localhost:9000/examples in a browser.
 
 Options
 -------
