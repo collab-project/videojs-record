@@ -88,13 +88,6 @@ include a `video` element:
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 ```
 
-Check out the examples:
-
-- audio/video ([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html))
-- video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html))
-- image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
-- animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
-
 Note that recording both audio and video into a single WebM file is currently
 only supported in Mozilla Firefox >= 29 and Chrome >= 49. In older versions of
 the Chrome browser two separate Blob objects are created: one for audio and one
@@ -120,11 +113,29 @@ And define an `audio` element:
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 ```
 
-Check out the full audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html)).
-
 There is also support for [additional audio libraries](#other-audio-libraries)
 that allows you to record audio with alternative codecs (that otherwise might not
 be supported in the browser) like Ogg Vorbis, MP3 and Opus.
+
+Examples
+--------
+
+- audio/video ([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html))
+- video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html))
+- audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html))
+- image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
+- animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
+
+To try out the examples locally, checkout the repository using Git:
+```
+git clone https://github.com/collab-project/videojs-record.git
+```
+
+And install the dependencies using npm:
+```
+cd videojs-record
+npm install
+```
 
 Options
 -------
