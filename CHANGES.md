@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-1.6.1 - unreleased
+1.6.1 - 2017/04/09
 ------------------
 
 - Use `videojs.registerPlugin` in video.js 6.0.0 and newer
