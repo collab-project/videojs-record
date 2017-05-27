@@ -508,7 +508,7 @@
                 case this.AUDIO_ONLY:
                     // reference to videojs-wavesurfer plugin
                     this.surfer = this.player().waveform;
-                    if (this.surfer)
+                    if (this.surfer && this.playhead)
                     {
                         // initially hide playhead (fixed in wavesurfer 1.0.25)
                         this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
@@ -928,8 +928,11 @@
 
                         // hide playhead
                         // backwards compat (fixed since wavesurfer 1.0.25)
-                        this.playhead.style.display = 'none';
-
+                        if(this.playhead)
+                        {
+                            this.playhead.style.display = 'none';
+                        }
+                        
                         // start/resume live audio visualization
                         this.surfer.microphone.paused = false;
                         this.surfer.liveMode = true;
@@ -1159,7 +1162,10 @@
                         this.player().loadingSpinner.show();
 
                         // show playhead
-                        this.playhead.style.display = 'block';
+                        if(this.playhead)
+                        {
+                            this.playhead.style.display = 'block';
+                        }
 
                         // restore interaction with controls after waveform
                         // rendering is complete
