@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+1.6.2 - unreleased
+------------------
+
+- Use video.js AMD module name (#123, #136)
+
+
 1.6.1 - 2017/04/09
 ------------------
 

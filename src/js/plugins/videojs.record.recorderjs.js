@@ -3,7 +3,7 @@
     if (typeof define === 'function' && define.amd)
     {
         // AMD. Register as an anonymous module.
-        define(['videojs'], factory);
+        define(['video.js'], factory);
     }
     else if (typeof module === 'object' && module.exports)
     {
