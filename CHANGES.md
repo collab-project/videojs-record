@@ -5,6 +5,8 @@ videojs-record changelog
 ------------------
 
 - Use video.js AMD module name (#123, #136)
+- Bump required version for videojs-wavesurfer to 1.3.3 for the correct
+  video.js AMD module name
 
 
 1.6.1 - 2017/04/09
