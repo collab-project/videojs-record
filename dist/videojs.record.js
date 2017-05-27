@@ -1,4 +1,4 @@
-/*! videojs-record v1.6.1
+/*! videojs-record v1.6.2
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2017 - Licensed MIT */
 (function (root, factory)
@@ -6,7 +6,7 @@
     if (typeof define === 'function' && define.amd)
     {
         // AMD. Register as an anonymous module.
-        define(['videojs'], factory);
+        define(['video.js'], factory);
     }
     else if (typeof module === 'object' && module.exports)
     {
