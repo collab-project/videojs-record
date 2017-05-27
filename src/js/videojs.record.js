@@ -1458,7 +1458,7 @@
                 case this.AUDIO_VIDEO:
                 case this.ANIMATION:
                     // assign stream to audio/video element source
-                    this.mediaElement.src = url;
+                    this.player().src({'type': url.type, 'src': url});
                     break;
             }
         },
