@@ -238,6 +238,11 @@
             // animated gif settings
             this.engine.quality = this.quality;
             this.engine.frameRate = this.frameRate;
+            if (this.onTimeStamp !== undefined)
+            {
+                this.engine.timeSlice = this.timeSlice;
+                this.engine.onTimeStamp = this.onTimeStamp;
+            }
 
             // connect stream to recording engine
             this.engine.addStream(this.inputStream);
@@ -296,6 +301,16 @@
             {
                 this.engine.save(name);
             }
+        },
+
+        /**
+         * Returns array of blobs. Use only with "timeSlice". Its useful to preview
+         * recording anytime, without using the "stop" method.
+         * @private
+         */
+        getArrayOfBlobs: function()
+        {
+            return this.engine.getArrayOfBlobs();
         },
 
         /**
@@ -472,6 +487,9 @@
             // animation settings
             this.animationFrameRate = this.options_.options.animationFrameRate;
             this.animationQuality = this.options_.options.animationQuality;
+
+            // blob interval settings
+            this.recordTimeSlice = this.options_.options.timeSlice;
         },
 
         /**
@@ -832,6 +850,13 @@
                 // animated GIF settings
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
+
+                // timeSlice
+                if (this.recordTimeSlice && this.recordTimeSlice > 0)
+                {
+                    this.engine.timeSlice = this.recordTimeSlice;
+                    this.engine.onTimeStamp = this.onTimeStamp.bind(this);
+                }
 
                 // initialize recorder
                 this.engine.setup(this.stream, this.mediaType, this.debug);
@@ -1851,6 +1876,19 @@
         },
 
         /**
+         * Update time during playback.
+         * @private
+         */
+        onTimeStamp: function(current, all)
+        {
+            this.player().currentTimestamp = current;
+            this.player().allTimestamps = all;
+
+            // notify others
+            this.player().trigger('timestamp');
+        },
+
+        /**
          * Collects information about the media input and output devices
          * available on the system.
          *
@@ -2270,7 +2308,9 @@
         // and produces good color mapping at reasonable speeds.
         // Values greater than 20 do not yield significant improvements
         // in speed.
-        animationQuality: 10
+        animationQuality: 10,
+        // Accepts numbers in milliseconds; use this to force intervals-based blobs.
+        timeSlice: 0
     };
 
     /**
