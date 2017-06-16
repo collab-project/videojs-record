@@ -1876,13 +1876,20 @@
         },
 
         /**
-         * Update time during playback.
+         * Received new timestamp (when timeSlice option is enabled).
          * @private
          */
         onTimeStamp: function(current, all)
         {
             this.player().currentTimestamp = current;
             this.player().allTimestamps = all;
+
+            // get blob (only for MediaStreamRecorder)
+            var internal = this.engine.engine.videoRecorder.getInternalRecorder();
+            if ((internal instanceof MediaStreamRecorder) === true)
+            {
+                this.player().recordedData = internal.getArrayOfBlobs();
+            }
 
             // notify others
             this.player().trigger('timestamp');

@@ -1,6 +1,14 @@
 videojs-record changelog
 ========================
 
+1.7.0 - unreleased
+------------------
+
+- Get blobs after specific time-intervals using the `timestamp` event and
+  `timeSlice` option (#3)
+- Bump required version for recordrtc to 5.4.2 for `timeSlice` support
+
+
 1.6.2 - 2017/05/27
 ------------------
 
