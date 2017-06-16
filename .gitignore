@@ -17,3 +17,5 @@ doc
 composer.json
 php.ini
 vendor
+
+src/css/font/scss/_icons-codepoint.scss
