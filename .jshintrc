@@ -11,6 +11,7 @@
         "MRecordRTC",
         "VorbisMediaRecorder",
         "Recorder",
+        "MediaStreamRecorder",
         "AudioContext",
         "Promise",
         "module",
