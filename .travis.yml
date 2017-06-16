@@ -6,10 +6,9 @@ addons:
       - oracle-java8-installer
       - oracle-java8-set-default
 node_js:
-  - "node"
+  - "7"
 before_install:
   - npm install -g grunt-cli
-  - npm update node-sass
 install: npm install
 before_script: grunt font
 script: grunt
