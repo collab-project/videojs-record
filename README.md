@@ -447,7 +447,13 @@ Install dependencies using npm:
 npm install
 ```
 
-Build a minified version:
+Generate font assets once:
+
+```
+grunt font
+```
+
+Build a minified version of the library code and stylesheet:
 
 ```
 grunt

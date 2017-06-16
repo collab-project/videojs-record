@@ -18,4 +18,4 @@ composer.json
 php.ini
 vendor
 
-src/css/font/scss/_icons-codepoints.scss
+src/css/font/scss/_*.scss
