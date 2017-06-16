@@ -183,6 +183,7 @@ The available options for this plugin are:
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
+| `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
@@ -241,8 +242,9 @@ player.on('startRecord', function()
 | `deviceReady` | The webcam and/or microphone is ready to use. |
 | `deviceError` | User doesn't allow the browser to access the webcam and/or microphone. Check `player.deviceErrorCode` for the specific [error code](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia#errorCallback). |
 | `startRecord` | User pressed the record or camera button to start recording. |
-| `progressRecord` | Fired continuously during recording (until recording is stopped or paused). |
+| `progressRecord` | Fires continuously during recording (until recording is stopped or paused). |
 | `stopRecord` | User pressed the stop button to stop recording. |
+| `timestamp` | Fires continuously during recording [whenever a new timestamp is available](#timestamps). Only fires if the `timeSlice` option is set. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.recorder.devices` array. |
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
@@ -309,13 +311,38 @@ it returns a single WebM Blob object containing both audio and video.
 
 Use the `saveAs` method to show a 'Save as' browser dialog where the user can
 choose the storage location for the recorded data. It accepts a `name` object that
-contains a mapping between the media type and the filename. For example::
+contains a mapping between the media type and the filename. For example:
 
 ```javascript
 player.on('finishRecord', function()
 {
     // show save as dialog
     player.recorder.saveAs({'video': 'my-video-file-name'});
+});
+```
+
+### Timestamps
+
+It's also possible to get data during recording with specific time-intervals. This could
+be useful in scenarios where you're recording a long clip and planning to upload
+recorded blobs to a server periodically, where the clip is stiched it together.
+
+Do this by listening for the `timestamp` event. For example:
+
+```javascript
+// monitor stream data during recording
+player.on('timestamp', function()
+{
+    // timestamps
+    console.log('current timestamp: ', player.currentTimestamp);
+    console.log('all timestamps: ', player.allTimestamps);
+
+    // stream data
+    console.log('array of blobs: ', player.recordedData);
+    // or construct a single blob:
+    // var blob = new Blob(blobs, {
+    //     type: 'video/webm'
+    // });
 });
 ```
 

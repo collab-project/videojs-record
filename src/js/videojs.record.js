@@ -1885,7 +1885,22 @@
             this.player().allTimestamps = all;
 
             // get blob (only for MediaStreamRecorder)
-            var internal = this.engine.engine.videoRecorder.getInternalRecorder();
+            var internal;
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    internal = this.engine.engine.audioRecorder;
+                    break;
+
+                case this.ANIMATION:
+                    internal = this.engine.engine.gifRecorder;
+                    break;
+
+                default:
+                    internal = this.engine.engine.videoRecorder;
+                    break;
+            }
+            internal = internal.getInternalRecorder();
             if ((internal instanceof MediaStreamRecorder) === true)
             {
                 this.player().recordedData = internal.getArrayOfBlobs();
