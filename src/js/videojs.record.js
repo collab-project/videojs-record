@@ -32,7 +32,7 @@
         // silence errors (unhandled promise from play)
         if (retval !== undefined && typeof retval.then === 'function')
         {
-            retval.then(null, function (e) {});
+            retval.then(null, function (e){});
         }
         return retval;
     };
