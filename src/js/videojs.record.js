@@ -23,6 +23,19 @@
 
     var VjsComponent = videojs.getComponent('Component');
     var VjsButton = videojs.getComponent('Button');
+    var VjsPlayer = videojs.getComponent('Player');
+
+    // monkey-patch play for video.js 6.0 and newer (#149)
+    VjsPlayer.prototype.play = function play()
+    {
+        var retval = this.techGet_('play');
+        // silence errors (unhandled promise from play)
+        if (retval !== undefined && typeof retval.then === 'function')
+        {
+            retval.then(null, function (e) {});
+        }
+        return retval;
+    };
 
     /**
      * Base class for recorder backends.
@@ -304,16 +317,6 @@
         },
 
         /**
-         * Returns array of blobs. Use only with "timeSlice". Its useful to preview
-         * recording anytime, without using the "stop" method.
-         * @private
-         */
-        getArrayOfBlobs: function()
-        {
-            return this.engine.getArrayOfBlobs();
-        },
-
-        /**
          * Invoked when recording is stopped and resulting stream is available.
          *
          * @private
@@ -468,6 +471,7 @@
             this.recordAnimation = this.options_.options.animation;
             this.maxLength = this.options_.options.maxLength;
             this.debug = this.options_.options.debug;
+            this.recordTimeSlice = this.options_.options.timeSlice;
 
             // video/canvas settings
             this.videoFrameWidth = this.options_.options.frameWidth;
@@ -487,9 +491,6 @@
             // animation settings
             this.animationFrameRate = this.options_.options.animationFrameRate;
             this.animationQuality = this.options_.options.animationQuality;
-
-            // blob interval settings
-            this.recordTimeSlice = this.options_.options.timeSlice;
         },
 
         /**
