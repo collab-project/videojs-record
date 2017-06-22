@@ -741,9 +741,6 @@
             // store reference to stream for stopping etc.
             this.stream = stream;
 
-            // forward to listeners
-            this.player().trigger('deviceReady');
-
             // hide device selection button
             this.player().deviceButton.hide();
 
@@ -907,14 +904,28 @@
                 // hide the volume bar while it's muted
                 this.displayVolumeControl(false);
 
-                // start stream
+                // store reference to stream URL
                 if (this.streamURL !== undefined)
                 {
                     URL.revokeObjectURL(this.streamURL);
                 }
                 this.streamURL = URL.createObjectURL(this.stream);
+                // start stream
                 this.load(this.streamURL);
-                this.mediaElement.play();
+
+                // stream loading is async, so we wait until it's ready to play the stream.
+                var self = this;
+                this.player().one('loadedmetadata', function()
+                {
+                    self.mediaElement.play();
+                    // forward to listeners
+                    self.player().trigger('deviceReady');
+                });
+            }
+            else
+            {
+                // forward to listeners
+                this.player().trigger('deviceReady');
             }
         },
 
@@ -992,32 +1003,41 @@
                 // start recording
                 if (this.getRecordType() !== this.IMAGE_ONLY)
                 {
-                    // register starting point
-                    this.paused = false;
-                    this.pauseTime = this.pausedTime = 0;
-                    this.startTime = new Date().getTime();
-
-                    // start countdown
-                    this.countDown = this.setInterval(
-                        this.onCountDown.bind(this), 100);
-
-                    // cleanup previous recording
-                    if (this.engine !== undefined)
+                    // startVideoPreview loaded media stream on video element, so
+                    // we must wait until it's actually loaded to start recording
+                    var self = this;
+                    this.player().one('loadedmetadata', function()
                     {
-                        this.engine.dispose();
-                    }
+                        // register starting point
+                        self.paused = false;
+                        self.pauseTime = self.pausedTime = 0;
+                        self.startTime = new Date().getTime();
 
-                    // start recording stream
-                    this.engine.start();
+                        // start countdown
+                        self.countDown = self.setInterval(
+                            self.onCountDown.bind(self), 100);
+
+                        // cleanup previous recording
+                        if (self.engine !== undefined)
+                        {
+                            self.engine.dispose();
+                        }
+
+                        // start recording stream
+                        self.engine.start();
+
+                        // notify UI
+                        self.player().trigger('startRecord');
+                    });
                 }
                 else
                 {
                     // create snapshot
                     this.createSnapshot();
-                }
 
-                // notify UI
-                this.player().trigger('startRecord');
+                    // notify UI
+                    this.player().trigger('startRecord');
+                }
             }
         },
 
