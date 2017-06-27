@@ -1002,44 +1002,62 @@
                 }
 
                 // start recording
-                if (this.getRecordType() !== this.IMAGE_ONLY)
+                switch (this.getRecordType())
                 {
-                    // startVideoPreview loaded media stream on video element, so
-                    // we must wait until it's actually loaded to start recording
-                    var self = this;
-                    this.player().one('loadedmetadata', function()
-                    {
-                        // register starting point
-                        self.paused = false;
-                        self.pauseTime = self.pausedTime = 0;
-                        self.startTime = new Date().getTime();
-
-                        // start countdown
-                        self.countDown = self.setInterval(
-                            self.onCountDown.bind(self), 100);
-
-                        // cleanup previous recording
-                        if (self.engine !== undefined)
-                        {
-                            self.engine.dispose();
-                        }
-
-                        // start recording stream
-                        self.engine.start();
+                    case this.IMAGE_ONLY:
+                        // create snapshot
+                        this.createSnapshot();
 
                         // notify UI
-                        self.player().trigger('startRecord');
-                    });
-                }
-                else
-                {
-                    // create snapshot
-                    this.createSnapshot();
+                        this.player().trigger('startRecord');
+                        break;
 
-                    // notify UI
-                    this.player().trigger('startRecord');
+                    case this.VIDEO_ONLY:
+                    case this.AUDIO_VIDEO:
+                    case this.ANIMATION:
+                        // wait for media stream on video element to actually load
+                        var self = this;
+                        this.player().one('loadedmetadata', function()
+                        {
+                            // start actually recording process.
+                            self.startRecording();
+                        });
+                        break;
+
+                    default:
+                        // all resources have already loaded, so we can start recording right away.
+                        this.startRecording();
+                        break;
                 }
             }
+        },
+
+        /**
+         * Start recording.
+         * @private
+         */
+        startRecording: function()
+        {
+            // register starting point
+            this.paused = false;
+            this.pauseTime = this.pausedTime = 0;
+            this.startTime = new Date().getTime();
+
+            // start countdown
+            this.countDown = this.setInterval(
+                this.onCountDown.bind(this), 100);
+
+            // cleanup previous recording
+            if (this.engine !== undefined)
+            {
+                this.engine.dispose();
+            }
+
+            // start recording stream
+            this.engine.start();
+
+            // notify UI
+            this.player().trigger('startRecord');
         },
 
         /**
