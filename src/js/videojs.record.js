@@ -910,6 +910,7 @@
                     URL.revokeObjectURL(this.streamURL);
                 }
                 this.streamURL = URL.createObjectURL(this.stream);
+
                 // start stream
                 this.load(this.streamURL);
 
