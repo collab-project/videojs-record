@@ -13,10 +13,10 @@ Video.js plugin for recording audio/video/image files.
 Installation
 ------------
 
-Use [bower](http://bower.io) (`bower install videojs-record`) or
-[npm](https://www.npmjs.org) (`npm install videojs-record`) to install
-the plugin or [download](https://github.com/collab-project/videojs-record/releases)
-the library and dependencies elsewhere.
+Use [npm](https://www.npmjs.org) (`npm install videojs-record`) or
+[bower](https://bower.io) (`bower install videojs-record`) to install the plugin or
+[download](https://github.com/collab-project/videojs-record/releases) the library
+and dependencies elsewhere.
 
 Since v1.0 this plugin is compatible with video.js 5.0 and newer. If you want to use
 this plugin with an older video.js 4.x version, check the
@@ -37,7 +37,8 @@ When recording audio and/or video you also need:
 
 - [RecordRTC.js](https://github.com/muaz-khan/RecordRTC) - Adds support for audio/video/GIF recording.
 
-And when recording audio-only, the following dependencies are also required:
+And when recording audio-only, the following dependencies are also required (
+to visualize the audio waveform):
 
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
