@@ -8,14 +8,8 @@ videojs-record changelog
   `timeSlice` option (#3)
 - Bump required version for recordrtc to 5.4.2 for `timeSlice` support
 - Fix CSS styling for video.js 6.0 and newer (#149)
-
-1.6.3 - 2017/06/22
-------------------
-
-- onDeviceReady handler now plays the media stream after it's actually loaded (#154)
-- 'deviceReady' event is now triggered after media stream is actually loaded and played.
-- start method now starts recording after media stream's actually loaded.
-- 'startRecord' event is now triggered after media stream is actually loaded and played.
+- Take into account async stream loading before playing media on the Android
+  version of the Chrome browser (#154 by @kperdomo1)
 
 
 1.6.2 - 2017/05/27
