@@ -741,9 +741,6 @@
             // store reference to stream for stopping etc.
             this.stream = stream;
 
-            // forward to listeners
-            this.player().trigger('deviceReady');
-
             // hide device selection button
             this.player().deviceButton.hide();
 
@@ -907,14 +904,29 @@
                 // hide the volume bar while it's muted
                 this.displayVolumeControl(false);
 
-                // start stream
+                // store reference to stream URL
                 if (this.streamURL !== undefined)
                 {
                     URL.revokeObjectURL(this.streamURL);
                 }
                 this.streamURL = URL.createObjectURL(this.stream);
+
+                // start stream
                 this.load(this.streamURL);
-                this.mediaElement.play();
+
+                // stream loading is async, so we wait until it's ready to play the stream.
+                var self = this;
+                this.player().one('loadedmetadata', function()
+                {
+                    self.mediaElement.play();
+                    // forward to listeners
+                    self.player().trigger('deviceReady');
+                });
+            }
+            else
+            {
+                // forward to listeners
+                this.player().trigger('deviceReady');
             }
         },
 
@@ -990,35 +1002,62 @@
                 }
 
                 // start recording
-                if (this.getRecordType() !== this.IMAGE_ONLY)
+                switch (this.getRecordType())
                 {
-                    // register starting point
-                    this.paused = false;
-                    this.pauseTime = this.pausedTime = 0;
-                    this.startTime = new Date().getTime();
+                    case this.IMAGE_ONLY:
+                        // create snapshot
+                        this.createSnapshot();
 
-                    // start countdown
-                    this.countDown = this.setInterval(
-                        this.onCountDown.bind(this), 100);
+                        // notify UI
+                        this.player().trigger('startRecord');
+                        break;
 
-                    // cleanup previous recording
-                    if (this.engine !== undefined)
-                    {
-                        this.engine.dispose();
-                    }
+                    case this.VIDEO_ONLY:
+                    case this.AUDIO_VIDEO:
+                    case this.ANIMATION:
+                        // wait for media stream on video element to actually load
+                        var self = this;
+                        this.player().one('loadedmetadata', function()
+                        {
+                            // start actually recording process.
+                            self.startRecording();
+                        });
+                        break;
 
-                    // start recording stream
-                    this.engine.start();
+                    default:
+                        // all resources have already loaded, so we can start recording right away.
+                        this.startRecording();
+                        break;
                 }
-                else
-                {
-                    // create snapshot
-                    this.createSnapshot();
-                }
-
-                // notify UI
-                this.player().trigger('startRecord');
             }
+        },
+
+        /**
+         * Start recording.
+         * @private
+         */
+        startRecording: function()
+        {
+            // register starting point
+            this.paused = false;
+            this.pauseTime = this.pausedTime = 0;
+            this.startTime = new Date().getTime();
+
+            // start countdown
+            this.countDown = this.setInterval(
+                this.onCountDown.bind(this), 100);
+
+            // cleanup previous recording
+            if (this.engine !== undefined)
+            {
+                this.engine.dispose();
+            }
+
+            // start recording stream
+            this.engine.start();
+
+            // notify UI
+            this.player().trigger('startRecord');
         },
 
         /**
