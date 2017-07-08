@@ -1752,11 +1752,12 @@
             return new Promise(function(resolve, reject)
             {
                 // MediaCapture is only supported on:
-                // - Chrome 56 (https://developers.google.com/web/updates/2016/12/imagecapture)
+                // - Chrome 60 and newer (see
+                // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
                 // - Firefox behind flag (https://bugzilla.mozilla.org/show_bug.cgi?id=888177)
                 // importing ImageCapture can fail when enabling chrome
                 // flag is still required. if so; ignore and continue
-                if ((detected.browser === 'chrome' && detected.version >= 56) &&
+                if ((detected.browser === 'chrome' && detected.version >= 60) &&
                    (typeof ImageCapture === typeof Function))
                 {
                     try

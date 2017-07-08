@@ -10,6 +10,7 @@ videojs-record changelog
 - Fix CSS styling for video.js 6.0 and newer (#149)
 - Take into account async stream loading before playing media on the Android
   version of the Chrome browser (#154 by @kperdomo1)
+- Bump required Chrome version to 60 or newer for ImageCapture support (#153)
 
 
 1.6.2 - 2017/05/27
