@@ -11,6 +11,8 @@ videojs-record changelog
 - Take into account async stream loading before playing media on the Android
   version of the Chrome browser (#154 by @kperdomo1)
 - Bump required Chrome version to 60 or newer for ImageCapture support (#153)
+- Exclude video.js 6.2.0 or newer until video.js module export issue is
+  resolved (#149)
 
 
 1.6.2 - 2017/05/27
