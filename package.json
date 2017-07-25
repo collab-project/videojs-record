@@ -33,21 +33,21 @@
     "opus"
   ],
   "dependencies": {
+    "recordrtc": ">=5.4.2",
     "video.js": ">=5.0.0 <6.2.0",
-    "wavesurfer.js": ">=1.2.0",
     "videojs-wavesurfer": ">=1.3.3",
-    "recordrtc": ">=5.4.2"
+    "wavesurfer.js": ">=1.2.0"
   },
   "devDependencies": {
     "blueimp-file-upload": ">=9.11.2",
-    "fine-uploader": ">=5.4.1",
+    "fine-uploader": "^5.14.5",
     "grunt": ">=0.4.5",
     "grunt-contrib-concat": ">=0.4.0",
     "grunt-contrib-cssmin": ">=0.11.0",
     "grunt-contrib-jshint": ">=0.10.0",
     "grunt-contrib-uglify": ">=0.5.0",
     "grunt-contrib-watch": ">=0.6.1",
-    "grunt-html": "^8.0.2",
+    "grunt-html": "^8.5.0",
     "grunt-jscs": "^3.0.1",
     "grunt-jsonlint": "^1.0.7",
     "grunt-sass": "^1.0.0",
@@ -57,8 +57,8 @@
     "libvorbis.js": ">=1.1.1",
     "lodash": "^4.16.2",
     "material-design-icons": "^3.0.1",
-    "opus-recorder": ">=0.4.4",
-    "recorderjs": "https://github.com/mattdiamond/Recorderjs.git",
+    "opus-recorder": "^0.6.4",
+    "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "time-grunt": "^1.2.1",
     "videojs-font": ">=1.3.0",
     "webfonts-generator": "^0.3.5"

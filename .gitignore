@@ -10,6 +10,7 @@ dist
 node_modules
 bower_components
 doc
+package-lock.json
 
 # examples
 *.phar
