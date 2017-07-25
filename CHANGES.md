@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-1.7.0 - unreleased
+1.7.0 - 2017/07/25
 ------------------
 
 - Get blobs after specific time-intervals using the `timestamp` event and
