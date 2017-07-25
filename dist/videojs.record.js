@@ -1,4 +1,4 @@
-/*! videojs-record v1.6.2
+/*! videojs-record v1.7.0
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2017 - Licensed MIT */
 (function (root, factory)
@@ -26,6 +26,19 @@
 
     var VjsComponent = videojs.getComponent('Component');
     var VjsButton = videojs.getComponent('Button');
+    var VjsPlayer = videojs.getComponent('Player');
+
+    // monkey-patch play for video.js 6.0 and newer (#149)
+    VjsPlayer.prototype.play = function play()
+    {
+        var retval = this.techGet_('play');
+        // silence errors (unhandled promise from play)
+        if (retval !== undefined && typeof retval.then === 'function')
+        {
+            retval.then(null, function (e){});
+        }
+        return retval;
+    };
 
     /**
      * Base class for recorder backends.
@@ -241,6 +254,11 @@
             // animated gif settings
             this.engine.quality = this.quality;
             this.engine.frameRate = this.frameRate;
+            if (this.onTimeStamp !== undefined)
+            {
+                this.engine.timeSlice = this.timeSlice;
+                this.engine.onTimeStamp = this.onTimeStamp;
+            }
 
             // connect stream to recording engine
             this.engine.addStream(this.inputStream);
@@ -456,6 +474,7 @@
             this.recordAnimation = this.options_.options.animation;
             this.maxLength = this.options_.options.maxLength;
             this.debug = this.options_.options.debug;
+            this.recordTimeSlice = this.options_.options.timeSlice;
 
             // video/canvas settings
             this.videoFrameWidth = this.options_.options.frameWidth;
@@ -725,9 +744,6 @@
             // store reference to stream for stopping etc.
             this.stream = stream;
 
-            // forward to listeners
-            this.player().trigger('deviceReady');
-
             // hide device selection button
             this.player().deviceButton.hide();
 
@@ -836,6 +852,13 @@
                 this.engine.quality = this.animationQuality;
                 this.engine.frameRate = this.animationFrameRate;
 
+                // timeSlice
+                if (this.recordTimeSlice && this.recordTimeSlice > 0)
+                {
+                    this.engine.timeSlice = this.recordTimeSlice;
+                    this.engine.onTimeStamp = this.onTimeStamp.bind(this);
+                }
+
                 // initialize recorder
                 this.engine.setup(this.stream, this.mediaType, this.debug);
 
@@ -884,14 +907,29 @@
                 // hide the volume bar while it's muted
                 this.displayVolumeControl(false);
 
-                // start stream
+                // store reference to stream URL
                 if (this.streamURL !== undefined)
                 {
                     URL.revokeObjectURL(this.streamURL);
                 }
                 this.streamURL = URL.createObjectURL(this.stream);
+
+                // start stream
                 this.load(this.streamURL);
-                this.mediaElement.play();
+
+                // stream loading is async, so we wait until it's ready to play the stream.
+                var self = this;
+                this.player().one('loadedmetadata', function()
+                {
+                    self.mediaElement.play();
+                    // forward to listeners
+                    self.player().trigger('deviceReady');
+                });
+            }
+            else
+            {
+                // forward to listeners
+                this.player().trigger('deviceReady');
             }
         },
 
@@ -967,35 +1005,62 @@
                 }
 
                 // start recording
-                if (this.getRecordType() !== this.IMAGE_ONLY)
+                switch (this.getRecordType())
                 {
-                    // register starting point
-                    this.paused = false;
-                    this.pauseTime = this.pausedTime = 0;
-                    this.startTime = new Date().getTime();
+                    case this.IMAGE_ONLY:
+                        // create snapshot
+                        this.createSnapshot();
 
-                    // start countdown
-                    this.countDown = this.setInterval(
-                        this.onCountDown.bind(this), 100);
+                        // notify UI
+                        this.player().trigger('startRecord');
+                        break;
 
-                    // cleanup previous recording
-                    if (this.engine !== undefined)
-                    {
-                        this.engine.dispose();
-                    }
+                    case this.VIDEO_ONLY:
+                    case this.AUDIO_VIDEO:
+                    case this.ANIMATION:
+                        // wait for media stream on video element to actually load
+                        var self = this;
+                        this.player().one('loadedmetadata', function()
+                        {
+                            // start actually recording process.
+                            self.startRecording();
+                        });
+                        break;
 
-                    // start recording stream
-                    this.engine.start();
+                    default:
+                        // all resources have already loaded, so we can start recording right away.
+                        this.startRecording();
+                        break;
                 }
-                else
-                {
-                    // create snapshot
-                    this.createSnapshot();
-                }
-
-                // notify UI
-                this.player().trigger('startRecord');
             }
+        },
+
+        /**
+         * Start recording.
+         * @private
+         */
+        startRecording: function()
+        {
+            // register starting point
+            this.paused = false;
+            this.pauseTime = this.pausedTime = 0;
+            this.startTime = new Date().getTime();
+
+            // start countdown
+            this.countDown = this.setInterval(
+                this.onCountDown.bind(this), 100);
+
+            // cleanup previous recording
+            if (this.engine !== undefined)
+            {
+                this.engine.dispose();
+            }
+
+            // start recording stream
+            this.engine.start();
+
+            // notify UI
+            this.player().trigger('startRecord');
         },
 
         /**
@@ -1690,11 +1755,12 @@
             return new Promise(function(resolve, reject)
             {
                 // MediaCapture is only supported on:
-                // - Chrome 56 (https://developers.google.com/web/updates/2016/12/imagecapture)
+                // - Chrome 60 and newer (see
+                // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
                 // - Firefox behind flag (https://bugzilla.mozilla.org/show_bug.cgi?id=888177)
                 // importing ImageCapture can fail when enabling chrome
                 // flag is still required. if so; ignore and continue
-                if ((detected.browser === 'chrome' && detected.version >= 56) &&
+                if ((detected.browser === 'chrome' && detected.version >= 60) &&
                    (typeof ImageCapture === typeof Function))
                 {
                     try
@@ -1851,6 +1917,41 @@
         {
             this.setCurrentTime(this.player().currentTime(),
                 this.streamDuration);
+        },
+
+        /**
+         * Received new timestamp (when timeSlice option is enabled).
+         * @private
+         */
+        onTimeStamp: function(current, all)
+        {
+            this.player().currentTimestamp = current;
+            this.player().allTimestamps = all;
+
+            // get blob (only for MediaStreamRecorder)
+            var internal;
+            switch (this.getRecordType())
+            {
+                case this.AUDIO_ONLY:
+                    internal = this.engine.engine.audioRecorder;
+                    break;
+
+                case this.ANIMATION:
+                    internal = this.engine.engine.gifRecorder;
+                    break;
+
+                default:
+                    internal = this.engine.engine.videoRecorder;
+                    break;
+            }
+            internal = internal.getInternalRecorder();
+            if ((internal instanceof MediaStreamRecorder) === true)
+            {
+                this.player().recordedData = internal.getArrayOfBlobs();
+            }
+
+            // notify others
+            this.player().trigger('timestamp');
         },
 
         /**
@@ -2273,7 +2374,9 @@
         // and produces good color mapping at reasonable speeds.
         // Values greater than 20 do not yield significant improvements
         // in speed.
-        animationQuality: 10
+        animationQuality: 10,
+        // Accepts numbers in milliseconds; use this to force intervals-based blobs.
+        timeSlice: 0
     };
 
     /**
