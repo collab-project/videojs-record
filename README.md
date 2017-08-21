@@ -477,3 +477,9 @@ License
 -------
 
 This work is licensed under the [MIT License](LICENSE).
+
+Donate
+------
+
+Please consider donating if you like this project. Bitcoin is accepted
+and can be sent to `1NRpHHJfkf24emZgFkNiGs2no19zvhFeap`.
