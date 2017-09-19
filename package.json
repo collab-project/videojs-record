@@ -49,7 +49,7 @@
     "grunt-html": "^8.5.0",
     "grunt-jscs": "^3.0.1",
     "grunt-jsonlint": "^1.0.7",
-    "grunt-sass": "^1.0.0",
+    "grunt-sass": "^2.0.0",
     "grunt-serve": "^0.1.6",
     "grunt-videojs-languages": ">=0.0.4",
     "lamejs": ">=1.0.0",
@@ -60,7 +60,7 @@
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "time-grunt": "^1.2.1",
     "videojs-font": ">=1.3.0",
-    "webfonts-generator": "^0.3.5"
+    "webfonts-generator": "^0.4.0"
   },
   "author": "Collab",
   "license": "MIT",
