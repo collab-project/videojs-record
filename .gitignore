@@ -3,6 +3,7 @@
 
 # IDE
 .project
+.pydevproject
 
 # build
 dist
