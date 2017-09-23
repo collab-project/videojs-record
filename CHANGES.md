@@ -6,6 +6,7 @@ videojs-record changelog
 
 - Bumped required version for videojs-wavesurfer to 1.3.6 to restrict the
   wavesurfer.js dependency to anything lower than 2.0.0
+- Bugfix: properly update current time and duration display components
 
 
 1.7.0 - 2017/07/25
