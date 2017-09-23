@@ -35,7 +35,7 @@
   "dependencies": {
     "recordrtc": ">=5.4.2",
     "video.js": ">=5.0.0",
-    "videojs-wavesurfer": ">=1.3.4 <2.0.0"
+    "videojs-wavesurfer": ">=1.3.6 <2.0.0"
   },
   "devDependencies": {
     "blueimp-file-upload": ">=9.11.2",
