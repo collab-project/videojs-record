@@ -42,7 +42,7 @@
   "dependencies": {
     "recordrtc": ">=5.4.2",
     "video.js": ">=6.0.0",
-    "videojs-wavesurfer": ">=2.0.0"
+    "videojs-wavesurfer": "git+https://github.com/collab-project/videojs-wavesurfer.git#adv-plugin-29"
   },
   "devDependencies": {
     "blueimp-file-upload": ">=9.11.2",
