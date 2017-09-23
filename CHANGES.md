@@ -1,6 +1,15 @@
 videojs-record changelog
 ========================
 
+2.0.0 - unreleased
+------------------
+
+- Rewrite plugin using ES6 (#167, #149)
+- video.js 6.0 or newer is now required: older versions are no longer supported
+- videojs-wavesurfer.js version 2.0.0 or newer is now required: older versions
+  are no longer supported
+
+
 1.7.1 - 2017/09/23
 ------------------
 

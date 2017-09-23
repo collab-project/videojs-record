@@ -18,10 +18,10 @@ Use [npm](https://www.npmjs.org) (`npm install videojs-record`) or
 [download](https://github.com/collab-project/videojs-record/releases) the library
 and dependencies elsewhere.
 
-Since v1.0 this plugin is compatible with video.js 5.0 and newer. If you want to use
-this plugin with an older video.js 4.x version, check the
-[archived releases](https://github.com/collab-project/videojs-record/releases?after=1.0.0)
-for a 0.9.x or older release.
+Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer.js 2.0 or
+newer. If you want to use this plugin with an older version, check the
+[archived releases](https://github.com/collab-project/videojs-record/releases?after=1.7.1)
+for a 1.7.x or older release.
 
 Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
 version of videojs-record.

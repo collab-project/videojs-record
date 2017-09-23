@@ -2,6 +2,13 @@
   "name": "videojs-record",
   "version": "1.7.1",
   "description": "A video.js plugin for recording audio/video/image files.",
+  "author": "Collab",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/collab-project/videojs-record/issues"
+  },
+  "homepage": "https://github.com/collab-project/videojs-record",
   "main": "src/js/videojs.record.js",
   "directories": {
     "examples": "examples"
@@ -34,8 +41,8 @@
   ],
   "dependencies": {
     "recordrtc": ">=5.4.2",
-    "video.js": ">=5.0.0",
-    "videojs-wavesurfer": ">=1.3.6 <2.0.0"
+    "video.js": ">=6.0.0",
+    "videojs-wavesurfer": ">=2.0.0"
   },
   "devDependencies": {
     "blueimp-file-upload": ">=9.11.2",
@@ -61,12 +68,5 @@
     "time-grunt": "^1.2.1",
     "videojs-font": ">=1.3.0",
     "webfonts-generator": "^0.4.0"
-  },
-  "author": "Collab",
-  "license": "MIT",
-  "readmeFilename": "README.md",
-  "bugs": {
-    "url": "https://github.com/collab-project/videojs-record/issues"
-  },
-  "homepage": "https://github.com/collab-project/videojs-record"
+  }
 }
