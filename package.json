@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "description": "A video.js plugin for recording audio/video/image files.",
   "author": "Collab",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/collab-project/videojs-record/issues"
   },
   "homepage": "https://github.com/collab-project/videojs-record",
-  "main": "src/js/videojs.record.js",
+  "main": "es5/videojs.record.js",
   "directories": {
     "examples": "examples"
   },
@@ -18,8 +18,46 @@
     "url": "https://github.com/collab-project/videojs-record.git"
   },
   "scripts": {
-    "test": "echo No tests yet!"
+    "prebuild": "npm run clean",
+    "build": "npm-run-all -s build:*",
+    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:bannerize build:js:collapse build:js:uglify",
+    "build:js:babel": "babel src --out-dir es5",
+    "build:js:bannerize": "bannerize dist/videojs.record.js --banner=scripts/banner.ejs",
+    "build:js:browserify": "browserify . --standalone videojs.record --global-transform=browserify-shim --debug --outfile dist/videojs.record.js",
+    "build:js:collapse": "bundle-collapser dist/videojs.record.js -o dist/videojs.record.min.js",
+    "build:js:uglify": "uglifyjs dist/videojs.record.min.js --support-ie8 --comments -m -c -o dist/videojs.record.min.js",
+    "build:test:browserify": "browserify test/browserify-test.js --debug --outfile dist-test/browserify-test.js",
+    "build:test:webpack": "webpack test/webpack-test.js dist-test/webpack-test.js",
+    "build:test": "npm-run-all build:test:js build:test:browserify build:test:webpack",
+    "build:test:js": "node scripts/build-test.js",
+    "clean": "npm-run-all -p clean:*",
+    "clean:build": "node -e \"var s=require('shelljs'),d=['dist','dist-test','es5'];s.rm('-rf',d);s.mkdir('-p',d);\"",
+    "docs": "npm-run-all docs:*",
+    "docs:api": "jsdoc src -r -d docs/api",
+    "lint": "jscs --config .jscsrc src",
+    "start": "npm-run-all -p watch start:*",
+    "start:serve": "babel-node --presets=env scripts/server.js",
+    "test": "echo No tests yet!",
+    "pretest": "npm-run-all lint build",
+    "preversion": "npm test",
+    "version": "npm run build",
+    "watch": "npm-run-all -p watch:docs watch:js",
+    "watch:docs": "nodemon --watch src/ --exec npm run docs",
+    "watch:js": "npm-run-all -p watch:js:babel watch:js:browserify",
+    "watch:js:babel": "npm run build:js:babel -- --watch",
+    "watch:js:browserify": "watchify . -v -g browserify-shim --debug -o dist/videojs.record.js",
+    "prepublish": "not-in-install && npm run build || in-install"
   },
+  "files": [
+    ".babelrc",
+    ".jscsrc",
+    "dist/",
+    "docs/",
+    "es5/",
+    "scripts/",
+    "src/",
+    "test/"
+  ],
   "keywords": [
     "waveform",
     "audio",
@@ -39,34 +77,59 @@
     "mp3",
     "opus"
   ],
+  "browserify-shim": {
+    "qunit": "global:QUnit",
+    "sinon": "global:sinon",
+    "video.js": "global:videojs",
+    "wavesurfer.js": "global:WaveSurfer"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
   "dependencies": {
     "recordrtc": ">=5.4.2",
-    "video.js": ">=6.0.0",
+    "video.js": ">=6.2.7",
     "videojs-wavesurfer": "git+https://github.com/collab-project/videojs-wavesurfer.git#adv-plugin-29"
   },
   "devDependencies": {
-    "blueimp-file-upload": ">=9.11.2",
-    "fine-uploader": "^5.14.5",
-    "grunt": ">=0.4.5",
-    "grunt-contrib-concat": ">=0.4.0",
-    "grunt-contrib-cssmin": ">=0.11.0",
-    "grunt-contrib-jshint": ">=0.10.0",
-    "grunt-contrib-uglify": ">=0.5.0",
-    "grunt-contrib-watch": ">=0.6.1",
-    "grunt-html": "^8.5.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-jsonlint": "^1.0.7",
-    "grunt-sass": "^2.0.0",
-    "grunt-serve": "^0.1.6",
-    "grunt-videojs-languages": ">=0.0.4",
-    "lamejs": ">=1.0.0",
-    "libvorbis.js": ">=1.1.1",
-    "lodash": "^4.16.2",
-    "material-design-icons": "^3.0.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babelify": "^7.3.0",
+    "bannerize": "^1.1.3",
+    "blueimp-file-upload": ">=9.19.1",
+    "browserify": "^14.4.0",
+    "browserify-istanbul": "^2.0.0",
+    "browserify-shim": "^3.8.14",
+    "bundle-collapser": "^1.3.0",
+    "connect": "^3.6.5",
+    "d3": "^4.10.2",
+    "fine-uploader": "^5.15.0",
+    "glob": "^7.1.2",
+    "in-publish": "^2.0.0",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.5",
+    "jscs": "^3.0.7",
+    "jsdoc": "^3.5.5",
+    "lamejs": ">=1.2.0",
+    "libvorbis.js": ">=1.1.2",
+    "lodash": "^4.17.4",
+    "lodash-compat": "^3.10.2",
+    "minimist": "^1.2.0",
+    "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.1",
     "opus-recorder": "^1.1.0",
+    "portscanner": "^2.1.1",
+    "qunitjs": "^2.4.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
-    "time-grunt": "^1.2.1",
-    "videojs-font": ">=1.3.0",
-    "webfonts-generator": "^0.4.0"
+    "serve-static": "^1.12.6",
+    "shelljs": "^0.7.8",
+    "sinon": "3.3.0",
+    "uglify-js": "^3.1.2",
+    "videojs-font": "^2.0.0",
+    "videojs-languages": "^1.0.0",
+    "watchify": "^3.9.0",
+    "webpack": "^3.6.0"
   }
 }
