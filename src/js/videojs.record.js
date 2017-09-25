@@ -1647,7 +1647,7 @@ class Recorder extends RecordBase {
 
             // notify others
             resolve(recordCanvas);
-      });
+        });
     }
 
     /**
@@ -1813,8 +1813,7 @@ class Recorder extends RecordBase {
         // List cameras and microphones.
         navigator.mediaDevices.enumerateDevices(this).then(function(devices) {
             self.devices = [];
-            devices.forEach(function(device)
-            {
+            devices.forEach(function(device) {
                 self.devices.push(device);
             });
 
