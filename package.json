@@ -37,7 +37,7 @@
     "docs:api": "jsdoc src -r -d docs/api",
     "lint": "npm-run-all lint:*",
     "lint:js": "jscs --config .jscsrc src",
-    "lint:json": "jsonlint-cli lang/*",
+    "lint:json": "jsonlint-cli lang/* src/css/font/icons.json",
     "start": "npm-run-all -p watch start:*",
     "start:serve": "babel-node --presets=env scripts/server.js",
     "test": "echo No tests yet!",
