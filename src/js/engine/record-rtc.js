@@ -1,5 +1,5 @@
 /**
- * @file videojs.record.lamejs.js
+ * @file record-rtc.js
  */
 
 import RecordBase from '../record-base';
@@ -115,10 +115,10 @@ class RecordRTCEngine extends RecordBase {
         this.mediaURL = audioVideoURL;
 
         // store reference to recorded stream data
-        var recordType = this.player().recorder.getRecordType();
+        var recordType = this.player.recorder.getRecordType();
         this.engine.getBlob(function(recording) {
             switch (recordType) {
-                case this.AUDIO_ONLY:
+                case AUDIO_ONLY:
                     this.recordedData = recording.audio;
 
                     this.addFileInfo(this.recordedData);
@@ -127,8 +127,8 @@ class RecordRTCEngine extends RecordBase {
                     this.trigger('recordComplete');
                     break;
 
-                case this.VIDEO_ONLY:
-                case this.AUDIO_VIDEO:
+                case VIDEO_ONLY:
+                case AUDIO_VIDEO:
                     // when recording both audio and video, recordrtc
                     // calls this twice on chrome, first with audio data
                     // and then with video data.
@@ -140,7 +140,7 @@ class RecordRTCEngine extends RecordBase {
 
                         // on the chrome browser two blobs are created
                         // containing the separate audio/video streams.
-                        if (recordType === this.AUDIO_VIDEO && this.isChrome()) {
+                        if (recordType === AUDIO_VIDEO && this.isChrome()) {
                             // store both audio and video
                             this.recordedData = recording;
 
@@ -156,7 +156,7 @@ class RecordRTCEngine extends RecordBase {
                     }
                     break;
 
-                case this.ANIMATION:
+                case ANIMATION:
                     this.recordedData = recording.gif;
 
                     this.addFileInfo(this.recordedData);
