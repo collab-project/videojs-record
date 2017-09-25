@@ -20,12 +20,13 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm-run-all -s build:*",
-    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:bannerize build:js:collapse build:js:uglify",
+    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:bannerize build:js:collapse build:js:uglify build:js:language",
     "build:js:babel": "babel src --out-dir es5",
     "build:js:bannerize": "bannerize dist/videojs.record.js --banner=scripts/banner.ejs",
     "build:js:browserify": "browserify . --standalone videojs.record --global-transform=browserify-shim --debug --outfile dist/videojs.record.js",
     "build:js:collapse": "bundle-collapser dist/videojs.record.js -o dist/videojs.record.min.js",
     "build:js:uglify": "uglifyjs dist/videojs.record.min.js --support-ie8 --comments -m -c -o dist/videojs.record.min.js",
+    "build:js:language": "vjslang -d dist/lang lang/*.json",
     "build:test:browserify": "browserify test/browserify-test.js --debug --outfile dist-test/browserify-test.js",
     "build:test:webpack": "webpack test/webpack-test.js dist-test/webpack-test.js",
     "build:test": "npm-run-all build:test:js build:test:browserify build:test:webpack",
@@ -45,9 +46,10 @@
     "version": "npm run build",
     "watch": "npm-run-all -p watch:docs watch:js",
     "watch:docs": "nodemon --watch src/ --exec npm run docs",
-    "watch:js": "npm-run-all -p watch:js:babel watch:js:browserify",
+    "watch:js": "npm-run-all -p watch:js:babel watch:js:browserify watch:js:language",
     "watch:js:babel": "npm run build:js:babel -- --watch",
     "watch:js:browserify": "watchify . -v -g browserify-shim --debug -o dist/videojs.record.js",
+    "watch:js:language": "nodemon --watch lang/ --exec npm run build:js:language",
     "prepublish": "not-in-install && npm run build || in-install"
   },
   "files": [
