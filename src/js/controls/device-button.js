@@ -10,24 +10,28 @@ const Button = videojs.getComponent('Button');
  * @class
  * @augments videojs.Button
 */
-const DeviceButton = videojs.extend(Button,
-{
-    /** @constructor */
-    constructor: function(player, options)
-    {
-        Button.call(this, player, options);
+class DeviceButton extends Button {
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
 
         this.on('click', this.onClick);
         this.on('tap', this.onClick);
     }
-});
-DeviceButton.prototype.onClick = function(e)
-{
-    // stop this event before it bubbles up
-    e.stopImmediatePropagation();
 
-    // open device dialog
-    this.player().recorder.getDevice();
-};
+    onClick(e) {
+        // stop this event before it bubbles up
+        e.stopImmediatePropagation();
+
+        // open device dialog
+        this.player().recorder.getDevice();
+    }
+}
 
 export default DeviceButton;

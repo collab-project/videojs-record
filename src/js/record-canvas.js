@@ -10,7 +10,17 @@ const Component = videojs.getComponent('Component');
  * @class
  * @augments videojs.Component
 */
-const RecordCanvas = videojs.extend(Component);
-
+class RecordCanvas extends Component {
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+    }
+}
 
 export default RecordCanvas;

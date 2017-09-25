@@ -10,60 +10,58 @@ const Button = videojs.getComponent('Button');
  * @class
  * @augments videojs.Button
 */
-const CameraButton = videojs.extend(Button,
-{
-    /** @constructor */
-    constructor: function(player, options)
-    {
-        Button.call(this, player, options);
+class CameraButton extends Button {
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
 
         this.on('click', this.onClick);
         this.on('tap', this.onClick);
         this.on(player, 'startRecord', this.onStart);
         this.on(player, 'stopRecord', this.onStop);
     }
-});
 
-CameraButton.prototype.onClick = function(e)
-{
-    // stop this event before it bubbles up
-    e.stopImmediatePropagation();
+    onClick(e) {
+        // stop this event before it bubbles up
+        e.stopImmediatePropagation();
 
-    var recorder = this.player().recorder;
+        let recorder = this.player().recorder;
 
-    if (!recorder.isProcessing())
-    {
-        // create snapshot
-        recorder.start();
+        if (!recorder.isProcessing()) {
+            // create snapshot
+            recorder.start();
+        } else {
+            // retry
+            recorder.retrySnapshot();
+
+            // reset camera button
+            this.onStop();
+        }
     }
-    else
-    {
-        // retry
-        recorder.retrySnapshot();
 
-        // reset camera button
-        this.onStop();
+    onStart() {
+        // replace element class so it can change appearance
+        this.removeClass('vjs-icon-photo-camera');
+        this.addClass('vjs-icon-photo-retry');
+
+        // update label
+        this.el().firstChild.firstChild.innerHTML = this.localize('Retry');
     }
-};
 
-CameraButton.prototype.onStart = function()
-{
-    // replace element class so it can change appearance
-    this.removeClass('vjs-icon-photo-camera');
-    this.addClass('vjs-icon-photo-retry');
+    onStop() {
+        // replace element class so it can change appearance
+        this.removeClass('vjs-icon-photo-retry');
+        this.addClass('vjs-icon-photo-camera');
 
-    // update label
-    this.el().firstChild.firstChild.innerHTML = this.localize('Retry');
-};
-
-CameraButton.prototype.onStop = function()
-{
-    // replace element class so it can change appearance
-    this.removeClass('vjs-icon-photo-retry');
-    this.addClass('vjs-icon-photo-camera');
-
-    // update label
-    this.el().firstChild.firstChild.innerHTML = this.localize('Image');
-};
+        // update label
+        this.el().firstChild.firstChild.innerHTML = this.localize('Image');
+    }
+}
 
 export default CameraButton;

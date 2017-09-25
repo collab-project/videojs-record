@@ -10,7 +10,17 @@ const Component = videojs.getComponent('Component');
  * @class
  * @augments videojs.Component
 */
-const AnimationDisplay = videojs.extend(Component);
-
+class AnimationDisplay extends Component {
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+    }
+}
 
 export default AnimationDisplay;
