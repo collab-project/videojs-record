@@ -29,7 +29,8 @@
         <script src="../../node_modules/wavesurfer.js/dist/wavesurfer.min.js"></script>
         <script src="../../node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
         <script src="../../node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
-        <script src="../../src/js/videojs.record.js"></script>
+
+        <script src="../../dist/videojs.record.js"></script>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="../../node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
@@ -52,8 +53,7 @@
             });
 
             // setup videojs-record
-            var player = videojs('myAudio',
-            {
+            var player = videojs('myAudio', {
                 controls: true,
                 width: 600,
                 height: 300,
@@ -77,18 +77,16 @@
             });
 
             // player error handling
-            player.on('deviceError', function()
-            {
+            player.on('deviceError', function() {
                 console.warn('device error:', player.deviceErrorCode);
             });
-            player.on('error', function(error)
-            {
+
+            player.on('error', function(error) {
                 console.log('error:', error);
             });
 
             // data is available
-            player.on('finishRecord', function()
-            {
+            player.on('finishRecord', function() {
                 // the blob object contains the audio data
                 var audioFile = player.recordedData;
 
