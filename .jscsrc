@@ -4,8 +4,8 @@
     "disallowMultipleSpaces": true,
     "disallowTabs": true,
     "disallowSpaceBeforeSemicolon": true,
+    "validateIndentation": 4,
     "requireSpacesInForStatement": true,
     "requireSpacesInConditionalExpression": true,
-    "requireSpaceAfterLineComment": true,
     "requireBlocksOnNewline": true
 }
