@@ -58,6 +58,7 @@
     "dist/",
     "docs/",
     "es5/",
+    "lang/",
     "scripts/",
     "src/",
     "test/"
@@ -84,8 +85,7 @@
   "browserify-shim": {
     "qunit": "global:QUnit",
     "sinon": "global:sinon",
-    "video.js": "global:videojs",
-    "wavesurfer.js": "global:WaveSurfer"
+    "video.js": "global:videojs"
   },
   "browserify": {
     "transform": [
