@@ -1,4 +1,4 @@
-/*! videojs-record v1.7.0
+/*! videojs-record v1.7.1
 * https://github.com/collab-project/videojs-record
 * Copyright (c) 2014-2017 - Licensed MIT */
 (function (root, factory)
@@ -1459,10 +1459,10 @@
                 case this.ANIMATION:
                     this.streamCurrentTime = Math.min(currentTime, duration);
 
-                    // update control
-                    this.player().controlBar.currentTimeDisplay.el(
-                        ).firstChild.innerHTML = this.formatTime(
-                        this.streamCurrentTime, duration);
+                    // update current time display component
+                    this.player().controlBar.currentTimeDisplay.formattedTime_ = this.player(
+                        ).controlBar.currentTimeDisplay.contentEl(
+                        ).lastChild.textContent = this.formatTime(this.streamCurrentTime, duration);
                     break;
             }
         },
@@ -1498,10 +1498,10 @@
                 case this.VIDEO_ONLY:
                 case this.AUDIO_VIDEO:
                 case this.ANIMATION:
-                    // update control
-                    this.player().controlBar.durationDisplay.el(
-                        ).firstChild.innerHTML = this.formatTime(
-                        duration, duration);
+                    // update duration display component
+                    this.player().controlBar.durationDisplay.formattedTime_ = this.player(
+                        ).controlBar.durationDisplay.contentEl(
+                        ).lastChild.textContent = this.formatTime(duration, duration);
                     break;
             }
         },
