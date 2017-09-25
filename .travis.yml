@@ -2,8 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - 'node'
-before_script:
-  - npm run pretest
 install: npm install
 cache:
   directories:
