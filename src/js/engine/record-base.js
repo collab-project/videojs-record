@@ -2,7 +2,24 @@
  * @file record-base.js
  */
 
+import window from 'global/window';
+
 const Component = videojs.getComponent('Component');
+
+// recorder modes
+const IMAGE_ONLY = 'image_only';
+const AUDIO_ONLY = 'audio_only';
+const VIDEO_ONLY = 'video_only';
+const AUDIO_VIDEO = 'audio_video';
+const ANIMATION = 'animation';
+
+// supported recorder plugin engines
+const RECORDRTC = 'recordrtc';
+const LIBVORBISJS = 'libvorbis.js';
+const RECORDERJS = 'recorder.js';
+const LAMEJS = 'lamejs';
+const OPUSRECORDER = 'opus-recorder';
+
 
 /**
  * Base class for recorder backends.
@@ -152,4 +169,8 @@ class RecordBase extends Component {
     }
 }
 
-export default RecordBase;
+export {
+    RecordBase,
+    IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION,
+    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
+}

@@ -31,8 +31,7 @@ class RecordToggle extends Button {
         // stop this event before it bubbles up
         e.stopImmediatePropagation();
 
-        var recorder = this.player().recorder;
-
+        let recorder = this.player().recorder;
         if (!recorder.isRecording()) {
             recorder.start();
         } else {

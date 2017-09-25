@@ -2,7 +2,7 @@
  * @file record-rtc.js
  */
 
-import RecordBase from '../record-base';
+import * as base from './record-base';
 
 /**
  * Engine for the RecordRTC library.
@@ -11,7 +11,18 @@ import RecordBase from '../record-base';
  * @class
  * @augments RecordBase
  */
-class RecordRTCEngine extends RecordBase {
+class RecordRTCEngine extends base.RecordBase {
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+    }
+
     /**
      * Setup recording engine.
      * @private
@@ -115,10 +126,10 @@ class RecordRTCEngine extends RecordBase {
         this.mediaURL = audioVideoURL;
 
         // store reference to recorded stream data
-        var recordType = this.player.recorder.getRecordType();
+        let recordType = this.player_.recorder.getRecordType();
         this.engine.getBlob(function(recording) {
             switch (recordType) {
-                case AUDIO_ONLY:
+                case base.AUDIO_ONLY:
                     this.recordedData = recording.audio;
 
                     this.addFileInfo(this.recordedData);
@@ -127,8 +138,8 @@ class RecordRTCEngine extends RecordBase {
                     this.trigger('recordComplete');
                     break;
 
-                case VIDEO_ONLY:
-                case AUDIO_VIDEO:
+                case base.VIDEO_ONLY:
+                case base.AUDIO_VIDEO:
                     // when recording both audio and video, recordrtc
                     // calls this twice on chrome, first with audio data
                     // and then with video data.
@@ -140,11 +151,11 @@ class RecordRTCEngine extends RecordBase {
 
                         // on the chrome browser two blobs are created
                         // containing the separate audio/video streams.
-                        if (recordType === AUDIO_VIDEO && this.isChrome()) {
+                        if (recordType === base.AUDIO_VIDEO && this.isChrome()) {
                             // store both audio and video
                             this.recordedData = recording;
 
-                            for (var mtype in this.recordedData) {
+                            for (let mtype in this.recordedData) {
                                 this.addFileInfo(this.recordedData[mtype]);
                             }
                         } else {
@@ -156,7 +167,7 @@ class RecordRTCEngine extends RecordBase {
                     }
                     break;
 
-                case ANIMATION:
+                case base.ANIMATION:
                     this.recordedData = recording.gif;
 
                     this.addFileInfo(this.recordedData);
