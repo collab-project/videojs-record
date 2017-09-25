@@ -2,11 +2,13 @@
  * @file videojs.record.lamejs.js
  */
 
+import RecordBase from '../record-base';
+
 /**
  * Audio-only engine for the lamejs library.
  *
  * @class
- * @augments videojs.RecordBase
+ * @augments RecordBase
  */
 class LamejsEngine extends RecordBase {
     /**
