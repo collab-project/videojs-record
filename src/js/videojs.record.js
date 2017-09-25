@@ -22,12 +22,14 @@ const Plugin = videojs.getPlugin('plugin');
 const Component = videojs.getComponent('Component');
 
 /*
+ XXX: old
 var VjsComponent = videojs.getComponent('Component');
 var VjsButton = videojs.getComponent('Button');
 var VjsPlayer = videojs.getComponent('Player');
 */
 
 // monkey-patch play for video.js 6.0 and newer (#149)
+/*
 VjsPlayer.prototype.play = function play() {
     var retval = this.techGet_('play');
     // silence errors (unhandled promise from play)
@@ -35,7 +37,23 @@ VjsPlayer.prototype.play = function play() {
         retval.then(null, function (e){});
     }
     return retval;
-};
+};*/
+
+
+// recorder modes
+const IMAGE_ONLY = 'image_only';
+const AUDIO_ONLY = 'audio_only';
+const VIDEO_ONLY = 'video_only';
+const AUDIO_VIDEO = 'audio_video';
+const ANIMATION = 'animation';
+
+// supported recorder plugin engines
+const RECORDRTC = 'recordrtc';
+const LIBVORBISJS = 'libvorbis.js';
+const RECORDERJS = 'recorder.js';
+const LAMEJS = 'lamejs';
+const OPUSRECORDER = 'opus-recorder';
+
 
 /**
  * Base class for recorder backends.
@@ -43,21 +61,7 @@ VjsPlayer.prototype.play = function play() {
  * @augments videojs.Component
  * @private
  */
-videojs.RecordBase = videojs.extend(VjsComponent, {
-    // recorder modes
-    IMAGE_ONLY: 'image_only',
-    AUDIO_ONLY: 'audio_only',
-    VIDEO_ONLY: 'video_only',
-    AUDIO_VIDEO: 'audio_video',
-    ANIMATION: 'animation',
-
-    // supported recorder plugin engines
-    RECORDRTC: 'recordrtc',
-    LIBVORBISJS: 'libvorbis.js',
-    RECORDERJS: 'recorder.js',
-    LAMEJS: 'lamejs',
-    OPUSRECORDER: 'opus-recorder',
-
+class RecordBase extends Plugin {
     /**
      * The constructor function for the class.
      *
@@ -65,10 +69,12 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
      * @param {(videojs.Player|Object)} player - Video.js player instance.
      * @param {Object} options - Player options.
      */
-    constructor: function(player, options)
-    {
-        VjsComponent.call(this, player, options);
-    },
+    constructor(player, options) {
+        super(player, options);
+
+        // XXX: old
+        // VjsComponent.call(this, player, options);
+    }
 
     /**
      * Browser detector.
@@ -77,24 +83,21 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
      * @return {object} result containing browser, version and minVersion
      *     properties.
      */
-    detectBrowser: function()
-    {
+    detectBrowser() {
         // Returned result object.
-        var result = {};
+        let result = {};
         result.browser = null;
         result.version = null;
         result.minVersion = null;
 
         // Non supported browser.
-        if (typeof window === 'undefined' || !window.navigator)
-        {
+        if (typeof window === 'undefined' || !window.navigator) {
             result.browser = 'Not a supported browser.';
             return result;
         }
 
         // Firefox.
-        if (navigator.mozGetUserMedia)
-        {
+        if (navigator.mozGetUserMedia) {
             result.browser = 'firefox';
             result.version = this.extractVersion(navigator.userAgent,
                 /Firefox\/([0-9]+)\./, 1);
@@ -103,8 +106,7 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
         }
 
         // Chrome/Chromium/Webview.
-        if (navigator.webkitGetUserMedia && window.webkitRTCPeerConnection)
-        {
+        if (navigator.webkitGetUserMedia && window.webkitRTCPeerConnection) {
             result.browser = 'chrome';
             result.version = this.extractVersion(navigator.userAgent,
                 /Chrom(e|ium)\/([0-9]+)\./, 2);
@@ -114,8 +116,7 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
 
         // Edge.
         if (navigator.mediaDevices &&
-            navigator.userAgent.match(/Edge\/(\d+).(\d+)$/))
-        {
+            navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) {
             result.browser = 'edge';
             result.version = this.extractVersion(navigator.userAgent,
                 /Edge\/(\d+).(\d+)$/, 2);
@@ -125,7 +126,7 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
         // Non supported browser default.
         result.browser = 'Not a supported browser.';
         return result;
-    },
+    }
 
     /**
      * Extract browser version out of the provided user agent string.
@@ -137,36 +138,31 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
      *     returned.
      * @return {!number} browser version.
      */
-    extractVersion: function(uastring, expr, pos)
-    {
-        var match = uastring.match(expr);
+    extractVersion(uastring, expr, pos) {
+        let match = uastring.match(expr);
         return match && match.length >= pos && parseInt(match[pos], 10);
-    },
-    isEdge: function()
-    {
+    }
+    isEdge() {
         return this.detectBrowser().browser === 'edge';
-    },
-    isOpera: function()
-    {
+    }
+    isOpera() {
         return !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
-    },
-    isChrome: function()
+    }
+    isChrome()
     {
         return this.detectBrowser().browser === 'chrome';
-    },
+    }
 
     /**
      * Remove any temporary data and references to streams.
      * @private
      */
-    dispose: function()
-    {
+    dispose() {
         // remove previous recording
-        if (this.mediaURL !== undefined)
-        {
+        if (this.mediaURL !== undefined) {
             URL.revokeObjectURL(this.mediaURL);
         }
-    },
+    }
 
     /**
      * Add filename and timestamp to recorded file object.
@@ -174,23 +170,21 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
      * @param {(blob|file)} fileObj - Blob or File object.
      * @private
      */
-    addFileInfo: function(fileObj)
-    {
-        var now = new Date();
+    addFileInfo(fileObj) {
+        let now = new Date();
         fileObj.lastModifiedDate = now;
 
         // guess extension name from mime type, e.g. audio/ogg, but
         // any extension is valid here. Chrome also accepts extended
         // mime types like video/webm;codecs=h264,vp9,opus
-        var fileExtension = '.' + fileObj.type.split('/')[1];
-        if (fileExtension.indexOf(';') > -1)
-        {
+        let fileExtension = '.' + fileObj.type.split('/')[1];
+        if (fileExtension.indexOf(';') > -1) {
             fileExtension = fileExtension.split(';')[0];
         }
 
         // use timestamp in filename, e.g. 1451180941326.ogg
         fileObj.name = now.getTime() + fileExtension;
-    },
+    }
 
     /**
      * Invoked when recording is stopped and resulting stream is available.
@@ -198,8 +192,7 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
      * @param {blob} data - Reference to the recorded Blob.
      * @private
      */
-    onStopRecording: function(data)
-    {
+    onStopRecording(data) {
         this.recordedData = data;
 
         this.addFileInfo(this.recordedData);
@@ -211,7 +204,7 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
         // notify listeners
         this.trigger('recordComplete');
     }
-});
+}
 
 /**
  * Engine for the RecordRTC library.
@@ -220,14 +213,12 @@ videojs.RecordBase = videojs.extend(VjsComponent, {
  * @class
  * @augments videojs.RecordBase
  */
-videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
-{
+class RecordRTCEngine extends RecordBase {
     /**
      * Setup recording engine.
      * @private
      */
-    setup: function(stream, mediaType, debug)
-    {
+    setup(stream, mediaType, debug) {
         this.inputStream = stream;
         this.mediaType = mediaType;
         this.debug = debug;
@@ -250,52 +241,51 @@ videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
         // animated gif settings
         this.engine.quality = this.quality;
         this.engine.frameRate = this.frameRate;
-        if (this.onTimeStamp !== undefined)
-        {
+        if (this.onTimeStamp !== undefined) {
             this.engine.timeSlice = this.timeSlice;
             this.engine.onTimeStamp = this.onTimeStamp;
         }
 
         // connect stream to recording engine
         this.engine.addStream(this.inputStream);
-    },
+    }
 
     /**
      * Start recording.
      * @private
      */
-    start: function()
+    start()
     {
         this.engine.startRecording();
-    },
+    }
 
     /**
      * Stop recording. Result will be available async when onStopRecording
      * is called.
      * @private
      */
-    stop: function()
+    stop()
     {
         this.engine.stopRecording(this.onStopRecording.bind(this));
-    },
+    }
 
     /**
      * Pause recording.
      * @private
      */
-    pause: function()
+    pause()
     {
         this.engine.pauseRecording();
-    },
+    }
 
     /**
      * Resume recording.
      * @private
      */
-    resume: function()
+    resume()
     {
         this.engine.resumeRecording();
-    },
+    }
 
     /**
      * Show save as dialog in browser so the user can store the recorded media
@@ -307,13 +297,12 @@ videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
      */
-    saveAs: function(name)
+    saveAs(name)
     {
-        if (this.engine && name !== undefined)
-        {
+        if (this.engine && name !== undefined) {
             this.engine.save(name);
         }
-    },
+    }
 
     /**
      * Invoked when recording is stopped and resulting stream is available.
@@ -323,17 +312,14 @@ videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
      *     object, e.g. 'blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba'
      * @param {string} type - Media type, eg. 'video' or 'audio'.
      */
-    onStopRecording: function(audioVideoURL, type)
-    {
+    onStopRecording(audioVideoURL, type) {
         // store reference to recorded stream URL
         this.mediaURL = audioVideoURL;
 
         // store reference to recorded stream data
         var recordType = this.player().recorder.getRecordType();
-        this.engine.getBlob(function(recording)
-        {
-            switch (recordType)
-            {
+        this.engine.getBlob(function(recording) {
+            switch (recordType) {
                 case this.AUDIO_ONLY:
                     this.recordedData = recording.audio;
 
@@ -350,25 +336,20 @@ videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
                     // and then with video data.
                     // on firefox it's called once but with a single
                     // blob that includes both audio and video data.
-                    if (recording.video !== undefined)
-                    {
+                    if (recording.video !== undefined) {
                         // data is video-only but on firefox audio+video
                         this.recordedData = recording.video;
 
                         // on the chrome browser two blobs are created
                         // containing the separate audio/video streams.
-                        if (recordType === this.AUDIO_VIDEO && this.isChrome())
-                        {
+                        if (recordType === this.AUDIO_VIDEO && this.isChrome()) {
                             // store both audio and video
                             this.recordedData = recording;
 
-                            for (var mtype in this.recordedData)
-                            {
+                            for (var mtype in this.recordedData) {
                                 this.addFileInfo(this.recordedData[mtype]);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             this.addFileInfo(this.recordedData);
                         }
 
@@ -388,7 +369,7 @@ videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
             }
         }.bind(this));
     }
-});
+}
 
 /**
  * Record audio/video/images using the Video.js player.
@@ -396,18 +377,17 @@ videojs.RecordRTCEngine = videojs.extend(videojs.RecordBase,
  * @class
  * @augments videojs.RecordBase
  */
-videojs.Recorder = videojs.extend(videojs.RecordBase,
-{
+class Recorder extends RecordBase {
     /**
      * The constructor function for the class.
      *
      * @param {(videojs.Player|Object)} player
      * @param {Object} options - Player options.
      */
-    constructor: function(player, options)
-    {
-        // run base component initializing with new options.
-        VjsComponent.call(this, player, options);
+    constructor(player, options) {
+        // XXX: old - run base component initializing with new options.
+        // VjsComponent.call(this, player, options);
+        super(player, options);
 
         // setup plugin options
         this.loadOptions();
@@ -425,8 +405,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 navigator.msGetUserMedia);
             // Some browsers just don't implement it - return a rejected
             // promise with an error to keep a consistent interface
-            if (!getUserMedia)
-            {
+            if (!getUserMedia) {
                 return Promise.reject(
                     new Error('getUserMedia is not implemented in this browser')
                 );
@@ -441,28 +420,25 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         };
         // Older browsers might not implement mediaDevices at all, so we set an
         // empty object first
-        if (navigator.mediaDevices === undefined)
-        {
+        if (navigator.mediaDevices === undefined) {
             navigator.mediaDevices = {};
         }
         // Some browsers partially implement mediaDevices. We can't just assign
         // an object with getUserMedia as it would overwrite existing
         // properties. Here, we will just add the getUserMedia property if it's
         // missing.
-        if (navigator.mediaDevices.getUserMedia === undefined)
-        {
+        if (navigator.mediaDevices.getUserMedia === undefined) {
             navigator.mediaDevices.getUserMedia = promisifiedOldGUM;
         }
 
         // wait until player ui is ready
         this.player().one('ready', this.setupUI.bind(this));
-    },
+    }
 
     /**
      * Setup plugin options.
      */
-    loadOptions: function()
-    {
+    loadOptions() {
         // record settings
         this.recordImage = this.options_.options.image;
         this.recordAudio = this.options_.options.audio;
@@ -490,14 +466,13 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         // animation settings
         this.animationFrameRate = this.options_.options.animationFrameRate;
         this.animationQuality = this.options_.options.animationQuality;
-    },
+    }
 
     /**
      * Player UI is ready.
      * @private
      */
-    setupUI: function()
-    {
+    setupUI() {
         // insert custom controls on left-side of controlbar
         this.player().controlBar.addChild(this.player().cameraButton);
         this.player().controlBar.el().insertBefore(
@@ -508,12 +483,10 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             this.player().controlBar.el().firstChild);
 
         // get rid of unused controls
-        if (this.player().controlBar.remainingTimeDisplay !== undefined)
-        {
+        if (this.player().controlBar.remainingTimeDisplay !== undefined) {
             this.player().controlBar.remainingTimeDisplay.el().style.display = 'none';
         }
-        if (this.player().controlBar.liveDisplay !== undefined)
-        {
+        if (this.player().controlBar.liveDisplay !== undefined) {
             this.player().controlBar.liveDisplay.el().style.display = 'none';
         }
 
@@ -521,13 +494,11 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         this.player().loop(false);
 
         // tweak player UI based on type
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 // reference to videojs-wavesurfer plugin
                 this.surfer = this.player().waveform;
-                if (this.surfer)
-                {
+                if (this.surfer) {
                     // initially hide playhead (fixed in wavesurfer 1.0.25)
                     this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
                     this.playhead.style.display = 'none';
@@ -545,30 +516,25 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
                 // loadedmetadata resets the durationDisplay for the
                 // first time
-                this.player().one('loadedmetadata', function()
-                {
+                this.player().one('loadedmetadata', function() {
                     // display max record time
                     this.setDuration(this.maxLength);
                 }.bind(this));
 
                 // the native controls don't work for this UI so disable
                 // them no matter what
-                if (this.player().usingNativeControls_ === true)
-                {
-                    if (this.player().tech_.el_ !== undefined)
-                    {
+                if (this.player().usingNativeControls_ === true) {
+                    if (this.player().tech_.el_ !== undefined) {
                         this.player().tech_.el_.controls = false;
                     }
                 }
 
-                if (this.player().options_.controls)
-                {
+                if (this.player().options_.controls) {
                     // progress control isn't used by this plugin
                     this.player().controlBar.progressControl.hide();
 
                     // prevent controlbar fadeout
-                    this.player().on('userinactive', function(event)
-                    {
+                    this.player().on('userinactive', function(event) {
                         this.player().userActive(true);
                     });
 
@@ -591,17 +557,16 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // hide play control
         this.player().controlBar.playToggle.hide();
-    },
+    }
 
     /**
      * Indicates whether the plugin is currently recording or not.
      *
      * @return {boolean} Plugin currently recording or not.
      */
-    isRecording: function()
-    {
+    isRecording() {
         return this._recording;
-    },
+    }
 
     /**
      * Indicates whether the plugin is currently processing recorded data
@@ -609,43 +574,36 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      *
      * @return {boolean} Plugin processing or not.
      */
-    isProcessing: function()
-    {
+    isProcessing() {
         return this._processing;
-    },
+    }
 
     /**
      * Indicates whether the plugin is destroyed or not.
      *
      * @return {boolean} Plugin destroyed or not.
      */
-    isDestroyed: function()
-    {
+    isDestroyed() {
         return this.player() && (this.player().children() === null);
-    },
+    }
 
     /**
      * Open the browser's recording device selection dialog.
      */
-    getDevice: function()
-    {
+    getDevice() {
         // define device callbacks once
-        if (this.deviceReadyCallback === undefined)
-        {
+        if (this.deviceReadyCallback === undefined) {
             this.deviceReadyCallback = this.onDeviceReady.bind(this);
         }
-        if (this.deviceErrorCallback === undefined)
-        {
+        if (this.deviceErrorCallback === undefined) {
             this.deviceErrorCallback = this.onDeviceError.bind(this);
         }
-        if (this.engineStopCallback === undefined)
-        {
+        if (this.engineStopCallback === undefined) {
             this.engineStopCallback = this.onRecordComplete.bind(this);
         }
         // ask the browser to give the user access to the media device
         // and get a stream reference in the callback function
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 // setup microphone
                 this.mediaType = {
@@ -726,15 +684,14 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 );
                 break;
         }
-    },
+    }
 
     /**
      * Invoked when the device is ready.
      * @private
      * @param stream: LocalMediaStream instance.
      */
-    onDeviceReady: function(stream)
-    {
+    onDeviceReady(stream) {
         this._deviceActive = true;
 
         // store reference to stream for stopping etc.
@@ -756,24 +713,21 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         this.off(this.player(), 'play', this.onPlayerStart);
 
         // setup recording engine
-        if (this.getRecordType() !== this.IMAGE_ONLY)
-        {
+        if (this.getRecordType() !== this.IMAGE_ONLY) {
             // currently libvorbis.js, recorder.js, opus-recorder and lamejs
             // are only supported in audio-only mode
             if (this.getRecordType() !== this.AUDIO_ONLY &&
                 (this.audioEngine === this.LIBVORBISJS ||
                  this.audioEngine === this.RECORDERJS ||
                  this.audioEngine === this.LAMEJS ||
-                 this.audioEngine === this.OPUSRECORDER))
-            {
+                 this.audioEngine === this.OPUSRECORDER)) {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
             }
 
             // get recorder class
             var EngineClass;
-            switch (this.audioEngine)
-            {
+            switch (this.audioEngine) {
                 case this.RECORDRTC:
                     // RecordRTC.js (default)
                     EngineClass = videojs.RecordRTCEngine;
@@ -803,13 +757,11 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                     // unknown engine
                     throw new Error('Unknown audioEngine: ' + this.audioEngine);
             }
-            try
-            {
+            try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player());
             }
-            catch (err)
-            {
+            catch (err) {
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
             }
@@ -829,8 +781,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 gif: 'image/gif'
             };
             if (this.audioMimeType !== null &&
-                this.audioMimeType !== 'auto')
-            {
+                this.audioMimeType !== 'auto') {
                 this.engine.mimeType.audio = this.audioMimeType;
             }
 
@@ -849,8 +800,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             this.engine.frameRate = this.animationFrameRate;
 
             // timeSlice
-            if (this.recordTimeSlice && this.recordTimeSlice > 0)
-            {
+            if (this.recordTimeSlice && this.recordTimeSlice > 0) {
                 this.engine.timeSlice = this.recordTimeSlice;
                 this.engine.onTimeStamp = this.onTimeStamp.bind(this);
             }
@@ -864,8 +814,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             var uiElements = [this.player().controlBar.currentTimeDisplay,
                               this.player().controlBar.timeDivider,
                               this.player().controlBar.durationDisplay];
-            for (element in uiElements)
-            {
+            for (element in uiElements) {
                 if (uiElements.hasOwnProperty(element))
                 {
                     uiElements[element].el().style.display = 'block';
@@ -875,9 +824,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
             // show record button
             this.player().recordToggle.show();
-        }
-        else
-        {
+        } else {
             // disable record indicator
             this.player().recordIndicator.disable();
 
@@ -891,8 +838,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         }
 
         // setup preview
-        if (this.getRecordType() !== this.AUDIO_ONLY)
-        {
+        if (this.getRecordType() !== this.AUDIO_ONLY) {
             // show live preview
             this.mediaElement = this.player().el().firstChild;
             this.mediaElement.controls = false;
@@ -921,20 +867,17 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 // forward to listeners
                 self.player().trigger('deviceReady');
             });
-        }
-        else
-        {
+        } else {
             // forward to listeners
             this.player().trigger('deviceReady');
         }
-    },
+    }
 
     /**
      * Invoked when an device error occurred.
      * @private
      */
-    onDeviceError: function(code)
-    {
+    onDeviceError(code) {
         this._deviceActive = false;
 
         // store code
@@ -942,23 +885,20 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // forward error to player
         this.player().trigger('deviceError');
-    },
+    }
 
     /**
      * Start recording.
      */
-    start: function()
-    {
-        if (!this.isProcessing())
-        {
+    start() {
+        if (!this.isProcessing()) {
             this._recording = true;
 
             // hide play control
             this.player().controlBar.playToggle.hide();
 
             // setup preview engine
-            switch (this.getRecordType())
-            {
+            switch (this.getRecordType()) {
                 case this.AUDIO_ONLY:
                     // disable playback events
                     this.surfer.setupPlaybackEvents(false);
@@ -992,8 +932,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                     // that can be displayed as soon as recording
                     // is complete
                     var here = this;
-                    this.captureFrame().then(function(result)
-                    {
+                    this.captureFrame().then(function(result) {
                         // start video preview **after** capturing first frame
                         here.startVideoPreview();
                     });
@@ -1001,8 +940,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             }
 
             // start recording
-            switch (this.getRecordType())
-            {
+            switch (this.getRecordType()) {
                 case this.IMAGE_ONLY:
                     // create snapshot
                     this.createSnapshot();
@@ -1016,8 +954,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 case this.ANIMATION:
                     // wait for media stream on video element to actually load
                     var self = this;
-                    this.player().one('loadedmetadata', function()
-                    {
+                    this.player().one('loadedmetadata', function() {
                         // start actually recording process.
                         self.startRecording();
                     });
@@ -1029,14 +966,13 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                     break;
             }
         }
-    },
+    }
 
     /**
      * Start recording.
      * @private
      */
-    startRecording: function()
-    {
+    startRecording() {
         // register starting point
         this.paused = false;
         this.pauseTime = this.pausedTime = 0;
@@ -1047,8 +983,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             this.onCountDown.bind(this), 100);
 
         // cleanup previous recording
-        if (this.engine !== undefined)
-        {
+        if (this.engine !== undefined) {
             this.engine.dispose();
         }
 
@@ -1057,20 +992,17 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // notify UI
         this.player().trigger('startRecord');
-    },
+    }
 
     /**
      * Stop recording.
      */
-    stop: function()
-    {
-        if (!this.isProcessing())
-        {
+    stop() {
+        if (!this.isProcessing()) {
             this._recording = false;
             this._processing = true;
 
-            if (this.getRecordType() !== this.IMAGE_ONLY)
-            {
+            if (this.getRecordType() !== this.IMAGE_ONLY) {
                 // notify UI
                 this.player().trigger('stopRecord');
 
@@ -1078,55 +1010,44 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 this.clearInterval(this.countDown);
 
                 // stop recording stream (result will be available async)
-                if (this.engine)
-                {
+                if (this.engine) {
                     this.engine.stop();
                 }
-            }
-            else
-            {
-                if (this.player().recordedData)
-                {
+            } else {
+                if (this.player().recordedData) {
                     // notify listeners that image data is (already) available
                     this.player().trigger('finishRecord');
                 }
             }
         }
-    },
+    }
 
     /**
      * Stop device(s) and recording if active.
      */
-    stopDevice: function()
-    {
-        if (this.isRecording())
-        {
+    stopDevice() {
+        if (this.isRecording()) {
             // stop stream once recorded data is available,
             // otherwise it'll break recording
             this.player().one('finishRecord', this.stopStream.bind(this));
 
             // stop recording
             this.stop();
-        }
-        else
-        {
+        } else {
             // stop stream now, since there's no recorded data available
             this.stopStream();
         }
-    },
+    }
 
     /**
      * Stop stream and device.
      */
-    stopStream: function()
-    {
+    stopStream() {
         // stop stream and device
-        if (this.stream)
-        {
+        if (this.stream) {
             this._deviceActive = false;
 
-            if (this.getRecordType() === this.AUDIO_ONLY)
-            {
+            if (this.getRecordType() === this.AUDIO_ONLY) {
                 // make the microphone plugin stop it's device
                 this.surfer.microphone.stopDevice();
                 return;
@@ -1139,16 +1060,13 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             var result = this.detectBrowser();
             if ((result.browser === 'chrome' && result.version >= 45) ||
                 (result.browser === 'firefox' && result.version >= 44) ||
-                (result.browser === 'edge'))
-            {
-                switch (this.getRecordType())
-                {
+                (result.browser === 'edge')) {
+                switch (this.getRecordType()) {
                     case this.VIDEO_ONLY:
                     case this.ANIMATION:
                     case this.IMAGE_ONLY:
                     case this.AUDIO_VIDEO:
-                        this.stream.getTracks().forEach(function(stream)
-                        {
+                        this.stream.getTracks().forEach(function(stream) {
                             stream.stop();
                         });
                         break;
@@ -1158,49 +1076,45 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             // fallback for older browsers
             this.stream.stop();
         }
-    },
+    }
 
     /**
      * Pause recording.
      */
-    pause: function()
+    pause()
     {
-        if (!this.paused)
-        {
+        if (!this.paused) {
             this.pauseTime = new Date().getTime();
             this.paused = true;
 
             this.engine.pause();
         }
-    },
+    }
 
     /**
      * Resume recording.
      */
-    resume: function()
+    resume()
     {
-        if (this.paused)
-        {
+        if (this.paused) {
             this.pausedTime += new Date().getTime() - this.pauseTime;
 
             this.engine.resume();
             this.paused = false;
         }
-    },
+    }
 
     /**
      * Invoked when recording completed and the resulting stream is
      * available.
      * @private
      */
-    onRecordComplete: function()
-    {
+    onRecordComplete() {
         // store reference to recorded stream URL
         this.mediaURL = this.engine.mediaURL;
 
         // store reference to recorded stream data
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 // show play control
                 this.player().controlBar.playToggle.show();
@@ -1214,8 +1128,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 // Pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
-                this.player().one('pause', function()
-                {
+                this.player().one('pause', function() {
                     // setup events during playback
                     this.surfer.setupPlaybackEvents(true);
 
@@ -1227,8 +1140,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
                     // restore interaction with controls after waveform
                     // rendering is complete
-                    this.surfer.surfer.once('ready', function()
-                    {
+                    this.surfer.surfer.once('ready', function() {
                         this._processing = false;
                     }.bind(this));
 
@@ -1258,8 +1170,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
-                this.player().one('pause', function()
-                {
+                this.player().one('pause', function() {
                     // video data is ready
                     this._processing = false;
 
@@ -1278,10 +1189,8 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                     // stream in a new extra audio element and the video
                     // stream in the regular video.js player.
                     if (this.getRecordType() === this.AUDIO_VIDEO &&
-                        this.isChrome() && this.player().recordedData.audio)
-                    {
-                        if (this.extraAudio === undefined)
-                        {
+                        this.isChrome() && this.player().recordedData.audio) {
+                        if (this.extraAudio === undefined) {
                             this.extraAudio = this.createEl('audio');
                             this.extraAudio.id = 'extraAudio';
 
@@ -1290,8 +1199,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                             this.player().on('volumechange',
                                 this.onVolumeChange.bind(this));
                         }
-                        if (this.extraAudioURL !== undefined)
-                        {
+                        if (this.extraAudioURL !== undefined) {
                             URL.revokeObjectURL(this.extraAudioURL);
                         }
                         this.extraAudioURL = URL.createObjectURL(
@@ -1358,44 +1266,38 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 this.on(this.player(), 'pause', this.hideAnimation);
                 break;
         }
-    },
+    }
 
     /**
      * Fired when the volume in the temporary audio element
      * for Chrome in audio+video mode is present.
      * @private
      */
-    onVolumeChange: function()
-    {
+    onVolumeChange() {
         var volume = this.player().volume();
-        if (this.player().muted())
-        {
+        if (this.player().muted()) {
             // muted volume
             volume = 0;
         }
 
-        if (this.extraAudio !== undefined)
-        {
+        if (this.extraAudio !== undefined) {
             this.extraAudio.volume = volume;
         }
-    },
+    }
 
     /**
      * Invoked during recording and displays the remaining time.
      * @private
      */
-    onCountDown: function()
-    {
-        if (!this.paused)
-        {
+    onCountDown() {
+        if (!this.paused) {
             var now = new Date().getTime();
             var duration = this.maxLength;
             var currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
 
             this.streamDuration = currentTime;
 
-            if (currentTime >= duration)
-            {
+            if (currentTime >= duration) {
                 // at the end
                 currentTime = duration;
 
@@ -1412,24 +1314,22 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             // notify listeners
             this.player().trigger('progressRecord');
         }
-    },
+    }
 
     /**
      * Get the current time of the recorded stream during playback.
      *
      * Returns 0 if no recording is available (yet).
      */
-    getCurrentTime: function()
-    {
-        var currentTime = isNaN(this.streamCurrentTime) ? 0 : this.streamCurrentTime;
+    getCurrentTime() {
+        let currentTime = isNaN(this.streamCurrentTime) ? 0 : this.streamCurrentTime;
 
-        if (this.getRecordType() === this.AUDIO_ONLY)
-        {
+        if (this.getRecordType() === this.AUDIO_ONLY) {
             currentTime = this.surfer.getCurrentTime();
         }
 
         return currentTime;
-    },
+    }
 
     /**
      * Updates the player's element displaying the current time.
@@ -1439,13 +1339,11 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      *    playhead (in seconds).
      * @param {number} [duration=0] - Duration in seconds.
      */
-    setCurrentTime: function(currentTime, duration)
-    {
+    setCurrentTime(currentTime, duration) {
         currentTime = isNaN(currentTime) ? 0 : currentTime;
         duration = isNaN(duration) ? 0 : duration;
 
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 this.surfer.setCurrentTime(currentTime, duration);
                 break;
@@ -1461,19 +1359,18 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                     ).lastChild.textContent = formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
                 break;
         }
-    },
+    }
 
     /**
      * Get the length of the recorded stream in seconds.
      *
      * Returns 0 if no recording is available (yet).
      */
-    getDuration: function()
-    {
-        var duration = isNaN(this.streamDuration) ? 0 : this.streamDuration;
+    getDuration() {
+        let duration = isNaN(this.streamDuration) ? 0 : this.streamDuration;
 
         return duration;
-    },
+    }
 
     /**
      * Updates the player's element displaying the duration time.
@@ -1481,12 +1378,10 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      * @param {number} [duration=0] - Duration in seconds.
      * @private
      */
-    setDuration: function(duration)
-    {
+    setDuration(duration) {
         duration = isNaN(duration) ? 0 : duration;
 
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 this.surfer.setDuration(duration);
                 break;
@@ -1500,7 +1395,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                     ).lastChild.textContent = formatTime(duration, duration, this.msDisplayMax);
                 break;
         }
-    },
+    }
 
     /**
      * Start loading data.
@@ -1508,7 +1403,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      * @param {(string|blob|file)} url - Either the URL of the media file,
      *     a Blob or a File object.
      */
-    load: function(url) {
+    load(url) {
         switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 // visualize recorded stream
@@ -1523,7 +1418,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 this.mediaElement.src = url;
                 break;
         }
-    },
+    }
 
     /**
      * Show save as dialog in browser so the user can store the recorded media
@@ -1535,19 +1430,18 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      *     For example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
      */
-    saveAs: function(name) {
+    saveAs(name) {
         if (this.engine && name !== undefined) {
             this.engine.saveAs(name);
         }
-    },
+    }
 
     /**
      * Destroy plugin and players and cleanup resources.
      */
-    destroy: function() {
+    destroy() {
         // prevent callbacks if recording is in progress
-        if (this.engine)
-        {
+        if (this.engine) {
             this.engine.dispose();
             this.engine.off('recordComplete', this.engineStopCallback);
         }
@@ -1560,11 +1454,9 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         this.clearInterval(this.countDown);
 
         // dispose player
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
-                if (this.surfer)
-                {
+                if (this.surfer) {
                     // also disposes player
                     this.surfer.destroy();
                 }
@@ -1579,15 +1471,14 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         }
 
         this.resetState();
-    },
+    }
 
     /**
      * Reset the plugin.
      */
-    reset: function() {
+    reset() {
         // prevent callbacks if recording is in progress
-        if (this.engine)
-        {
+        if (this.engine) {
             this.engine.dispose();
             this.engine.off('recordComplete', this.engineStopCallback);
         }
@@ -1611,11 +1502,9 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // reset player
         this.player().reset();
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
-                if (this.surfer && this.surfer.surfer)
-                {
+                if (this.surfer && this.surfer.surfer) {
                     // empty last frame
                     this.surfer.surfer.empty();
                 }
@@ -1640,28 +1529,27 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // loadedmetadata resets the durationDisplay for the
         // first time
-        this.player().one('loadedmetadata', function()
-        {
+        this.player().one('loadedmetadata', function() {
             // display max record time
             this.setDuration(this.maxLength);
         }.bind(this));
-    },
+    }
 
     /**
      * Reset the plugin recorder state.
      * @private
      */
-    resetState: function() {
+    resetState() {
         this._recording = false;
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
-    },
+    }
 
     /**
      * Get recorder type.
      */
-    getRecordType: function() {
+    getRecordType() {
         if (this.isModeEnabled(this.recordImage)) {
             return this.IMAGE_ONLY;
         } else if (this.isModeEnabled(this.recordAnimation)) {
@@ -1676,17 +1564,15 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             this.recordVideo)) {
             return this.VIDEO_ONLY;
         }
-    },
+    }
 
     /**
      * Create and display snapshot image.
      * @private
      */
-    createSnapshot: function()
-    {
+    createSnapshot() {
         var here = this;
-        this.captureFrame().then(function(result)
-        {
+        this.captureFrame().then(function(result) {
             // turn the canvas data into base-64 data with a PNG header
             here.player().recordedData = result.toDataURL('image/png');
 
@@ -1699,14 +1585,13 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             // stop recording
             here.stop();
         });
-    },
+    }
 
     /**
      * Reset UI for retrying a snapshot image.
      * @private
      */
-    retrySnapshot: function()
-    {
+    retrySnapshot() {
         this._processing = false;
 
         // retry: hide the snapshot
@@ -1714,14 +1599,13 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // show preview video
         this.player().el().firstChild.style.display = 'block';
-    },
+    }
 
     /**
      * Capture frame from camera and copy data to canvas.
      * @private
      */
-    captureFrame: function()
-    {
+    captureFrame() {
         var here = this;
         var detected = this.detectBrowser();
         var recordCanvas = this.player().recordCanvas.el().firstChild;
@@ -1731,8 +1615,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         recordCanvas.width = this.player().width();
         recordCanvas.height = this.player().height();
 
-        return new Promise(function(resolve, reject)
-        {
+        return new Promise(function(resolve, reject) {
             // MediaCapture is only supported on:
             // - Chrome 60 and newer (see
             // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
@@ -1740,19 +1623,15 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             // importing ImageCapture can fail when enabling chrome
             // flag is still required. if so; ignore and continue
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
-               (typeof ImageCapture === typeof Function))
-            {
-                try
-                {
+               (typeof ImageCapture === typeof Function)) {
+                try {
                     var track = here.stream.getVideoTracks()[0];
                     var imageCapture = new ImageCapture(track);
 
-                    imageCapture.takePhoto().then(function(blob)
-                    {
+                    imageCapture.takePhoto().then(function(blob) {
                         return createImageBitmap(blob);
                     }
-                    ).then(function(imageBitmap)
-                    {
+                    ).then(function(imageBitmap) {
                         // get a frame and copy it onto the canvas
                         here.drawCanvas(recordCanvas, imageBitmap);
 
@@ -1760,9 +1639,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                         resolve(recordCanvas);
                     });
                     return;
-                }
-                catch(err)
-                {}
+                } catch(err) {}
             }
 
             // get a frame and copy it onto the canvas
@@ -1771,27 +1648,25 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             // notify others
             resolve(recordCanvas);
       });
-    },
+    }
 
     /**
      * Draw image frame on canvas element.
      * @private
      */
-    drawCanvas: function(canvas, element)
-    {
+    drawCanvas(canvas, element) {
         canvas.getContext('2d').drawImage(
             element, 0, 0,
             canvas.width,
             canvas.height
         );
-    },
+    }
 
     /**
      * Start preview of video stream.
      * @private
      */
-    startVideoPreview: function()
-    {
+    startVideoPreview() {
         // disable playback events
         this.off('timeupdate');
         this.off('durationchange');
@@ -1805,21 +1680,19 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         this.displayVolumeControl(false);
 
         // start or resume live preview
-        if (this.streamURL !== undefined)
-        {
+        if (this.streamURL !== undefined) {
             URL.revokeObjectURL(this.streamURL);
         }
         this.streamURL = URL.createObjectURL(this.stream);
         this.load(this.streamURL);
         this.mediaElement.play();
-    },
+    }
 
     /**
      * Show animated GIF.
      * @private
      */
-    showAnimation: function()
-    {
+    showAnimation() {
         var animationDisplay = this.player().animationDisplay.el().firstChild;
 
         // set the image size to the dimensions of the recorded animation
@@ -1832,30 +1705,27 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
         // show the animation
         animationDisplay.src = this.mediaURL;
         this.player().animationDisplay.show();
-    },
+    }
 
     /**
      * Hide animated GIF.
      * @private
      */
-    hideAnimation: function()
-    {
+    hideAnimation() {
         // show the first frame
         this.player().recordCanvas.show();
 
         // hide the animation
         this.player().animationDisplay.hide();
-    },
+    }
 
     /**
      * Player started playback.
      * @private
      */
-    onPlayerStart: function()
-    {
+    onPlayerStart() {
         // workaround Firefox issue
-        if (this.player().seeking())
-        {
+        if (this.player().seeking()) {
             // There seems to be a Firefox issue
             // with playing back blobs. The ugly,
             // but functional workaround, is to
@@ -1867,50 +1737,44 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
         // workaround chrome issue
         if (this.getRecordType() === this.AUDIO_VIDEO &&
-            this.isChrome() && !this._recording && this.extraAudio !== undefined)
-        {
+            this.isChrome() && !this._recording && this.extraAudio !== undefined) {
             // sync extra audio playhead position with video.js player
             this.extraAudio.currentTime = this.player().currentTime();
             this.extraAudio.play();
         }
-    },
+    }
 
     /**
      * Player is paused.
      * @private
      */
-    onPlayerPause: function()
-    {
+    onPlayerPause() {
         // pause extra audio when video.js player pauses
-        if (this.extraAudio !== undefined)
-        {
+        if (this.extraAudio !== undefined) {
             this.extraAudio.pause();
         }
-    },
+    }
 
     /**
      * Update time during playback.
      * @private
      */
-    playbackTimeUpdate: function()
-    {
+    playbackTimeUpdate() {
         this.setCurrentTime(this.player().currentTime(),
             this.streamDuration);
-    },
+    }
 
     /**
      * Received new timestamp (when timeSlice option is enabled).
      * @private
      */
-    onTimeStamp: function(current, all)
-    {
+    onTimeStamp(current, all) {
         this.player().currentTimestamp = current;
         this.player().allTimestamps = all;
 
         // get blob (only for MediaStreamRecorder)
         var internal;
-        switch (this.getRecordType())
-        {
+        switch (this.getRecordType()) {
             case this.AUDIO_ONLY:
                 internal = this.engine.engine.audioRecorder;
                 break;
@@ -1924,14 +1788,13 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
                 break;
         }
         internal = internal.getInternalRecorder();
-        if ((internal instanceof MediaStreamRecorder) === true)
-        {
+        if ((internal instanceof MediaStreamRecorder) === true) {
             this.player().recordedData = internal.getArrayOfBlobs();
         }
 
         // notify others
         this.player().trigger('timestamp');
-    },
+    }
 
     /**
      * Collects information about the media input and output devices
@@ -1939,19 +1802,16 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      *
      * Returns an array.
      */
-    enumerateDevices: function()
-    {
+    enumerateDevices() {
         var self = this;
-        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices)
-        {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
             self.player().enumerateErrorCode = 'enumerateDevices() not supported.';
             self.player().trigger('enumerateError');
             return;
         }
 
         // List cameras and microphones.
-        navigator.mediaDevices.enumerateDevices(this).then(function(devices)
-        {
+        navigator.mediaDevices.enumerateDevices(this).then(function(devices) {
             self.devices = [];
             devices.forEach(function(device)
             {
@@ -1960,12 +1820,11 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
 
             // notify listeners
             self.player().trigger('enumerateReady');
-        }).catch(function(err)
-        {
+        }).catch(function(err) {
             self.player().enumerateErrorCode = err;
             self.player().trigger('enumerateError');
         });
-    },
+    }
 
     /**
      * Show or hide the volume menu.
@@ -1973,7 +1832,7 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
      * @private
      * @param {boolean} display - Hide/show volume control.
      */
-    displayVolumeControl: function(display) {
+    displayVolumeControl(display) {
         if (this.player().controlBar.volumeMenuButton !== undefined) {
             if (display === true) {
                 display = 'block';
@@ -1982,16 +1841,15 @@ videojs.Recorder = videojs.extend(videojs.RecordBase,
             }
             this.player().controlBar.volumeMenuButton.el().style.display = display;
         }
-    },
+    }
 
     /**
      * Return boolean indicating whether mode is enabled or not.
     */
-    isModeEnabled: function(mode) {
+    isModeEnabled(mode) {
         return mode === Object(mode) || mode === true;
     }
-
-});
+}
 
 /* XXX: old
 var RecordToggle, CameraButton, DeviceButton, RecordIndicator, RecordCanvas,
