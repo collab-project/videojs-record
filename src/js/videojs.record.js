@@ -5,7 +5,6 @@
  * MIT license: https://github.com/collab-project/videojs-record/blob/master/LICENSE
  */
 
-import log from './log';
 import formatTime from './format-time';
 import pluginDefaultOptions from './defaults';
 import AnimationDisplay from './animation-display';
@@ -39,10 +38,6 @@ VjsPlayer.prototype.play = function play() {
     }
     return retval;
 };*/
-
-
-
-
 
 /**
  * Record audio/video/images using the Video.js player.
@@ -110,7 +105,6 @@ class Recorder extends Plugin {
     loadOptions() {
         let recordOptions = videojs.mergeOptions(pluginDefaultOptions,
             this.player.options_.plugins.record);
-        console.log('loadOptions', recordOptions);
 
         // record settings
         this.recordImage = recordOptions.image;
@@ -139,7 +133,6 @@ class Recorder extends Plugin {
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
-        console.log('recordOptions', recordOptions);
     }
 
     /**
@@ -172,8 +165,8 @@ class Recorder extends Plugin {
             case base.AUDIO_ONLY:
                 // reference to videojs-wavesurfer plugin
                 this.surfer = this.player.waveform;
-                // XXX: old
                 /*
+                // XXX: old
                 if (this.surfer) {
                     // initially hide playhead (fixed in wavesurfer 1.0.25)
                     console.log(this.surfer);
@@ -568,7 +561,6 @@ class Recorder extends Plugin {
      * Start recording.
      */
     start() {
-        console.log('start recording');
         if (!this.isProcessing()) {
             this._recording = true;
 
@@ -587,7 +579,9 @@ class Recorder extends Plugin {
                     // start/resume live audio visualization
                     this.surfer.surfer.microphone.paused = false;
                     this.surfer.liveMode = true;
-                    this.player.play();
+                    // XXX: old
+                    //this.player.play();
+                    this.surfer.surfer.microphone.play();
                     break;
 
                 case base.VIDEO_ONLY:
@@ -801,31 +795,36 @@ class Recorder extends Plugin {
                 // notify listeners that data is available
                 this.player.trigger('finishRecord');
 
-                // Pausing the player so we can visualize the recorded data
+                // pause player so user can start playback
+                this.surfer.pause();
+
+                // XXX: old - Pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
-                this.player.one('pause', function() {
-                    // setup events during playback
-                    this.surfer.setupPlaybackEvents(true);
+                //this.player.one('pause', function() {
 
-                    // display loader
-                    this.player.loadingSpinner.show();
+                // setup events for playback
+                this.surfer.setupPlaybackEvents(true);
 
-                    // show playhead
-                    this.playhead.style.display = 'block';
+                // display loader
+                this.player.loadingSpinner.show();
 
-                    // restore interaction with controls after waveform
-                    // rendering is complete
-                    this.surfer.surfer.once('ready', function() {
-                        this._processing = false;
-                    }.bind(this));
+                // XXX: old - show playhead
+                // this.playhead.style.display = 'block';
 
-                    // visualize recorded stream
-                    this.load(this.player.recordedData);
-                }.bind(this));
+                // XXX: old - restore interaction with controls after waveform
+                // rendering is complete
+                /*this.surfer.surfer.on('ready', function() {
+                    //console.log('restore interaction');
+                    this._processing = false;
+                }.bind(this));*/
 
-                // pause player so user can start playback
-                this.player.pause();
+                // visualize recorded stream
+                this.load(this.player.recordedData);
+                //}.bind(this));
+
+                // XXX: old - pause player so user can start playback
+                //this.surfer.pause();
                 break;
 
             case base.VIDEO_ONLY:
