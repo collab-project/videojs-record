@@ -1471,8 +1471,8 @@ class Recorder extends Plugin {
      */
     enumerateDevices() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-            this.player().enumerateErrorCode = 'enumerateDevices() not supported.';
-            this.player().trigger('enumerateError');
+            this.player.enumerateErrorCode = 'enumerateDevices() not supported.';
+            this.player.trigger('enumerateError');
             return;
         }
 
@@ -1485,10 +1485,10 @@ class Recorder extends Plugin {
             });
 
             // notify listeners
-            self.player().trigger('enumerateReady');
+            self.player.trigger('enumerateReady');
         }).catch(function(err) {
-            self.player().enumerateErrorCode = err;
-            self.player().trigger('enumerateError');
+            self.player.enumerateErrorCode = err;
+            self.player.trigger('enumerateError');
         });
     }
 
@@ -1516,11 +1516,6 @@ class Recorder extends Plugin {
         return mode === Object(mode) || mode === true;
     }
 }
-
-/* XXX: old
-var RecordToggle, CameraButton, DeviceButton, RecordIndicator, RecordCanvas,
-    AnimationDisplay;
-*/
 
 /**
  * Create a custom button.
