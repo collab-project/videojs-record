@@ -812,12 +812,11 @@ class Recorder extends Plugin {
                 // XXX: old - show playhead
                 // this.playhead.style.display = 'block';
 
-                // XXX: old - restore interaction with controls after waveform
+                // restore interaction with controls after waveform
                 // rendering is complete
-                /*this.surfer.surfer.on('ready', function() {
-                    //console.log('restore interaction');
+                this.surfer.surfer.once('ready', function() {
                     this._processing = false;
-                }.bind(this));*/
+                }.bind(this));
 
                 // visualize recorded stream
                 this.load(this.player.recordedData);
