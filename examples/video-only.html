@@ -31,7 +31,10 @@ var player = videojs("myVideo",
     width: 320,
     height: 240,
     controlBar: {
-        volumeMenuButton: false
+        // for video.js 5
+        volumeMenuButton: false,
+        // for video.js 6
+        volumePanel: false
     },
     plugins: {
         record: {
