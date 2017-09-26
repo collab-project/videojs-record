@@ -5,8 +5,8 @@
  * MIT license: https://github.com/collab-project/videojs-record/blob/master/LICENSE
  */
 
-import AnimationDisplay from './animation-display';
-import RecordCanvas from './record-canvas';
+import AnimationDisplay from './controls/animation-display';
+import RecordCanvas from './controls/record-canvas';
 import DeviceButton from './controls/device-button';
 import CameraButton from './controls/camera-button';
 import RecordToggle from './controls/record-toggle';
