@@ -6,7 +6,7 @@ import * as base from './record-base';
 import { isChrome } from '../utils/detect-browser';
 
 /**
- * Engine for the RecordRTC library.
+ * Engine used with the MRecordRTC class in the RecordRTC library.
  *
  * @private
  * @class
