@@ -5,8 +5,6 @@
  * MIT license: https://github.com/collab-project/videojs-record/blob/master/LICENSE
  */
 
-import formatTime from './format-time';
-import pluginDefaultOptions from './defaults';
 import AnimationDisplay from './animation-display';
 import RecordCanvas from './record-canvas';
 import DeviceButton from './controls/device-button';
@@ -15,6 +13,9 @@ import RecordToggle from './controls/record-toggle';
 import RecordIndicator from './controls/record-indicator';
 import * as base from './engine/record-base';
 import RecordRTCEngine from './engine/record-rtc';
+import pluginDefaultOptions from './defaults';
+import formatTime from './utils/format-time';
+import { detectBrowser, isChrome } from './utils/detect-browser';
 
 import videojs from 'video.js';
 
@@ -488,15 +489,15 @@ class Recorder extends Plugin {
             this.player.recordToggle.show();
         } else {
             // disable record indicator
-            this.player().recordIndicator.disable();
+            this.player.recordIndicator.disable();
 
             // setup UI for retrying snapshot (e.g. when stopDevice was
             // used)
             this.retrySnapshot();
 
             // reset and show camera button
-            this.player().cameraButton.onStop();
-            this.player().cameraButton.show();
+            this.player.cameraButton.onStop();
+            this.player.cameraButton.show();
         }
 
         // setup preview
@@ -597,11 +598,10 @@ class Recorder extends Plugin {
                     // for animations, capture the first frame
                     // that can be displayed as soon as recording
                     // is complete
-                    var here = this;
                     this.captureFrame().then(function(result) {
                         // start video preview **after** capturing first frame
-                        here.startVideoPreview();
-                    });
+                        this.startVideoPreview();
+                    }.bind(this));
                     break;
             }
 
@@ -724,7 +724,7 @@ class Recorder extends Plugin {
             // - Firefox 44 (https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/,
             //   https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
             //   https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
-            var result = this.detectBrowser();
+            var result = detectBrowser();
             if ((result.browser === 'chrome' && result.version >= 45) ||
                 (result.browser === 'firefox' && result.version >= 44) ||
                 (result.browser === 'edge')) {
@@ -857,7 +857,7 @@ class Recorder extends Plugin {
                     // stream in a new extra audio element and the video
                     // stream in the regular video.js player.
                     if (this.getRecordType() === base.AUDIO_VIDEO &&
-                        this.isChrome() && this.player.recordedData.audio) {
+                        isChrome() && this.player.recordedData.audio) {
                         if (this.extraAudio === undefined) {
                             this.extraAudio = this.createEl('audio');
                             this.extraAudio.id = 'extraAudio';
@@ -1239,20 +1239,19 @@ class Recorder extends Plugin {
      * @private
      */
     createSnapshot() {
-        var here = this;
         this.captureFrame().then(function(result) {
             // turn the canvas data into base-64 data with a PNG header
-            here.player().recordedData = result.toDataURL('image/png');
+            this.player.recordedData = result.toDataURL('image/png');
 
             // hide preview video
-            here.mediaElement.style.display = 'none';
+            this.mediaElement.style.display = 'none';
 
             // show the snapshot
-            here.player().recordCanvas.show();
+            this.player.recordCanvas.show();
 
             // stop recording
-            here.stop();
-        });
+            this.stop();
+        }.bind(this));
     }
 
     /**
@@ -1263,10 +1262,10 @@ class Recorder extends Plugin {
         this._processing = false;
 
         // retry: hide the snapshot
-        this.player().recordCanvas.hide();
+        this.player.recordCanvas.hide();
 
         // show preview video
-        this.player().el().firstChild.style.display = 'block';
+        this.player.el().firstChild.style.display = 'block';
     }
 
     /**
@@ -1275,13 +1274,13 @@ class Recorder extends Plugin {
      */
     captureFrame() {
         var here = this;
-        var detected = this.detectBrowser();
-        var recordCanvas = this.player().recordCanvas.el().firstChild;
+        var detected = detectBrowser();
+        var recordCanvas = this.player.recordCanvas.el().firstChild;
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
-        recordCanvas.width = this.player().width();
-        recordCanvas.height = this.player().height();
+        recordCanvas.width = this.player.width();
+        recordCanvas.height = this.player.height();
 
         return new Promise(function(resolve, reject) {
             // MediaCapture is only supported on:
@@ -1405,7 +1404,7 @@ class Recorder extends Plugin {
 
         // workaround chrome issue
         if (this.getRecordType() === base.AUDIO_VIDEO &&
-            this.isChrome() && !this._recording && this.extraAudio !== undefined) {
+            isChrome() && !this._recording && this.extraAudio !== undefined) {
             // sync extra audio playhead position with video.js player
             this.extraAudio.currentTime = this.player.currentTime();
             this.extraAudio.play();
