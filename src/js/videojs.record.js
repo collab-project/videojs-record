@@ -19,25 +19,21 @@ import RecordRTCEngine from './engine/record-rtc';
 import videojs from 'video.js';
 
 const Plugin = videojs.getPlugin('plugin');
+const Player = videojs.getComponent('Player');
 const Component = videojs.getComponent('Component');
 
-/*
- XXX: old
-var VjsComponent = videojs.getComponent('Component');
-var VjsButton = videojs.getComponent('Button');
-var VjsPlayer = videojs.getComponent('Player');
-*/
+const AUTO = 'auto';
 
-// monkey-patch play for video.js 6.0 and newer (#149)
-/*
-VjsPlayer.prototype.play = function play() {
+
+// monkey-patch play (#152)
+Player.prototype.play = function play() {
     var retval = this.techGet_('play');
     // silence errors (unhandled promise from play)
     if (retval !== undefined && typeof retval.then === 'function') {
         retval.then(null, function (e){});
     }
     return retval;
-};*/
+};
 
 /**
  * Record audio/video/images using the Video.js player.
@@ -157,7 +153,7 @@ class Recorder extends Plugin {
             this.player.controlBar.liveDisplay.el().style.display = 'none';
         }
 
-        // loop feature is not used in this plugin
+        // loop feature is never used in this plugin
         this.player.loop(false);
 
         // tweak player UI based on type
@@ -169,11 +165,9 @@ class Recorder extends Plugin {
                 // XXX: old
                 if (this.surfer) {
                     // initially hide playhead (fixed in wavesurfer 1.0.25)
-                    console.log(this.surfer);
                     this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
                     this.playhead.style.display = 'none';
-                }
-                */
+                }*/
                 break;
 
             case base.IMAGE_ONLY:
@@ -181,22 +175,20 @@ class Recorder extends Plugin {
             case base.AUDIO_VIDEO:
             case base.ANIMATION:
                 // customize controls
-                // XXX: below are customizations copied from videojs.wavesurfer that
-                //      tweak the video.js UI...
                 this.player.bigPlayButton.hide();
 
-                // loadedmetadata resets the durationDisplay for the
-                // first time
+                // XXX: old - loadedmetadata resets the durationDisplay for the
+                /*/ first time
                 this.player.one('loadedmetadata', function() {
                     // display max record time
                     this.setDuration(this.maxLength);
-                }.bind(this));
+                }.bind(this));*/
 
                 // the native controls don't work for this UI so disable
                 // them no matter what
                 if (this.player.usingNativeControls_ === true) {
-                    if (this.player().tech_.el_ !== undefined) {
-                        this.player().tech_.el_.controls = false;
+                    if (this.player.tech_.el_ !== undefined) {
+                        this.player.tech_.el_.controls = false;
                     }
                 }
 
@@ -206,11 +198,11 @@ class Recorder extends Plugin {
 
                     // prevent controlbar fadeout
                     this.player.on('userinactive', function(event) {
-                        this.player().userActive(true);
-                    });
+                        this.player.userActive(true);
+                    }.bind(this));
 
                     // videojs automatically hides the controls when no valid 'source'
-                    // element is included in the 'audio' tag. Don't. Ever again.
+                    // element is included in the video or audio tag. Don't. Ever again.
                     this.player.controlBar.show();
                     this.player.controlBar.el().style.display = 'flex';
                 }
@@ -278,7 +270,7 @@ class Recorder extends Plugin {
             case base.AUDIO_ONLY:
                 // setup microphone
                 this.mediaType = {
-                    audio: (this.audioRecorderType === 'auto') ? true : this.audioRecorderType,
+                    audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
                     video: false
                 };
                 // remove existing microphone listeners
@@ -309,7 +301,7 @@ class Recorder extends Plugin {
                 // setup camera
                 this.mediaType = {
                     audio: false,
-                    video: (this.videoRecorderType === 'auto') ? true : this.videoRecorderType
+                    video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
                 };
                 navigator.mediaDevices.getUserMedia({
                     audio: false,
@@ -324,8 +316,8 @@ class Recorder extends Plugin {
             case base.AUDIO_VIDEO:
                 // setup camera and microphone
                 this.mediaType = {
-                    audio: (this.audioRecorderType === 'auto') ? true : this.audioRecorderType,
-                    video: (this.videoRecorderType === 'auto') ? true : this.videoRecorderType
+                    audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
+                    video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
                 };
                 navigator.mediaDevices.getUserMedia({
                     audio: this.recordAudio,
@@ -452,7 +444,7 @@ class Recorder extends Plugin {
                 gif: 'image/gif'
             };
             if (this.audioMimeType !== null &&
-                this.audioMimeType !== 'auto') {
+                this.audioMimeType !== AUTO) {
                 this.engine.mimeType.audio = this.audioMimeType;
             }
 
@@ -510,7 +502,7 @@ class Recorder extends Plugin {
         // setup preview
         if (this.getRecordType() !== base.AUDIO_ONLY) {
             // show live preview
-            this.mediaElement = this.player().el().firstChild;
+            this.mediaElement = this.player.el().firstChild;
             this.mediaElement.controls = false;
 
             // mute incoming audio for feedback loops
@@ -526,16 +518,18 @@ class Recorder extends Plugin {
             }
             this.streamURL = URL.createObjectURL(this.stream);
 
-            // start stream
+            // load stream
             this.load(this.streamURL);
 
             // stream loading is async, so we wait until it's ready to play the stream.
-            var self = this;
-            this.player().one('loadedmetadata', function()
+            let self = this;
+            this.player.one('loadedmetadata', function()
             {
+                // start stream
                 self.mediaElement.play();
+
                 // forward to listeners
-                self.player().trigger('deviceReady');
+                self.player.trigger('deviceReady');
             });
         } else {
             // forward to listeners
@@ -567,7 +561,7 @@ class Recorder extends Plugin {
             // hide play control
             this.player.controlBar.playToggle.hide();
 
-            // setup preview engine
+            // start preview
             switch (this.getRecordType()) {
                 case base.AUDIO_ONLY:
                     // disable playback events
@@ -579,13 +573,14 @@ class Recorder extends Plugin {
                     // start/resume live audio visualization
                     this.surfer.surfer.microphone.paused = false;
                     this.surfer.liveMode = true;
+                    this.surfer.surfer.microphone.play();
                     // XXX: old
                     //this.player.play();
-                    this.surfer.surfer.microphone.play();
                     break;
 
                 case base.VIDEO_ONLY:
                 case base.AUDIO_VIDEO:
+                    // preview video stream in video element
                     this.startVideoPreview();
                     break;
 
@@ -624,7 +619,7 @@ class Recorder extends Plugin {
                 case base.AUDIO_VIDEO:
                 case base.ANIMATION:
                     // wait for media stream on video element to actually load
-                    var self = this;
+                    let self = this;
                     this.player.one('loadedmetadata', function() {
                         // start actually recording process.
                         self.startRecording();
@@ -798,11 +793,10 @@ class Recorder extends Plugin {
                 // pause player so user can start playback
                 this.surfer.pause();
 
-                // XXX: old - Pausing the player so we can visualize the recorded data
+                // Pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
                 //this.player.one('pause', function() {
-
                 // setup events for playback
                 this.surfer.setupPlaybackEvents(true);
 
@@ -820,42 +814,42 @@ class Recorder extends Plugin {
 
                 // visualize recorded stream
                 this.load(this.player.recordedData);
-                //}.bind(this));
 
+                //}.bind(this));
                 // XXX: old - pause player so user can start playback
-                //this.surfer.pause();
+                //this.player.pause();
                 break;
 
             case base.VIDEO_ONLY:
             case base.AUDIO_VIDEO:
                 // show play control
-                this.player().controlBar.playToggle.show();
+                this.player.controlBar.playToggle.show();
 
                 // store recorded data (video-only or firefox audio+video)
-                this.player().recordedData = this.engine.recordedData;
+                this.player.recordedData = this.engine.recordedData;
 
                 // notify listeners that data is available
-                this.player().trigger('finishRecord');
+                this.player.trigger('finishRecord');
 
                 // remove previous listeners
-                this.off(this.player(), 'pause', this.onPlayerPause);
-                this.off(this.player(), 'play', this.onPlayerStart);
+                this.off(this.player, 'pause', this.onPlayerPause);
+                this.off(this.player, 'play', this.onPlayerStart);
 
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
-                this.player().one('pause', function() {
+                this.player.one('pause', function() {
                     // video data is ready
                     this._processing = false;
 
                     // hide loader
-                    this.player().loadingSpinner.hide();
+                    this.player.loadingSpinner.hide();
 
                     // show stream total duration
                     this.setDuration(this.streamDuration);
 
                     // update time during playback
-                    this.on(this.player(), 'timeupdate',
+                    this.on(this.player, 'timeupdate',
                         this.playbackTimeUpdate);
 
                     // because there are 2 separate data streams for audio
@@ -863,14 +857,14 @@ class Recorder extends Plugin {
                     // stream in a new extra audio element and the video
                     // stream in the regular video.js player.
                     if (this.getRecordType() === base.AUDIO_VIDEO &&
-                        this.isChrome() && this.player().recordedData.audio) {
+                        this.isChrome() && this.player.recordedData.audio) {
                         if (this.extraAudio === undefined) {
                             this.extraAudio = this.createEl('audio');
                             this.extraAudio.id = 'extraAudio';
 
                             // handle volume changes in extra audio
                             // for chrome
-                            this.player().on('volumechange',
+                            this.player.on('volumechange',
                                 this.onVolumeChange.bind(this));
                         }
                         if (this.extraAudioURL !== undefined) {
@@ -881,12 +875,12 @@ class Recorder extends Plugin {
                         this.extraAudio.src = this.extraAudioURL;
 
                         // pause extra audio when player pauses
-                        this.on(this.player(), 'pause',
+                        this.on(this.player, 'pause',
                             this.onPlayerPause);
                     }
 
                     // workaround some browser issues when player starts
-                    this.on(this.player(), 'play', this.onPlayerStart);
+                    this.on(this.player, 'play', this.onPlayerStart);
 
                     // unmute local audio during playback
                     if (this.getRecordType() === base.AUDIO_VIDEO)
@@ -902,7 +896,7 @@ class Recorder extends Plugin {
                 }.bind(this));
 
                 // pause player so user can start playback
-                this.player().pause();
+                this.player.pause();
                 break;
 
             case base.ANIMATION:
@@ -1140,7 +1134,7 @@ class Recorder extends Plugin {
             case base.VIDEO_ONLY:
             case base.AUDIO_VIDEO:
             case base.ANIMATION:
-                this.player().dispose();
+                this.player.dispose();
                 break;
         }
 
@@ -1193,17 +1187,17 @@ class Recorder extends Plugin {
         }
 
         // hide play control
-        this.player().controlBar.playToggle.hide();
+        this.player.controlBar.playToggle.hide();
 
         // show device selection button
-        this.player().deviceButton.show();
+        this.player.deviceButton.show();
 
         // hide record button
-        this.player().recordToggle.hide();
+        this.player.recordToggle.hide();
 
         // loadedmetadata resets the durationDisplay for the
         // first time
-        this.player().one('loadedmetadata', function() {
+        this.player.one('loadedmetadata', function() {
             // display max record time
             this.setDuration(this.maxLength);
         }.bind(this));
@@ -1399,21 +1393,21 @@ class Recorder extends Plugin {
      */
     onPlayerStart() {
         // workaround Firefox issue
-        if (this.player().seeking()) {
+        if (this.player.seeking()) {
             // There seems to be a Firefox issue
             // with playing back blobs. The ugly,
             // but functional workaround, is to
             // simply reset the source. See
             // https://bugzilla.mozilla.org/show_bug.cgi?id=969290
             this.load(this.mediaURL);
-            this.player().play();
+            this.player.play();
         }
 
         // workaround chrome issue
         if (this.getRecordType() === base.AUDIO_VIDEO &&
             this.isChrome() && !this._recording && this.extraAudio !== undefined) {
             // sync extra audio playhead position with video.js player
-            this.extraAudio.currentTime = this.player().currentTime();
+            this.extraAudio.currentTime = this.player.currentTime();
             this.extraAudio.play();
         }
     }
@@ -1434,7 +1428,7 @@ class Recorder extends Plugin {
      * @private
      */
     playbackTimeUpdate() {
-        this.setCurrentTime(this.player().currentTime(),
+        this.setCurrentTime(this.player.currentTime(),
             this.streamDuration);
     }
 
@@ -1477,14 +1471,14 @@ class Recorder extends Plugin {
      * Returns an array.
      */
     enumerateDevices() {
-        var self = this;
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-            self.player().enumerateErrorCode = 'enumerateDevices() not supported.';
-            self.player().trigger('enumerateError');
+            this.player().enumerateErrorCode = 'enumerateDevices() not supported.';
+            this.player().trigger('enumerateError');
             return;
         }
 
         // List cameras and microphones.
+        let self = this;
         navigator.mediaDevices.enumerateDevices(this).then(function(devices) {
             self.devices = [];
             devices.forEach(function(device) {
@@ -1506,13 +1500,13 @@ class Recorder extends Plugin {
      * @param {boolean} display - Hide/show volume control.
      */
     displayVolumeControl(display) {
-        if (this.player().controlBar.volumeMenuButton !== undefined) {
+        if (this.player.controlBar.volumePanel !== undefined) {
             if (display === true) {
                 display = 'block';
             } else {
                 display = 'none';
             }
-            this.player().controlBar.volumeMenuButton.el().style.display = display;
+            this.player.controlBar.volumePanel.el().style.display = display;
         }
     }
 
@@ -1574,7 +1568,6 @@ const createPlugin = function() {
  */
 const recordPlugin = function(options) {
     let settings = videojs.mergeOptions(pluginDefaultOptions, options);
-    console.log('settings', settings);
     let player = this;
 
     // create new plugin instance
