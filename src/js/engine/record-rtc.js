@@ -3,6 +3,7 @@
  */
 
 import * as base from './record-base';
+import { isChrome } from '../utils/detect-browser';
 
 /**
  * Engine for the RecordRTC library.
@@ -151,7 +152,7 @@ class RecordRTCEngine extends base.RecordBase {
 
                         // on the chrome browser two blobs are created
                         // containing the separate audio/video streams.
-                        if (recordType === base.AUDIO_VIDEO && this.isChrome()) {
+                        if (recordType === base.AUDIO_VIDEO && isChrome()) {
                             // store both audio and video
                             this.recordedData = recording;
 
