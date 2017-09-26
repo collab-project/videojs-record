@@ -30,8 +30,11 @@ var player = videojs("myImage",
     width: 320,
     height: 240,
     controlBar: {
-        volumeMenuButton: false,
         fullscreenToggle: false
+        // for video.js 5
+        volumeMenuButton: false,
+        // for video.js 6
+        volumePanel: false
     },
     plugins: {
         record: {
