@@ -474,7 +474,7 @@ class Recorder extends Plugin {
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
-            var element;
+            let element;
             var uiElements = [this.player.controlBar.currentTimeDisplay,
                               this.player.controlBar.timeDivider,
                               this.player.controlBar.durationDisplay];
@@ -901,19 +901,19 @@ class Recorder extends Plugin {
 
             case base.ANIMATION:
                 // show play control
-                this.player().controlBar.playToggle.show();
+                this.player.controlBar.playToggle.show();
 
                 // store recorded data
-                this.player().recordedData = this.engine.recordedData;
+                this.player.recordedData = this.engine.recordedData;
 
                 // notify listeners that data is available
-                this.player().trigger('finishRecord');
+                this.player.trigger('finishRecord');
 
                 // animation data is ready
                 this._processing = false;
 
                 // hide loader
-                this.player().loadingSpinner.hide();
+                this.player.loadingSpinner.hide();
 
                 // show animation total duration
                 this.setDuration(this.streamDuration);
@@ -922,16 +922,16 @@ class Recorder extends Plugin {
                 this.mediaElement.style.display = 'none';
 
                 // show the first frame
-                this.player().recordCanvas.show();
+                this.player.recordCanvas.show();
 
                 // pause player so user can start playback
-                this.player().pause();
+                this.player.pause();
 
                 // show animation on play
-                this.on(this.player(), 'play', this.showAnimation);
+                this.on(this.player, 'play', this.showAnimation);
 
                 // hide animation on pause
-                this.on(this.player(), 'pause', this.hideAnimation);
+                this.on(this.player, 'pause', this.hideAnimation);
                 break;
         }
     }
@@ -1360,18 +1360,18 @@ class Recorder extends Plugin {
      * @private
      */
     showAnimation() {
-        var animationDisplay = this.player().animationDisplay.el().firstChild;
+        var animationDisplay = this.player.animationDisplay.el().firstChild;
 
         // set the image size to the dimensions of the recorded animation
-        animationDisplay.width = this.player().width();
-        animationDisplay.height = this.player().height();
+        animationDisplay.width = this.player.width();
+        animationDisplay.height = this.player.height();
 
         // hide the first frame
-        this.player().recordCanvas.hide();
+        this.player.recordCanvas.hide();
 
         // show the animation
         animationDisplay.src = this.mediaURL;
-        this.player().animationDisplay.show();
+        this.player.animationDisplay.show();
     }
 
     /**
@@ -1380,10 +1380,10 @@ class Recorder extends Plugin {
      */
     hideAnimation() {
         // show the first frame
-        this.player().recordCanvas.show();
+        this.player.recordCanvas.show();
 
         // hide the animation
-        this.player().animationDisplay.hide();
+        this.player.animationDisplay.hide();
     }
 
     /**
@@ -1403,8 +1403,8 @@ class Recorder extends Plugin {
         }
 
         // workaround chrome issue
-        if (this.getRecordType() === base.AUDIO_VIDEO &&
-            isChrome() && !this._recording && this.extraAudio !== undefined) {
+        if (this.getRecordType() === base.AUDIO_VIDEO && isChrome() &&
+            !this._recording && this.extraAudio !== undefined) {
             // sync extra audio playhead position with video.js player
             this.extraAudio.currentTime = this.player.currentTime();
             this.extraAudio.play();
