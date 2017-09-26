@@ -64,8 +64,7 @@ class RecordRTCEngine extends base.RecordBase {
      * Start recording.
      * @private
      */
-    start()
-    {
+    start() {
         this.engine.startRecording();
     }
 
@@ -74,8 +73,7 @@ class RecordRTCEngine extends base.RecordBase {
      * is called.
      * @private
      */
-    stop()
-    {
+    stop() {
         this.engine.stopRecording(this.onStopRecording.bind(this));
     }
 
@@ -83,8 +81,7 @@ class RecordRTCEngine extends base.RecordBase {
      * Pause recording.
      * @private
      */
-    pause()
-    {
+    pause() {
         this.engine.pauseRecording();
     }
 
@@ -92,8 +89,7 @@ class RecordRTCEngine extends base.RecordBase {
      * Resume recording.
      * @private
      */
-    resume()
-    {
+    resume() {
         this.engine.resumeRecording();
     }
 
@@ -107,8 +103,7 @@ class RecordRTCEngine extends base.RecordBase {
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
      */
-    saveAs(name)
-    {
+    saveAs(name) {
         if (this.engine && name !== undefined) {
             this.engine.save(name);
         }
