@@ -3,10 +3,10 @@
  */
 
 const Button = videojs.getComponent('Button');
+const Component = videojs.getComponent('Component');
 
 /**
  * Button to toggle between start and stop recording.
- * @private
  * @class
  * @augments videojs.Button
 */
@@ -25,6 +25,8 @@ class RecordToggle extends Button {
         this.on('tap', this.onClick);
         this.on(player, 'startRecord', this.onStart);
         this.on(player, 'stopRecord', this.onStop);
+
+        this.createControlTextEl(this.el());
     }
 
     onClick(e) {
@@ -39,23 +41,49 @@ class RecordToggle extends Button {
         }
     }
 
-    onStart() {
+    /**
+     * Add the vjs-icon-record-stop class to the element so it can change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#startRecord
+     */
+    onStart(event) {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-start');
         this.addClass('vjs-icon-record-stop');
 
-        // update label
-        this.el().firstChild.firstChild.innerHTML = this.localize('Stop');
+        // change the button text
+        this.controlText('Stop');
     }
 
+    /**
+     * Add the vjs-icon-record-start class to the element so it can change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#stopRecord
+     */
     onStop() {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-stop');
         this.addClass('vjs-icon-record-start');
 
-        // update label
-        this.el().firstChild.firstChild.innerHTML = this.localize('Record');
+        // change the button text
+        this.controlText('Record');
     }
 }
+
+/**
+ * The text that should display over the `RecordToggle`s controls. Added for localization.
+ *
+ * @type {string}
+ * @private
+ */
+RecordToggle.prototype.controlText_ = 'Record';
+
+Component.registerComponent('RecordToggle', RecordToggle);
 
 export default RecordToggle;

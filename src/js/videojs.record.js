@@ -1497,16 +1497,16 @@ class Recorder extends Plugin {
 const createButton = function(className, label, iconName) {
     let props = {
         className: 'vjs-' + className + '-button vjs-control vjs-icon-' + iconName,
-        innerHTML: '<div class="vjs-control-content"><span class="vjs-control-text">' +
-            label + '</span></div>',
+        innerHTML: '<span aria-hidden="true" class="vjs-icon-placeholder"></span>',
     };
     let attrs = {
         role: 'button',
         // let the screen reader user know that the text of the button may change
         'aria-live': 'polite',
-        tabIndex: 0
+        tabIndex: 0,
+        title: label
     };
-    return Component.prototype.createEl('div', props, attrs);
+    return Component.prototype.createEl('button', props, attrs);
 };
 
 /**
@@ -1586,7 +1586,8 @@ const recordPlugin = function(options) {
 
     // add record toggle
     player.recordToggle = new RecordToggle(player, {
-        'el': createButton('record', player.localize('Record'), 'record-start')
+        'el': createButton('record', player.localize('Record'),
+            'record-start')
     });
     player.recordToggle.hide();
 };

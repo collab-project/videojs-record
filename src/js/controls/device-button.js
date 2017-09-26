@@ -3,6 +3,7 @@
  */
 
 const Button = videojs.getComponent('Button');
+const Component = videojs.getComponent('Component');
 
 /**
  * Button to select recording device.
@@ -23,6 +24,8 @@ class DeviceButton extends Button {
 
         this.on('click', this.onClick);
         this.on('tap', this.onClick);
+
+        this.createControlTextEl(this.el());
     }
 
     onClick(e) {
@@ -33,5 +36,15 @@ class DeviceButton extends Button {
         this.player().recorder.getDevice();
     }
 }
+
+/**
+ * The text that should display over the `DeviceButton`s controls. Added for localization.
+ *
+ * @type {string}
+ * @private
+ */
+DeviceButton.prototype.controlText_ = 'Device';
+
+Component.registerComponent('DeviceButton', DeviceButton);
 
 export default DeviceButton;

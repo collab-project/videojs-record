@@ -3,6 +3,7 @@
  */
 
 const Button = videojs.getComponent('Button');
+const Component = videojs.getComponent('Component');
 
 /**
  * Button to toggle between create and retry snapshot image.
@@ -25,6 +26,8 @@ class CameraButton extends Button {
         this.on('tap', this.onClick);
         this.on(player, 'startRecord', this.onStart);
         this.on(player, 'stopRecord', this.onStop);
+
+        this.createControlTextEl(this.el());
     }
 
     onClick(e) {
@@ -45,23 +48,49 @@ class CameraButton extends Button {
         }
     }
 
+    /**
+     * Add the vjs-icon-photo-retry class to the element so it can change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#startRecord
+     */
     onStart() {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-camera');
         this.addClass('vjs-icon-photo-retry');
 
-        // update label
-        this.el().firstChild.firstChild.innerHTML = this.localize('Retry');
+        // change the button text
+        this.controlText('Retry');
     }
 
+    /**
+     * Add the vjs-icon-photo-camera class to the element so it can change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#stopRecord
+     */
     onStop() {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-retry');
         this.addClass('vjs-icon-photo-camera');
 
-        // update label
-        this.el().firstChild.firstChild.innerHTML = this.localize('Image');
+        // change the button text
+        this.controlText('Image');
     }
 }
+
+/**
+ * The text that should display over the `CameraButton`s controls. Added for localization.
+ *
+ * @type {string}
+ * @private
+ */
+CameraButton.prototype.controlText_ = 'Image';
+
+Component.registerComponent('CameraButton', CameraButton);
 
 export default CameraButton;
