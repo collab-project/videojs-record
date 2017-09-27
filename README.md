@@ -442,31 +442,35 @@ that can be used to enhance the player's functionality.
 Development
 -----------
 
-Install `grunt-cli`:
-
-```
-sudo npm install -g grunt-cli
-```
-
 Install dependencies using npm:
 
 ```
 npm install
 ```
 
-Generate font assets once:
+Build a minified version:
 
 ```
-grunt font
-```
-
-Build a minified version of the library code and stylesheet:
-
-```
-grunt
+npm run build
 ```
 
 Generated files are placed in the `dist` directory.
+
+During development:
+
+```
+npm run start
+```
+
+This will watch the source directory and rebuild when any changes
+are detected. It will also serve the files on http://127.0.0.1:9999.
+
+All commands for development are listed in the `package.json` file and
+are run using:
+
+```
+npm run <command>
+```
 
 Font
 ----
