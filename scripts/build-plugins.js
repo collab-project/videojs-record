@@ -53,7 +53,7 @@ mkdirp(pluginsDestDir, function(err) {
             .transform('browserify-shim', {})
             .plugin(banner, {
                 pkg: pjson,
-                file: bannerPath,
+                file: bannerPath
             })
             .bundle()
             .pipe(fs.createWriteStream(pluginDestPath))
@@ -65,7 +65,7 @@ mkdirp(pluginsDestDir, function(err) {
             .transform('uglifyify', { global: true  })
             .plugin(banner, {
                 pkg: pjson,
-                file: bannerPath,
+                file: bannerPath
             })
             .bundle()
             .pipe(fs.createWriteStream(pluginDestPathMinified))

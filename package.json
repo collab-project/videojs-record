@@ -20,10 +20,10 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm-run-all -s build:*",
-    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:bannerize build:js:collapse build:js:uglify build:js:plugins build:js:language",
+    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:collapse build:js:uglify build:js:banner build:js:plugins build:js:language",
     "build:js:babel": "babel src/js --out-dir es5",
-    "build:js:bannerize": "bannerize dist/videojs.record.js --banner=scripts/banner.ejs",
-    "build:js:browserify": "browserify . --standalone videojs.record --global-transform=browserify-shim --debug --outfile dist/videojs.record.js",
+    "build:js:banner": "node scripts/add-banner.js",
+    "build:js:browserify": "browserify . -p [ browserify-banner --file scripts/banner.ejs ] --standalone videojs.record --global-transform=browserify-shim --debug --outfile dist/videojs.record.js",
     "build:js:collapse": "bundle-collapser dist/videojs.record.js -o dist/videojs.record.min.js",
     "build:js:uglify": "uglifyjs dist/videojs.record.min.js --support-ie8 --comments -m -c -o dist/videojs.record.min.js",
     "build:js:language": "vjslang -d dist/lang lang/*.json",
@@ -100,12 +100,13 @@
     "webrtc-adapter": ">=5.0.4"
   },
   "devDependencies": {
+    "add-banner": "^0.1.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babelify": "^7.3.0",
-    "bannerize": "^1.1.3",
     "blueimp-file-upload": ">=9.19.1",
     "browserify": "^14.4.0",
+    "browserify-banner": "^1.0.6",
     "browserify-istanbul": "^2.0.0",
     "browserify-shim": "^3.8.14",
     "bundle-collapser": "^1.3.0",
