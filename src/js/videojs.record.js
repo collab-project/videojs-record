@@ -661,29 +661,9 @@ class Recorder extends Plugin {
                 this.surfer.surfer.microphone.stopDevice();
                 return;
             }
-            // MediaStream.stop is deprecated since:
-            // - Chrome 45 (https://developers.google.com/web/updates/2015/07/mediastream-deprecations)
-            // - Firefox 44 (https://www.fxsitecompat.com/en-US/docs/2015/mediastream-stop-has-been-deprecated/,
-            //   https://bugzilla.mozilla.org/show_bug.cgi?id=1103188#c106 and
-            //   https://bugzilla.mozilla.org/show_bug.cgi?id=1192170)
-            var result = detectBrowser();
-            if ((result.browser === 'chrome' && result.version >= 45) ||
-                (result.browser === 'firefox' && result.version >= 44) ||
-                (result.browser === 'edge')) {
-                switch (this.getRecordType()) {
-                    case engine.VIDEO_ONLY:
-                    case engine.ANIMATION:
-                    case engine.IMAGE_ONLY:
-                    case engine.AUDIO_VIDEO:
-                        this.stream.getTracks().forEach(function(stream) {
-                            stream.stop();
-                        });
-                        break;
-                }
-                return;
-            }
-            // fallback for older browsers
-            this.stream.stop();
+            this.stream.getTracks().forEach(function(stream) {
+                stream.stop();
+            });
         }
     }
 
