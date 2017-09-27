@@ -94,9 +94,10 @@
     ]
   },
   "dependencies": {
-    "recordrtc": ">=5.4.2",
+    "recordrtc": ">=5.4.3",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": "git+https://github.com/collab-project/videojs-wavesurfer.git#adv-plugin-29"
+    "videojs-wavesurfer": "git+https://github.com/collab-project/videojs-wavesurfer.git#adv-plugin-29",
+    "webrtc-adapter": ">=5.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -132,7 +133,7 @@
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "serve-static": "^1.12.6",
     "shelljs": "^0.7.8",
-    "sinon": "3.3.0",
+    "sinon": "4.0.0",
     "uglify-js": "^3.1.2",
     "videojs-font": "^2.0.0",
     "videojs-languages": "^1.0.0",

@@ -8,6 +8,8 @@ videojs-record changelog
 - video.js 6.0 or newer is now required: older versions are no longer supported
 - videojs-wavesurfer.js version 2.0.0 or newer is now required: older versions
   are no longer supported
+- RecordRTC.js version 5.4.3 or newer is now required
+- New dependency: webrtc-adapter (version 5.0.0 or newer) is now required
 
 
 1.7.1 - 2017/09/23

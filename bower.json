@@ -35,16 +35,17 @@
     "examples"
   ],
   "dependencies": {
-    "recordrtc": ">=5.4.2",
+    "recordrtc": ">=5.4.3",
     "video.js": ">=6.0.0",
-    "videojs-wavesurfer": ">=2.0.0"
+    "videojs-wavesurfer": ">=2.0.0",
+    "webrtc-adapter": ">=5.0.0"
   },
   "devDependencies": {
-    "libvorbis.js": ">=1.1.1",
-    "recorderjs": "https://github.com/mattdiamond/Recorderjs.git",
-    "lamejs": "https://github.com/zhuker/lamejs.git",
-    "opus-recorderjs": ">=1.2.0",
+    "blueimp-file-upload": ">=9.19.1",
     "fine-uploader": ">=5.4.1",
-    "blueimp-file-upload": ">=9.19.1"
+    "lamejs": "https://github.com/zhuker/lamejs.git",
+    "libvorbis.js": ">=1.1.1",
+    "opus-recorderjs": ">=1.2.0",
+    "recorderjs": "https://github.com/mattdiamond/Recorderjs.git"
   }
 }
