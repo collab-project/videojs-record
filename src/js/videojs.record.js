@@ -1377,7 +1377,7 @@ class Recorder extends Plugin {
     displayVolumeControl(display) {
         if (this.player.controlBar.volumePanel !== undefined) {
             if (display === true) {
-                display = 'block';
+                display = 'flex';
             } else {
                 display = 'none';
             }
