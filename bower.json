@@ -43,7 +43,7 @@
     "libvorbis.js": ">=1.1.1",
     "recorderjs": "https://github.com/mattdiamond/Recorderjs.git",
     "lamejs": "https://github.com/zhuker/lamejs.git",
-    "opus-recorderjs": ">=1.1.0",
+    "opus-recorderjs": ">=1.2.0",
     "fine-uploader": ">=5.4.1",
     "blueimp-file-upload": ">=9.19.1"
   }
