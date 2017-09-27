@@ -20,7 +20,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm-run-all -s build:*",
-    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:bannerize build:js:collapse build:js:uglify build:js:language",
+    "build:js": "npm-run-all build:js:babel build:js:browserify build:js:bannerize build:js:collapse build:js:uglify build:js:plugins build:js:language",
     "build:js:babel": "babel src/js --out-dir es5",
     "build:js:bannerize": "bannerize dist/videojs.record.js --banner=scripts/banner.ejs",
     "build:js:browserify": "browserify . --standalone videojs.record --global-transform=browserify-shim --debug --outfile dist/videojs.record.js",
@@ -46,10 +46,11 @@
     "version": "npm run build",
     "watch": "npm-run-all -p watch:docs watch:js",
     "watch:docs": "nodemon --watch src/js/ --exec npm run docs",
-    "watch:js": "npm-run-all -p watch:js:babel watch:js:browserify watch:js:language",
+    "watch:js": "npm-run-all -p watch:js:babel watch:js:browserify watch:js:plugins watch:js:language",
     "watch:js:babel": "npm run build:js:babel -- --watch",
     "watch:js:browserify": "watchify . -v -g browserify-shim --debug -o dist/videojs.record.js",
     "watch:js:language": "nodemon --watch lang/ --exec npm run build:js:language",
+    "watch:js:plugins": "nodemon --watch src/js/plugins/ --exec npm run build:js:plugins",
     "prepublish": "not-in-install && npm run build || in-install"
   },
   "files": [
