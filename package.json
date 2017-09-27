@@ -126,7 +126,7 @@
     "mkdirp": "^0.5.1",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.1",
-    "opus-recorder": "^1.1.0",
+    "opus-recorder": "^1.2.0",
     "portscanner": "^2.1.1",
     "qunitjs": "^2.4.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
