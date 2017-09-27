@@ -23,7 +23,8 @@ var pluginsDestDir = 'dist/plugins/';
 // search for plugins
 glob('src/js/plugins/*.js', function(err, files) {
 
-    console.log(color.cyan('Building ' + files.length + ' plugins:'));
+    console.log();
+    console.log(color.green('OK') + ': Build ' + files.length + ' plugins');
 
     files.forEach(function(pluginPath) {
         // get paths
@@ -58,10 +59,11 @@ glob('src/js/plugins/*.js', function(err, files) {
             bannerize(pluginDestPathMinified, {
                 banner: 'scripts/banner.ejs',
                 cwd: path.join(__dirname, '..')
-            }).then(function() {
-                console.log(' - ' + color.white(pluginName +
-                    ' => ' + pluginDestPathMinified + ' ... ') + color.green('OK'));
             });
+
+            console.log(' - ' + pluginName + ' => ' + pluginDestPathMinified);
         });
     });
+
+    console.log();
 });
