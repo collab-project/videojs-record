@@ -19,7 +19,8 @@
   },
   "scripts": {
     "prebuild": "npm run clean",
-    "build": "npm-run-all -s build:*",
+    "build": "npm-run-all -s build:css build:js build:test",
+    "build:css": "node-sass --include-path src/scss src/scss/videojs-record.scss dist/css/videojs.record.css",
     "build:js": "npm-run-all build:js:babel build:js:browserify build:js:collapse build:js:uglify build:js:banner build:js:plugins build:js:language",
     "build:js:babel": "babel src/js --out-dir es5",
     "build:js:banner": "node scripts/add-banner.js",
@@ -127,6 +128,7 @@
     "lodash-compat": "^3.10.2",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.1",
     "opus-recorder": "^1.2.0",
