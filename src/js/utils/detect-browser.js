@@ -12,7 +12,7 @@ import window from 'global/window';
  *     properties.
  */
 const detectBrowser = function() {
-    // Returned result object.
+    // returned result object
     let result = {};
     result.browser = null;
     result.version = null;
@@ -105,5 +105,5 @@ const isChrome = function() {
 }
 
 export {
-    detectBrowser, isEdge, isOpera, isChrome
+    detectBrowser, isEdge, isOpera, isChrome, isSafari
 }
