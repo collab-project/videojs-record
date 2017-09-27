@@ -138,7 +138,6 @@
     "sinon": "4.0.0",
     "uglify-js": "^3.1.2",
     "uglifyify": "^4.0.4",
-    "videojs-font": "^2.0.0",
     "videojs-languages": "^1.0.0",
     "watchify": "^3.9.0",
     "webpack": "^3.6.0"

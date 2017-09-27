@@ -50,7 +50,7 @@ mkdirp(pluginsDestDir, function(err) {
             // bundle
             browserify(pluginPath, browserify_opts)
             .transform('babelify')
-            .transform('browserify-shim', {})
+            .transform('browserify-shim')
             .plugin(banner, {
                 pkg: pjson,
                 file: bannerPath

@@ -50,7 +50,7 @@ class CameraButton extends Button {
     }
 
     /**
-     * Add the vjs-icon-photo-retry class to the element so it can change appearance.
+     * Add the vjs-icon-replay class to the element so it can change appearance.
      *
      * @param {EventTarget~Event} [event]
      *        The event that caused this function to run.
@@ -60,7 +60,7 @@ class CameraButton extends Button {
     onStart() {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-camera');
-        this.addClass('vjs-icon-photo-retry');
+        this.addClass('vjs-icon-replay');
 
         // change the button text
         this.controlText('Retry');
@@ -76,7 +76,7 @@ class CameraButton extends Button {
      */
     onStop() {
         // replace element class so it can change appearance
-        this.removeClass('vjs-icon-photo-retry');
+        this.removeClass('vjs-icon-replay');
         this.addClass('vjs-icon-photo-camera');
 
         // change the button text
