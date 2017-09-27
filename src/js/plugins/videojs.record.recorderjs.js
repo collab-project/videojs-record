@@ -2,7 +2,7 @@
  * @file videojs.record.recorderjs.js
  */
 
-import RecordBase from '../engine/record-base';
+import RecordBase from 'video.js';
 
 /**
  * Audio-only engine for the recorder.js library.
@@ -48,5 +48,8 @@ class RecorderjsEngine extends RecordBase {
         this.engine.clear();
     }
 }
+
+// expose plugin
+videojs.RecorderjsEngine = RecorderjsEngine;
 
 export default RecorderjsEngine;

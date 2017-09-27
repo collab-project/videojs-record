@@ -2,7 +2,7 @@
  * @file videojs.record.opus-recorder.js
  */
 
-import RecordBase from '../engine/record-base';
+import RecordBase from 'video.js';
 
 /**
  * Audio-only engine for the opus-recorder library.
@@ -75,5 +75,8 @@ class OpusRecorderEngine extends RecordBase {
         this.onStopRecording(blob);
     }
 }
+
+// expose plugin
+videojs.OpusRecorderEngine = OpusRecorderEngine;
 
 export default OpusRecorderEngine;

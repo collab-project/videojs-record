@@ -35,8 +35,7 @@ glob('src/js/plugins/*.js', function(err, files) {
             // bundle
             var bundler = browserify(pluginPath, browserify_opts);
             bundler.transform('babelify')
-            .transform('browserify-shim', {
-            })
+            .transform('browserify-shim', {})
             .bundle()
             .pipe(fs.createWriteStream(pluginDestPath))
             // minify

@@ -2,7 +2,7 @@
  * @file videojs.record.lamejs.js
  */
 
-import RecordBase from '../engine/record-base';
+import RecordBase from 'video.js';
 
 /**
  * Audio-only engine for the lamejs library.
@@ -11,6 +11,17 @@ import RecordBase from '../engine/record-base';
  * @augments RecordBase
  */
 class LamejsEngine extends RecordBase {
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+    }
+
     /**
      * Setup recording engine.
      */
@@ -60,20 +71,20 @@ class LamejsEngine extends RecordBase {
     /**
      * Received a message from the worker.
      */
-    onWorkerMessage(e) {
-        switch (e.data.cmd) {
+    onWorkerMessage(ev) {
+        switch (ev.data.cmd) {
             case 'end':
-                this.onStopRecording(new Blob(e.data.buf,
+                this.onStopRecording(new Blob(ev.data.buf,
                     {type: 'audio/mp3'}));
                 break;
 
             case 'error':
-                this.player().trigger('error', e.data.error);
+                this.player().trigger('error', ev.data.error);
                 break;
 
             default:
                 // invalid message received
-                this.player().trigger('error', e.data);
+                this.player().trigger('error', ev.data);
                 break;
         }
     }
@@ -88,5 +99,8 @@ class LamejsEngine extends RecordBase {
         this.engine.postMessage({cmd: 'encode', buf: data});
     }
 }
+
+// expose plugin
+videojs.LamejsEngine = LamejsEngine;
 
 export default LamejsEngine;

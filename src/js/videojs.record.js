@@ -393,9 +393,10 @@ class Recorder extends Plugin {
             }
             try {
                 // connect stream to recording engine
-                this.engine = new EngineClass(this.player);
+                this.engine = new EngineClass(this.player, this.player.options_);
             }
             catch (err) {
+                console.error(err);
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
             }
@@ -1593,6 +1594,8 @@ const recordPlugin = function(options) {
 };
 
 // register plugin
+videojs.Recorder = Recorder;
+
 if (videojs.registerPlugin) {
     videojs.registerPlugin('record', recordPlugin);
 } else {
@@ -1600,5 +1603,5 @@ if (videojs.registerPlugin) {
 }
 
 module.exports = {
-    recordPlugin
+    Recorder
 };

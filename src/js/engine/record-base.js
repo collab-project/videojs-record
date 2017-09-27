@@ -89,6 +89,11 @@ class RecordBase extends Component {
     }
 }
 
+// expose class for plugins
+videojs.RecordBase = RecordBase;
+
+Component.registerComponent('RecordBase', RecordBase);
+
 export {
     RecordBase,
     IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION,
