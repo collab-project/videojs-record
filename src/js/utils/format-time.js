@@ -1,5 +1,6 @@
 /**
  * @file format-time.js
+ * @since 2.0.0
  */
 
 /**

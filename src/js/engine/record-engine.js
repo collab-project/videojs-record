@@ -1,5 +1,6 @@
 /**
  * @file record-engine.js
+ * @since 2.0.0
  */
 
 const Component = videojs.getComponent('Component');

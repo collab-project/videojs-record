@@ -1,5 +1,6 @@
 /**
  * @file getusermedia.js
+ * @since 2.0.0
  */
 
 const loadGetUserMedia = function() {

@@ -1,5 +1,6 @@
 /**
  * @file defaults.js
+ * @since 2.0.0
  */
 
 //plugin defaults

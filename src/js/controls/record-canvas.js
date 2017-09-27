@@ -1,5 +1,6 @@
 /**
  * @file record-canvas
+ * @since 2.0.0
  */
 
 const Component = videojs.getComponent('Component');

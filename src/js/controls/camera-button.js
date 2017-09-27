@@ -1,5 +1,6 @@
 /**
  * @file camera-button.js
+ * @since 2.0.0
  */
 
 const Button = videojs.getComponent('Button');

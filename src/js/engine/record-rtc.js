@@ -1,5 +1,6 @@
 /**
  * @file record-rtc.js
+ * @since 2.0.0
  */
 
 import * as engine from './record-engine';

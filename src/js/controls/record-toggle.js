@@ -1,5 +1,6 @@
 /**
  * @file record-toggle.js
+ * @since 2.0.0
  */
 
 const Button = videojs.getComponent('Button');

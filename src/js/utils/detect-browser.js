@@ -1,5 +1,6 @@
 /**
  * @file detect-browser.js
+ * @since 2.0.0
  */
 
 import window from 'global/window';
