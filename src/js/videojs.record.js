@@ -700,7 +700,8 @@ class Recorder extends Plugin {
         // store reference to recorded stream data
         this.player.recordedData = this.engine.recordedData;
 
-        // show play control
+        // change the replay button back to a play button
+        this.player.controlBar.playToggle.removeClass('vjs-ended');
         this.player.controlBar.playToggle.show();
 
         // notify listeners that data is available
