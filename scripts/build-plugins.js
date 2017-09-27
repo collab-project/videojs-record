@@ -8,42 +8,53 @@
  * @file build-plugins.js
  */
 
-var browserify = require('browserify');
-var bannerize = require('bannerize');
-var collapse = require('bundle-collapser/plugin');
-var color = require('colour');
-
 var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
+var browserify = require('browserify');
+var banner = require('browserify-banner');
+var collapse = require('bundle-collapser/plugin');
+var color = require('colour');
 var mkdirp = require('mkdirp');
 
 var pluginsDestDir = 'dist/plugins/';
+var bannerPath = 'scripts/banner.ejs';
+var fileName, dirName, pluginName, minifiedName, pluginDestPath,
+    pluginDestPathMinified, browserify_opts, pjson, bundler;
 
-// search for plugins
-glob('src/js/plugins/*.js', function(err, files) {
+mkdirp(pluginsDestDir, function(err) {
+    // search for plugins
+    glob('src/js/plugins/*.js', function(err, files) {
 
-    console.log();
-    console.log(color.green('OK') + ': Build ' + files.length + ' plugins');
+        console.log();
+        console.log(color.green('OK') + ': Build ' + files.length + ' plugins');
 
-    files.forEach(function(pluginPath) {
-        // get paths
-        var fileName = pluginPath.substr(pluginPath.lastIndexOf('/') + 1);
-        var dirName = pluginPath.split(fileName)[0];
-        var pluginName = fileName.replace('.js', '');
-        var minifiedName = fileName.replace('.js', '.min.js');
-        var pluginDestPath = pluginsDestDir + fileName;
-        var pluginDestPathMinified = pluginsDestDir + minifiedName;
-
-        mkdirp(pluginsDestDir, function(err) { 
-            var browserify_opts = {
+        files.forEach(function(pluginPath) {
+            fileName = pluginPath.substr(pluginPath.lastIndexOf('/') + 1);
+            dirName = pluginPath.split(fileName)[0];
+            pluginName = fileName.replace('.js', '');
+            minifiedName = fileName.replace('.js', '.min.js');
+            pluginDestPath = pluginsDestDir + fileName;
+            pluginDestPathMinified = pluginsDestDir + minifiedName;
+            browserify_opts = {
                 standalone: pluginName,
-                plugin: [collapse]
+                plugin: [
+                    collapse
+                ]
             };
+
+            // add plugin name to banner
+            pjson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pjson.name = pluginName + ' plugin';
+
             // bundle
-            var bundler = browserify(pluginPath, browserify_opts);
+            bundler = browserify(pluginPath, browserify_opts);
             bundler.transform('babelify')
             .transform('browserify-shim', {})
+            .plugin(banner, {
+                pkg: pjson,
+                file: bannerPath,
+            })
             .bundle()
             .pipe(fs.createWriteStream(pluginDestPath))
 
@@ -52,18 +63,16 @@ glob('src/js/plugins/*.js', function(err, files) {
             bundler.transform('babelify')
             .transform('browserify-shim', {})
             .transform('uglifyify', { global: true  })
+            .plugin(banner, {
+                pkg: pjson,
+                file: bannerPath,
+            })
             .bundle()
             .pipe(fs.createWriteStream(pluginDestPathMinified))
 
-            // banner
-            bannerize(pluginDestPathMinified, {
-                banner: 'scripts/banner.ejs',
-                cwd: path.join(__dirname, '..')
-            });
-
             console.log(' - ' + pluginName + ' => ' + pluginDestPathMinified);
         });
-    });
 
-    console.log();
+        console.log();
+    });
 });
