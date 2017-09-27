@@ -9,7 +9,6 @@ import { isChrome } from '../utils/detect-browser';
 /**
  * Engine used with the MRecordRTC class in the RecordRTC library.
  *
- * @private
  * @class
  * @augments videojs.RecordEngine
  */

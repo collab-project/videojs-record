@@ -20,7 +20,7 @@ const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 
 /**
- * Base class for recorder plugin backends.
+ * Base class for recorder backends.
  * @class
  * @augments videojs.Component
  */
@@ -65,11 +65,15 @@ class RecordEngine extends Component {
     onStopRecording(data) {
         this.recordedData = data;
 
+        // add filename and timestamp to recorded file object
         this.addFileInfo(this.recordedData);
 
-        // store reference to recorded stream URL
+        // remove reference to recorded stream
         this.dispose();
-        this.mediaURL = URL.createObjectURL(this.recordedData);
+
+        // XXX: old
+        // this.mediaURL = URL.createObjectURL(this.recordedData);
+        this.mediaURL = this.recordedData;
 
         // notify listeners
         this.trigger('recordComplete');

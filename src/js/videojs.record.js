@@ -15,7 +15,7 @@ import * as engine from './engine/record-engine';
 import RecordRTCEngine from './engine/record-rtc';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
-import loadGetUserMedia from './utils/getusermedia';
+import setSrcObject from './utils/browser-shim';
 import { detectBrowser, isChrome } from './utils/detect-browser';
 
 import videojs from 'video.js';
@@ -58,9 +58,6 @@ class Recorder extends Plugin {
 
         // (re)set recorder state
         this.resetState();
-
-        // setup cross-browser getUserMedia
-        loadGetUserMedia();
 
         // wait until player ui is ready
         this.player.one('ready', this.setupUI.bind(this));
@@ -469,15 +466,15 @@ class Recorder extends Plugin {
             // hide the volume bar while it's muted
             this.displayVolumeControl(false);
 
-            // store reference to stream URL
-            if (this.streamURL !== undefined)
+            // XXX: old - store reference to stream URL
+            /*if (this.streamURL !== undefined)
             {
                 URL.revokeObjectURL(this.streamURL);
-            }
-            this.streamURL = URL.createObjectURL(this.stream);
+            }*/
+            //this.streamURL = URL.createObjectURL(this.stream);
 
             // load stream
-            this.load(this.streamURL);
+            this.load(this.stream);
 
             // stream loading is async, so we wait until it's ready to play the stream.
             let self = this;
@@ -818,13 +815,16 @@ class Recorder extends Plugin {
                             this.player.on('volumechange',
                                 this.onVolumeChange.bind(this));
                         }
-                        if (this.extraAudioURL !== undefined) {
+                        /*if (this.extraAudioURL !== undefined) {
                             URL.revokeObjectURL(this.extraAudioURL);
-                        }
+                        }*/
+                        setSrcObject(this.player.recordedData.audio,
+                            this.extraAudio, false);
+                        /* XXX: old
                         this.extraAudioURL = URL.createObjectURL(
                             this.player().recordedData.audio);
                         this.extraAudio.src = this.extraAudioURL;
-
+                        */
                         // pause extra audio when player pauses
                         this.on(this.player, 'pause',
                             this.onPlayerPause);
@@ -843,7 +843,7 @@ class Recorder extends Plugin {
                     }
 
                     // load recorded media
-                    this.load(this.mediaURL);
+                    this.load(this.player.recordedData);
                 }.bind(this));
 
                 // pause player so user can start playback
@@ -1020,12 +1020,12 @@ class Recorder extends Plugin {
      * Start loading data.
      *
      * @param {(string|blob|file)} url - Either the URL of the media file,
-     *     a Blob or a File object.
+     *     a Blob, a File object or MediaStream.
      */
     load(url) {
         switch (this.getRecordType()) {
             case engine.AUDIO_ONLY:
-                // visualize recorded stream
+                // visualize recorded Blob stream
                 this.surfer.load(url);
                 break;
 
@@ -1033,8 +1033,15 @@ class Recorder extends Plugin {
             case engine.VIDEO_ONLY:
             case engine.AUDIO_VIDEO:
             case engine.ANIMATION:
-                // assign stream to audio/video element source
-                this.mediaElement.src = url;
+                if (url instanceof Blob || url instanceof File) {
+                    // assign using createObjectURL
+                    setSrcObject(url, this.mediaElement, false);
+                } else {
+                    // assign stream without createObjectURL
+                    setSrcObject(url, this.mediaElement, true);
+                }
+                // XXX: old
+                // this.mediaElement.src = url;
                 break;
         }
     }
@@ -1297,12 +1304,14 @@ class Recorder extends Plugin {
         // hide volume control to prevent feedback
         this.displayVolumeControl(false);
 
+        // XXX: old
         // start or resume live preview
-        if (this.streamURL !== undefined) {
-            URL.revokeObjectURL(this.streamURL);
-        }
-        this.streamURL = URL.createObjectURL(this.stream);
-        this.load(this.streamURL);
+        //if (this.streamURL !== undefined) {
+        //    URL.revokeObjectURL(this.streamURL);
+        //}
+        //this.streamURL = URL.createObjectURL(this.stream);
+        //this.load(this.streamURL);
+        this.load(this.stream);
         this.mediaElement.play();
     }
 
@@ -1342,6 +1351,7 @@ class Recorder extends Plugin {
      * @private
      */
     onPlayerStart() {
+        /* XXX: old
         // workaround Firefox issue
         if (this.player.seeking()) {
             // There seems to be a Firefox issue
@@ -1351,7 +1361,7 @@ class Recorder extends Plugin {
             // https://bugzilla.mozilla.org/show_bug.cgi?id=969290
             this.load(this.mediaURL);
             this.player.play();
-        }
+        }*/
 
         // workaround chrome issue
         if (this.getRecordType() === engine.AUDIO_VIDEO && isChrome() &&
@@ -1387,8 +1397,8 @@ class Recorder extends Plugin {
      * @private
      */
     onTimeStamp(current, all) {
-        this.player().currentTimestamp = current;
-        this.player().allTimestamps = all;
+        this.player.currentTimestamp = current;
+        this.player.allTimestamps = all;
 
         // get blob (only for MediaStreamRecorder)
         var internal;
@@ -1407,11 +1417,11 @@ class Recorder extends Plugin {
         }
         internal = internal.getInternalRecorder();
         if ((internal instanceof MediaStreamRecorder) === true) {
-            this.player().recordedData = internal.getArrayOfBlobs();
+            this.player.recordedData = internal.getArrayOfBlobs();
         }
 
         // notify others
-        this.player().trigger('timestamp');
+        this.player.trigger('timestamp');
     }
 
     /**
