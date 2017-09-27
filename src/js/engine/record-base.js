@@ -22,20 +22,8 @@ const OPUSRECORDER = 'opus-recorder';
  * Base class for recorder backends.
  * @class
  * @augments videojs.Component
- * @private
  */
 class RecordBase extends Component {
-    /**
-     * The constructor function for the class.
-     *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
-     */
-    constructor(player, options) {
-        super(player, options);
-    }
-
     /**
      * Remove any temporary data and references to streams.
      * @private

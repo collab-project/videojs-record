@@ -10,7 +10,7 @@ const RecordBase = videojs.getComponent('RecordBase');
  * Audio is encoded using libopus.
  *
  * @class
- * @augments RecordBase
+ * @augments videojs.RecordBase
  */
 class OpusRecorderEngine extends RecordBase {
     /**

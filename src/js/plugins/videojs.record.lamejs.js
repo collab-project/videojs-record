@@ -8,7 +8,7 @@ const RecordBase = videojs.getComponent('RecordBase');
  * Audio-only engine for the lamejs library.
  *
  * @class
- * @augments RecordBase
+ * @augments videojs.RecordBase
  */
 class LamejsEngine extends RecordBase {
     /**
