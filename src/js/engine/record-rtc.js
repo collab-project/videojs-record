@@ -2,7 +2,7 @@
  * @file record-rtc.js
  */
 
-import * as base from './record-base';
+import * as plugin from './record-plugin';
 import { isChrome } from '../utils/detect-browser';
 
 /**
@@ -10,9 +10,9 @@ import { isChrome } from '../utils/detect-browser';
  *
  * @private
  * @class
- * @augments RecordBase
+ * @augments videojs.RecordPlugin
  */
-class RecordRTCEngine extends base.RecordBase {
+class RecordRTCEngine extends plugin.RecordPlugin {
     /**
      * The constructor function for the class.
      *
@@ -125,7 +125,7 @@ class RecordRTCEngine extends base.RecordBase {
         let recordType = this.player_.recorder.getRecordType();
         this.engine.getBlob(function(recording) {
             switch (recordType) {
-                case base.AUDIO_ONLY:
+                case plugin.AUDIO_ONLY:
                     this.recordedData = recording.audio;
 
                     this.addFileInfo(this.recordedData);
@@ -134,8 +134,8 @@ class RecordRTCEngine extends base.RecordBase {
                     this.trigger('recordComplete');
                     break;
 
-                case base.VIDEO_ONLY:
-                case base.AUDIO_VIDEO:
+                case plugin.VIDEO_ONLY:
+                case plugin.AUDIO_VIDEO:
                     // when recording both audio and video, recordrtc
                     // calls this twice on chrome, first with audio data
                     // and then with video data.
@@ -147,7 +147,7 @@ class RecordRTCEngine extends base.RecordBase {
 
                         // on the chrome browser two blobs are created
                         // containing the separate audio/video streams.
-                        if (recordType === base.AUDIO_VIDEO && isChrome()) {
+                        if (recordType === plugin.AUDIO_VIDEO && isChrome()) {
                             // store both audio and video
                             this.recordedData = recording;
 
@@ -163,7 +163,7 @@ class RecordRTCEngine extends base.RecordBase {
                     }
                     break;
 
-                case base.ANIMATION:
+                case plugin.ANIMATION:
                     this.recordedData = recording.gif;
 
                     this.addFileInfo(this.recordedData);

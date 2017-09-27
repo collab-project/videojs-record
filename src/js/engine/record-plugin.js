@@ -1,5 +1,5 @@
 /**
- * @file record-base.js
+ * @file record-plugin.js
  */
 
 const Component = videojs.getComponent('Component');
@@ -19,11 +19,11 @@ const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 
 /**
- * Base class for recorder backends.
+ * Base class for recorder plugin backends.
  * @class
  * @augments videojs.Component
  */
-class RecordBase extends Component {
+class RecordPlugin extends Component {
     /**
      * Remove any temporary data and references to streams.
      * @private
@@ -39,7 +39,6 @@ class RecordBase extends Component {
      * Add filename and timestamp to recorded file object.
      *
      * @param {(blob|file)} fileObj - Blob or File object.
-     * @private
      */
     addFileInfo(fileObj) {
         let now = new Date();
@@ -61,7 +60,6 @@ class RecordBase extends Component {
      * Invoked when recording is stopped and resulting stream is available.
      *
      * @param {blob} data - Reference to the recorded Blob.
-     * @private
      */
     onStopRecording(data) {
         this.recordedData = data;
@@ -77,12 +75,12 @@ class RecordBase extends Component {
     }
 }
 
-// expose component for plugins
-videojs.RecordBase = RecordBase;
-Component.registerComponent('RecordBase', RecordBase);
+// expose component for external plugins
+videojs.RecordPlugin = RecordPlugin;
+Component.registerComponent('RecordPlugin', RecordPlugin);
 
 export {
-    RecordBase,
+    RecordPlugin,
     IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
 }

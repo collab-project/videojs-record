@@ -2,15 +2,15 @@
  * @file videojs.record.lamejs.js
  */
 
-const RecordBase = videojs.getComponent('RecordBase');
+const RecordPlugin = videojs.getComponent('RecordPlugin');
 
 /**
  * Audio-only engine for the lamejs library.
  *
  * @class
- * @augments videojs.RecordBase
+ * @augments videojs.RecordPlugin
  */
-class LamejsEngine extends RecordBase {
+class LamejsEngine extends RecordPlugin {
     /**
      * The constructor function for the class.
      *
