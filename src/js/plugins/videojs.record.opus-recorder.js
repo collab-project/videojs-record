@@ -3,7 +3,7 @@
  * @since 1.1.0
  */
 
-const RecordPlugin = videojs.getComponent('RecordPlugin');
+const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
  * Audio-only engine for the opus-recorder library.
@@ -11,9 +11,9 @@ const RecordPlugin = videojs.getComponent('RecordPlugin');
  * Audio is encoded using libopus.
  *
  * @class
- * @augments videojs.RecordPlugin
+ * @augments videojs.RecordEngine
  */
-class OpusRecorderEngine extends RecordPlugin {
+class OpusRecorderEngine extends RecordEngine {
     /**
      * Setup recording engine.
      */

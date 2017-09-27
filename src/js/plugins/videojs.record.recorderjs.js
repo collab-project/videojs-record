@@ -3,15 +3,15 @@
  * @since 1.1.0
  */
 
-const RecordPlugin = videojs.getComponent('RecordPlugin');
+const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
  * Audio-only engine for the recorder.js library.
  *
  * @class
- * @augments videojs.RecordPlugin
+ * @augments videojs.RecordEngine
  */
-class RecorderjsEngine extends RecordPlugin {
+class RecorderjsEngine extends RecordEngine {
     /**
      * Setup recording engine.
      */

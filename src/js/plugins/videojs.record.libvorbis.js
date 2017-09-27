@@ -3,7 +3,7 @@
  * @since 1.1.0
  */
 
-const RecordPlugin = videojs.getComponent('RecordPlugin');
+const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
  * Audio-only engine for the libvorbis.js library.
@@ -11,7 +11,7 @@ const RecordPlugin = videojs.getComponent('RecordPlugin');
  * @class
  * @augments videojs.RecordPlugin
  */
-class LibVorbisEngine extends RecordPlugin {
+class LibVorbisEngine extends RecordEngine {
     /**
      * Setup recording engine.
      */

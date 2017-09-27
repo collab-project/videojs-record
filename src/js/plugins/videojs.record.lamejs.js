@@ -3,26 +3,15 @@
  * @since 1.1.0
  */
 
-const RecordPlugin = videojs.getComponent('RecordPlugin');
+const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
  * Audio-only engine for the lamejs library.
  *
  * @class
- * @augments videojs.RecordPlugin
+ * @augments videojs.RecordEngine
  */
-class LamejsEngine extends RecordPlugin {
-    /**
-     * The constructor function for the class.
-     *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
-     */
-    constructor(player, options) {
-        super(player, options);
-    }
-
+class LamejsEngine extends RecordEngine {
     /**
      * Setup recording engine.
      */
