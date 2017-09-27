@@ -18,7 +18,7 @@ const detectBrowser = function() {
     result.version = null;
     result.minVersion = null;
 
-    // Non supported browser.
+    // fail early if it's not a browser
     if (typeof window === 'undefined' || !window.navigator) {
         result.browser = 'Not a supported browser.';
         return result;
@@ -28,31 +28,48 @@ const detectBrowser = function() {
     if (navigator.mozGetUserMedia) {
         result.browser = 'firefox';
         result.version = extractVersion(navigator.userAgent,
-            /Firefox\/([0-9]+)\./, 1);
+            /Firefox\/(\d+)\./, 1);
         result.minVersion = 31;
-        return result;
-    }
-
-    // Chrome/Chromium/Webview
-    if (navigator.webkitGetUserMedia && window.webkitRTCPeerConnection) {
-        result.browser = 'chrome';
-        result.version = extractVersion(navigator.userAgent,
-            /Chrom(e|ium)\/([0-9]+)\./, 2);
-        result.minVersion = 38;
-        return result;
-    }
-
+    } else if (navigator.webkitGetUserMedia) {
+        // Chrome, Chromium, Webview, Opera
+        if (window.webkitRTCPeerConnection) {
+            result.browser = 'chrome';
+            result.version = extractVersion(navigator.userAgent,
+              /Chrom(e|ium)\/(\d+)\./, 2);
+            result.minVersion = 38;
+        } else {
+            // Safari (in an unpublished version) or unknown webkit-based.
+            if (navigator.userAgent.match(/Version\/(\d+).(\d+)/)) {
+                result.browser = 'safari';
+                result.version = extractVersion(navigator.userAgent,
+                    /AppleWebKit\/(\d+)\./, 1);
+                result.minVersion = 11;
+            } else {
+                // unknown webkit-based browser.
+                result.browser = 'Unsupported webkit-based browser ' +
+                    'with GUM support but no WebRTC support.';
+                return result;
+            }
+        }
     // Edge
-    if (navigator.mediaDevices &&
+    } else if (navigator.mediaDevices &&
         navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) {
         result.browser = 'edge';
         result.version = extractVersion(navigator.userAgent,
             /Edge\/(\d+).(\d+)$/, 2);
         result.minVersion = 10547;
+    } else if (navigator.mediaDevices &&
+        navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) {
+        // Safari, with webkitGetUserMedia removed.
+        result.browser = 'safari';
+        result.version = extractVersion(navigator.userAgent,
+            /AppleWebKit\/(\d+)\./, 1);
+    } else {
+        // default fallthrough: not supported.
+        result.browser = 'Not a supported browser.';
         return result;
     }
-    // Non-supported browser default
-    result.browser = 'Not a supported browser.';
+
     return result;
 }
 
@@ -73,6 +90,10 @@ const extractVersion = function(uastring, expr, pos) {
 
 const isEdge = function() {
     return detectBrowser().browser === 'edge';
+}
+
+const isSafari = function() {
+    return detectBrowser().browser === 'safari';
 }
 
 const isOpera = function() {
