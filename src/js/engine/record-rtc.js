@@ -176,4 +176,7 @@ class RecordRTCEngine extends plugin.RecordPlugin {
     }
 }
 
+// expose plugin
+videojs.RecordRTCEngine = RecordRTCEngine;
+
 export default RecordRTCEngine;

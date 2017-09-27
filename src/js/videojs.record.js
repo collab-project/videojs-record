@@ -364,7 +364,7 @@ class Recorder extends Plugin {
             switch (this.audioEngine) {
                 case plugin.RECORDRTC:
                     // RecordRTC.js (default)
-                    EngineClass = RecordRTCEngine;
+                    EngineClass = videojs.RecordRTCEngine;
                     break;
 
                 case plugin.LIBVORBISJS:
