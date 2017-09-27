@@ -1,5 +1,5 @@
 /**
- * @file record-plugin.js
+ * @file record-engine.js
  */
 
 const Component = videojs.getComponent('Component');
@@ -23,7 +23,7 @@ const OPUSRECORDER = 'opus-recorder';
  * @class
  * @augments videojs.Component
  */
-class RecordPlugin extends Component {
+class RecordEngine extends Component {
     /**
      * Remove any temporary data and references to streams.
      * @private
@@ -76,11 +76,11 @@ class RecordPlugin extends Component {
 }
 
 // expose component for external plugins
-videojs.RecordPlugin = RecordPlugin;
-Component.registerComponent('RecordPlugin', RecordPlugin);
+videojs.RecordEngine = RecordEngine;
+Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordPlugin,
+    RecordEngine,
     IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
 }
