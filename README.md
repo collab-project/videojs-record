@@ -415,7 +415,7 @@ the plugin's language file and the Video.js language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="nl.js"></script>
+<script src="video.js/dist/lang/nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:
