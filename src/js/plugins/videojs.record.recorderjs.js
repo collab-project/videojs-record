@@ -2,7 +2,7 @@
  * @file videojs.record.recorderjs.js
  */
 
-import RecordBase from 'video.js';
+const RecordBase = videojs.getComponent('RecordBase');
 
 /**
  * Audio-only engine for the recorder.js library.

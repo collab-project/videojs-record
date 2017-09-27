@@ -2,7 +2,7 @@
  * @file videojs.record.opus-recorder.js
  */
 
-import RecordBase from 'video.js';
+const RecordBase = videojs.getComponent('RecordBase');
 
 /**
  * Audio-only engine for the opus-recorder library.
