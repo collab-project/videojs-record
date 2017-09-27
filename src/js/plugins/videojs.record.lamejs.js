@@ -1,5 +1,6 @@
 /**
  * @file videojs.record.lamejs.js
+ * @since 1.1.0
  */
 
 const RecordPlugin = videojs.getComponent('RecordPlugin');

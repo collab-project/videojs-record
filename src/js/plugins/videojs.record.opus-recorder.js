@@ -1,5 +1,6 @@
 /**
  * @file videojs.record.opus-recorder.js
+ * @since 1.1.0
  */
 
 const RecordPlugin = videojs.getComponent('RecordPlugin');
