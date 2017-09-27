@@ -45,11 +45,11 @@ mkdirp(pluginsDestDir, function(err) {
 
             // add plugin name to banner
             pjson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pjson.name = pluginName + ' plugin';
+            pjson.name = pluginName + ' plugin for videojs-record';
 
             // bundle
-            bundler = browserify(pluginPath, browserify_opts);
-            bundler.transform('babelify')
+            browserify(pluginPath, browserify_opts)
+            .transform('babelify')
             .transform('browserify-shim', {})
             .plugin(banner, {
                 pkg: pjson,
@@ -59,10 +59,17 @@ mkdirp(pluginsDestDir, function(err) {
             .pipe(fs.createWriteStream(pluginDestPath))
 
             // minify
-            bundler = browserify(pluginDestPath, browserify_opts);
-            bundler.transform('babelify')
-            .transform('browserify-shim', {})
-            .transform('uglifyify', { global: true  })
+            browserify(pluginPath, browserify_opts)
+            .transform('babelify')
+            .transform('browserify-shim')
+            .transform('uglifyify', {
+                output: {
+                    // output options
+                    comments: false
+                },
+                ie8: true,
+                warnings: false
+            })
             .plugin(banner, {
                 pkg: pjson,
                 file: bannerPath
