@@ -15,8 +15,9 @@ glob('src/js/plugins/*.js', function(err, files) {
         var dirName = pluginPath.split(fileName)[0];
         var pluginName = fileName.replace('.js', '');
         var minifiedName = fileName.replace('.js', '.min.js');
-        var pluginsDestDir = 'dist-test/plugins/';
+        var pluginsDestDir = 'dist/plugins/';
         var pluginDestPath = pluginsDestDir + fileName;
+        var pluginDestPathMinified = pluginsDestDir + minifiedName;
 
         console.log('-------');
         console.log(dirName);
@@ -25,41 +26,30 @@ glob('src/js/plugins/*.js', function(err, files) {
         console.log(pluginsDestDir);
         console.log(pluginDestPath);
 
-        // bundle
         mkdirp(pluginsDestDir, function(err) { 
             var browserify_opts = {
-                standalone: pluginName,
+                standalone: 'foo', //pluginName,
                 debug: true,
                 plugin: [collapse]
             };
-            browserify(pluginPath, browserify_opts)
-            .transform('babelify')
-            .transform('browserify-shim', {global: true})
+            // bundle
+            var bundler = browserify(pluginPath, browserify_opts);
+            bundler.transform('babelify')
+            .transform('browserify-shim', {
+            })
             .bundle()
-            .pipe(fs.createWriteStream(pluginDestPath));
+            .pipe(fs.createWriteStream(pluginDestPath))
+            // minify
+            //.transform('uglifyify', {sourceMap: false})
+            //.pipe(fs.createWriteStream(pluginDestPathMinified))
 
             // banner
-            bannerize(pluginDestPath, {
+            /*bannerize(pluginsDestDir + minifiedName, {
                 banner: 'scripts/banner.ejs',
                 cwd: path.join(__dirname, '..')
             }).then(function () {
-                console.log('Added banner to ' + pluginDestPath);
-            });
-
-            // get a reference to the plugin
-            //var code = fs.readFileSync(pluginDestPath, "utf8");
-            //var result = UglifyJS.minify(code, { mangle: { toplevel: true } });
-            //console.log(result);
-            /*
-            console.log(result.code);
-            fs.writeFile(pluginsDestDir + minifiedName, result.code, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-            */
+                console.log('Added banner to ' + pluginDestPathMinified);
+            });*/
         });
     });
 });
-
-      
