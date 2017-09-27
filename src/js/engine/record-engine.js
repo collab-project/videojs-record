@@ -30,9 +30,9 @@ class RecordEngine extends Component {
      * @private
      */
     dispose() {
-        // remove previous recording
-        if (this.mediaURL !== undefined) {
-            URL.revokeObjectURL(this.mediaURL);
+        // dispose previous recording
+        if (this.recordedData !== undefined) {
+            URL.revokeObjectURL(this.recordedData);
         }
     }
 
@@ -70,10 +70,6 @@ class RecordEngine extends Component {
 
         // remove reference to recorded stream
         this.dispose();
-
-        // XXX: old
-        // this.mediaURL = URL.createObjectURL(this.recordedData);
-        this.mediaURL = this.recordedData;
 
         // notify listeners
         this.trigger('recordComplete');

@@ -466,13 +466,6 @@ class Recorder extends Plugin {
             // hide the volume bar while it's muted
             this.displayVolumeControl(false);
 
-            // XXX: old - store reference to stream URL
-            /*if (this.streamURL !== undefined)
-            {
-                URL.revokeObjectURL(this.streamURL);
-            }*/
-            //this.streamURL = URL.createObjectURL(this.stream);
-
             // load stream
             this.load(this.stream);
 
@@ -526,8 +519,6 @@ class Recorder extends Plugin {
                     this.surfer.surfer.microphone.paused = false;
                     this.surfer.liveMode = true;
                     this.surfer.surfer.microphone.play();
-                    // XXX: old
-                    //this.player.play();
                     break;
 
                 case engine.VIDEO_ONLY:
@@ -726,28 +717,20 @@ class Recorder extends Plugin {
      * @private
      */
     onRecordComplete() {
-        // store reference to recorded stream URL
-        this.mediaURL = this.engine.mediaURL;
-
         // store reference to recorded stream data
+        this.player.recordedData = this.engine.recordedData;
+
+        // show play control
+        this.player.controlBar.playToggle.show();
+
+        // notify listeners that data is available
+        this.player.trigger('finishRecord');
+
         switch (this.getRecordType()) {
             case engine.AUDIO_ONLY:
-                // show play control
-                this.player.controlBar.playToggle.show();
-
-                // store recorded data
-                this.player.recordedData = this.engine.recordedData;
-
-                // notify listeners that data is available
-                this.player.trigger('finishRecord');
-
                 // pause player so user can start playback
                 this.surfer.pause();
 
-                // Pausing the player so we can visualize the recorded data
-                // will trigger an async video.js 'pause' event that we
-                // have to wait for.
-                //this.player.one('pause', function() {
                 // setup events for playback
                 this.surfer.setupPlaybackEvents(true);
 
@@ -762,23 +745,10 @@ class Recorder extends Plugin {
 
                 // visualize recorded stream
                 this.load(this.player.recordedData);
-
-                //}.bind(this));
-                // XXX: old - pause player so user can start playback
-                //this.player.pause();
                 break;
 
             case engine.VIDEO_ONLY:
             case engine.AUDIO_VIDEO:
-                // show play control
-                this.player.controlBar.playToggle.show();
-
-                // store recorded data (video-only or firefox audio+video)
-                this.player.recordedData = this.engine.recordedData;
-
-                // notify listeners that data is available
-                this.player.trigger('finishRecord');
-
                 // remove previous listeners
                 this.off(this.player, 'pause', this.onPlayerPause);
                 this.off(this.player, 'play', this.onPlayerStart);
@@ -815,16 +785,9 @@ class Recorder extends Plugin {
                             this.player.on('volumechange',
                                 this.onVolumeChange.bind(this));
                         }
-                        /*if (this.extraAudioURL !== undefined) {
-                            URL.revokeObjectURL(this.extraAudioURL);
-                        }*/
                         setSrcObject(this.player.recordedData.audio,
                             this.extraAudio, false);
-                        /* XXX: old
-                        this.extraAudioURL = URL.createObjectURL(
-                            this.player().recordedData.audio);
-                        this.extraAudio.src = this.extraAudioURL;
-                        */
+
                         // pause extra audio when player pauses
                         this.on(this.player, 'pause',
                             this.onPlayerPause);
@@ -851,15 +814,6 @@ class Recorder extends Plugin {
                 break;
 
             case engine.ANIMATION:
-                // show play control
-                this.player.controlBar.playToggle.show();
-
-                // store recorded data
-                this.player.recordedData = this.engine.recordedData;
-
-                // notify listeners that data is available
-                this.player.trigger('finishRecord');
-
                 // animation data is ready
                 this._processing = false;
 
@@ -1040,8 +994,6 @@ class Recorder extends Plugin {
                     // assign stream without createObjectURL
                     setSrcObject(url, this.mediaElement, true);
                 }
-                // XXX: old
-                // this.mediaElement.src = url;
                 break;
         }
     }
@@ -1304,13 +1256,7 @@ class Recorder extends Plugin {
         // hide volume control to prevent feedback
         this.displayVolumeControl(false);
 
-        // XXX: old
         // start or resume live preview
-        //if (this.streamURL !== undefined) {
-        //    URL.revokeObjectURL(this.streamURL);
-        //}
-        //this.streamURL = URL.createObjectURL(this.stream);
-        //this.load(this.streamURL);
         this.load(this.stream);
         this.mediaElement.play();
     }
@@ -1330,7 +1276,7 @@ class Recorder extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        animationDisplay.src = this.mediaURL;
+        animationDisplay.src = this.player.recordedData;
         this.player.animationDisplay.show();
     }
 
@@ -1351,18 +1297,6 @@ class Recorder extends Plugin {
      * @private
      */
     onPlayerStart() {
-        /* XXX: old
-        // workaround Firefox issue
-        if (this.player.seeking()) {
-            // There seems to be a Firefox issue
-            // with playing back blobs. The ugly,
-            // but functional workaround, is to
-            // simply reset the source. See
-            // https://bugzilla.mozilla.org/show_bug.cgi?id=969290
-            this.load(this.mediaURL);
-            this.player.play();
-        }*/
-
         // workaround chrome issue
         if (this.getRecordType() === engine.AUDIO_VIDEO && isChrome() &&
             !this._recording && this.extraAudio !== undefined) {
