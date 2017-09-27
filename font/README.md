@@ -1,15 +1,16 @@
 Font
 ====
 
-This directory contains the additional font used in the videojs-record plugin.
+This directory contains the generated fonts used in the videojs-record plugin.
 
 Setup
 -----
 
-To modify and update the generated font, checkout a copy of the video.js
+To modify and update the generated fonts, checkout a copy of the video.js
 [font](https://github.com/videojs/font) repository:
 
 ```
+cd /tmp
 git clone https://github.com/videojs/font.git
 cd font
 ```
