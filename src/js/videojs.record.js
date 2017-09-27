@@ -132,13 +132,6 @@ class Recorder extends Plugin {
             case engine.AUDIO_ONLY:
                 // reference to videojs-wavesurfer plugin
                 this.surfer = this.player.waveform;
-                /*
-                // XXX: old
-                if (this.surfer) {
-                    // initially hide playhead (fixed in wavesurfer 1.0.25)
-                    this.playhead = this.surfer.el().getElementsByTagName('wave')[1];
-                    this.playhead.style.display = 'none';
-                }*/
                 break;
 
             case engine.IMAGE_ONLY:
@@ -147,13 +140,6 @@ class Recorder extends Plugin {
             case engine.ANIMATION:
                 // customize controls
                 this.player.bigPlayButton.hide();
-
-                // XXX: old - loadedmetadata resets the durationDisplay for the
-                /*/ first time
-                this.player.one('loadedmetadata', function() {
-                    // display max record time
-                    this.setDuration(this.maxLength);
-                }.bind(this));*/
 
                 // the native controls don't work for this UI so disable
                 // them no matter what
@@ -538,9 +524,6 @@ class Recorder extends Plugin {
                 case engine.AUDIO_ONLY:
                     // disable playback events
                     this.surfer.setupPlaybackEvents(false);
-                    // XXX: old - hide playhead
-                    // backwards compat (fixed since wavesurfer 1.0.25)
-                    //this.playhead.style.display = 'none';
 
                     // start/resume live audio visualization
                     this.surfer.surfer.microphone.paused = false;
@@ -773,9 +756,6 @@ class Recorder extends Plugin {
 
                 // display loader
                 this.player.loadingSpinner.show();
-
-                // XXX: old - show playhead
-                // this.playhead.style.display = 'block';
 
                 // restore interaction with controls after waveform
                 // rendering is complete
