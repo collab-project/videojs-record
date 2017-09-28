@@ -4,12 +4,13 @@ videojs-record changelog
 2.0.0 - unreleased
 ------------------
 
-- Rewrite plugin using ES6 (#167, #149)
+- Refactor plugin using ES6 (#167, #149)
 - video.js 6.0 or newer is now required: older versions are no longer supported
-- videojs-wavesurfer.js version 2.0.0 or newer is now required: older versions
+- videojs-wavesurfer.js version 2.0 or newer is now required: older versions
   are no longer supported
-- RecordRTC.js version 5.4.3 or newer is now required
-- New dependency: webrtc-adapter (version 5.0.0 or newer) is now required
+- RecordRTC.js version 5.4.3 or newer is now required: older versions are no
+  longer supported
+- New dependency: webrtc-adapter (version 5.0 or newer) is now recommended
 - Replace usage of deprecated `URL.createObjectURL(stream)` (#169)
 
 
