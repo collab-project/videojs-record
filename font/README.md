@@ -32,7 +32,7 @@ Copy the `icons.json` file from the `videojs-record` repository to
 the root of the `font` repository:
 
 ```
-cp /path/to/videojs-record/src/css/icons.json /path/to/font/
+cp /path/to/videojs-record/font/icons.json /path/to/font/
 ```
 
 Now run `grunt` to build the fonts and styles:
@@ -45,8 +45,8 @@ Now copy the generated `_icons.scss` and font files back to the `videojs-record`
 repository:
 
 ```
-cp -v scss/_icons.scss /path/to/videojs-record/src/scss
-cp -v fonts/videojs-record.* /path/to/videojs-record/font
+cp -v scss/_icons.scss /path/to/videojs-record/src/css
+cp -v fonts/videojs-record.* /path/to/videojs-record/font/
 ```
 
 References
