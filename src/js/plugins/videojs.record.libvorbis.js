@@ -46,10 +46,16 @@ class LibVorbisEngine extends RecordEngine {
         this.engine.stop();
     }
 
+    /**
+     * @private
+     */
     onData(event) {
         this.chunks.push(event.data);
     }
 
+    /**
+     * @private
+     */
     onRecordingAvailable() {
         let blob = new Blob(this.chunks, {type: this.chunks[0].type});
         this.chunks = [];

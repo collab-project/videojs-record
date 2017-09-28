@@ -69,6 +69,9 @@ class OpusRecorderEngine extends RecordEngine {
         this.engine.resume();
     }
 
+    /**
+     * @private
+     */
     onRecordingAvailable(data) {
         // Opus format stored in an Ogg container
         let blob = new Blob([data.detail], {type: 'audio/ogg'});

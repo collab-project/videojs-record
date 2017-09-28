@@ -80,7 +80,8 @@ class LamejsEngine extends RecordEngine {
     }
 
     /**
-     * Continous encoding of audio data.
+     * Continuous encoding of audio data.
+     * @private
      */
     onAudioProcess(ev) {
         // send microphone data to LAME for MP3 encoding while recording
