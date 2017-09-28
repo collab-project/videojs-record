@@ -2,8 +2,16 @@
   "font-name": "videojs-record",
   "root-dir": "./node_modules/material-design-icons/",
   "icons": [{
-    "name": "device-perm",
+    "name": "av-perm",
     "svg": "action/svg/production/ic_perm_camera_mic_48px.svg"
+  },
+  {
+    "name": "video-perm",
+    "svg": "av/svg/production/ic_videocam_48px.svg"
+  },
+  {
+    "name": "audio-perm",
+    "svg": "av/svg/production/ic_mic_48px.svg"
   },
   {
     "name": "record-start",

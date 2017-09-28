@@ -17,10 +17,22 @@ git clone https://github.com/videojs/font.git
 cd font
 ```
 
-Install the dependencies:
+Install the `grunt-cli` and `npm-check-updates` libraries (you might need root user
+permissions here):
 
 ```
-npm install -g grunt-cli
+npm install -g grunt-cli npm-check-updates
+```
+
+Update `material-design-icons` and `webfonts-generator` to the latest version:
+
+```
+ncu --upgrade material-design-icons webfonts-generator
+```
+
+And install the dependencies:
+
+```
 npm install
 ```
 
@@ -42,6 +54,8 @@ Now run `grunt` to build the fonts and styles:
 ```
 grunt
 ```
+
+Open `index.html` in a browser to see the fonts in action.
 
 Update
 ------
