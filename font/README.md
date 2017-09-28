@@ -1,10 +1,12 @@
 Font
 ====
 
-This directory contains the generated fonts used in the videojs-record plugin.
+This directory contains the generated font used in the videojs-record plugin.
 
-Setup
------
+Continue reading if you want to customize the font.
+
+Prepare
+-------
 
 To modify and update the generated fonts, checkout a copy of the video.js
 [font](https://github.com/videojs/font) repository:
@@ -41,7 +43,10 @@ Now run `grunt` to build the fonts and styles:
 grunt
 ```
 
-Now copy the generated `_icons.scss` and font files back to the `videojs-record`
+Update
+------
+
+Copy the generated `_icons.scss` and font files back to the `videojs-record`
 repository:
 
 ```
