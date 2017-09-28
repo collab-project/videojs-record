@@ -20,7 +20,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm-run-all -s build:css build:fonts build:js build:test",
-    "build:fonts": "copy font/*.{eot,svg,ttf,woff} dist/font/",
+    "build:fonts": "copy font/*.{eot,svg,ttf,woff} dist/fonts/",
     "build:css": "npm-run-all -s build:css:sass build:css:compress build:css:banner",
     "build:css:sass": "node-sass --include-path src/scss src/scss/videojs.record.scss dist/css/videojs.record.css",
     "build:css:compress": "cleancss -o dist/css/videojs.record.min.css dist/css/videojs.record.css",
