@@ -49,6 +49,13 @@ cp -v scss/_icons.scss /path/to/videojs-record/src/css
 cp -v fonts/videojs-record.* /path/to/videojs-record/font/
 ```
 
+And copy them to the `dist` directory (optional as it's done again during
+a build):
+
+```
+npm run build:fonts
+```
+
 References
 ----------
 
