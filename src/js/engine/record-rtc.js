@@ -3,8 +3,9 @@
  * @since 2.0.0
  */
 
-import * as engine from './record-engine';
+import { RecordEngine } from './record-engine';
 import { isChrome } from '../utils/detect-browser';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION} from '../utils/record-mode';
 
 /**
  * Engine used with the MRecordRTC class in the RecordRTC library.
@@ -12,7 +13,7 @@ import { isChrome } from '../utils/detect-browser';
  * @class
  * @augments videojs.RecordEngine
  */
-class RecordRTCEngine extends engine.RecordEngine {
+class RecordRTCEngine extends RecordEngine {
     /**
      * The constructor function for the class.
      *
@@ -125,7 +126,7 @@ class RecordRTCEngine extends engine.RecordEngine {
         let recordType = this.player_.recorder.getRecordType();
         this.engine.getBlob(function(recording) {
             switch (recordType) {
-                case engine.AUDIO_ONLY:
+                case AUDIO_ONLY:
                     this.recordedData = recording.audio;
 
                     this.addFileInfo(this.recordedData);
@@ -134,8 +135,8 @@ class RecordRTCEngine extends engine.RecordEngine {
                     this.trigger('recordComplete');
                     break;
 
-                case engine.VIDEO_ONLY:
-                case engine.AUDIO_VIDEO:
+                case VIDEO_ONLY:
+                case AUDIO_VIDEO:
                     // when recording both audio and video, recordrtc
                     // calls this twice on chrome, first with audio data
                     // and then with video data.
@@ -147,7 +148,7 @@ class RecordRTCEngine extends engine.RecordEngine {
 
                         // on the chrome browser two blobs are created
                         // containing the separate audio/video streams.
-                        if (recordType === engine.AUDIO_VIDEO && isChrome()) {
+                        if (recordType === AUDIO_VIDEO && isChrome()) {
                             // store both audio and video
                             this.recordedData = recording;
 
@@ -163,7 +164,7 @@ class RecordRTCEngine extends engine.RecordEngine {
                     }
                     break;
 
-                case engine.ANIMATION:
+                case ANIMATION:
                     this.recordedData = recording.gif;
 
                     this.addFileInfo(this.recordedData);

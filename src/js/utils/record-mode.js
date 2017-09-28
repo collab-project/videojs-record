@@ -3,7 +3,12 @@
  * @since 2.0.0
  */
 
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION} from '../engine/record-engine';
+// recorder modes
+const IMAGE_ONLY = 'image_only';
+const AUDIO_ONLY = 'audio_only';
+const VIDEO_ONLY = 'video_only';
+const AUDIO_VIDEO = 'audio_video';
+const ANIMATION = 'animation';
 
 
 const getRecorderMode = function(image, audio, video, animation) {
@@ -31,4 +36,7 @@ const isModeEnabled = function(mode) {
     return mode === Object(mode) || mode === true;
 }
 
-export default getRecorderMode;
+export {
+    getRecorderMode,
+    IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION
+}
