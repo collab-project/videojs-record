@@ -17,6 +17,7 @@ import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import { detectBrowser, isChrome } from './utils/detect-browser';
+import getRecorderMode from './utils/record-mode';
 
 import videojs from 'video.js';
 
@@ -1109,20 +1110,8 @@ class Recorder extends Plugin {
      * Get recorder type.
      */
     getRecordType() {
-        if (this.isModeEnabled(this.recordImage)) {
-            return engine.IMAGE_ONLY;
-        } else if (this.isModeEnabled(this.recordAnimation)) {
-            return engine.ANIMATION;
-        } else if (this.isModeEnabled(this.recordAudio) && !this.isModeEnabled(
-            this.recordVideo)) {
-            return engine.AUDIO_ONLY;
-        } else if (this.isModeEnabled(this.recordAudio) && this.isModeEnabled(
-            this.recordVideo)) {
-            return engine.AUDIO_VIDEO;
-        } else if (!this.isModeEnabled(this.recordAudio) && this.isModeEnabled(
-            this.recordVideo)) {
-            return engine.VIDEO_ONLY;
-        }
+        return getRecorderMode(this.recordImage, this.recordAudio,
+            this.recordVideo, this.recordAnimation);
     }
 
     /**
@@ -1385,12 +1374,6 @@ class Recorder extends Plugin {
         }
     }
 
-    /**
-     * Return boolean indicating whether mode is enabled or not.
-    */
-    isModeEnabled(mode) {
-        return mode === Object(mode) || mode === true;
-    }
 }
 
 /**
