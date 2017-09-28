@@ -5,7 +5,7 @@
 
 import { RecordEngine } from './record-engine';
 import { isChrome } from '../utils/detect-browser';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION} from '../utils/record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION} from './record-mode';
 
 /**
  * Engine used with the MRecordRTC class in the RecordRTC library.

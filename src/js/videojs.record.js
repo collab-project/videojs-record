@@ -19,7 +19,7 @@ import { detectBrowser, isChrome } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from './utils/record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
 
