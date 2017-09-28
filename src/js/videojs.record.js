@@ -1447,10 +1447,23 @@ const recordPlugin = function(options) {
     });
     player.addChild(player.recorder);
 
+    // get icon based on type
+    let deviceIcon = 'av-perm';
+    switch (player.recorder.getRecordType()) {
+        case engine.IMAGE_ONLY:
+        case engine.VIDEO_ONLY:
+        case engine.ANIMATION:
+            deviceIcon = 'video-perm';
+            break;
+        case engine.AUDIO_ONLY:
+            deviceIcon = 'audio-perm';
+            break;
+    }
+
     // add device button
     player.deviceButton = new DeviceButton(player, {
         'el': createButton('device', player.localize('Device'),
-            'device-perm')
+            deviceIcon)
     });
     player.addChild(player.deviceButton);
 

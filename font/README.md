@@ -3,6 +3,8 @@ Font
 
 This directory contains the generated font used in the videojs-record plugin.
 
+The font provides extra icons used in the plugin.
+
 Continue reading if you want to customize the font.
 
 Prepare
