@@ -32,7 +32,7 @@ Update `material-design-icons` and `webfonts-generator` to the latest version:
 ncu --upgrade material-design-icons webfonts-generator
 ```
 
-And install the dependencies:
+Install the dependencies:
 
 ```
 npm install
@@ -70,8 +70,8 @@ cp -v scss/_icons.scss /path/to/videojs-record/src/css
 cp -v fonts/videojs-record.* /path/to/videojs-record/font/
 ```
 
-And copy them to the `dist` directory (optional as it's done again during
-a build):
+If you also want to copy them to the `dist` directory (optional as it's done
+again during a build):
 
 ```
 npm run build:fonts
