@@ -48,7 +48,7 @@ Copy the `icons.json` file from the `videojs-record` repository to
 the root of the `font` repository:
 
 ```
-cp /path/to/videojs-record/font/icons.json /path/to/font/
+cp -v /path/to/videojs-record/font/icons.json /path/to/font/
 ```
 
 Now run `grunt` to build the fonts and styles:
@@ -74,6 +74,7 @@ If you also want to copy them to the `dist` directory (optional as it's done
 again during a build):
 
 ```
+cd /path/to/videojs-record/
 npm run build:fonts
 ```
 
