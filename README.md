@@ -44,7 +44,7 @@ to visualize the audio waveform):
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
 It is also highly recommended to include the [webrtc-adapter](https://github.com/webrtc/adapter) package for
-cross-browser support for getUserMedia` and other browser APIs used in this plugin.
+cross-browser support for getUserMedia and other browser APIs used in this plugin.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
@@ -475,13 +475,7 @@ npm run <command>
 Font
 ----
 
-Generate or update the font files:
-
-```
-grunt font
-```
-
-Check the [the font readme](src/css/font/README.md) for more information.
+Check the [the font readme](font/README.md) for more information.
 
 License
 -------
