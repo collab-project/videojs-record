@@ -125,7 +125,7 @@ class RecordRTCEngine extends RecordEngine {
         this.mediaURL = audioVideoURL;
 
         // store reference to recorded stream data
-        let recordType = this.player_.record().getRecordType();
+        let recordType = this.player().record().getRecordType();
         this.engine.getBlob(function(recording) {
             switch (recordType) {
                 case AUDIO_ONLY:
