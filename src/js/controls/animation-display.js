@@ -12,16 +12,21 @@ const Component = videojs.getComponent('Component');
  * @augments videojs.Component
 */
 class AnimationDisplay extends Component {
+
     /**
-     * The constructor function for the class.
+     * Create the `AnimationDisplay`s DOM element.
      *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
+     * @return {Element}
+     *         The dom element that gets created.
      */
-    constructor(player, options) {
-        super(player, options);
+    createEl() {
+        return super.createEl('div', {
+            className: 'vjs-animation-display',
+            innerHTML: '<img />'
+        });
     }
 }
+
+Component.registerComponent('AnimationDisplay', AnimationDisplay);
 
 export default AnimationDisplay;

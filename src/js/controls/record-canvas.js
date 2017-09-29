@@ -12,16 +12,21 @@ const Component = videojs.getComponent('Component');
  * @augments videojs.Component
 */
 class RecordCanvas extends Component {
+
     /**
-     * The constructor function for the class.
+     * Create the `RecordCanvas`s DOM element.
      *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
+     * @return {Element}
+     *         The dom element that gets created.
      */
-    constructor(player, options) {
-        super(player, options);
+    createEl() {
+        return super.createEl('div', {
+            className: 'vjs-record-canvas',
+            innerHTML: '<canvas></canvas>'
+        });
     }
 }
+
+Component.registerComponent('RecordCanvas', RecordCanvas);
 
 export default RecordCanvas;

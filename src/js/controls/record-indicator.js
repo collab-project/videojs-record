@@ -26,11 +26,26 @@ class RecordIndicator extends Component {
         this.on(player, 'stopRecord', this.hide);
     }
 
+    /**
+     * Create the `RecordIndicator`s DOM element.
+     *
+     * @return {Element}
+     *         The dom element that gets created.
+     */
+    createEl() {
+        return super.createEl('div', {
+            className: 'vjs-record-indicator vjs-control',
+            dir: 'ltr'
+        });
+    }
+
     disable() {
         // disable record indicator event handlers
         this.off(this.player(), 'startRecord', this.show);
         this.off(this.player(), 'stopRecord', this.hide);
     }
 }
+
+Component.registerComponent('RecordIndicator', RecordIndicator);
 
 export default RecordIndicator;

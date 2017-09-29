@@ -26,15 +26,33 @@ class RecordToggle extends Button {
         this.on('tap', this.onClick);
         this.on(player, 'startRecord', this.onStart);
         this.on(player, 'stopRecord', this.onStop);
-
-        this.createControlTextEl(this.el());
     }
 
-    onClick(e) {
-        // stop this event before it bubbles up
-        e.stopImmediatePropagation();
+    /**
+     * Builds the default DOM `className`.
+     *
+     * @return {string}
+     *         The DOM `className` for this object.
+     */
+    buildCSSClass() {
+        return 'vjs-record-button vjs-control vjs-icon-record-start';
+    }
 
-        let recorder = this.player().recorder;
+    /**
+     * This gets called when the button is clicked.
+     *
+     * @param {EventTarget~Event} event
+     *        The `tap` or `click` event that caused this function to be
+     *        called.
+     *
+     * @listens tap
+     * @listens click
+     */
+    onClick(event) {
+        // stop this event before it bubbles up
+        event.stopImmediatePropagation();
+
+        let recorder = this.player().record();
         if (!recorder.isRecording()) {
             recorder.start();
         } else {
@@ -67,7 +85,7 @@ class RecordToggle extends Button {
      *
      * @listens Player#stopRecord
      */
-    onStop() {
+    onStop(event) {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-record-stop');
         this.addClass('vjs-icon-record-start');

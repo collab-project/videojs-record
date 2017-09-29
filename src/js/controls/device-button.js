@@ -25,16 +25,24 @@ class DeviceButton extends Button {
 
         this.on('click', this.onClick);
         this.on('tap', this.onClick);
-
-        this.createControlTextEl(this.el());
     }
 
-    onClick(e) {
+    /**
+     * This gets called when the button is clicked.
+     *
+     * @param {EventTarget~Event} event
+     *        The `tap` or `click` event that caused this function to be
+     *        called.
+     *
+     * @listens tap
+     * @listens click
+     */
+    onClick(event) {
         // stop this event before it bubbles up
-        e.stopImmediatePropagation();
+        event.stopImmediatePropagation();
 
         // open device dialog
-        this.player().recorder.getDevice();
+        this.player().record().getDevice();
     }
 }
 

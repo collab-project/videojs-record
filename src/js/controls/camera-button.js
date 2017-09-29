@@ -13,6 +13,7 @@ const Component = videojs.getComponent('Component');
  * @augments videojs.Button
 */
 class CameraButton extends Button {
+
     /**
      * The constructor function for the class.
      *
@@ -27,15 +28,33 @@ class CameraButton extends Button {
         this.on('tap', this.onClick);
         this.on(player, 'startRecord', this.onStart);
         this.on(player, 'stopRecord', this.onStop);
-
-        this.createControlTextEl(this.el());
     }
 
-    onClick(e) {
-        // stop this event before it bubbles up
-        e.stopImmediatePropagation();
+    /**
+     * Builds the default DOM `className`.
+     *
+     * @return {string}
+     *         The DOM `className` for this object.
+     */
+    buildCSSClass() {
+        return 'vjs-camera-button vjs-control vjs-icon-photo-camera';
+    }
 
-        let recorder = this.player().recorder;
+    /**
+     * This gets called when the button is clicked.
+     *
+     * @param {EventTarget~Event} event
+     *        The `tap` or `click` event that caused this function to be
+     *        called.
+     *
+     * @listens tap
+     * @listens click
+     */
+    onClick(event) {
+        // stop this event before it bubbles up
+        event.stopImmediatePropagation();
+
+        let recorder = this.player().record();
 
         if (!recorder.isProcessing()) {
             // create snapshot
@@ -57,7 +76,7 @@ class CameraButton extends Button {
      *
      * @listens Player#startRecord
      */
-    onStart() {
+    onStart(event) {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-photo-camera');
         this.addClass('vjs-icon-replay');
@@ -74,7 +93,7 @@ class CameraButton extends Button {
      *
      * @listens Player#stopRecord
      */
-    onStop() {
+    onStop(event) {
         // replace element class so it can change appearance
         this.removeClass('vjs-icon-replay');
         this.addClass('vjs-icon-photo-camera');

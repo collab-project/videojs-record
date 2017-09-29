@@ -32,7 +32,7 @@ const AUTO = 'auto';
 
 // monkey-patch play (#152)
 Player.prototype.play = function play() {
-    var retval = this.techGet_('play');
+    let retval = this.techGet_('play');
     // silence errors (unhandled promise from play)
     if (retval !== undefined && typeof retval.then === 'function') {
         retval.then(null, function (e){});
@@ -46,7 +46,7 @@ Player.prototype.play = function play() {
  * @class
  * @augments videojs.Plugin
  */
-class Recorder extends Plugin {
+class Record extends Plugin {
     /**
      * The constructor function for the class.
      *
@@ -61,6 +61,48 @@ class Recorder extends Plugin {
 
         // (re)set recorder state
         this.resetState();
+
+        // add device button with icon based on type
+        let deviceIcon = 'av-perm';
+        switch (this.getRecordType()) {
+            case IMAGE_ONLY:
+            case VIDEO_ONLY:
+            case ANIMATION:
+                deviceIcon = 'video-perm';
+                break;
+            case AUDIO_ONLY:
+                deviceIcon = 'audio-perm';
+                break;
+        }
+        DeviceButton.prototype.buildCSSClass = function() {
+            // use dynamic icon class
+            return 'vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+        };
+        player.deviceButton = new DeviceButton(player, options);
+        player.addChild(player.deviceButton);
+
+        // add record indicator
+        player.recordIndicator = new RecordIndicator(player, options);
+        player.recordIndicator.hide();
+        player.addChild(player.recordIndicator);
+
+        // add canvas for recording and displaying image
+        player.recordCanvas = new RecordCanvas(player, options);
+        player.recordCanvas.hide();
+        player.addChild(player.recordCanvas);
+
+        // add image for animation display
+        player.animationDisplay = new AnimationDisplay(player, options);
+        player.animationDisplay.hide();
+        player.addChild(player.animationDisplay);
+
+        // add camera button
+        player.cameraButton = new CameraButton(player, options);
+        player.cameraButton.hide();
+
+        // add record toggle
+        player.recordToggle = new RecordToggle(player, options);
+        player.recordToggle.hide();
 
         // wait until player ui is ready
         this.player.one('ready', this.setupUI.bind(this));
@@ -999,9 +1041,15 @@ class Recorder extends Plugin {
     }
 
     /**
-     * Destroy plugin and players and cleanup resources.
+     * Destroy plugin only.
+     *
+     * Use `destroy` to remove the plugin and the player.
      */
-    destroy() {
+    dispose() {
+        // disable common event listeners
+        this.player.off('ready');
+        this.player.off('userinactive');
+
         // prevent callbacks if recording is in progress
         if (this.engine) {
             this.engine.dispose();
@@ -1015,24 +1063,24 @@ class Recorder extends Plugin {
         // stop countdown
         this.player.clearInterval(this.countDown);
 
-        // dispose player
-        switch (this.getRecordType()) {
-            case AUDIO_ONLY:
-                if (this.surfer) {
-                    // also disposes player
-                    this.surfer.destroy();
-                }
-                break;
-
-            case IMAGE_ONLY:
-            case VIDEO_ONLY:
-            case AUDIO_VIDEO:
-            case ANIMATION:
-                this.player.dispose();
-                break;
+        // dispose wavesurfer.js
+        if (this.getRecordType() == AUDIO_ONLY) {
+            if (this.surfer) {
+                // also disposes player
+                this.surfer.destroy();
+            }
         }
 
         this.resetState();
+
+        super.dispose();
+    }
+
+    /**
+     * Destroy plugin and players and cleanup resources.
+     */
+    destroy() {
+        this.player.dispose();
     }
 
     /**
@@ -1375,136 +1423,13 @@ class Recorder extends Plugin {
             this.player.controlBar.volumePanel.el().style.display = display;
         }
     }
-
 }
-
-/**
- * Create a custom button.
- * @private
- * @param {string} className - Class name for the new button.
- * @param {string} label - Label for the new button.
- * @param {string} iconName - Icon for the new button.
- */
-const createButton = function(className, label, iconName) {
-    let props = {
-        className: 'vjs-' + className + '-button vjs-control vjs-icon-' + iconName,
-        innerHTML: '<span aria-hidden="true" class="vjs-icon-placeholder"></span>',
-    };
-    let attrs = {
-        role: 'button',
-        // let the screen reader user know that the text of the button may change
-        'aria-live': 'polite',
-        tabIndex: 0,
-        title: label
-    };
-    return Component.prototype.createEl('button', props, attrs);
-};
-
-/**
- * Create HTML element for plugin.
- *
- * @private
- */
-const createPlugin = function() {
-    let props = {
-        className: 'vjs-record'
-    };
-    let attrs = {
-        tabIndex: 0
-    };
-    return Component.prototype.createEl('div', props, attrs);
-};
-
-/**
- * Initialize the plugin.
- *
- * @param {Object} [options] - Configuration for the plugin.
- * @private
- */
-const recordPlugin = function(options) {
-    let settings = videojs.mergeOptions(pluginDefaultOptions, options);
-    let player = this;
-
-    // create new plugin instance
-    player.recorder = new Recorder(player, {
-        'el': createPlugin(),
-        'options': settings
-    });
-    player.addChild(player.recorder);
-
-    // get icon based on type
-    let deviceIcon = 'av-perm';
-    switch (player.recorder.getRecordType()) {
-        case IMAGE_ONLY:
-        case VIDEO_ONLY:
-        case ANIMATION:
-            deviceIcon = 'video-perm';
-            break;
-        case AUDIO_ONLY:
-            deviceIcon = 'audio-perm';
-            break;
-    }
-
-    // add device button
-    player.deviceButton = new DeviceButton(player, {
-        'el': createButton('device', player.localize('Device'),
-            deviceIcon)
-    });
-    player.addChild(player.deviceButton);
-
-    // add record indicator
-    player.recordIndicator = new RecordIndicator(player, {
-        'el': Component.prototype.createEl('div', {
-            className: 'vjs-record-indicator vjs-control'
-        })
-    });
-    player.recordIndicator.hide();
-    player.addChild(player.recordIndicator);
-
-    // add canvas for recording and displaying image
-    player.recordCanvas = new RecordCanvas(player, {
-        'el': Component.prototype.createEl('div', {
-            className: 'vjs-record-canvas',
-            innerHTML: '<canvas></canvas>'
-        })
-    });
-    player.recordCanvas.hide();
-    player.addChild(player.recordCanvas);
-
-    // add image for animation display
-    player.animationDisplay = new AnimationDisplay(player, {
-        'el': Component.prototype.createEl('div', {
-            className: 'vjs-animation-display',
-            innerHTML: '<img />'
-        })
-    });
-    player.animationDisplay.hide();
-    player.addChild(player.animationDisplay);
-
-    // add camera button
-    player.cameraButton = new CameraButton(player, {
-        'el': createButton('camera', player.localize('Image'),
-            'photo-camera')
-    });
-    player.cameraButton.hide();
-
-    // add record toggle
-    player.recordToggle = new RecordToggle(player, {
-        'el': createButton('record', player.localize('Record'),
-            'record-start')
-    });
-    player.recordToggle.hide();
-};
 
 // register plugin
-videojs.Recorder = Recorder;
+videojs.Record = Record;
+videojs.registerPlugin('record', Record);
 
-if (videojs.registerPlugin) {
-    videojs.registerPlugin('record', recordPlugin);
-} else {
-    videojs.plugin('record', recordPlugin);
-}
-
+// export plugin
 module.exports = {
-    Recorder
+    Record
 };

@@ -7,6 +7,8 @@ import { RecordEngine } from './record-engine';
 import { isChrome } from '../utils/detect-browser';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION} from './record-mode';
 
+const Component = videojs.getComponent('Component');
+
 /**
  * Engine used with the MRecordRTC class in the RecordRTC library.
  *
@@ -123,7 +125,7 @@ class RecordRTCEngine extends RecordEngine {
         this.mediaURL = audioVideoURL;
 
         // store reference to recorded stream data
-        let recordType = this.player_.recorder.getRecordType();
+        let recordType = this.player_.record().getRecordType();
         this.engine.getBlob(function(recording) {
             switch (recordType) {
                 case AUDIO_ONLY:
@@ -179,5 +181,7 @@ class RecordRTCEngine extends RecordEngine {
 
 // expose plugin
 videojs.RecordRTCEngine = RecordRTCEngine;
+
+Component.registerComponent('RecordRTCEngine', RecordRTCEngine);
 
 export default RecordRTCEngine;
