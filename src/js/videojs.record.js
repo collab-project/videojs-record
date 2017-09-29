@@ -172,7 +172,7 @@ class Record extends Plugin {
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // reference to videojs-wavesurfer plugin
-                this.surfer = this.player.waveform;
+                this.surfer = this.player.wavesurfer();
                 break;
 
             case IMAGE_ONLY:
