@@ -25,7 +25,6 @@ import videojs from 'video.js';
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');
-const Component = videojs.getComponent('Component');
 
 const AUTO = 'auto';
 
