@@ -16,20 +16,9 @@ const Component = videojs.getComponent('Component');
  * @augments videojs.RecordEngine
  */
 class RecordRTCEngine extends RecordEngine {
-    /**
-     * The constructor function for the class.
-     *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
-     */
-    constructor(player, options) {
-        super(player, options);
-    }
 
     /**
      * Setup recording engine.
-     * @private
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;
@@ -64,8 +53,17 @@ class RecordRTCEngine extends RecordEngine {
     }
 
     /**
+     * Remove any temporary data and references to streams.
+     */
+    dispose() {
+        super.dispose();
+
+        // XXX: recordrtc is missing destroy method, see
+        // https://github.com/muaz-khan/RecordRTC/issues/332
+    }
+
+    /**
      * Start recording.
-     * @private
      */
     start() {
         this.engine.startRecording();
@@ -74,7 +72,6 @@ class RecordRTCEngine extends RecordEngine {
     /**
      * Stop recording. Result will be available async when onStopRecording
      * is called.
-     * @private
      */
     stop() {
         this.engine.stopRecording(this.onStopRecording.bind(this));
@@ -82,7 +79,6 @@ class RecordRTCEngine extends RecordEngine {
 
     /**
      * Pause recording.
-     * @private
      */
     pause() {
         this.engine.pauseRecording();
@@ -90,7 +86,6 @@ class RecordRTCEngine extends RecordEngine {
 
     /**
      * Resume recording.
-     * @private
      */
     resume() {
         this.engine.resumeRecording();
@@ -100,7 +95,6 @@ class RecordRTCEngine extends RecordEngine {
      * Show save as dialog in browser so the user can store the recorded media
      * locally.
      *
-     * @private
      * @param {object} name - Object with names for the particular blob(s)
      *     you want to save. File extensions are added automatically. For
      *     example: {'video': 'name-of-video-file'}. Supported keys are

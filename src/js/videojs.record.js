@@ -873,8 +873,8 @@ class Record extends Plugin {
      * @private
      */
     onVolumeChange() {
-        let volume = this.player().volume();
-        if (this.player().muted()) {
+        let volume = this.player.volume();
+        if (this.player.muted()) {
             // muted volume
             volume = 0;
         }
@@ -1049,6 +1049,7 @@ class Record extends Plugin {
         // disable common event listeners
         this.player.off('ready');
         this.player.off('userinactive');
+        this.player.off('loadedmetadata');
 
         // prevent callbacks if recording is in progress
         if (this.engine) {
@@ -1111,7 +1112,7 @@ class Record extends Plugin {
         this.setCurrentTime(0);
 
         // reset player
-        this.player().reset();
+        this.player.reset();
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 if (this.surfer && this.surfer.surfer) {
@@ -1123,8 +1124,8 @@ class Record extends Plugin {
             case IMAGE_ONLY:
             case ANIMATION:
                 // reset UI
-                this.player().recordCanvas.hide();
-                this.player().cameraButton.hide();
+                this.player.recordCanvas.hide();
+                this.player.cameraButton.hide();
                 break;
         }
 

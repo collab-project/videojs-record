@@ -18,6 +18,7 @@ const OPUSRECORDER = 'opus-recorder';
  * @augments videojs.Component
  */
 class RecordEngine extends Component {
+
     /**
      * Remove any temporary data and references to streams.
      * @private
