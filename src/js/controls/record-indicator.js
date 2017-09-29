@@ -41,8 +41,8 @@ class RecordIndicator extends Component {
 
     disable() {
         // disable record indicator event handlers
-        this.off(this.player(), 'startRecord', this.show);
-        this.off(this.player(), 'stopRecord', this.hide);
+        this.off(this.player_, 'startRecord', this.show);
+        this.off(this.player_, 'stopRecord', this.hide);
     }
 }
 

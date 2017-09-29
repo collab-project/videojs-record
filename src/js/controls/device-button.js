@@ -42,7 +42,7 @@ class DeviceButton extends Button {
         event.stopImmediatePropagation();
 
         // open device dialog
-        this.player().record().getDevice();
+        this.player_.record().getDevice();
     }
 }
 

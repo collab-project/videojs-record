@@ -54,7 +54,7 @@ class CameraButton extends Button {
         // stop this event before it bubbles up
         event.stopImmediatePropagation();
 
-        let recorder = this.player().record();
+        let recorder = this.player_.record();
 
         if (!recorder.isProcessing()) {
             // create snapshot
