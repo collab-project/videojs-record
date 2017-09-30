@@ -68,6 +68,45 @@ class RecordEngine extends Component {
         // notify listeners
         this.trigger('recordComplete');
     }
+
+    /**
+     * Show save as dialog in browser so the user can store the recorded media
+     * locally.
+     *
+     * @param {object} name - Object with names for the particular blob(s)
+     *     you want to save. File extensions are added automatically. For
+     *     example: {'video': 'name-of-video-file'}. Supported keys are
+     *     'audio', 'video' and 'gif'.
+     */
+    saveAs(name) {
+        let fileName = name[Object.keys(name)[0]];
+
+        if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+            return navigator.msSaveOrOpenBlob(this.recordedData, fileName);
+        } else if (typeof navigator.msSaveBlob !== 'undefined') {
+            return navigator.msSaveBlob(this.recordedData, fileName);
+        }
+
+        let hyperlink = document.createElement('a');
+        hyperlink.href = URL.createObjectURL(this.recordedData);
+        hyperlink.download = fileName;
+
+        hyperlink.style = 'display:none;opacity:0;color:transparent;';
+        (document.body || document.documentElement).appendChild(hyperlink);
+
+        if (typeof hyperlink.click === 'function') {
+            hyperlink.click();
+        } else {
+            hyperlink.target = '_blank';
+            hyperlink.dispatchEvent(new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            }));
+        }
+
+        URL.revokeObjectURL(hyperlink.href);
+    }
 }
 
 // expose component for external plugins
