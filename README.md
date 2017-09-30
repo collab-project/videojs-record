@@ -158,8 +158,7 @@ and enable the plugin by adding a `record` configuration to `plugins`. For
 example:
 
 ```javascript
-var player = videojs('myVideo',
-{
+var player = videojs('myVideo', {
     // video.js options
     controls: true,
     loop: false,
@@ -236,8 +235,7 @@ Events
 Plugin events that are available on the video.js player instance. For example:
 
 ```javascript
-player.on('startRecord', function()
-{
+player.on('startRecord', function() {
     console.log('started recording!');
 });
 ```
@@ -265,11 +263,11 @@ The following example shows how to change the camera resolution to 1280 by 720
 pixels:
 
 ```javascript
-var player = videojs('myVideo',
-{
+var player = videojs('myVideo', {
     controls: true,
     loop: false,
     // dimensions of video.js player
+    fluid: false,
     width: 1280,
     height: 720,
     plugins: {
@@ -300,8 +298,7 @@ Listen for the `finishRecord` event and obtain the recorded data from the
 
 ```javascript
 // user completed recording and stream is available
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // the recordedData object contains the stream data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
@@ -319,8 +316,7 @@ choose the storage location for the recorded data. It accepts a `name` object th
 contains a mapping between the media type and the filename. For example:
 
 ```javascript
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // show save as dialog
     player.recorder.saveAs({'video': 'my-video-file-name.webm'});
 });
@@ -336,8 +332,7 @@ Do this by listening for the `timestamp` event. For example:
 
 ```javascript
 // monitor stream data during recording
-player.on('timestamp', function()
-{
+player.on('timestamp', function() {
     // timestamps
     console.log('current timestamp: ', player.currentTimestamp);
     console.log('all timestamps: ', player.allTimestamps);
@@ -378,6 +373,18 @@ record: {
         optional: [{sourceId: deviceId}]
     },
 }
+```
+
+Responsive layout
+-----------------
+
+The `fluid` option for video.js will resize the player according to the size
+of the window.
+
+Configure the player; enable the video.js `'fluid'` option:
+
+```javascript
+fluid: true
 ```
 
 Customizing controls

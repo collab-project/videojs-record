@@ -11,6 +11,7 @@ videojs-record changelog
 - RecordRTC.js version 5.4.3 or newer is now required: older versions are no
   longer supported
 - New dependency: webrtc-adapter (version 5.0 or newer) is now recommended
+- Support for the video.js `fluid` option (#166)
 - Replace usage of deprecated `URL.createObjectURL(stream)` (#169)
 
 
