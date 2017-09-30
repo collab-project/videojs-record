@@ -44,8 +44,7 @@ Edit `lib/grunt.js` and replace `VideoJS` with `videojs-record` (until this
 Customize
 ---------
 
-Copy the [icons.json](icons.json) file from the `videojs-record` repository to
-the root of the `font` repository:
+Copy [icons.json](icons.json) the root of the `font` repository:
 
 ```
 cp -v /path/to/videojs-record/font/icons.json /path/to/font/
