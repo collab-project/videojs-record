@@ -145,7 +145,7 @@
     "qunitjs": "^2.4.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "replace": "^0.3.0",
-    "serve-static": "^1.12.6",
+    "serve-static": "^1.13.1",
     "shelljs": "^0.7.8",
     "sinon": "4.0.0",
     "uglify-js": "^3.1.2",
