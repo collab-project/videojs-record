@@ -1,3 +1,9 @@
+/**
+ * Add copyright header to file.
+ *
+ * @file add-banner.js
+ */
+
 var fs = require('fs');
 var moment = require('moment');
 var banner = require('add-banner');
