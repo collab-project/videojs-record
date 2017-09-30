@@ -77,7 +77,7 @@ is included on the page:
 ```
 
 Add the extra stylesheet for the plugin that includes a
-[custom font](src/css/font) with additional icons:
+[custom font](font) with additional icons:
 
 ```html
 <link href="videojs.record.css" rel="stylesheet">
@@ -130,7 +130,8 @@ Examples
 - image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 
-To try out the examples locally, checkout the repository using Git:
+To try out the examples locally, download the zipfile or checkout the
+repository using Git:
 ```
 git clone https://github.com/collab-project/videojs-record.git
 ```
@@ -141,12 +142,12 @@ cd videojs-record
 npm install
 ```
 
-Start the local webserver for the examples:
+Build the library and start the local webserver:
 ```
-grunt serve
+npm run start
 ```
 
-And open http://localhost:9000/examples in a browser.
+And open http://localhost:9999/examples/audio-video.html in a browser.
 
 Options
 -------
@@ -205,11 +206,11 @@ The available options for this plugin are:
 Methods
 -------
 
-Methods for this plugin documented below are available on the `recorder` object
+Methods for this plugin documented below are available using the `record` method
 of the video.js player instance. For example:
 
 ```javascript
-player.recorder.destroy();
+player.record().destroy();
 ```
 
 | Method | Description |
@@ -321,7 +322,7 @@ contains a mapping between the media type and the filename. For example:
 player.on('finishRecord', function()
 {
     // show save as dialog
-    player.recorder.saveAs({'video': 'my-video-file-name'});
+    player.recorder.saveAs({'video': 'my-video-file-name.webm'});
 });
 ```
 
@@ -387,11 +388,8 @@ option:
 
 ```javascript
 controlBar: {
-    // hide fullscreen volume controls
-    fullscreenToggle: false
-    // video.js 5 volume control
-    volumeMenuButton: false,
-    // video.js 6 volume control
+    // hide fullscreen and volume controls
+    fullscreenToggle: false,
     volumePanel: false
 },
 ```
