@@ -384,8 +384,8 @@ option:
 
 ```javascript
 controlBar: {
-    // hide fullscreen volume controls
-    fullscreenToggle: false
+    // hide fullscreen and volume controls
+    fullscreenToggle: false,
     // video.js 5 volume control
     volumeMenuButton: false,
     // video.js 6 volume control
