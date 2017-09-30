@@ -1,5 +1,5 @@
 /**
- * @file videojs.record.recorderjs.js
+ * @file recorderjs-plugin.js
  * @since 1.1.0
  */
 

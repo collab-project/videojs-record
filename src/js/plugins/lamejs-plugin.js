@@ -1,5 +1,5 @@
 /**
- * @file videojs.record.lamejs.js
+ * @file lamejs-plugin.js
  * @since 1.1.0
  */
 

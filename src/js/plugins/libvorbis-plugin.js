@@ -1,5 +1,5 @@
 /**
- * @file videojs.record.libvorbis.js
+ * @file libvorbis-plugin.js
  * @since 1.1.0
  */
 

@@ -32,10 +32,10 @@ mkdirp(pluginsDestDir, function(err) {
         files.forEach(function(pluginPath) {
             fileName = pluginPath.substr(pluginPath.lastIndexOf('/') + 1);
             dirName = pluginPath.split(fileName)[0];
-            pluginName = fileName.replace('.js', '');
-            minifiedName = fileName.replace('.js', '.min.js');
-            pluginDestPath = pluginsDestDir + fileName;
-            pluginDestPathMinified = pluginsDestDir + minifiedName;
+            pluginName = fileName.replace('-plugin.js', '');
+            minifiedName = fileName.replace('-plugin.js', '.min.js');
+            pluginDestPath = pluginsDestDir + 'videojs.record.' + pluginName + '.js';
+            pluginDestPathMinified = pluginsDestDir + 'videojs.record.' + minifiedName;
             browserify_opts = {
                 standalone: pluginName,
                 plugin: [

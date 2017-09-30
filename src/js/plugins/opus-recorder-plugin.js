@@ -1,5 +1,5 @@
 /**
- * @file videojs.record.opus-recorder.js
+ * @file opus-recorder-plugin.js
  * @since 1.1.0
  */
 
