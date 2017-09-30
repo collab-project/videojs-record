@@ -370,8 +370,6 @@ class Record extends Plugin {
 
         // reset playback listeners
         this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
-        this.off(this.player, 'pause', this.onPlayerPause);
-        this.off(this.player, 'play', this.onPlayerStart);
 
         // setup recording engine
         if (this.getRecordType() !== IMAGE_ONLY) {
@@ -774,10 +772,6 @@ class Record extends Plugin {
 
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
-                // remove previous listeners
-                this.off(this.player, 'pause', this.onPlayerPause);
-                this.off(this.player, 'play', this.onPlayerStart);
-
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
@@ -795,32 +789,6 @@ class Record extends Plugin {
                     this.on(this.player, 'timeupdate',
                         this.playbackTimeUpdate);
 
-                    // because there are 2 separate data streams for audio
-                    // and video in the Chrome browser, playback the audio
-                    // stream in a new extra audio element and the video
-                    // stream in the regular video.js player.
-                    if (this.getRecordType() === AUDIO_VIDEO &&
-                        isChrome() && this.player.recordedData.audio) {
-                        if (this.extraAudio === undefined) {
-                            this.extraAudio = this.createEl('audio');
-                            this.extraAudio.id = 'extraAudio';
-
-                            // handle volume changes in extra audio
-                            // for chrome
-                            this.player.on('volumechange',
-                                this.onVolumeChange.bind(this));
-                        }
-                        setSrcObject(this.player.recordedData.audio,
-                            this.extraAudio, false);
-
-                        // pause extra audio when player pauses
-                        this.on(this.player, 'pause',
-                            this.onPlayerPause);
-                    }
-
-                    // workaround some browser issues when player starts
-                    this.on(this.player, 'play', this.onPlayerStart);
-
                     // unmute local audio during playback
                     if (this.getRecordType() === AUDIO_VIDEO)
                     {
@@ -831,7 +799,12 @@ class Record extends Plugin {
                     }
 
                     // load recorded media
-                    this.load(this.player.recordedData);
+                    if (isChrome() && this.getRecordType() === AUDIO_VIDEO) {
+                        // use video property on Chrome
+                        this.load(this.player.recordedData.video)
+                    } else {
+                        this.load(this.player.recordedData);
+                    }
                 }.bind(this));
 
                 // pause player so user can start playback
@@ -863,23 +836,6 @@ class Record extends Plugin {
                 // hide animation on pause
                 this.on(this.player, 'pause', this.hideAnimation);
                 break;
-        }
-    }
-
-    /**
-     * Fired when the volume in the temporary audio element
-     * for Chrome in audio+video mode is present.
-     * @private
-     */
-    onVolumeChange() {
-        let volume = this.player.volume();
-        if (this.player.muted()) {
-            // muted volume
-            volume = 0;
-        }
-
-        if (this.extraAudio !== undefined) {
-            this.extraAudio.volume = volume;
         }
     }
 
@@ -1310,31 +1266,6 @@ class Record extends Plugin {
 
         // hide the animation
         this.player.animationDisplay.hide();
-    }
-
-    /**
-     * Player started playback.
-     * @private
-     */
-    onPlayerStart() {
-        // workaround chrome issue
-        if (this.getRecordType() === AUDIO_VIDEO && isChrome() &&
-            !this._recording && this.extraAudio !== undefined) {
-            // sync extra audio playhead position with video.js player
-            this.extraAudio.currentTime = this.player.currentTime();
-            this.extraAudio.play();
-        }
-    }
-
-    /**
-     * Player is paused.
-     * @private
-     */
-    onPlayerPause() {
-        // pause extra audio when video.js player pauses
-        if (this.extraAudio !== undefined) {
-            this.extraAudio.pause();
-        }
     }
 
     /**
