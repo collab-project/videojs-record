@@ -44,7 +44,7 @@ Edit `lib/grunt.js` and replace `VideoJS` with `videojs-record` (until this
 Customize
 ---------
 
-Copy the `icons.json` file from the `videojs-record` repository to
+Copy the [icons.json](icons.json) file from the `videojs-record` repository to
 the root of the `font` repository:
 
 ```
@@ -81,5 +81,5 @@ npm run build:fonts
 References
 ----------
 
-See the videojs `font` project documentation for more info:
-https://github.com/videojs/font/blob/master/README.md
+Check the video.js font project [documentation](https://github.com/videojs/font/blob/master/README.md)
+for more information.
