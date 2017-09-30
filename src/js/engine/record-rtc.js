@@ -58,8 +58,9 @@ class RecordRTCEngine extends RecordEngine {
     dispose() {
         super.dispose();
 
-        // XXX: recordrtc is missing destroy method, see
-        // https://github.com/muaz-khan/RecordRTC/issues/332
+        if (typeof this.engine.destroy === 'function') {
+            this.engine.destroy();
+        }
     }
 
     /**
