@@ -1425,6 +1425,9 @@ class Record extends Plugin {
     }
 }
 
+// version nr gets replaced during build
+Record.VERSION = 'dev';
+
 // register plugin
 videojs.Record = Record;
 videojs.registerPlugin('record', Record);
