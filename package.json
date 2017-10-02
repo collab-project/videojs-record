@@ -65,8 +65,6 @@
     ".babelrc",
     ".jscsrc",
     "dist/",
-    "docs/",
-    "es5/",
     "lang/",
     "scripts/",
     "src/",

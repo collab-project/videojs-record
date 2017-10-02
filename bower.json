@@ -4,9 +4,16 @@
   "homepage": "https://github.com/collab-project/videojs-record",
   "description": "A video.js plugin for recording audio/video/image files.",
   "license": "MIT",
+  "authors": ["Collab"],
   "main": [
       "src/js/videojs.record.js",
-      "src/css/videojs.record.css"
+      "src/css/videojs.record.scss"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node",
+    "es6"
   ],
   "keywords": [
     "waveform",
@@ -31,9 +38,13 @@
     ".gitignore",
     "node_modules",
     "bower_components",
-    "Gruntfile.js",
-    "examples"
+    "examples",
+    "docs"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/collab-project/videojs-record.git"
+  },
   "dependencies": {
     "recordrtc": ">=5.4.4",
     "video.js": ">=6.0.0",
