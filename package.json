@@ -52,7 +52,7 @@
     "start": "npm-run-all -p watch start:*",
     "start:serve": "babel-node --presets=env scripts/server.js",
     "test": "echo No tests yet!",
-    "pretest": "npm-run-all lint build",
+    "pretest": "npm-run-all build",
     "preversion": "npm test",
     "version": "npm run build",
     "watch": "npm-run-all -p watch:docs watch:js watch:css",

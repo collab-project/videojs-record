@@ -162,6 +162,7 @@ var player = videojs('myVideo', {
     // video.js options
     controls: true,
     loop: false,
+    fluid: false,
     width: 320,
     height: 240,
     plugins: {
@@ -436,6 +437,15 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 [list of supported countrycodes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
+
+
+Using with React
+----------------
+
+The `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
+([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
+
 
 More features using other plugins
 ---------------------------------
