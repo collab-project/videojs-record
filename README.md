@@ -349,7 +349,8 @@ player.on('timestamp', function() {
 
 ### Upload data
 
-Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
+Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or
+[Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
 examples on how to upload the data to a server.
 
 Controlling the input and output devices
@@ -359,7 +360,8 @@ Use `enumerateDevices` to get a list of the available input and output devices
 on the user's system, e.g. `FaceTime HD-camera`, `default (Built-in microphone)`
 etc.
 
-Check out the `enumerateDevices` example ([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
+Check out the `enumerateDevices` example
+([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
 
 After you aquired the device id (called `deviceId` in the example below) specify it in the player configuration
 using [constraints](#media-constraints):
