@@ -1294,7 +1294,6 @@ class Record extends Plugin {
 
             default:
                 internal = this.engine.engine.videoRecorder;
-                break;
         }
         internal = internal.getInternalRecorder();
         if ((internal instanceof MediaStreamRecorder) === true) {
