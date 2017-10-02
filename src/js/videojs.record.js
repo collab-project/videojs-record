@@ -511,15 +511,14 @@ class Record extends Plugin {
             // load stream
             this.load(this.stream);
 
-            // stream loading is async, so we wait until it's ready to play the stream.
-            let self = this;
-            this.player.one('loadedmetadata', function()
-            {
+            // stream loading is async, so we wait until it's ready to play
+            // the stream
+            this.player.one('loadedmetadata', () => {
                 // start stream
-                self.mediaElement.play();
+                this.mediaElement.play();
 
                 // forward to listeners
-                self.player.trigger('deviceReady');
+                this.player.trigger('deviceReady');
             });
         } else {
             // forward to listeners
@@ -603,10 +602,9 @@ class Record extends Plugin {
                 case AUDIO_VIDEO:
                 case ANIMATION:
                     // wait for media stream on video element to actually load
-                    let self = this;
-                    this.player.one('loadedmetadata', function() {
-                        // start actually recording process.
-                        self.startRecording();
+                    this.player.one('loadedmetadata', () => {
+                        // start actually recording process
+                        this.startRecording();
                     });
                     break;
 
@@ -614,7 +612,6 @@ class Record extends Plugin {
                     // all resources have already loaded, so we can start
                     // recording right away
                     this.startRecording();
-                    break;
             }
         }
     }
@@ -1159,7 +1156,6 @@ class Record extends Plugin {
      * @private
      */
     captureFrame() {
-        var here = this;
         var detected = detectBrowser();
         var recordCanvas = this.player.recordCanvas.el().firstChild;
 
@@ -1168,25 +1164,26 @@ class Record extends Plugin {
         recordCanvas.width = this.player.width();
         recordCanvas.height = this.player.height();
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             // MediaCapture is only supported on:
             // - Chrome 60 and newer (see
             // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
             // - Firefox behind flag (https://bugzilla.mozilla.org/show_bug.cgi?id=888177)
-            // importing ImageCapture can fail when enabling chrome
-            // flag is still required. if so; ignore and continue
+            //
+            // importing ImageCapture can fail when enabling chrome flag is still required.
+            // if so; ignore and continue
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                (typeof ImageCapture === typeof Function)) {
                 try {
-                    var track = here.stream.getVideoTracks()[0];
+                    var track = this.stream.getVideoTracks()[0];
                     var imageCapture = new ImageCapture(track);
 
-                    imageCapture.takePhoto().then(function(blob) {
+                    imageCapture.takePhoto().then((blob) => {
                         return createImageBitmap(blob);
-                    }
-                    ).then(function(imageBitmap) {
+
+                    }).then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
-                        here.drawCanvas(recordCanvas, imageBitmap);
+                        this.drawCanvas(recordCanvas, imageBitmap);
 
                         // notify others
                         resolve(recordCanvas);
@@ -1194,9 +1191,10 @@ class Record extends Plugin {
                     return;
                 } catch(err) {}
             }
+            // no ImageCapture available: do it the oldskool way
 
             // get a frame and copy it onto the canvas
-            here.drawCanvas(recordCanvas, here.mediaElement);
+            this.drawCanvas(recordCanvas, this.mediaElement);
 
             // notify others
             resolve(recordCanvas);
@@ -1323,18 +1321,17 @@ class Record extends Plugin {
         }
 
         // List cameras and microphones.
-        let self = this;
-        navigator.mediaDevices.enumerateDevices(this).then(function(devices) {
-            self.devices = [];
-            devices.forEach(function(device) {
-                self.devices.push(device);
+        navigator.mediaDevices.enumerateDevices(this).then((devices) => {
+            this.devices = [];
+            devices.forEach((device) => {
+                this.devices.push(device);
             });
 
             // notify listeners
-            self.player.trigger('enumerateReady');
-        }).catch(function(err) {
-            self.player.enumerateErrorCode = err;
-            self.player.trigger('enumerateError');
+            this.player.trigger('enumerateReady');
+        }).catch((err) => {
+            this.player.enumerateErrorCode = err;
+            this.player.trigger('enumerateError');
         });
     }
 

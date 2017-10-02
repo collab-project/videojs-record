@@ -59,11 +59,11 @@ var player = videojs("myAudio", {
 
 // user requested to enumerate devices
 document.getElementById('enumBtn').onclick = function(ev) {
-    player.recorder.enumerateDevices();
+    player.record().enumerateDevices();
 }
 
 player.on('enumerateReady', function() {
-    var devices = player.recorder.devices;
+    var devices = player.record().devices;
     var list = document.getElementById('devices');
     var node, textnode;
 
