@@ -195,9 +195,9 @@ class Record extends Plugin {
                     this.player.controlBar.progressControl.hide();
 
                     // prevent controlbar fadeout
-                    this.player.on('userinactive', function(event) {
+                    this.player.on('userinactive', (event) => {
                         this.player.userActive(true);
-                    }.bind(this));
+                    });
 
                     // videojs automatically hides the controls when no valid 'source'
                     // element is included in the video or audio tag. Don't. Ever again.
@@ -470,16 +470,15 @@ class Record extends Plugin {
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
-            let element;
-            var uiElements = [this.player.controlBar.currentTimeDisplay,
+            let uiElements = [this.player.controlBar.currentTimeDisplay,
                               this.player.controlBar.timeDivider,
                               this.player.controlBar.durationDisplay];
-            for (element in uiElements) {
-                if (uiElements.hasOwnProperty(element)) {
-                    uiElements[element].el().style.display = 'block';
-                    uiElements[element].show();
+            uiElements.forEach((element) => {
+                if (element !== undefined) {
+                    element.el().style.display = 'block';
+                    element.show();
                 }
-            }
+            });
 
             // show record button
             this.player.recordToggle.show();
@@ -581,10 +580,10 @@ class Record extends Plugin {
                     // for animations, capture the first frame
                     // that can be displayed as soon as recording
                     // is complete
-                    this.captureFrame().then(function(result) {
+                    this.captureFrame().then((result) => {
                         // start video preview **after** capturing first frame
                         this.startVideoPreview();
-                    }.bind(this));
+                    });
                     break;
             }
 
@@ -759,9 +758,9 @@ class Record extends Plugin {
 
                 // restore interaction with controls after waveform
                 // rendering is complete
-                this.surfer.surfer.once('ready', function() {
+                this.surfer.surfer.once('ready', () => {
                     this._processing = false;
-                }.bind(this));
+                });
 
                 // visualize recorded stream
                 this.load(this.player.recordedData);
@@ -772,7 +771,7 @@ class Record extends Plugin {
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
-                this.player.one('pause', function() {
+                this.player.one('pause', () => {
                     // video data is ready
                     this._processing = false;
 
@@ -787,8 +786,7 @@ class Record extends Plugin {
                         this.playbackTimeUpdate);
 
                     // unmute local audio during playback
-                    if (this.getRecordType() === AUDIO_VIDEO)
-                    {
+                    if (this.getRecordType() === AUDIO_VIDEO) {
                         this.mediaElement.muted = false;
 
                         // show the volume bar when it's unmuted
@@ -802,7 +800,7 @@ class Record extends Plugin {
                     } else {
                         this.load(this.player.recordedData);
                     }
-                }.bind(this));
+                });
 
                 // pause player so user can start playback
                 this.player.pause();
@@ -1092,10 +1090,10 @@ class Record extends Plugin {
 
         // loadedmetadata resets the durationDisplay for the
         // first time
-        this.player.one('loadedmetadata', function() {
+        this.player.one('loadedmetadata', () => {
             // display max record time
             this.setDuration(this.maxLength);
-        }.bind(this));
+        });
     }
 
     /**
@@ -1122,7 +1120,7 @@ class Record extends Plugin {
      * @private
      */
     createSnapshot() {
-        this.captureFrame().then(function(result) {
+        this.captureFrame().then((result) => {
             // turn the canvas data into base64 data with a PNG header
             this.player.recordedData = result.toDataURL('image/png');
 
@@ -1134,7 +1132,7 @@ class Record extends Plugin {
 
             // stop recording
             this.stop();
-        }.bind(this));
+        });
     }
 
     /**
