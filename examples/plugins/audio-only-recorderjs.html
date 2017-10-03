@@ -5,22 +5,22 @@
   <title>Recorder.js Audio-only Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
-  <link href="../../src/css/videojs.record.css" rel="stylesheet">
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../../dist/css/videojs.record.css" rel="stylesheet">
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
+  <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
   <script src="../../node_modules/recorderjs/dist/recorder.js"></script>
   <script src="../../node_modules/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="../../node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
   <script src="../../node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
-  <script src="../../src/js/videojs.record.js"></script>
-  <script src="../../src/js/plugins/videojs.record.recorderjs.js"></script>
+  <script src="../../dist/videojs.record.js"></script>
+  <script src="../../dist/plugins/videojs.record.recorderjs.js"></script>
 
   <style>
   /* change player background color */
   #myAudio {
-      background-color: #9FD6BA;
+      background-color: #3a506b;
   }
   </style>
 </head>
@@ -29,16 +29,15 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
-var player = videojs("myAudio",
-{
+var player = videojs("myAudio", {
     controls: true,
     width: 600,
     height: 300,
     plugins: {
         wavesurfer: {
             src: "live",
-            waveColor: "black",
-            progressColor: "#2E732D",
+            waveColor: "#6fffe9",
+            progressColor: "black",
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
@@ -55,24 +54,20 @@ var player = videojs("myAudio",
 });
 
 // error handling
-player.on('deviceError', function()
-{
+player.on('deviceError', function() {
     console.log('device error:', player.deviceErrorCode);
 });
-player.on('error', function(error)
-{
+player.on('error', function(error) {
     console.log('error:', error);
 });
 
 // user clicked the record button and started recording
-player.on('startRecord', function()
-{
+player.on('startRecord', function() {
     console.log('started recording!');
 });
 
 // user completed recording and stream is available
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);

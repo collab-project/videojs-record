@@ -18,10 +18,10 @@ Use [npm](https://www.npmjs.org) (`npm install videojs-record`) or
 [download](https://github.com/collab-project/videojs-record/releases) the library
 and dependencies elsewhere.
 
-Since v1.0 this plugin is compatible with video.js 5.0 and newer. If you want to use
-this plugin with an older video.js 4.x version, check the
-[archived releases](https://github.com/collab-project/videojs-record/releases?after=1.0.0)
-for a 0.9.x or older release.
+Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer.js 2.0 or
+newer. If you want to use this plugin with an older version, check the
+[archived releases](https://github.com/collab-project/videojs-record/releases?after=1.7.1)
+for a 1.7.x or older release.
 
 Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
 version of videojs-record.
@@ -42,6 +42,9 @@ to visualize the audio waveform):
 
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
+
+It is also highly recommended to include the [webrtc-adapter](https://github.com/webrtc/adapter) package for
+cross-browser support for getUserMedia and other browser APIs used in this plugin.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
@@ -74,7 +77,7 @@ is included on the page:
 ```
 
 Add the extra stylesheet for the plugin that includes a
-[custom font](src/css/font) with additional icons:
+[custom font](font) with additional icons:
 
 ```html
 <link href="videojs.record.css" rel="stylesheet">
@@ -127,7 +130,8 @@ Examples
 - image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 
-To try out the examples locally, checkout the repository using Git:
+To try out the examples locally, download the zipfile or checkout the
+repository using Git:
 ```
 git clone https://github.com/collab-project/videojs-record.git
 ```
@@ -138,12 +142,12 @@ cd videojs-record
 npm install
 ```
 
-Start the local webserver for the examples:
+Build the library and start the local webserver:
 ```
-grunt serve
+npm run start
 ```
 
-And open http://localhost:9000/examples in a browser.
+And open http://localhost:9999/examples/audio-video.html in a browser.
 
 Options
 -------
@@ -154,11 +158,11 @@ and enable the plugin by adding a `record` configuration to `plugins`. For
 example:
 
 ```javascript
-var player = videojs('myVideo',
-{
+var player = videojs('myVideo', {
     // video.js options
     controls: true,
     loop: false,
+    fluid: false,
     width: 320,
     height: 240,
     plugins: {
@@ -202,11 +206,11 @@ The available options for this plugin are:
 Methods
 -------
 
-Methods for this plugin documented below are available on the `recorder` object
+Methods for this plugin documented below are available using the `record` method
 of the video.js player instance. For example:
 
 ```javascript
-player.recorder.destroy();
+player.record().destroy();
 ```
 
 | Method | Description |
@@ -232,8 +236,7 @@ Events
 Plugin events that are available on the video.js player instance. For example:
 
 ```javascript
-player.on('startRecord', function()
-{
+player.on('startRecord', function() {
     console.log('started recording!');
 });
 ```
@@ -261,11 +264,11 @@ The following example shows how to change the camera resolution to 1280 by 720
 pixels:
 
 ```javascript
-var player = videojs('myVideo',
-{
+var player = videojs('myVideo', {
     controls: true,
     loop: false,
     // dimensions of video.js player
+    fluid: false,
     width: 1280,
     height: 720,
     plugins: {
@@ -296,8 +299,7 @@ Listen for the `finishRecord` event and obtain the recorded data from the
 
 ```javascript
 // user completed recording and stream is available
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // the recordedData object contains the stream data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
@@ -315,10 +317,9 @@ choose the storage location for the recorded data. It accepts a `name` object th
 contains a mapping between the media type and the filename. For example:
 
 ```javascript
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // show save as dialog
-    player.recorder.saveAs({'video': 'my-video-file-name'});
+    player.recorder.saveAs({'video': 'my-video-file-name.webm'});
 });
 ```
 
@@ -332,8 +333,7 @@ Do this by listening for the `timestamp` event. For example:
 
 ```javascript
 // monitor stream data during recording
-player.on('timestamp', function()
-{
+player.on('timestamp', function() {
     // timestamps
     console.log('current timestamp: ', player.currentTimestamp);
     console.log('all timestamps: ', player.allTimestamps);
@@ -349,7 +349,8 @@ player.on('timestamp', function()
 
 ### Upload data
 
-Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
+Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or
+[Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
 examples on how to upload the data to a server.
 
 Controlling the input and output devices
@@ -359,7 +360,8 @@ Use `enumerateDevices` to get a list of the available input and output devices
 on the user's system, e.g. `FaceTime HD-camera`, `default (Built-in microphone)`
 etc.
 
-Check out the `enumerateDevices` example ([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
+Check out the `enumerateDevices` example
+([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
 
 After you aquired the device id (called `deviceId` in the example below) specify it in the player configuration
 using [constraints](#media-constraints):
@@ -376,6 +378,18 @@ record: {
 }
 ```
 
+Responsive layout
+-----------------
+
+The `fluid` option for video.js will resize the player according to the size
+of the window.
+
+Configure the player; enable the video.js `'fluid'` option:
+
+```javascript
+fluid: true
+```
+
 Customizing controls
 --------------------
 
@@ -386,9 +400,6 @@ option:
 controlBar: {
     // hide fullscreen and volume controls
     fullscreenToggle: false,
-    // video.js 5 volume control
-    volumeMenuButton: false,
-    // video.js 6 volume control
     volumePanel: false
 },
 ```
@@ -412,7 +423,7 @@ the plugin's language file and the Video.js language file:
 
 ```html
 <script src="videojs-record/dist/lang/nl.js"></script>
-<script src="nl.js"></script>
+<script src="video.js/dist/lang/nl.js"></script>
 ```
 
 And setting the Video.js player's `language` option:
@@ -429,6 +440,15 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
+
+Using with React
+----------------
+
+The `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
+([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
+
+
 More features using other plugins
 ---------------------------------
 
@@ -439,42 +459,40 @@ that can be used to enhance the player's functionality.
 Development
 -----------
 
-Install `grunt-cli`:
-
-```
-sudo npm install -g grunt-cli
-```
-
 Install dependencies using npm:
 
 ```
 npm install
 ```
 
-Generate font assets once:
+Build a minified version:
 
 ```
-grunt font
-```
-
-Build a minified version of the library code and stylesheet:
-
-```
-grunt
+npm run build
 ```
 
 Generated files are placed in the `dist` directory.
 
+During development:
+
+```
+npm run start
+```
+
+This will watch the source directory and rebuild when any changes
+are detected. It will also serve the files on http://127.0.0.1:9999.
+
+All commands for development are listed in the `package.json` file and
+are run using:
+
+```
+npm run <command>
+```
+
 Font
 ----
 
-Generate or update the font files:
-
-```
-grunt font
-```
-
-Check the [the font readme](src/css/font/README.md) for more information.
+Check the [the font readme](font/README.md) for more information.
 
 License
 -------
@@ -485,4 +503,4 @@ Donate
 ------
 
 Please consider donating if you like this project. Bitcoin is accepted
-and can be sent to `1NRpHHJfkf24emZgFkNiGs2no19zvhFeap`.
+and can be sent to `3PmXCqUggtq7KUWPbpN8WhMnb1Mfb1jbq8`.

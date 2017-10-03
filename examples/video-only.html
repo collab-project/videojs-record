@@ -5,18 +5,18 @@
   <title>Video-only Example - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
-  <link href="../src/css/videojs.record.css" rel="stylesheet">
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="../dist/css/videojs.record.css" rel="stylesheet">
 
   <script src="../node_modules/video.js/dist/video.min.js"></script>
   <script src="../node_modules/recordrtc/RecordRTC.js"></script>
+  <script src="../node_modules/webrtc-adapter/out/adapter.js"></script>
 
-  <script src="../src/js/videojs.record.js"></script>
+  <script src="../dist/videojs.record.js"></script>
 
   <style>
   /* change player background color */
   #myVideo {
-      background-color: #47AFD1;
+      background-color: #1a535c;
   }
   </style>
 </head>
@@ -25,15 +25,11 @@
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 
 <script>
-var player = videojs("myVideo",
-{
+var player = videojs("myVideo", {
     controls: true,
     width: 320,
     height: 240,
     controlBar: {
-        // for video.js 5
-        volumeMenuButton: false,
-        // for video.js 6
         volumePanel: false
     },
     plugins: {
@@ -47,24 +43,21 @@ var player = videojs("myVideo",
 });
 
 // error handling
-player.on('deviceError', function()
-{
+player.on('deviceError', function() {
     console.warn('device error:', player.deviceErrorCode);
 });
-player.on('error', function(error)
-{
+
+player.on('error', function(error) {
     console.log('error:', error);
 });
 
 // user clicked the record button and started recording
-player.on('startRecord', function()
-{
+player.on('startRecord', function() {
     console.log('started recording!');
 });
 
 // user completed recording and stream is available
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);

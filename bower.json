@@ -1,11 +1,19 @@
 {
   "name": "videojs-record",
-  "version": "1.7.1",
+  "version": "2.0.0-beta01",
   "homepage": "https://github.com/collab-project/videojs-record",
   "description": "A video.js plugin for recording audio/video/image files.",
+  "license": "MIT",
+  "authors": ["Collab"],
   "main": [
       "src/js/videojs.record.js",
-      "src/css/videojs.record.css"
+      "src/css/videojs.record.scss"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node",
+    "es6"
   ],
   "keywords": [
     "waveform",
@@ -26,25 +34,29 @@
     "mp3",
     "opus"
   ],
-  "license": "MIT",
   "ignore": [
     ".gitignore",
     "node_modules",
     "bower_components",
-    "Gruntfile.js",
-    "examples"
+    "examples",
+    "docs"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/collab-project/videojs-record.git"
+  },
   "dependencies": {
-    "video.js": ">=5.0.0",
-    "videojs-wavesurfer": ">=1.3.6 <2.0.0",
-    "recordrtc": ">=5.4.2"
+    "recordrtc": ">=5.4.4",
+    "video.js": ">=6.0.0",
+    "videojs-wavesurfer": ">=2.0.0",
+    "webrtc-adapter": ">=5.0.0"
   },
   "devDependencies": {
-    "libvorbis.js": ">=1.1.1",
-    "recorderjs": "https://github.com/mattdiamond/Recorderjs.git",
-    "lamejs": "https://github.com/zhuker/lamejs.git",
-    "opus-recorderjs": ">=1.1.0",
+    "blueimp-file-upload": ">=9.19.1",
     "fine-uploader": ">=5.4.1",
-    "blueimp-file-upload": ">=9.19.1"
+    "lamejs": "https://github.com/zhuker/lamejs.git",
+    "libvorbis.js": ">=1.1.1",
+    "opus-recorderjs": ">=1.2.0",
+    "recorderjs": "https://github.com/mattdiamond/Recorderjs.git"
   }
 }

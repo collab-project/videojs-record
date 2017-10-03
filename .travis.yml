@@ -1,17 +1,8 @@
+sudo: false
 language: node_js
-sudo: required
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
-      - oracle-java8-set-default
 node_js:
-  - "7"
-before_install:
-  - npm install -g grunt-cli
+  - 'node'
 install: npm install
-before_script: grunt font
-script: grunt
 cache:
   directories:
     - node_modules

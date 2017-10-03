@@ -5,14 +5,6 @@
 .project
 .pydevproject
 
-# build
-dist
-*.log
-node_modules
-bower_components
-doc
-package-lock.json
-
 # examples
 *.phar
 *.lock
@@ -20,4 +12,16 @@ composer.json
 php.ini
 vendor
 
-src/css/font/scss/_*.scss
+# Dependency-related directories
+node_modules
+bower_components
+
+# Build-related
+*.log
+package-lock.json
+dist/
+dist-test/
+docs/
+es5/
+tmp
+coverage/
