@@ -22,7 +22,7 @@
   },
   "scripts": {
     "prebuild": "npm run clean",
-    "build": "npm-run-all -s lint build:css build:fonts build:js build:test",
+    "build": "npm-run-all -s lint build:css build:fonts build:js build:test docs",
     "build:fonts": "copy font/*.{eot,svg,ttf,woff} dist/fonts/",
     "build:css": "npm-run-all -s build:css:sass build:css:comb build:css:compress build:css:banner",
     "build:css:sass": "node-sass --include-path src/css src/css/videojs.record.scss dist/css/videojs.record.css",
@@ -42,7 +42,7 @@
     "build:test:browserify": "browserify test/browserify-test.js --debug --outfile dist-test/browserify-test.js",
     "build:test:webpack": "webpack test/webpack-test.js dist-test/webpack-test.js",
     "clean": "npm-run-all -p clean:*",
-    "clean:build": "node -e \"var s=require('shelljs'),d=['dist','dist-test','es5'];s.rm('-rf',d);s.mkdir('-p',d);\"",
+    "clean:build": "node -e \"var s=require('shelljs'),d=['dist','dist-test','es5', 'docs/api'];s.rm('-rf',d);s.mkdir('-p',d);\"",
     "docs": "npm-run-all docs:*",
     "docs:api": "jsdoc src/js -r -d docs/api",
     "lint": "npm-run-all lint:*",
@@ -64,6 +64,7 @@
     "watch:js:language": "nodemon --watch lang/ --exec npm run build:js:language",
     "watch:js:plugins": "nodemon --watch src/js/plugins/ --exec npm run build:js:plugins",
     "watch:js:version": "nodemon --watch dist/videojs.record.js --exec npm run build:js:version",
+    "release:zip": "node scripts/release-zip.js",
     "prepublish": "not-in-install && npm run build || in-install"
   },
   "files": [
@@ -126,8 +127,10 @@
     "colour": "^0.7.1",
     "connect": "^3.6.5",
     "copy": "^0.3.1",
+    "copy-dir": "^0.3.0",
     "csscomb": "^4.2.0",
-    "d3": "^4.10.2",
+    "del": "^3.0.0",
+    "download-tarball": "^1.1.0",
     "fine-uploader": "^5.15.0",
     "glob": "^7.1.2",
     "htmlhint": "^0.9.13",
@@ -143,6 +146,7 @@
     "lodash-compat": "^3.10.2",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
+    "mv": "^2.1.1",
     "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.1",
@@ -158,6 +162,7 @@
     "uglifyify": "^4.0.4",
     "videojs-languages": "^1.0.0",
     "watchify": "^3.9.0",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "zip-dir": "^1.0.2"
   }
 }

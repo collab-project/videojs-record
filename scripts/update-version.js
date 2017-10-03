@@ -2,6 +2,7 @@
  * Update version in file.
  *
  * @file update-version.js
+ * @since 2.0.0
  */
 
 var fs = require('fs');

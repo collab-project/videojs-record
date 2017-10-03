@@ -9,6 +9,7 @@
  *  - add copyright header
  *  
  * @file build-plugins.js
+ * @since 2.0.0
  */
 
 var fs = require('fs');

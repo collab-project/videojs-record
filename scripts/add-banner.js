@@ -2,6 +2,7 @@
  * Add copyright header to file.
  *
  * @file add-banner.js
+ * @since 2.0.0
  */
 
 var fs = require('fs');
