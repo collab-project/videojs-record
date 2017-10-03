@@ -22,9 +22,9 @@
   },
   "dependencies": {
     "videojs-wavesurfer": "<2.0.0",
-    "webrtc-adapter": ">=5.0.4",
-    "lamejs": ">=1.2.0",
-    "libvorbis.js": ">=1.1.2",
+    "webrtc-adapter": "^5.0.4",
+    "lamejs": "^1.2.0",
+    "libvorbis.js": "^1.1.2",
     "opus-recorder": "^1.2.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git"
   },
