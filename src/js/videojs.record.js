@@ -964,7 +964,7 @@ class Record extends Plugin {
             case AUDIO_VIDEO:
             case ANIMATION:
                 if (url instanceof Blob || url instanceof File) {
-                    // assign using createObjectURL
+                    // assign blob using createObjectURL
                     setSrcObject(url, this.mediaElement, false);
                 } else {
                     // assign stream without createObjectURL
@@ -1248,7 +1248,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        animationDisplay.src = this.player.recordedData;
+        setSrcObject(this.player.recordedData, animationDisplay, false);
         this.player.animationDisplay.show();
     }
 
