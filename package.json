@@ -21,7 +21,6 @@
     "url": "git+https://github.com/collab-project/videojs-record.git"
   },
   "dependencies": {
-    "video.js": "^6.2.7",
     "videojs-wavesurfer": "<2.0.0",
     "webrtc-adapter": ">=5.0.4",
     "lamejs": ">=1.2.0",
