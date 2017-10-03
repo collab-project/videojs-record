@@ -1,9 +1,12 @@
 /**
- * Build the plugins:
+ * Build the plugins.
  * 
- *  - pull through Babel
+ * Steps executed for each plugin in the src/js/plugins directory:
+ * 
+ *  - babelify
  *  - create collapsed bundle
  *  - minify
+ *  - add copyright header
  *  
  * @file build-plugins.js
  */
