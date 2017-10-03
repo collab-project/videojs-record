@@ -59,6 +59,7 @@
     "update:libvorbis": "cp -Rv node_modules/libvorbis.js/js/libvorbis.min.js examples/lib/libvorbis.js/",
     "update:lamejs": "cp -Rv node_modules/lamejs/lame.*.js examples/lib/lamejs/",
     "update:lamejs-worker": "cp -Rv node_modules/lamejs/worker-example/*.js examples/lib/lamejs/worker-example/",
+    "update:opus": "cp -Rv node_modules/opus-recorder/dist/*.js examples/lib/opus-recorder/",
     "test": "echo No tests yet!",
     "watch": "npm-run-all -p watch:lint",
     "watch:lint": "nodemon --watch examples --exec npm run lint",
