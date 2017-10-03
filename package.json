@@ -1,0 +1,65 @@
+{
+  "name": "videojs-record-pages",
+  "private": true,
+  "version": "1.0.0",
+  "description": "videojs-record github pages",
+  "homepage": "https://collab-project.github.io/videojs-record",
+  "author": "Collab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/collab-project/videojs-record/issues"
+  },
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo 'No tests yet!'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/collab-project/videojs-record.git"
+  },
+  "dependencies": {
+    "video.js": "^6.2.7",
+    "videojs-wavesurfer": "<2.0.0",
+    "webrtc-adapter": ">=5.0.4",
+    "lamejs": ">=1.2.0",
+    "libvorbis.js": ">=1.1.2",
+    "opus-recorder": "^1.2.0",
+    "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "connect": "^3.6.5",
+    "copy": "^0.3.1",
+    "glob": "^7.1.2",
+    "htmlhint": "^0.9.13",
+    "in-publish": "^2.0.0",
+    "isparta": "^4.0.0",
+    "lodash": "^4.17.4",
+    "lodash-compat": "^3.10.2",
+    "minimist": "^1.2.0",
+    "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.1",
+    "portscanner": "^2.1.1",
+    "replace": "^0.3.0",
+    "serve-static": "^1.13.1",
+    "shelljs": "^0.7.8"
+  },
+  "scripts": {
+    "lint": "npm-run-all lint:*",
+    "lint:html": "htmlhint examples index.html",
+    "start": "npm-run-all -p start:* watch",
+    "start:serve": "babel-node --presets=env scripts/server.js",
+    "update": "npm-run-all -s update:*",
+    "update:videojs-wavesurfer": "cp -Rv node_modules/videojs-wavesurfer/dist .",
+    "update:wavesurfer": "cp -Rv node_modules/wavesurfer.js/dist/wavesurfer.min.* dist/",
+    "update:wavesurfer-microphone": "cp -Rv node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.* dist/",
+    "test": "echo No tests yet!",
+    "watch": "npm-run-all -p watch:lint",
+    "watch:lint": "nodemon --watch examples --exec npm run lint",
+    "prepublish": "not-in-install && npm run build || in-install"
+  }
+}
