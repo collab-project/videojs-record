@@ -6,20 +6,20 @@ videojs-record changelog
 
 - Refactor plugin using ES6 (#167, #149)
 - video.js 6.0 or newer is now required: older versions are no longer supported
-- videojs-wavesurfer.js version 2.0 or newer is now required: older versions
+- videojs-wavesurfer.js version 2.0.1 or newer is now required: older versions
   are no longer supported
 - RecordRTC.js version 5.4.4 or newer is now required: older versions are no
   longer supported
 - New dependency: webrtc-adapter (version 5.0 or newer) is now recommended;
   the old WebRTC (`getUserMedia`) cross-browser support code has been removed
-- Support for the video.js `fluid` option (#166)
+- Support for the video.js `fluid` option for responsive layout (#166)
 - Replace usage of deprecated `URL.createObjectURL(stream)` (#169)
 - Added React example (#33)
 
-Backwards-incompatible changes (when upgrading from a previous version):
+**Backwards-incompatible changes** (when upgrading from a previous version):
 
 - Use `player.record()` instead of `player.recorder` to interact with the
-  plugin, e.g. `player.record().getDuration()`
+  plugin, e.g. `player.record().destroy()`
 
 
 1.7.1 - 2017/09/23
