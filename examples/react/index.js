@@ -36,6 +36,7 @@ const videoJsOptions = {
     controls: true,
     width: 320,
     height: 240,
+    fluid: false,
     plugins: {
         record: {
             audio: true,

@@ -1,7 +1,9 @@
 /* Handle responsive / fluid view.
 --------------------------------------------------------------------------------
 */
-.vjs-fluid wave.vjs-wavedisplay {
+.vjs-fluid wave.vjs-wavedisplay,
+.vjs-fluid .vjs-record-canvas > canvas:nth-child(1),
+.vjs-fluid .vjs-animation-display > img:nth-child(1) {
     top: 0;
     position: absolute!important;
     width: 100%;
