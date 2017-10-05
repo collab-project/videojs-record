@@ -182,6 +182,13 @@ class Record extends Plugin {
                 // customize controls
                 this.player.bigPlayButton.hide();
 
+                // loadedmetadata resets the durationDisplay for the
+                // first time
+                this.player.one('loadedmetadata', () => {
+                    // display max record time
+                    this.setDuration(this.maxLength);
+                });
+
                 // the native controls don't work for this UI so disable
                 // them no matter what
                 if (this.player.usingNativeControls_ === true) {
@@ -370,6 +377,7 @@ class Record extends Plugin {
 
         // reset playback listeners
         this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
+        this.off(this.player, 'ended', this.playbackTimeUpdate);
 
         // setup recording engine
         if (this.getRecordType() !== IMAGE_ONLY) {
@@ -781,8 +789,10 @@ class Record extends Plugin {
                     // show stream total duration
                     this.setDuration(this.streamDuration);
 
-                    // update time during playback
+                    // update time during playback and at end
                     this.on(this.player, 'timeupdate',
+                        this.playbackTimeUpdate);
+                    this.on(this.player, 'ended',
                         this.playbackTimeUpdate);
 
                     // unmute local audio during playback
