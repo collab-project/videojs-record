@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.0.0 - unreleased
+2.0.0 - 2017/10/05
 ------------------
 
 - Refactor plugin using ES6 (#167, #149)
