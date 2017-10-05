@@ -992,7 +992,6 @@ class Record extends Plugin {
      * Show save as dialog in browser so the user can store the recorded media
      * locally.
      *
-     * @private
      * @param {object} name - Object with one or more names for the particular
      *     blob(s) you want to save. File extensions are added automatically.
      *     For example: {'video': 'name-of-video-file'}. Supported keys are

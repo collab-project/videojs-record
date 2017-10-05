@@ -92,11 +92,6 @@ include a `video` element:
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 ```
 
-Note that recording both audio and video into a single WebM file is currently
-only supported in Mozilla Firefox >= 29 and Chrome >= 49. In older versions of
-the Chrome browser two separate Blob objects are created: one for audio and one
-for video.
-
 ### Audio-only
 
 ![Audio-only screenshot](examples/assets/img/audio-only.png?raw=true "Audio-only screenshot")
@@ -305,10 +300,6 @@ player.on('finishRecord', function() {
     console.log('finished recording: ', player.recordedData);
 });
 ```
-
-Note that in the Chrome browser `player.recordedData` returns an object with
-`audio` and `video` properties when recording both audio/video. In Firefox
-it returns a single WebM Blob object containing both audio and video.
 
 ### Save data
 
