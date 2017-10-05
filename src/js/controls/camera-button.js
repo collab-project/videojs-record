@@ -8,7 +8,7 @@ const Component = videojs.getComponent('Component');
 
 /**
  * Button to toggle between create and retry snapshot image.
- * @private
+ *
  * @class
  * @augments videojs.Button
 */
@@ -51,9 +51,6 @@ class CameraButton extends Button {
      * @listens click
      */
     onClick(event) {
-        // stop this event before it bubbles up
-        event.stopImmediatePropagation();
-
         let recorder = this.player_.record();
 
         if (!recorder.isProcessing()) {

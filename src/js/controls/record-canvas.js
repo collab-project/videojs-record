@@ -7,7 +7,7 @@ const Component = videojs.getComponent('Component');
 
 /**
  * Canvas for displaying snapshot image.
- * @private
+ *
  * @class
  * @augments videojs.Component
 */

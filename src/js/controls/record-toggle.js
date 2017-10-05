@@ -8,6 +8,7 @@ const Component = videojs.getComponent('Component');
 
 /**
  * Button to toggle between start and stop recording.
+ *
  * @class
  * @augments videojs.Button
 */
@@ -49,9 +50,6 @@ class RecordToggle extends Button {
      * @listens click
      */
     onClick(event) {
-        // stop this event before it bubbles up
-        event.stopImmediatePropagation();
-
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
             recorder.start();

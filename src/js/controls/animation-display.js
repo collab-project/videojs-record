@@ -7,7 +7,7 @@ const Component = videojs.getComponent('Component');
 
 /**
  * Image for displaying animated GIF image.
- * @private
+ *
  * @class
  * @augments videojs.Component
 */

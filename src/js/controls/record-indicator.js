@@ -7,7 +7,7 @@ const Component = videojs.getComponent('Component');
 
 /**
  * Icon indicating recording is active.
- * @private
+ *
  * @class
  * @augments videojs.Component
 */
@@ -39,8 +39,10 @@ class RecordIndicator extends Component {
         });
     }
 
+    /**
+     * Disable event handlers.
+     */
     disable() {
-        // disable record indicator event handlers
         this.off(this.player_, 'startRecord', this.show);
         this.off(this.player_, 'stopRecord', this.hide);
     }

@@ -8,7 +8,7 @@ const Component = videojs.getComponent('Component');
 
 /**
  * Button to select recording device.
- * @private
+ *
  * @class
  * @augments videojs.Button
 */
@@ -38,9 +38,6 @@ class DeviceButton extends Button {
      * @listens click
      */
     onClick(event) {
-        // stop this event before it bubbles up
-        event.stopImmediatePropagation();
-
         // open device dialog
         this.player_.record().getDevice();
     }
