@@ -1,5 +1,6 @@
 This is the branch for the website at https://collab-project.github.io/videojs-record
 
+
 Install
 -------
 
@@ -11,6 +12,22 @@ npm install
 
 Update Libraries
 ----------------
+
+Check if there are updates using
+[npm-check-updates](https://www.npmjs.com/package/npm-check-updates):
+
+```
+ncu
+```
+
+Verify available updates and then upgrade everything in `package.json`:
+
+```
+ncu -a
+npm update
+```
+
+Copy updated libraries into repository:
 
 ```
 npm run update
