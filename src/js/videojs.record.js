@@ -197,6 +197,10 @@ class Record extends Plugin {
                     }
                 }
 
+                // clicking or tapping the player video element should not try
+                // to start playback
+                this.player.removeTechControlsListeners_();
+
                 if (this.player.options_.controls) {
                     // progress control isn't used by this plugin
                     this.player.controlBar.progressControl.hide();
