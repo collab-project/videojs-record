@@ -6,7 +6,6 @@
 
   <link href="//vjs.zencdn.net/6.2.8/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.min.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
 
   <script src="//vjs.zencdn.net/6.2.8/video.min.js"></script>
 
@@ -15,7 +14,7 @@
   <style>
   /* change player background color */
   #myImage {
-      background-color: #6B2DA8;
+      background-color: #efc3e6;
   }
   </style>
 </head>
@@ -24,15 +23,11 @@
 <video id="myImage" class="video-js vjs-default-skin"></video>
 
 <script>
-var player = videojs("myImage",
-{
+var player = videojs("myImage", {
     controls: true,
     width: 320,
     height: 240,
     controlBar: {
-        // for video.js 5
-        volumeMenuButton: false,
-        // for video.js 6
         volumePanel: false,
         fullscreenToggle: false
     },
@@ -44,14 +39,12 @@ var player = videojs("myImage",
     }
 });
 // error handling
-player.on('deviceError', function()
-{
+player.on('deviceError', function() {
     console.warn('device error:', player.deviceErrorCode);
 });
 
 // snapshot is available
-player.on('finishRecord', function()
-{
+player.on('finishRecord', function() {
     // the blob object contains the image data that
     // can be downloaded by the user, stored on server etc.
     console.log('snapshot ready: ', player.recordedData);
