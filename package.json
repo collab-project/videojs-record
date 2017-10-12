@@ -14,19 +14,37 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo 'No tests yet!'"
+    "lint": "npm-run-all lint:*",
+    "lint:html": "htmlhint examples index.html",
+    "start": "npm-run-all -p start:* watch",
+    "start:serve": "babel-node --presets=env scripts/server.js",
+    "update": "npm-run-all -s update:*",
+    "update:videojs-record": "cp -Rv node_modules/videojs-record/dist .",
+    "update:videojs-wavesurfer": "cp -Rv node_modules/videojs-wavesurfer/dist .",
+    "update:wavesurfer": "cp -Rv node_modules/wavesurfer.js/dist/wavesurfer.min.* dist/",
+    "update:wavesurfer-microphone": "cp -Rv node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.* dist/",
+    "update:libvorbis": "cp -Rv node_modules/libvorbis.js/js/libvorbis.min.js examples/lib/libvorbis.js/",
+    "update:lamejs": "cp -Rv node_modules/lamejs/lame.*.js examples/lib/lamejs/",
+    "update:lamejs-worker": "cp -Rv node_modules/lamejs/worker-example/*.js examples/lib/lamejs/worker-example/",
+    "update:opus": "cp -Rv node_modules/opus-recorder/dist/*.js examples/lib/opus-recorder/",
+    "update:recorderjs": "cp -Rv node_modules/recorderjs/dist/*.js examples/lib/recorderjs/",
+    "test": "echo No tests yet!",
+    "watch": "npm-run-all -p watch:lint",
+    "watch:lint": "nodemon --watch examples --exec npm run lint",
+    "prepublish": "not-in-install && npm run build || in-install"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/collab-project/videojs-record.git"
   },
   "dependencies": {
-    "videojs-record": "^2.0.0",
-    "webrtc-adapter": "^5.0.4",
     "lamejs": "^1.2.0",
     "libvorbis.js": "^1.1.2",
     "opus-recorder": "^1.2.0",
-    "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git"
+    "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
+    "video.js": "^6.2.8",
+    "videojs-record": "^2.0.0",
+    "webrtc-adapter": "^5.0.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -46,25 +64,5 @@
     "replace": "^0.3.0",
     "serve-static": "^1.13.1",
     "shelljs": "^0.7.8"
-  },
-  "scripts": {
-    "lint": "npm-run-all lint:*",
-    "lint:html": "htmlhint examples index.html",
-    "start": "npm-run-all -p start:* watch",
-    "start:serve": "babel-node --presets=env scripts/server.js",
-    "update": "npm-run-all -s update:*",
-    "update:videojs-record": "cp -Rv node_modules/videojs-record/dist .",
-    "update:videojs-wavesurfer": "cp -Rv node_modules/videojs-wavesurfer/dist .",
-    "update:wavesurfer": "cp -Rv node_modules/wavesurfer.js/dist/wavesurfer.min.* dist/",
-    "update:wavesurfer-microphone": "cp -Rv node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.* dist/",
-    "update:libvorbis": "cp -Rv node_modules/libvorbis.js/js/libvorbis.min.js examples/lib/libvorbis.js/",
-    "update:lamejs": "cp -Rv node_modules/lamejs/lame.*.js examples/lib/lamejs/",
-    "update:lamejs-worker": "cp -Rv node_modules/lamejs/worker-example/*.js examples/lib/lamejs/worker-example/",
-    "update:opus": "cp -Rv node_modules/opus-recorder/dist/*.js examples/lib/opus-recorder/",
-    "update:recorderjs": "cp -Rv node_modules/recorderjs/dist/*.js examples/lib/recorderjs/",
-    "test": "echo No tests yet!",
-    "watch": "npm-run-all -p watch:lint",
-    "watch:lint": "nodemon --watch examples --exec npm run lint",
-    "prepublish": "not-in-install && npm run build || in-install"
   }
 }
