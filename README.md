@@ -33,6 +33,16 @@ Copy updated libraries into repository:
 npm run update
 ```
 
+Update Examples
+---------------
+
+To update video.js version references in the example HTML files, change the
+versions in ``scripts/update-videojs.sh`` and run it:
+
+```
+./scripts/update-videojs.sh
+```
+
 Development Server
 ------------------
 
