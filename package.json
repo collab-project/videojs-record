@@ -40,7 +40,7 @@
     "build:js:plugins": "node scripts/build-plugins.js",
     "build:test": "npm-run-all build:test:browserify build:test:webpack",
     "build:test:browserify": "browserify test/browserify-test.js --debug --outfile dist-test/browserify-test.js",
-    "build:test:webpack": "webpack test/webpack-test.js dist-test/webpack-test.js",
+    "build:test:webpack": "webpack --config=test/webpack-config-test.js",
     "clean": "npm-run-all -p clean:*",
     "clean:build": "node -e \"var s=require('shelljs'),d=['dist','dist-test','es5', 'docs/api'];s.rm('-rf',d);s.mkdir('-p',d);\"",
     "docs": "npm-run-all docs:*",
