@@ -162,7 +162,7 @@
     "uglifyify": "^4.0.4",
     "videojs-languages": "^1.0.0",
     "watchify": "^3.9.0",
-    "webpack": "^3.6.0",
+    "webpack": "^3.7.1",
     "zip-dir": "^1.0.2"
   }
 }
