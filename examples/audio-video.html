@@ -25,7 +25,7 @@
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 
 <script>
-var player = videojs("myVideo", {
+var options = {
     controls: true,
     width: 320,
     height: 240,
@@ -37,7 +37,15 @@ var player = videojs("myVideo", {
             debug: true
         }
     }
-});
+};
+
+// use correct video mimetype for opera
+if (!!window.opera || navigator.userAgent.indexOf('OPR/') !== -1) {
+    options.plugins.record.videoMimeType = 'video/webm\;codecs=vp8'; // or vp9
+}
+
+var player = videojs("myVideo", options);
+
 // error handling
 player.on('deviceError', function() {
     console.log('device error:', player.deviceErrorCode);
