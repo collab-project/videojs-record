@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.0.1 - unreleased
+------------------
+
+- Fix `MRecordRTC` reference error (#177)
+
+
 2.0.0 - 2017/10/05
 ------------------
 

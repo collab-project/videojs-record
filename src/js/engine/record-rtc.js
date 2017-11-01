@@ -26,7 +26,7 @@ class RecordRTCEngine extends RecordEngine {
         this.debug = debug;
 
         // setup RecordRTC
-        this.engine = new MRecordRTC();
+        this.engine = new RecordRTC.MRecordRTC();
         this.engine.mediaType = this.mediaType;
         this.engine.disableLogs = !this.debug;
         this.engine.mimeType = this.mimeType;
