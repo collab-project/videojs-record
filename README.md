@@ -10,6 +10,35 @@ Video.js plugin for recording audio/video/image files.
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 
+Table of Contents
+------------
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [Usage](#usage)
+  - [Audio/video/image](#audiovideoimage)
+  - [Audio-only](#audio-only)
+- [Examples](#examples)
+- [Options](#options)
+- [Methods](#methods)
+- [Events](#events)
+- [Media Constraints](#media-constraints)
+- [Get recorded data](#get-recorded-data)
+  - [Save data](#save-data)
+  - [Timestamps](#timestamps)
+  - [Upload data](#upload-data)
+- [Controlling the input and output devices](#controlling-the-input-and-output-devices)
+- [Responsive layout](#responsive-layout)
+- [Customizing controls](#customizing-controls)
+- [Other audio libraries](#other-audio-libraries)
+- [Localization](#localization)
+- [Using with React](#using-with-react)
+- [More features using other plugins](#more-features-using-other-plugins)
+- [Development](#development)
+- [Font](#font)
+- [License](#license)
+- [Donate](#donate)
+
 Installation
 ------------
 
