@@ -11,7 +11,7 @@ Video.js plugin for recording audio/video/image files.
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 
 Table of Contents
-------------
+-----------------
 
 - [Installation](#installation)
 - [Dependencies](#dependencies)
@@ -58,9 +58,10 @@ version of videojs-record.
 Dependencies
 ------------
 
-The plugin has the following mandatory dependency:
+The plugin has the following mandatory dependencies:
 
 - [Video.js](https://github.com/videojs/video.js) - HTML5 media player that provides the user interface.
+- [webrtc-adapter](https://github.com/webrtc/adapter) - Provides cross-browser support for getUserMedia and other browser APIs used in this plugin.
 
 When recording audio and/or video you also need:
 
@@ -71,9 +72,6 @@ to visualize the audio waveform):
 
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for realtime visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
-
-It is also highly recommended to include the [webrtc-adapter](https://github.com/webrtc/adapter) package for
-cross-browser support for getUserMedia and other browser APIs used in this plugin.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
