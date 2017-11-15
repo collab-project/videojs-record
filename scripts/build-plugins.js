@@ -1,13 +1,13 @@
 /**
  * Build the plugins.
- * 
+ *
  * Steps executed for each plugin in the src/js/plugins directory:
- * 
+ *
  *  - babelify
  *  - create collapsed bundle
  *  - minify
  *  - add copyright header
- *  
+ *
  * @file build-plugins.js
  * @since 2.0.0
  */

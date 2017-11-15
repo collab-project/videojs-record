@@ -4,6 +4,7 @@ videojs-record changelog
 2.0.2 - unreleased
 ------------------
 
+- Fix issue with copying fonts during build (#185)
 - Bump required version for recordrtc to 5.4.5 for improved Safari 11 support (#181)
 
 
