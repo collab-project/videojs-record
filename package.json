@@ -43,12 +43,12 @@
     "opus-recorder": "^1.2.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "video.js": "^6.2.8",
-    "videojs-record": "^2.0.0",
-    "webrtc-adapter": "^5.0.6"
+    "videojs-record": "^2.0.1",
+    "webrtc-adapter": "^6.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.6.1",
     "connect": "^3.6.5",
     "copy": "^0.3.1",
     "glob": "^7.1.2",
@@ -59,7 +59,7 @@
     "lodash-compat": "^3.10.2",
     "minimist": "^1.2.0",
     "nodemon": "^1.12.1",
-    "npm-run-all": "^4.1.1",
+    "npm-run-all": "^4.1.2",
     "portscanner": "^2.1.1",
     "replace": "^0.3.0",
     "serve-static": "^1.13.1",
