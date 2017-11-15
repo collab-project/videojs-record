@@ -23,7 +23,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm-run-all -s lint build:css build:fonts build:js build:test docs",
-    "build:fonts": "cpx 'font/*.{eot,svg,ttf,woff}' dist/fonts/",
+    "build:fonts": "cpx --verbose 'font/*.{eot,svg,ttf,woff}' dist/fonts/",
     "build:css": "npm-run-all -s build:css:sass build:css:comb build:css:compress build:css:banner",
     "build:css:sass": "node-sass --include-path src/css src/css/videojs.record.scss dist/css/videojs.record.css",
     "build:css:comb": "csscomb dist/css/videojs.record.css",
