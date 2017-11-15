@@ -1,6 +1,6 @@
 /**
  * videojs-wavesurfer
- * @version 2.0.1
+ * @version 2.0.2
  * @see https://github.com/collab-project/videojs-wavesurfer
  * @copyright 2014-2017 Collab
  * @license MIT
@@ -404,7 +404,7 @@ var Wavesurfer = function (_Plugin) {
                     this.player.loadingSpinner.show();
 
                     // start loading file
-                    this.load(options.src);
+                    this.load(options.src, options.peaks);
                 } else {
                     // hide loading spinner
                     this.player.loadingSpinner.hide();
@@ -445,17 +445,39 @@ var Wavesurfer = function (_Plugin) {
          *
          * @param {string|blob|file} url - Either the URL of the audio file,
          *     a Blob or a File object.
+         * @param {string} peakUrl - The URL of peak data for the audio file.
          */
 
     }, {
         key: 'load',
-        value: function load(url) {
+        value: function load(url, peakUrl) {
+            var _this2 = this;
+
             if (url instanceof Blob || url instanceof File) {
                 this.log('Loading object: ' + JSON.stringify(url));
                 this.surfer.loadBlob(url);
             } else {
-                this.log('Loading URL: ' + url);
-                this.surfer.load(url);
+                // load peak data from file
+                if (peakUrl !== undefined) {
+                    var ajax = _wavesurfer2.default.util.ajax({
+                        url: peakUrl,
+                        responseType: 'json'
+                    });
+
+                    ajax.on('success', function (data, e) {
+                        if (e.target.status == 200) {
+                            _this2.log('Loading URL: ' + url + '\nLoading Peak Data URL: ' + peakUrl);
+                            _this2.surfer.load(url, data.data);
+                        } else {
+                            _this2.log('Unable to retrieve peak data from ' + peakUrl + '. Status code: ' + e.target.status);
+                            _this2.log('Loading URL: ' + url);
+                            _this2.surfer.load(url);
+                        }
+                    });
+                } else {
+                    this.log('Loading URL: ' + url);
+                    this.surfer.load(url);
+                }
             }
         }
 
@@ -709,7 +731,7 @@ var Wavesurfer = function (_Plugin) {
     }, {
         key: 'onWaveFinish',
         value: function onWaveFinish() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.log('Finished playback');
 
@@ -735,8 +757,8 @@ var Wavesurfer = function (_Plugin) {
                 // seeks so that we can change the replay button back to a play
                 // button
                 this.surfer.once('seek', function () {
-                    _this2.player.controlBar.playToggle.removeClass('vjs-ended');
-                    _this2.player.trigger('pause');
+                    _this3.player.controlBar.playToggle.removeClass('vjs-ended');
+                    _this3.player.trigger('pause');
                 });
             }
         }
@@ -826,32 +848,32 @@ var Wavesurfer = function (_Plugin) {
     }, {
         key: 'onScreenChange',
         value: function onScreenChange() {
-            var _this3 = this;
+            var _this4 = this;
 
             // execute with tiny delay so the player element completes
             // rendering and correct dimensions are reported
             var fullscreenDelay = this.player.setInterval(function () {
-                var isFullscreen = _this3.player.isFullscreen();
+                var isFullscreen = _this4.player.isFullscreen();
                 var newWidth = void 0,
                     newHeight = void 0;
                 if (!isFullscreen) {
                     // restore original dimensions
-                    newWidth = _this3.originalWidth;
-                    newHeight = _this3.originalHeight;
+                    newWidth = _this4.originalWidth;
+                    newHeight = _this4.originalHeight;
                 }
 
-                if (_this3.waveReady) {
-                    if (_this3.liveMode && !_this3.surfer.microphone.active) {
+                if (_this4.waveReady) {
+                    if (_this4.liveMode && !_this4.surfer.microphone.active) {
                         // we're in live mode but the microphone hasn't been
                         // started yet
                         return;
                     }
                     // redraw
-                    _this3.redrawWaveform(newWidth, newHeight);
+                    _this4.redrawWaveform(newWidth, newHeight);
                 }
 
                 // stop fullscreenDelay interval
-                _this3.player.clearInterval(fullscreenDelay);
+                _this4.player.clearInterval(fullscreenDelay);
             }, 100);
         }
 
@@ -924,7 +946,7 @@ var Wavesurfer = function (_Plugin) {
 // version nr gets replaced during build
 
 
-Wavesurfer.VERSION = '2.0.1';
+Wavesurfer.VERSION = '2.0.2';
 
 // register plugin
 _video2.default.Wavesurfer = Wavesurfer;

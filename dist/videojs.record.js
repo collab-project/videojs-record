@@ -1,6 +1,6 @@
 /**
  * videojs-record
- * @version 2.0.1
+ * @version 2.0.2
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2017 Collab
  * @license MIT
@@ -2881,7 +2881,7 @@ var Record = function (_Plugin) {
 // version nr gets replaced during build
 
 
-Record.VERSION = '2.0.1';
+Record.VERSION = '2.0.2';
 
 // register plugin
 _video2.default.Record = Record;
