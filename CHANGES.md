@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.0.2 - unreleased
+2.0.2 - 2017/11/15
 ------------------
 
 - Fix issue with copying fonts during build (#185)
