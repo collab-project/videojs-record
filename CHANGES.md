@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.0.2 - unreleased
+------------------
+
+- Bump required version for recordrtc to 5.4.5 for improved Safari 11 support (#181)
+
+
 2.0.1 - 2017/11/10
 ------------------
 

@@ -107,7 +107,7 @@
     ]
   },
   "dependencies": {
-    "recordrtc": ">=5.4.4",
+    "recordrtc": ">=5.4.5",
     "video.js": ">=6.2.7",
     "videojs-wavesurfer": ">=2.0.1",
     "webrtc-adapter": ">=5.0.4"
@@ -147,7 +147,7 @@
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "mv": "^2.1.1",
-    "node-sass": "^4.6.0",
+    "node-sass": "^4.6.1",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.2",
     "opus-recorder": "^1.2.0",
@@ -158,7 +158,7 @@
     "serve-static": "^1.13.1",
     "shelljs": "^0.7.8",
     "sinon": "4.1.2",
-    "uglify-js": "^3.1.8",
+    "uglify-js": "^3.1.9",
     "uglifyify": "^4.0.4",
     "videojs-languages": "^1.0.0",
     "watchify": "^3.9.0",
