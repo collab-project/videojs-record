@@ -28,7 +28,7 @@
     "build:css:sass": "node-sass --include-path src/css src/css/videojs.record.scss dist/css/videojs.record.css",
     "build:css:comb": "csscomb dist/css/videojs.record.css",
     "build:css:compress": "cleancss -o dist/css/videojs.record.min.css dist/css/videojs.record.css",
-    "build:css:banner": "node scripts/add-banner.js dist/css/videojs.record*.css",
+    "build:css:banner": "node scripts/add-banner.js 'dist/css/videojs.record*.css'",
     "build:js": "npm-run-all build:js:babel build:js:browserify build:js:version build:js:collapse build:js:uglify build:js:banner build:js:plugins build:js:language",
     "build:js:babel": "babel src/js --out-dir es5",
     "build:js:version": "node scripts/update-version.js",

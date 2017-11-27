@@ -21,8 +21,8 @@ var collapse = require('bundle-collapser/plugin');
 var color = require('colour');
 var mkdirp = require('mkdirp');
 
-var pluginsDestDir = 'dist/plugins/';
-var bannerPath = 'scripts/banner.ejs';
+var pluginsDestDir = path.join('dist', 'plugins');
+var bannerPath = path.join('scripts', 'banner.ejs');
 var fileName, dirName, pluginName, minifiedName, pluginDestPath,
     pluginDestPathMinified, browserify_opts, pjson, bundler;
 
@@ -34,12 +34,12 @@ mkdirp(pluginsDestDir, function(err) {
         console.log(color.green('OK') + ': Build ' + files.length + ' plugins');
 
         files.forEach(function(pluginPath) {
-            fileName = pluginPath.substr(pluginPath.lastIndexOf('/') + 1);
-            dirName = pluginPath.split(fileName)[0];
+            fileName = path.basename(pluginPath);
+            dirName = path.dirname(pluginPath);
             pluginName = fileName.replace('-plugin.js', '');
             minifiedName = fileName.replace('-plugin.js', '.min.js');
-            pluginDestPath = pluginsDestDir + 'videojs.record.' + pluginName + '.js';
-            pluginDestPathMinified = pluginsDestDir + 'videojs.record.' + minifiedName;
+            pluginDestPath = path.join(pluginsDestDir, 'videojs.record.' + pluginName + '.js');
+            pluginDestPathMinified = path.join(pluginsDestDir, 'videojs.record.' + minifiedName);
             browserify_opts = {
                 standalone: pluginName,
                 plugin: [
