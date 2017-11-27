@@ -47,7 +47,3 @@ glob(process.argv[2], function (er, files) {
         console.info('Added banner to ' + fpath);
     });
 });
-
-
-
-
