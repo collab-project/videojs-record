@@ -6,6 +6,7 @@
  */
 
 var fs = require('fs');
+var path = require('path');
 var moment = require('moment');
 var banner = require('add-banner');
 
@@ -27,7 +28,7 @@ process.argv.forEach(function (fpath, index, array) {
         if (fpath.endsWith(CSS)) {
             // CSS
             result = banner(infile, {
-                banner: 'scripts/banner.css',
+                banner: path.resolve('scripts', 'banner.css'),
                 pkg: pjson
             });
             fs.writeFile(fpath, result);
@@ -35,7 +36,7 @@ process.argv.forEach(function (fpath, index, array) {
         } else if (fpath.endsWith(JS)) {
             // javascript
             result = banner(infile, {
-                banner: 'scripts/banner.ejs',
+                banner: path.resolve('scripts', 'banner.ejs'),
                 pkg: pjson,
                 moment: moment
             });
