@@ -6,6 +6,7 @@
  */
 
 var fs = require('fs');
+var path = require('path');
 var replace = require('replace');
 var pjson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 var version = pjson.version;
@@ -13,6 +14,6 @@ var version = pjson.version;
 replace({
     regex: "Record.VERSION = 'dev';",
     replacement: "Record.VERSION = '" + version + "';",
-    paths: ['./dist/videojs.record.js'],
+    paths: [path.resolve('dist', 'videojs.record.js')],
     silent: true
 });
