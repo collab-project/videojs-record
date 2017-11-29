@@ -152,19 +152,28 @@ Examples
 - image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 
-To try out the examples locally, download the zipfile or checkout the
-repository using Git:
+To try out the examples locally, download the [zipfile](https://github.com/collab-project/videojs-record/archive/master.zip)
+and unpack it, or checkout the repository using Git:
+
 ```
 git clone https://github.com/collab-project/videojs-record.git
 ```
 
 And install the dependencies using npm:
+
 ```
 cd videojs-record
 npm install
 ```
 
-Build the library and start the local webserver:
+Build the library and assets once:
+
+```
+npm run build
+```
+
+And start the local webserver:
+
 ```
 npm run start
 ```
