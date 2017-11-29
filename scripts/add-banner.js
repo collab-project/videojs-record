@@ -42,5 +42,5 @@ process.argv.slice(2).forEach(function(fpath) {
         });
         fs.writeFile(fpath, result);
     }
-    console.info('Added banner to ' + fpath);
+    console.info('Added banner to ' + fpath + ' with version ' + pjson.version);
 });

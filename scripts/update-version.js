@@ -16,7 +16,7 @@ var version = pjson.version;
 replace({
     regex: "Record.VERSION = 'dev';",
     replacement: "Record.VERSION = '" + version + "';",
-    paths: [],
+    paths: [fpath],
     silent: true
 });
 
