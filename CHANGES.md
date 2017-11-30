@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Fix Windows build (#186)
+- Bumped required version for videojs-wavesurfer to 2.0.3
 
 
 2.0.2 - 2017/11/15
