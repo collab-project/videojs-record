@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.0.3 - unreleased
+2.0.3 - 2017/11/30
 ------------------
 
 - Fix Windows build (#186)
