@@ -48,7 +48,11 @@ if (!!window.opera || navigator.userAgent.indexOf('OPR/') !== -1) {
     options.plugins.record.videoMimeType = 'video/webm\;codecs=vp8'; // or vp9
 }
 
-var player = videojs("myVideo", options);
+var player = videojs("myVideo", options, function(){
+    // print version information at startup
+    videojs.log('Using video.js', videojs.VERSION,
+        'with videojs-record', videojs.getPluginVersion('record'));
+});
 
 // error handling
 player.on('deviceError', function() {
