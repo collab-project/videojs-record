@@ -51,6 +51,10 @@ var player = videojs("myAudio", {
             debug: true
         }
     }
+}, function(){
+    // print version information at startup
+    videojs.log('Using video.js', videojs.VERSION,
+        'with videojs-record', videojs.getPluginVersion('record'));
 });
 
 // error handling

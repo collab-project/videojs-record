@@ -5,7 +5,11 @@
 class VideojsRecordPlayer extends React.Component {
     componentDidMount() {
         // instantiate Video.js
-        this.player = videojs(this.videoNode, this.props, function onPlayerReady() {});
+        this.player = videojs(this.videoNode, this.props, function onPlayerReady(){
+            // print version information at startup
+            videojs.log('Using video.js', videojs.VERSION,
+                'with videojs-record', videojs.getPluginVersion('record'));
+        });
 
         // error handling
         this.player.on('error', function(error) {
