@@ -80,7 +80,7 @@ class Record extends Plugin {
         player.deviceButton = new DeviceButton(player, options);
         player.addChild(player.deviceButton);
 
-        // add record indicator
+        // add blinking record indicator
         player.recordIndicator = new RecordIndicator(player, options);
         player.recordIndicator.hide();
         player.addChild(player.recordIndicator);
@@ -558,8 +558,16 @@ class Record extends Plugin {
         if (!this.isProcessing()) {
             this._recording = true;
 
-            // hide play control
+            // reset time
+            this.setDuration(this.maxLength);
+            this.setCurrentTime(0);
+
+            // hide play/pause control
             this.player.controlBar.playToggle.hide();
+
+            // reset playback listeners
+            this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
+            this.off(this.player, 'ended', this.playbackTimeUpdate);
 
             // start preview
             switch (this.getRecordType()) {
