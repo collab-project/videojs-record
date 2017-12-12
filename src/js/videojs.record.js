@@ -558,10 +558,6 @@ class Record extends Plugin {
         if (!this.isProcessing()) {
             this._recording = true;
 
-            // reset time
-            this.setDuration(this.maxLength);
-            this.setCurrentTime(0);
-
             // hide play/pause control
             this.player.controlBar.playToggle.hide();
 
