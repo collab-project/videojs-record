@@ -121,7 +121,7 @@ class RecordRTCEngine extends RecordEngine {
 
         // store reference to recorded stream data
         let recordType = this.player().record().getRecordType();
-        this.engine.getBlob(function(recording) {
+        this.engine.getBlob((recording) => {
             switch (recordType) {
                 case AUDIO_ONLY:
                     this.recordedData = recording.audio;
@@ -170,7 +170,7 @@ class RecordRTCEngine extends RecordEngine {
                     this.trigger('recordComplete');
                     break;
             }
-        }.bind(this));
+        });
     }
 }
 

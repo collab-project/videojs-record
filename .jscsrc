@@ -7,5 +7,10 @@
     "validateIndentation": 4,
     "requireSpacesInForStatement": true,
     "requireSpacesInConditionalExpression": true,
-    "requireBlocksOnNewline": true
+    "requireSpaceAfterComma": {"allExcept": ["trailing"]},
+    "requireSpaceBeforeBinaryOperators": true,
+    "requireSpaceAfterBinaryOperators": true,
+    "requireBlocksOnNewline": true,
+    "requireArrowFunctions": true,
+    "requirePaddingNewLinesBeforeExport": true
 }

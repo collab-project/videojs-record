@@ -34,7 +34,7 @@ Player.prototype.play = function play() {
     let retval = this.techGet_('play');
     // silence errors (unhandled promise from play)
     if (retval !== undefined && typeof retval.then === 'function') {
-        retval.then(null, function (e){});
+        retval.then(null, (e) => {});
     }
     return retval;
 };
@@ -715,7 +715,7 @@ class Record extends Plugin {
                 this.surfer.surfer.microphone.stopDevice();
                 return;
             }
-            this.stream.getTracks().forEach(function(stream) {
+            this.stream.getTracks().forEach((stream) => {
                 stream.stop();
             });
         }
