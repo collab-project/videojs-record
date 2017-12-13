@@ -281,7 +281,7 @@ player.on('startRecord', function() {
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `timestamp` | Fires continuously during recording [whenever a new timestamp is available](#timestamps). Only fires if the `timeSlice` option is set. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
-| `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.recorder.devices` array. |
+| `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 
 Media Constraints
@@ -346,7 +346,7 @@ contains a mapping between the media type and the filename. For example:
 ```javascript
 player.on('finishRecord', function() {
     // show save as dialog
-    player.recorder.saveAs({'video': 'my-video-file-name.webm'});
+    player.record().saveAs({'video': 'my-video-file-name.webm'});
 });
 ```
 
