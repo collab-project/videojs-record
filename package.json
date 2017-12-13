@@ -138,7 +138,7 @@
     "moment": "^2.19.4",
     "mv": "^2.1.1",
     "node-sass": "^4.7.2",
-    "nodemon": "^1.12.5",
+    "nodemon": "^1.12.6",
     "npm-run-all": "^4.1.2",
     "opus-recorder": "^2.0.0",
     "portscanner": "^2.1.1",
