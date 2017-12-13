@@ -22,7 +22,7 @@ cd font
 Install the `grunt-cli` tool (you might need root user permissions here):
 
 ```
-npm install -g grunt-cli npm-check-updates
+npm install -g grunt-cli
 ```
 
 Install the dependencies:

@@ -65,7 +65,8 @@
                 // print version information at startup
                 videojs.log('Using video.js', videojs.VERSION,
                     'with videojs-record', videojs.getPluginVersion('record'),
-                    'and videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'));
+                    '+ videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'),
+                    'and recordrtc', RecordRTC.version);
             });
 
             // player error handling
