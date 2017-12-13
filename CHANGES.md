@@ -5,7 +5,9 @@ videojs-record changelog
 ------------------
 
 - Fix issue with blinking time display (#175)
-- Bumped required version for videojs-wavesurfer to 2.1.1
+- Bump required version for videojs-wavesurfer to 2.1.1
+- Bump required version for recordrtc to 5.4.6 for access to RecordRTC.version
+  number
 
 
 2.0.3 - 2017/11/30
