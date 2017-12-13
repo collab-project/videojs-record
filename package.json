@@ -43,8 +43,8 @@
     "opus-recorder": "^2.0.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "video.js": "^6.4.0",
-    "videojs-record": "^2.0.3",
-    "webrtc-adapter": "^6.0.2"
+    "videojs-record": "^2.0.4",
+    "webrtc-adapter": "^6.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -53,7 +53,7 @@
     "cpx": "^1.5.0",
     "htmlhint": "^0.9.13",
     "in-publish": "^2.0.0",
-    "nodemon": "^1.12.3",
+    "nodemon": "^1.12.6",
     "npm-run-all": "^4.1.2",
     "portscanner": "^2.1.1",
     "serve-static": "^1.13.1"

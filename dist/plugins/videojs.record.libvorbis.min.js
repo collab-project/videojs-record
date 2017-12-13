@@ -1,6 +1,6 @@
 /**
  * libvorbis plugin for videojs-record
- * @version 2.0.3
+ * @version 2.0.4
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2017 Collab
  * @license MIT
