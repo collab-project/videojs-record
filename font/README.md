@@ -19,17 +19,10 @@ git clone https://github.com/videojs/font.git
 cd font
 ```
 
-Install the `grunt-cli` and `npm-check-updates` libraries (you might need root user
-permissions here):
+Install the `grunt-cli` tool (you might need root user permissions here):
 
 ```
 npm install -g grunt-cli npm-check-updates
-```
-
-Update `material-design-icons` and `webfonts-generator` to the latest version:
-
-```
-ncu --upgrade material-design-icons webfonts-generator
 ```
 
 Install the dependencies:
@@ -37,9 +30,6 @@ Install the dependencies:
 ```
 npm install
 ```
-
-Edit `lib/grunt.js` and replace `VideoJS` with `videojs-record` (until this
-[pull request](https://github.com/videojs/font/pull/25) lands and is released).
 
 Customize
 ---------
