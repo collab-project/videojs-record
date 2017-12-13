@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.0.4 - unreleased
+2.0.4 - 2017/12/13
 ------------------
 
 - Fix issue with blinking time display (#175)
