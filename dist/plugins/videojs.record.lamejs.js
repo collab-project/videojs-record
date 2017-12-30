@@ -1,6 +1,6 @@
 /**
  * lamejs plugin for videojs-record
- * @version 2.0.4
+ * @version 2.0.5
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2017 Collab
  * @license MIT
@@ -92,6 +92,10 @@ var LamejsEngine = function (_RecordEngine) {
             this.audioSourceNode.disconnect();
             this.processor.disconnect();
             this.processor.onaudioprocess = null;
+            this.inputStream.getAudioTracks().forEach(function (track) {
+                return track.stop();
+            });
+            this.audioContext.close();
 
             this.engine.postMessage({ cmd: 'finish' });
         }

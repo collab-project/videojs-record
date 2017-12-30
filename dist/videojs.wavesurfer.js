@@ -1,6 +1,6 @@
 /**
  * videojs-wavesurfer
- * @version 2.1.2
+ * @version 2.1.3
  * @see https://github.com/collab-project/videojs-wavesurfer
  * @copyright 2014-2017 Collab
  * @license MIT
@@ -691,14 +691,13 @@ var Wavesurfer = function (_Plugin) {
                     });
 
                     ajax.on('success', function (data, e) {
-                        if (e.target.status == 200) {
-                            _this2.log('Loading URL: ' + url + '\nLoading Peak Data URL: ' + peakUrl);
-                            _this2.surfer.load(url, data.data);
-                        } else {
-                            _this2.log('Unable to retrieve peak data from ' + peakUrl + '. Status code: ' + e.target.status);
-                            _this2.log('Loading URL: ' + url);
-                            _this2.surfer.load(url);
-                        }
+                        _this2.log('Loading URL: ' + url + '\nLoading Peak Data URL: ' + peakUrl);
+                        _this2.surfer.load(url, data.data);
+                    });
+                    ajax.on('error', function (e) {
+                        _this2.log('Unable to retrieve peak data from ' + peakUrl + '. Status code: ' + e.target.status, 'warn');
+                        _this2.log('Loading URL: ' + url);
+                        _this2.surfer.load(url);
                     });
                 } else {
                     this.log('Loading URL: ' + url);
@@ -1175,7 +1174,7 @@ var Wavesurfer = function (_Plugin) {
 // version nr gets replaced during build
 
 
-Wavesurfer.VERSION = '2.1.2';
+Wavesurfer.VERSION = '2.1.3';
 
 // register plugin
 _video2.default.Wavesurfer = Wavesurfer;
