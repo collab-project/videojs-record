@@ -1,12 +1,19 @@
 videojs-record changelog
 ========================
 
+2.0.5 - unreleased
+------------------
+
+- Release stream tracks and close `audioContext` on stop recording in the
+  lamejs plugin (#197 by @mafflin)
+
+
 2.0.4 - 2017/12/13
 ------------------
 
 - Fix issue with blinking time display (#175)
 - Bump required version for videojs-wavesurfer to 2.1.2
-- Bump required version for recordrtc to 5.4.6 for access to RecordRTC.version
+- Bump required version for recordrtc to 5.4.6 for access to `RecordRTC.version`
   number
 
 
