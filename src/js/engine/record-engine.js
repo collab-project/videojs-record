@@ -116,4 +116,4 @@ Component.registerComponent('RecordEngine', RecordEngine);
 export {
     RecordEngine,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
-}
+};

@@ -27,16 +27,16 @@ const getRecorderMode = function(image, audio, video, animation) {
     } else if (!isModeEnabled(audio) && isModeEnabled(video)) {
         return VIDEO_ONLY;
     }
-}
+};
 
 /**
  * Return boolean indicating whether mode is enabled or not.
  */
 const isModeEnabled = function(mode) {
     return mode === Object(mode) || mode === true;
-}
+};
 
 export {
     getRecorderMode,
     IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION
-}
+};

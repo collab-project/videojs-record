@@ -814,7 +814,7 @@ class Record extends Plugin {
                     // load recorded media
                     if (isChrome() && this.getRecordType() === AUDIO_VIDEO) {
                         // use video property on Chrome
-                        this.load(this.player.recordedData.video)
+                        this.load(this.player.recordedData.video);
                     } else {
                         this.load(this.player.recordedData);
                     }
@@ -829,7 +829,7 @@ class Record extends Plugin {
                 this._processing = false;
 
                 // hide loader
-                this.player.loadingSpinner.hide();
+                this.player.loadingSpinner.hide( );
 
                 // show animation total duration
                 this.setDuration(this.streamDuration);

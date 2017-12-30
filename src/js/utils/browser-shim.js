@@ -18,6 +18,6 @@ const setSrcObject = function (stream, element, ignoreCreateObjectURL) {
     } else {
         console.log('createObjectURL/srcObject both are not supported.');
     }
-}
+};
 
 export default setSrcObject;

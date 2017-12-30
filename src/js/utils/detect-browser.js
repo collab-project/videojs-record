@@ -72,7 +72,7 @@ const detectBrowser = function() {
     }
 
     return result;
-}
+};
 
 /**
  * Extract browser version out of the provided user agent string.
@@ -87,24 +87,24 @@ const detectBrowser = function() {
 const extractVersion = function(uastring, expr, pos) {
     let match = uastring.match(expr);
     return match && match.length >= pos && parseInt(match[pos], 10);
-}
+};
 
 const isEdge = function() {
     return detectBrowser().browser === 'edge';
-}
+};
 
 const isSafari = function() {
     return detectBrowser().browser === 'safari';
-}
+};
 
 const isOpera = function() {
     return !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
-}
+};
 
 const isChrome = function() {
     return detectBrowser().browser === 'chrome';
-}
+};
 
 export {
     detectBrowser, isEdge, isOpera, isChrome, isSafari
-}
+};
