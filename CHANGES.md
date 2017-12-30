@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.0.5 - unreleased
+2.0.5 - 2017/12/30
 ------------------
 
 - Release stream tracks and close `audioContext` on stop recording in the
