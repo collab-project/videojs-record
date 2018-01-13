@@ -18,6 +18,22 @@ const OPUSRECORDER = 'opus-recorder';
  * @augments videojs.Component
  */
 class RecordEngine extends Component {
+    /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+
+        // auto mixin the evented mixin (required since video.js v6.6.0)
+        options.evented = true;
+
+        super(player, options);
+    }
 
     /**
      * Remove any temporary data and references to streams.
