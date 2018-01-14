@@ -42,10 +42,10 @@ Table of Contents
 Installation
 ------------
 
-Use [npm](https://www.npmjs.org) (`npm install videojs-record`) or
-[bower](https://bower.io) (`bower install videojs-record`) to install the plugin or
-[download](https://github.com/collab-project/videojs-record/releases) the library
-and dependencies elsewhere.
+Use [npm](https://www.npmjs.org) (`npm install videojs-record`) to install the plugin
+or [download](https://github.com/collab-project/videojs-record/releases) the library
+and dependencies elsewhere. If you want to try the examples, check
+[these instructions below](#examples).
 
 Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer.js 2.0 or
 newer. If you want to use this plugin with an older version, check the
