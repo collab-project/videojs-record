@@ -13,23 +13,6 @@ const Component = videojs.getComponent('Component');
  * @augments videojs.Button
 */
 class CameraButton extends Button {
-
-    /**
-     * The constructor function for the class.
-     *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
-     */
-    constructor(player, options) {
-        super(player, options);
-
-        this.on('click', this.onClick);
-        this.on('tap', this.onClick);
-        this.on(player, 'startRecord', this.onStart);
-        this.on(player, 'stopRecord', this.onStop);
-    }
-
     /**
      * Builds the default DOM `className`.
      *
@@ -37,7 +20,27 @@ class CameraButton extends Button {
      *         The DOM `className` for this object.
      */
     buildCSSClass() {
-        return 'vjs-camera-button vjs-control vjs-icon-photo-camera';
+        return 'vjs-camera-button vjs-control vjs-button vjs-icon-photo-camera';
+    }
+
+    /**
+     * Enable the `CameraButton` element so that it can be activated or clicked.
+     */
+    enable() {
+        super.enable();
+
+        this.on(this.player_, 'startRecord', this.onStart);
+        this.on(this.player_, 'stopRecord', this.onStop);
+    }
+
+    /**
+     * Disable the `CameraButton` element so that it cannot be activated or clicked.
+     */
+    disable() {
+        super.disable();
+
+        this.off(this.player_, 'startRecord', this.onStart);
+        this.off(this.player_, 'stopRecord', this.onStop);
     }
 
     /**
@@ -50,7 +53,7 @@ class CameraButton extends Button {
      * @listens tap
      * @listens click
      */
-    onClick(event) {
+    handleClick(event) {
         let recorder = this.player_.record();
 
         if (!recorder.isProcessing()) {

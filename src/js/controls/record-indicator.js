@@ -22,8 +22,7 @@ class RecordIndicator extends Component {
     constructor(player, options) {
         super(player, options);
 
-        this.on(player, 'startRecord', this.show);
-        this.on(player, 'stopRecord', this.hide);
+        this.enable();
     }
 
     /**
@@ -37,6 +36,14 @@ class RecordIndicator extends Component {
             className: 'vjs-record-indicator vjs-control',
             dir: 'ltr'
         });
+    }
+
+    /**
+     * Enable event handlers.
+     */
+    enable() {
+        this.on(this.player_, 'startRecord', this.show);
+        this.on(this.player_, 'stopRecord', this.hide);
     }
 
     /**

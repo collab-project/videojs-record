@@ -14,30 +14,19 @@ const Component = videojs.getComponent('Component');
 */
 class DeviceButton extends Button {
     /**
-     * The constructor function for the class.
+     * This gets called when this button gets:
      *
-     * @private
-     * @param {(videojs.Player|Object)} player - Video.js player instance.
-     * @param {Object} options - Player options.
-     */
-    constructor(player, options) {
-        super(player, options);
-
-        this.on('click', this.onClick);
-        this.on('tap', this.onClick);
-    }
-
-    /**
-     * This gets called when the button is clicked.
+     * - Clicked (via the `click` event, listening starts in the constructor)
+     * - Tapped (via the `tap` event, listening starts in the constructor)
      *
      * @param {EventTarget~Event} event
-     *        The `tap` or `click` event that caused this function to be
+     *        The `keydown`, `tap`, or `click` event that caused this function to be
      *        called.
      *
      * @listens tap
      * @listens click
      */
-    onClick(event) {
+    handleClick(event) {
         // open device dialog
         this.player_.record().getDevice();
     }
