@@ -356,7 +356,20 @@ It's also possible to get data during recording with specific time-intervals. Th
 be useful in scenarios where you're recording a long clip and planning to upload
 recorded blobs to a server periodically, where the clip is stiched it together.
 
-Do this by listening for the `timestamp` event. For example:
+Enable the event with the `timeSlice` option, for example:
+
+```javascript
+record: {
+    audio: false,
+    video: true,
+    maxLength: 5,
+    debug: true,
+    // fire the timestamp event every 2 seconds
+    timeSlice: 2000
+}
+```
+
+And listen for the `timestamp` event. For example:
 
 ```javascript
 // monitor stream data during recording
@@ -376,9 +389,40 @@ player.on('timestamp', function() {
 
 ### Upload data
 
+The example below shows how to 'stream' upload recorded data segments to a server
+using the [jQuery](http://jquery.com/) library and the `timestamp` event:
+
+```javascript
+var segmentNumber = 0;
+
+player.on('timestamp', function() {
+    if (player.recordedData && player.recordedData.length > 0) {
+        var binaryData = player.recordedData[player.recordedData.length - 1];
+
+        segmentNumber++;
+
+        var formData = new FormData();
+        formData.append('SegmentNumber', segmentNumber);
+        formData.append('Data', binaryData);
+
+        $.ajax({
+            url: '/api/Test',
+            method: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                console.log("segment: " + segmentNumber);
+            }
+        });
+    }
+});
+```
+
 Check the [jquery.fileupload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) or
 [Fine Uploader](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html)
-examples on how to upload the data to a server.
+examples on how to upload the data to a server using these libraries.
 
 Controlling the input and output devices
 ----------------------------------------
