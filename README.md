@@ -356,7 +356,7 @@ It's also possible to get data during recording with specific time-intervals. Th
 be useful in scenarios where you're recording a long clip and planning to upload
 recorded blobs to a server periodically, where the clip is stiched it together.
 
-Enable the event with the `timeSlice` option, for example:
+Enable the event with the `timeSlice` option:
 
 ```javascript
 record: {
