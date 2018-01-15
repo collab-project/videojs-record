@@ -6,6 +6,11 @@ videojs-record changelog
 
 - New plugin that uses ffmpeg.js to convert the recorded data into other
   audio/video file formats in the browser
+
+
+2.0.6 - 2018/01/15
+------------------
+
 - Fix compatibility with video.js 6.6.0 (#198)
 - Bump required version for videojs-wavesurfer to 2.1.4
 - Document how to stream upload to server using timestamp event (#176)
