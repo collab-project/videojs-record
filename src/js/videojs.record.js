@@ -433,6 +433,7 @@ class Record extends Plugin {
                     // unknown engine
                     throw new Error('Unknown audioEngine: ' + this.audioEngine);
             }
+
             // create recording engine
             try {
                 // connect stream to recording engine

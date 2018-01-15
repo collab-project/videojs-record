@@ -96,17 +96,20 @@ class RecordEngine extends Component {
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
      */
-    saveAs(name) {
+    saveAs(name, data) {
+        if (data === undefined) {
+            data = this.recordedData;
+        }
         let fileName = name[Object.keys(name)[0]];
 
         if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
-            return navigator.msSaveOrOpenBlob(this.recordedData, fileName);
+            return navigator.msSaveOrOpenBlob(data, fileName);
         } else if (typeof navigator.msSaveBlob !== 'undefined') {
-            return navigator.msSaveBlob(this.recordedData, fileName);
+            return navigator.msSaveBlob(data, fileName);
         }
 
         let hyperlink = document.createElement('a');
-        hyperlink.href = URL.createObjectURL(this.recordedData);
+        hyperlink.href = URL.createObjectURL(data);
         hyperlink.download = fileName;
 
         hyperlink.style = 'display:none;opacity:0;color:transparent;';

@@ -43,7 +43,9 @@ class FFmpegjsEngine extends RecordEngine {
             opts.push('output.mp3');
             console.log(opts);
             // start conversion
-            console.log('Starting FFmpeg.js conversion...');
+            if (this.debug) {
+                console.log('Starting FFmpeg.js conversion...');
+            }
             this.engine.postMessage({
                 type: 'run',
                 MEMFS: [{name: data.name, data: event.target.result}],
@@ -76,15 +78,20 @@ class FFmpegjsEngine extends RecordEngine {
 
             // job finished with some result
             case 'done':
+                let buf = msg.data.MEMFS[0].data;
+
+                // XXX: ability to specify type
+                var result = new Blob(buf, {type: 'audio/mp3'});
+
+                // inject date and name into blob
+                this.addFileInfo(result);
+
                 if (this.debug) {
-                    let buf = msg.data.MEMFS[0].data;
-                    var result = new Blob(buf, {type: 'audio/mp3'});
-                    this.addFileInfo(result);
-
                     console.log('FFmpeg.js worker finished job with result:', result);
-
-                    // XXX: notify others
                 }
+
+                // XXX: notify others
+                this.saveAs({'audio': result.name}, result);
                 break;
 
             // FFmpeg printed to stdout
@@ -99,8 +106,10 @@ class FFmpegjsEngine extends RecordEngine {
 
             // FFmpeg exited
             case 'exit':
-                console.log('FFmpeg.js process exited with code ' + msg.data);
-                console.log(this.stdout);
+                if (this.debug) {
+                    console.log('FFmpeg.js process exited with code ' + msg.data);
+                    console.log(this.stdout);
+                }
                 // this.engine.terminate();
                 break;
 
