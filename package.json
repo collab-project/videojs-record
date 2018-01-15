@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A video.js plugin for recording audio/video/image files.",
   "author": "Collab",
   "license": "MIT",
@@ -147,7 +147,7 @@
     "replace": "^0.3.0",
     "serve-static": "^1.13.1",
     "shelljs": "^0.8.0",
-    "uglify-js": "^3.3.6",
+    "uglify-js": "^3.3.7",
     "uglifyify": "^4.0.5",
     "videojs-languages": "^1.0.0",
     "webpack": "^3.10.0",

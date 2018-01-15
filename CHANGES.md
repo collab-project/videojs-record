@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.0.6 - unreleased
+2.0.6 - 2018/01/15
 ------------------
 
 - Fix compatibility with video.js 6.6.0 (#198)
