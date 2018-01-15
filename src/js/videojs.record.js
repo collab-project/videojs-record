@@ -132,6 +132,7 @@ class Record extends Plugin {
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
         this.convertWorkerURL = recordOptions.convertWorkerURL;
+        this.convertOptions = recordOptions.convertOptions;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -458,6 +459,7 @@ class Record extends Plugin {
 
                 // convert settings
                 this.converter.convertWorkerURL = this.convertWorkerURL;
+                this.converter.convertOptions = this.convertOptions;
 
                 // initialize converter
                 this.converter.setup(this.mediaType, this.debug);

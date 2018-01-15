@@ -22,8 +22,7 @@ class FFmpegjsEngine extends RecordEngine {
         this.mediaType = mediaType;
         this.debug = debug;
 
-        this.stdout = "";
-        this.stderr = "";
+        this.stdout = this.stderr = '';
         this.engine = new Worker(this.convertWorkerURL);
         this.engine.onmessage = this.onWorkerMessage.bind(this);
     }
@@ -34,21 +33,22 @@ class FFmpegjsEngine extends RecordEngine {
      * @param {blob} data - Reference to the recorded Blob.
      */
     recordComplete(data) {
-        console.log('FFmpegjsEngine.recordComplete', data);
+        console.log('FFmpegjsEngine.recordComplete - input:', data);
 
-        // convert to array buffer
-        var arrayBuffer;
+        // convert blob to array buffer
         var fileReader = new FileReader();
         fileReader.onload = (event) => {
-            arrayBuffer = event.target.result;
-
+            var opts = ['-i', data.name].concat(this.convertOptions);
+            // XXX: ability to specify name
+            opts.push('output.mp3');
+            console.log(opts);
             // start conversion
             console.log('Starting FFmpeg.js conversion...');
             this.engine.postMessage({
-                type: "run",
-                MEMFS: [{name: data.name, data: arrayBuffer}],
+                type: 'run',
+                MEMFS: [{name: data.name, data: event.target.result}],
                 // TOTAL_MEMORY: 256 * 1024 * 1024,
-                arguments: ["-i", data.name, "-codec:a", "libmp3lame", "-qscale:a", "2", "output.mp3"]
+                arguments: opts
             });
         };
         fileReader.readAsArrayBuffer(data);
@@ -61,21 +61,21 @@ class FFmpegjsEngine extends RecordEngine {
         var msg = event.data;
         switch (msg.type) {
             // worker loaded and ready to accept commands
-            case "ready":
+            case 'ready':
                 if (this.debug) {
-                    console.log("FFmpeg.js engine ready.");
+                    console.log('FFmpeg.js engine ready.');
                 }
                 break;
 
             // worker started job
-            case "run":
+            case 'run':
                 if (this.debug) {
                     console.log('FFmpeg.js worker started job');
                 }
                 break;
 
             // job finished with some result
-            case "done":
+            case 'done':
                 if (this.debug) {
                     let buf = msg.data.MEMFS[0].data;
                     var result = new Blob(buf, {type: 'audio/mp3'});
@@ -88,24 +88,24 @@ class FFmpegjsEngine extends RecordEngine {
                 break;
 
             // FFmpeg printed to stdout
-            case "stdout":
-                this.stdout += msg.data + "\n";
+            case 'stdout':
+                this.stdout += msg.data + '\n';
                 break;
 
             // FFmpeg printed to stderr
-            case "stderr":
+            case 'stderr':
                 this.stderr += msg.data + "\n";
                 break;
 
             // FFmpeg exited
-            case "exit":
-                console.log("FFmpeg.js process exited with code " + msg.data);
+            case 'exit':
+                console.log('FFmpeg.js process exited with code ' + msg.data);
                 console.log(this.stdout);
                 // this.engine.terminate();
                 break;
 
             // error occured
-            case "error":
+            case 'error':
                 this.player().trigger('error', msg.data);
                 break;
         }

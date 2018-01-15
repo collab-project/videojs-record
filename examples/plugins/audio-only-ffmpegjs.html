@@ -50,7 +50,11 @@ var player = videojs("myAudio", {
             maxLength: 20,
             debug: true,
             convertEngine: "ffmpeg.js",
+            convertOptions: ["-codec:a", "libmp3lame", "-qscale:a", "2"],
+            // use MP4 encoding worker (H.264 & AAC & MP3 encoders, popular decoders)
             convertWorkerURL: "../../node_modules/ffmpeg.js/ffmpeg-worker-mp4.js"
+            // or use WebM encoding worker (VP8 & Opus encoders, popular decoders)
+            // convertWorkerURL: "../../node_modules/ffmpeg.js/ffmpeg-worker-webm.js"
         }
     }
 }, function() {

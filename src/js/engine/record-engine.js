@@ -10,8 +10,10 @@ const RECORDRTC = 'recordrtc';
 const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
-const FFMPEGJS = 'ffmpeg.js';
 const OPUSRECORDER = 'opus-recorder';
+
+// supported converter plugin engines
+const FFMPEGJS = 'ffmpeg.js';
 
 /**
  * Base class for recorder backends.
