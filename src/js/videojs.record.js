@@ -18,7 +18,7 @@ import setSrcObject from './utils/browser-shim';
 import { detectBrowser, isChrome } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, FFMPEGJS} from './engine/record-engine';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
@@ -128,6 +128,10 @@ class Record extends Plugin {
         this.videoFrameHeight = recordOptions.frameHeight;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
+
+        // convert settings
+        this.convertEngine = recordOptions.convertEngine;
+        this.convertWorkerURL = recordOptions.convertWorkerURL;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -396,7 +400,7 @@ class Record extends Plugin {
                     ' is only supported in audio-only mode.');
             }
 
-            // get recorder class
+            // determine recorder class
             var EngineClass;
             switch (this.audioEngine) {
                 case RECORDRTC:
@@ -428,6 +432,7 @@ class Record extends Plugin {
                     // unknown engine
                     throw new Error('Unknown audioEngine: ' + this.audioEngine);
             }
+            // create recording engine
             try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);
@@ -436,6 +441,26 @@ class Record extends Plugin {
                 console.error(err);
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
+            }
+
+            // create converter engine
+            if (this.convertEngine == FFMPEGJS) {
+                try {
+                    //
+                    this.converter = new videojs.FFmpegjsEngine(this.player,
+                        this.player.options_);
+                }
+                catch (err) {
+                    console.error(err);
+                    throw new Error('Could not load ' + this.convertEngine +
+                        ' plugin');
+                }
+
+                // convert settings
+                this.converter.convertWorkerURL = this.convertWorkerURL;
+
+                // initialize converter
+                this.converter.setup(this.mediaType, this.debug);
             }
 
             // listen for events
@@ -760,6 +785,11 @@ class Record extends Plugin {
 
         // notify listeners that data is available
         this.player.trigger('finishRecord');
+
+        // listen for recorder events
+        if (this.converter !== undefined) {
+            this.converter.recordComplete(this.player.recordedData);
+        }
 
         switch (this.getRecordType()) {
             case AUDIO_ONLY:

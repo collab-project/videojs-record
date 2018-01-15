@@ -10,6 +10,7 @@ const RECORDRTC = 'recordrtc';
 const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
+const FFMPEGJS = 'ffmpeg.js';
 const OPUSRECORDER = 'opus-recorder';
 
 /**
@@ -28,7 +29,6 @@ class RecordEngine extends Component {
      *         The key/value store of player options.
      */
     constructor(player, options) {
-
         // auto mixin the evented mixin (required since video.js v6.6.0)
         options.evented = true;
 
@@ -131,5 +131,5 @@ Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
     RecordEngine,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
+    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, FFMPEGJS
 };

@@ -21,6 +21,13 @@ const pluginDefaultOptions = {
     frameHeight: 240,
     // Enables console logging for debugging purposes.
     debug: false,
+
+    // Media converter library to use. Legal values are 'ffmpeg.js'
+    // or an empty string to disable.
+    convertEngine: '',
+    //
+    convertWorkerURL: '',
+
     // The mime type for the video recorder. Default to 'video/webm'.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.
