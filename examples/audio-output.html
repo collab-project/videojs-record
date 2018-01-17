@@ -140,9 +140,15 @@ function attachSinkId(element, sinkId, outputSelector) {
 function changeAudioDestination(event) {
     var deviceId = event.target.value;
     var outputSelector = event.target;
-    var element = player.el().firstChild;
 
-    attachSinkId(element, deviceId, outputSelector);
+    try {
+        // change sink id
+        player.record().setSinkId(deviceId);
+    } catch (error) {
+        console.warn(error)
+        // jump back to first output device in the list as it's the default.
+        outputSelector.selectedIndex = 0;
+    }
 }
 
 // error handling
