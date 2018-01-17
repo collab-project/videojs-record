@@ -1352,18 +1352,18 @@ class Record extends Plugin {
     /**
      * Attach audio output device to the provided media element using the
      * sinkId.
-     * 
+     *
      * @param {string} sinkId - Id of audio output device.
      */
     setSinkId(sinkId) {
         let element = player.tech_.el_;
 
         if (typeof element.sinkId !== 'undefined') {
-            element.setSinkId(sinkId).then(function() {
+            element.setSinkId(sinkId).then(() => {
                 console.log('Success, audio output device attached: ' + sinkId + ' to ' +
                     'element with ' + element.title + ' as source.');
 
-            }).catch(function (error) {
+            }).catch((error) => {
                 var errorMessage = error;
                 if (error.name === 'SecurityError') {
                     errorMessage = 'You need to use HTTPS for selecting audio output ' +
@@ -1371,7 +1371,6 @@ class Record extends Plugin {
                 }
                 throw new Error(errorMessage);
             });
-
         } else {
             throw new Error('Browser does not support audio output device selection.');
         }
