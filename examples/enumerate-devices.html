@@ -59,14 +59,15 @@ var player = videojs("myAudio", {
 }, function(){
     // print version information at startup
     videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'),
-        'and recordrtc', RecordRTC.version);
+	    'with videojs-record', videojs.getPluginVersion('record'),
+	    '+ videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'),
+	    'and recordrtc', RecordRTC.version);
 });
 
 // user requested to enumerate devices
 document.getElementById('enumBtn').onclick = function(ev) {
     player.record().enumerateDevices();
-}
+};
 
 player.on('enumerateReady', function() {
     var devices = player.record().devices;
