@@ -6,7 +6,6 @@
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
-  <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
 
   <script src="../node_modules/video.js/dist/video.min.js"></script>
   <script src="../node_modules/recordrtc/RecordRTC.js"></script>
@@ -19,7 +18,6 @@
 
   <style>
   body {
-      font-family: 'Roboto', sans-serif;
       font-weight: 300;
   }
 
@@ -93,8 +91,9 @@ player.on('enumerateReady', function() {
     var devices = player.record().devices;
     console.log('Total devices found:', devices.length);
 
+    // handle selection changes
     var outputSelector = document.getElementById('selector');
-    outputSelector.addEventListener('change', changeAudioDestination);
+    outputSelector.addEventListener('change', changeAudioOutput);
 
     // populate select options
     for (var i = 0; i !== devices.length; ++i) {
@@ -112,7 +111,7 @@ player.on('enumerateReady', function() {
     }
 });
 
-function changeAudioDestination(event) {
+function changeAudioOutput(event) {
     var deviceId = event.target.value;
     var outputSelector = event.target;
 
