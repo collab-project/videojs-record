@@ -1353,15 +1353,15 @@ class Record extends Plugin {
      * Attach audio output device to the provided media element using the
      * sinkId.
      *
-     * @param {string} sinkId - Id of audio output device.
+     * @param {string} deviceId - Id of audio output device.
      */
-    setSinkId(sinkId) {
+    setAudioOutput(deviceId) {
         let element = player.tech_.el_;
 
         if (typeof element.sinkId !== 'undefined') {
-            element.setSinkId(sinkId).then(() => {
-                console.log('Success, audio output device attached: ' + sinkId + ' to ' +
-                    'element with ' + element.title + ' as source.');
+            element.setSinkId(deviceId).then(() => {
+                console.log('Success, audio output device attached: ' + deviceId + ' to ' +
+                    'element.');
 
             }).catch((error) => {
                 var errorMessage = error;
