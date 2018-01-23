@@ -104,7 +104,7 @@
   "dependencies": {
     "recordrtc": ">=5.4.6",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.1.4",
+    "videojs-wavesurfer": ">=2.2.0",
     "webrtc-adapter": ">=5.0.4"
   },
   "devDependencies": {
@@ -113,7 +113,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
-    "blueimp-file-upload": ">=9.19.3",
+    "blueimp-file-upload": ">=9.20.0",
     "browserify": "^15.2.0",
     "browserify-banner": "^1.0.6",
     "browserify-shim": "^3.8.14",

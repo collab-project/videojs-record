@@ -1,6 +1,13 @@
 videojs-record changelog
 ========================
 
+2.1.0 - unreleased
+------------------
+
+- Support for selecting audio output device (#16)
+- Bump required version for videojs-wavesurfer to 2.2.0 for setAudioOutput
+
+
 2.0.6 - 2018/01/15
 ------------------
 
