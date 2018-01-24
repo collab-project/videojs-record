@@ -76,14 +76,14 @@ var player = videojs("myAudio", {
             debug: true
         }
     }
-}, function(){
+}, function() {
     // print version information at startup
     videojs.log('Using video.js', videojs.VERSION,
         'with videojs-record', videojs.getPluginVersion('record'),
         '+ videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'),
         'and recordrtc', RecordRTC.version);
 
-    // enumerate devices
+    // enumerate devices at startup
     player.record().enumerateDevices();
 });
 
@@ -105,26 +105,28 @@ player.on('enumerateReady', function() {
             option.text = deviceInfo.label || 'speaker ' +
                 (outputSelector.length + 1);
             outputSelector.appendChild(option);
-        } else {
-            console.log('Found non audio output device: ', deviceInfo.label);
         }
     }
 });
 
+var deviceId;
 function changeAudioOutput(event) {
-    var deviceId = event.target.value;
-    var outputSelector = event.target;
+    deviceId = event.target.value;
 
     try {
         // change audio output device
         player.record().setAudioOutput(deviceId);
     } catch (error) {
-        console.warn(error)
+        console.warn(error);
 
-        // jump back to first output device in the list as it's the default.
-        outputSelector.selectedIndex = 0;
+        // jump back to first output device in the list as it's the default
+        event.target.selectedIndex = 0;
     }
 }
+
+player.on('audioOutputReady', function() {
+    console.log('Changed audio output to deviceId:', deviceId);
+});
 
 // error handling
 player.on('enumerateError', function() {

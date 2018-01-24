@@ -1350,29 +1350,48 @@ class Record extends Plugin {
     }
 
     /**
-     * Attach audio output device to the provided media element using the
-     * sinkId.
+     * Change the audio output device.
      *
-     * @param {string} deviceId - Id of audio output device.
+     * @param {string} sinkId - Id of audio output device.
      */
     setAudioOutput(deviceId) {
-        let element = player.tech_.el_;
+        switch (this.getRecordType()) {
+            case AUDIO_ONLY:
+                // use wavesurfer
+                this.surfer.surfer.setSinkId(deviceId).then((result) => {
+                    // notify listeners
+                    this.player.trigger('audioOutputReady');
+                }).catch((err) => {
+                    // notify listeners
+                    this.player.trigger('error', err);
 
-        if (typeof element.sinkId !== 'undefined') {
-            element.setSinkId(deviceId).then(() => {
-                console.log('Success, audio output device attached: ' + deviceId + ' to ' +
-                    'element.');
+                    this.log(err, 'error');
+                });
+                break;
 
-            }).catch((error) => {
-                var errorMessage = error;
-                if (error.name === 'SecurityError') {
-                    errorMessage = 'You need to use HTTPS for selecting audio output ' +
-                        'device: ' + error;
-                }
-                throw new Error(errorMessage);
-            });
-        } else {
-            throw new Error('Browser does not support audio output device selection.');
+           default:
+               let element = player.tech_.el_;
+               let errorMessage;
+               if (deviceId) {
+                   if (typeof element.sinkId !== 'undefined') {
+                       element.setSinkId(deviceId).then((result) => {
+                           // notify listeners
+                           this.player.trigger('audioOutputReady');
+                           return;
+                       }).catch((err) => {
+                           errorMessage = err;
+                       });
+                   } else {
+                       errorMessage = 'Browser does not support audio output device selection.';
+                   }
+               } else {
+                   errorMessage = 'Invalid deviceId: ' + deviceId;
+               }
+
+               // notify listeners
+               this.player.trigger('error', errorMessage);
+               this.log(errorMessage, 'error');
+               break;
         }
     }
 
