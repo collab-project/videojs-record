@@ -1355,44 +1355,43 @@ class Record extends Plugin {
      * @param {string} sinkId - Id of audio output device.
      */
     setAudioOutput(deviceId) {
+        let errorMessage;
+
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // use wavesurfer
                 this.surfer.surfer.setSinkId(deviceId).then((result) => {
                     // notify listeners
                     this.player.trigger('audioOutputReady');
+                    return;
                 }).catch((err) => {
-                    // notify listeners
-                    this.player.trigger('error', err);
-
-                    this.log(err, 'error');
+                    errorMessage = err;
                 });
                 break;
 
-           default:
-               let element = player.tech_.el_;
-               let errorMessage;
-               if (deviceId) {
-                   if (typeof element.sinkId !== 'undefined') {
-                       element.setSinkId(deviceId).then((result) => {
-                           // notify listeners
-                           this.player.trigger('audioOutputReady');
-                           return;
-                       }).catch((err) => {
-                           errorMessage = err;
-                       });
-                   } else {
-                       errorMessage = 'Browser does not support audio output device selection.';
-                   }
-               } else {
-                   errorMessage = 'Invalid deviceId: ' + deviceId;
-               }
-
-               // notify listeners
-               this.player.trigger('error', errorMessage);
-               this.log(errorMessage, 'error');
-               break;
+            default:
+                let element = player.tech_.el_;
+                if (deviceId) {
+                    if (typeof element.sinkId !== 'undefined') {
+                        element.setSinkId(deviceId).then((result) => {
+                            // notify listeners
+                            this.player.trigger('audioOutputReady');
+                            return;
+                        }).catch((err) => {
+                            errorMessage = err;
+                        });
+                    } else {
+                        errorMessage = 'Browser does not support audio output device selection.';
+                    }
+                } else {
+                    errorMessage = 'Invalid deviceId: ' + deviceId;
+                }
+                break;
         }
+
+        // error if we get here: notify listeners
+        this.player.trigger('error', errorMessage);
+        this.log(errorMessage, 'error');
     }
 
     /**
