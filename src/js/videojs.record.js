@@ -1363,7 +1363,6 @@ class Record extends Plugin {
                 this.surfer.surfer.setSinkId(deviceId).then((result) => {
                     // notify listeners
                     this.player.trigger('audioOutputReady');
-                    return;
                 }).catch((err) => {
                     errorMessage = err;
                 });
@@ -1376,7 +1375,6 @@ class Record extends Plugin {
                         element.setSinkId(deviceId).then((result) => {
                             // notify listeners
                             this.player.trigger('audioOutputReady');
-                            return;
                         }).catch((err) => {
                             errorMessage = err;
                         });
