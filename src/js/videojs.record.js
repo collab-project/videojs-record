@@ -1390,8 +1390,9 @@ class Record extends Plugin {
         }
 
         // error if we get here: notify listeners
-        this.player.trigger('error', errorMessage);
-        this.log(errorMessage, 'error');
+        if (errorMessage) {
+            this.player.trigger('error', errorMessage);
+        }
     }
 
     /**

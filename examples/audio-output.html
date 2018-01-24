@@ -87,18 +87,19 @@ var player = videojs("myAudio", {
     player.record().enumerateDevices();
 });
 
+var devices;
 player.on('enumerateReady', function() {
-    var devices = player.record().devices;
-    console.log('Total devices found:', devices.length);
+     devices = player.record().devices;
 
     // handle selection changes
     var outputSelector = document.getElementById('selector');
     outputSelector.addEventListener('change', changeAudioOutput);
 
     // populate select options
-    for (var i = 0; i !== devices.length; ++i) {
-        var deviceInfo = devices[i];
-        var option = document.createElement('option');
+    var deviceInfo, option, i;
+    for (i = 0; i !== devices.length; ++i) {
+        deviceInfo = devices[i];
+        option = document.createElement('option');
         option.value = deviceInfo.deviceId;
         if (deviceInfo.kind === 'audiooutput') {
             console.info('Found audio output device: ', deviceInfo.label);
@@ -106,6 +107,18 @@ player.on('enumerateReady', function() {
                 (outputSelector.length + 1);
             outputSelector.appendChild(option);
         }
+    }
+
+    if (outputSelector.length == 0) {
+        // no output devices found, disable select
+        option = document.createElement('option');
+        option.text = 'No audio output devices found';
+        option.value = undefined;
+        outputSelector.appendChild(option);
+        outputSelector.disabled = true;
+        console.warn(option.text);
+    } else {
+        console.log('Total output devices found:', outputSelector.length);
     }
 });
 
