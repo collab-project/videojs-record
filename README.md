@@ -451,6 +451,20 @@ record: {
 }
 ```
 
+If your device has multiple audio output devices, use `setAudioOutput(deviceId)` to change
+the active audio output device, and listen for the `audioOutputReady` event to be notified
+when the new output device is active.
+
+```javascript
+// change audio output device
+player.record().setAudioOutput(deviceId);
+```
+
+See the full `change-audio-output` example
+([demo](https://collab-project.github.io/videojs-record/examples/change-audio-output.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html)).
+
+
 Responsive layout
 -----------------
 
