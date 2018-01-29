@@ -456,6 +456,10 @@ the active audio output device, and listen for the `audioOutputReady` event to b
 when the new output device is active.
 
 ```javascript
+player.on('audioOutputReady', function() {
+    console.log('Changed audio output to deviceId:', deviceId);
+});
+
 // change audio output device
 player.record().setAudioOutput(deviceId);
 ```
@@ -463,6 +467,11 @@ player.record().setAudioOutput(deviceId);
 See the full `change-audio-output` example
 ([demo](https://collab-project.github.io/videojs-record/examples/change-audio-output.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html)).
+
+If your device has multiple audio input devices and you want to display
+these devices and allow the user to choose one, check out the the full `change-audio-input` example
+([demo](https://collab-project.github.io/videojs-record/examples/change-audio-input.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-input.html)).
 
 
 Responsive layout

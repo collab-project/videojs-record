@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Audio Output Example - Record Plugin for Video.js</title>
+  <title>Audio Input Example - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
@@ -23,14 +23,14 @@
 
   /* change player background color */
   #myAudio {
-      background-color: #8EDBE6;
+      background-color: #CC6745;
   }
 
   select {
       margin: 0 0 0.5em 0;
   }
 
-  .outputSelector {
+  .inputSelector {
       margin-top: 30px;
   }
   </style>
@@ -41,8 +41,8 @@
 <div>
   <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
-  <div class="outputSelector">
-    <label>Select audio output: </label>
+  <div class="inputSelector">
+    <label>Select audio input: </label>
     <select id="selector"></select>
   </div>
 </div>
@@ -92,8 +92,8 @@ player.on('enumerateReady', function() {
      devices = player.record().devices;
 
     // handle selection changes
-    var outputSelector = document.getElementById('selector');
-    outputSelector.addEventListener('change', changeAudioOutput);
+    var inputSelector = document.getElementById('selector');
+    inputSelector.addEventListener('change', changeAudioInput);
 
     // populate select options
     var deviceInfo, option, i;
@@ -101,31 +101,32 @@ player.on('enumerateReady', function() {
         deviceInfo = devices[i];
         option = document.createElement('option');
         option.value = deviceInfo.deviceId;
-        if (deviceInfo.kind === 'audiooutput') {
-            console.info('Found audio output device: ', deviceInfo.label);
+        if (deviceInfo.kind === 'audioinput') {
+            console.info('Found audio input device: ', deviceInfo.label);
             option.text = deviceInfo.label || 'speaker ' +
-                (outputSelector.length + 1);
-            outputSelector.appendChild(option);
+                (inputSelector.length + 1);
+            inputSelector.appendChild(option);
         }
     }
 
-    if (outputSelector.length == 0) {
+    if (inputSelector.length == 0) {
         // no output devices found, disable select
         option = document.createElement('option');
-        option.text = 'No audio output devices found';
+        option.text = 'No audio input devices found';
         option.value = undefined;
-        outputSelector.appendChild(option);
-        outputSelector.disabled = true;
+        inputSelector.appendChild(option);
+        inputSelector.disabled = true;
         console.warn(option.text);
     } else {
-        console.log('Total output devices found:', outputSelector.length);
+        console.log('Total input devices found:', inputSelector.length);
     }
 });
 
 var deviceId;
-function changeAudioOutput(event) {
+function changeAudioInput(event) {
     deviceId = event.target.value;
-
+    console.log('changeAudioInput');
+    /*
     try {
         // change audio output device
         player.record().setAudioOutput(deviceId);
@@ -134,7 +135,7 @@ function changeAudioOutput(event) {
 
         // jump back to first output device in the list as it's the default
         event.target.selectedIndex = 0;
-    }
+    }*/
 }
 
 player.on('audioOutputReady', function() {
