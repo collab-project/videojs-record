@@ -140,7 +140,7 @@
     "node-sass": "^4.7.2",
     "nodemon": "^1.14.11",
     "npm-run-all": "^4.1.2",
-    "opus-recorder": "^4.0.0",
+    "opus-recorder": "^2.1.2",
     "portscanner": "^2.1.1",
     "qunit": "^2.5.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
