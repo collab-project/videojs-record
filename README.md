@@ -256,6 +256,7 @@ player.record().destroy();
 | `getDuration` | Get the length of the recorded stream in seconds. Returns 0 if no recording is available (yet). |
 | `getCurrentTime` | Get the current time of the recorded stream during playback. Returns 0 if no recording is available (yet). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
+| `setAudioOutput(deviceId)` | Change the audio output device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
 | `start` | Start recording. |
 | `stop` | Stop recording. |
 | `pause` | Pause recording. |
@@ -283,6 +284,7 @@ player.on('startRecord', function() {
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
+| `audioOutputReady` | Audio output was changed and is now active. |
 
 Media Constraints
 -----------------

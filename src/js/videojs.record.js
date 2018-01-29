@@ -1352,7 +1352,7 @@ class Record extends Plugin {
     /**
      * Change the audio output device.
      *
-     * @param {string} sinkId - Id of audio output device.
+     * @param {string} deviceId - Id of audio output device.
      */
     setAudioOutput(deviceId) {
         let errorMessage;
