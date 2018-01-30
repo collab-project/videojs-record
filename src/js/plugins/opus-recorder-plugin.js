@@ -21,7 +21,7 @@ class OpusRecorderEngine extends RecordEngine {
         this.inputStream = stream;
         this.mediaType = mediaType;
         this.debug = debug;
-        
+
         // also supports 'audio/wav'; but make sure to use waveEncoder worker
         // in that case
         this.audioType = 'audio/ogg';
@@ -37,7 +37,7 @@ class OpusRecorderEngine extends RecordEngine {
 
         this.audioContext = new AudioContext();
         this.audioSourceNode = this.audioContext.createMediaStreamSource(
-            this.inputStream)
+            this.inputStream);
     }
 
     /**
