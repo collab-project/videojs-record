@@ -22,7 +22,7 @@ Table of Contents
 - [Options](#options)
 - [Methods](#methods)
 - [Events](#events)
-- [Media Constraints](#media-constraints)
+- [Media constraints](#media-constraints)
 - [Get recorded data](#get-recorded-data)
   - [Save data](#save-data)
   - [Timestamps](#timestamps)
@@ -286,7 +286,7 @@ player.on('startRecord', function() {
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
 
-Media Constraints
+Media constraints
 -----------------
 
 [Media stream constraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Parameters)
