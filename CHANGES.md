@@ -7,6 +7,8 @@ videojs-record changelog
 - Support for selecting audio output device (#16)
 - Bump required version for videojs-wavesurfer to 2.2.0 for `setAudioOutput`
 - Added example for audio input selection (#13)
+- The opus-recorder plugin requires v4.0.0 or newer now: older versions are no
+  longer supported (#204)
 
 
 2.0.6 - 2018/01/15
