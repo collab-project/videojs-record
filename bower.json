@@ -56,7 +56,7 @@
     "fine-uploader": ">=5.4.1",
     "lamejs": "https://github.com/zhuker/lamejs.git",
     "libvorbis.js": ">=1.1.1",
-    "opus-recorderjs": ">=4.0.0",
+    "opus-recorderjs": ">=4.1.0",
     "recorderjs": "https://github.com/mattdiamond/Recorderjs.git"
   }
 }
