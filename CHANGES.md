@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.1.0 - unreleased
+2.1.0 - 2018/02/10
 ------------------
 
 - Support for selecting audio output device (#16)
