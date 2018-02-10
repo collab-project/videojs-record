@@ -1,11 +1,11 @@
 /**
  * opus-recorder plugin for videojs-record
- * @version 2.0.6
+ * @version 2.1.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
  */
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.opusRecorder = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.opusRecorder = f()}})(function(){var define,module,exports;return (function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56,6 +56,10 @@ var OpusRecorderEngine = function (_RecordEngine) {
             this.mediaType = mediaType;
             this.debug = debug;
 
+            // also supports 'audio/wav'; but make sure to use waveEncoder worker
+            // in that case
+            this.audioType = 'audio/ogg';
+
             this.engine = new Recorder({
                 leaveStreamOpen: true,
                 numberOfChannels: this.audioChannels,
@@ -63,13 +67,10 @@ var OpusRecorderEngine = function (_RecordEngine) {
                 encoderSampleRate: this.sampleRate,
                 encoderPath: this.audioWorkerURL
             });
-            this.engine.addEventListener('dataAvailable', this.onRecordingAvailable.bind(this));
+            this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
 
-            this.engine.stream = stream;
-            this.engine.sourceNode = this.engine.audioContext.createMediaStreamSource(stream);
-            this.engine.sourceNode.connect(this.engine.filterNode || this.engine.scriptProcessorNode);
-            this.engine.sourceNode.connect(this.engine.monitorNode);
-            this.engine.eventTarget.dispatchEvent(new Event('streamReady'));
+            this.audioContext = new AudioContext();
+            this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);
         }
 
         /**
@@ -79,7 +80,14 @@ var OpusRecorderEngine = function (_RecordEngine) {
     }, {
         key: 'start',
         value: function start() {
-            this.engine.start();
+            var _this2 = this;
+
+            this.engine.start(this.audioSourceNode).then(function () {
+                // recording started ok
+            }).catch(function (err) {
+                // can't start playback
+                _this2.player().trigger('error', err);
+            });
         }
 
         /**
@@ -120,7 +128,7 @@ var OpusRecorderEngine = function (_RecordEngine) {
         key: 'onRecordingAvailable',
         value: function onRecordingAvailable(data) {
             // Opus format stored in an Ogg container
-            var blob = new Blob([data.detail], { type: 'audio/ogg' });
+            var blob = new Blob([data], { type: this.audioType });
 
             this.onStopRecording(blob);
         }
