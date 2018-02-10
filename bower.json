@@ -46,9 +46,9 @@
     "url": "https://github.com/collab-project/videojs-record.git"
   },
   "dependencies": {
-    "recordrtc": ">=5.4.4",
+    "recordrtc": ">=5.4.6",
     "video.js": ">=6.0.0",
-    "videojs-wavesurfer": ">=2.1.4",
+    "videojs-wavesurfer": ">=2.2.0",
     "webrtc-adapter": ">=5.0.0"
   },
   "devDependencies": {
@@ -56,7 +56,7 @@
     "fine-uploader": ">=5.4.1",
     "lamejs": "https://github.com/zhuker/lamejs.git",
     "libvorbis.js": ">=1.1.1",
-    "opus-recorderjs": ">=1.2.0",
+    "opus-recorderjs": ">=4.0.0",
     "recorderjs": "https://github.com/mattdiamond/Recorderjs.git"
   }
 }

@@ -1350,6 +1350,50 @@ class Record extends Plugin {
     }
 
     /**
+     * Change the audio output device.
+     *
+     * @param {string} deviceId - Id of audio output device.
+     */
+    setAudioOutput(deviceId) {
+        let errorMessage;
+
+        switch (this.getRecordType()) {
+            case AUDIO_ONLY:
+                // use wavesurfer
+                this.surfer.surfer.setSinkId(deviceId).then((result) => {
+                    // notify listeners
+                    this.player.trigger('audioOutputReady');
+                }).catch((err) => {
+                    errorMessage = err;
+                });
+                break;
+
+            default:
+                let element = player.tech_.el_;
+                if (deviceId) {
+                    if (typeof element.sinkId !== 'undefined') {
+                        element.setSinkId(deviceId).then((result) => {
+                            // notify listeners
+                            this.player.trigger('audioOutputReady');
+                        }).catch((err) => {
+                            errorMessage = err;
+                        });
+                    } else {
+                        errorMessage = 'Browser does not support audio output device selection.';
+                    }
+                } else {
+                    errorMessage = 'Invalid deviceId: ' + deviceId;
+                }
+                break;
+        }
+
+        // error if we get here: notify listeners
+        if (errorMessage) {
+            this.player.trigger('error', errorMessage);
+        }
+    }
+
+    /**
      * Show or hide the volume menu.
      *
      * @private
