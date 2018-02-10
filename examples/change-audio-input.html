@@ -125,22 +125,9 @@ player.on('enumerateReady', function() {
 var deviceId;
 function changeAudioInput(event) {
     deviceId = event.target.value;
-    console.log('changeAudioInput');
-    /*
-    try {
-        // change audio output device
-        player.record().setAudioOutput(deviceId);
-    } catch (error) {
-        console.warn(error);
 
-        // jump back to first output device in the list as it's the default
-        event.target.selectedIndex = 0;
-    }*/
+    console.log('changed audio input to', deviceId);
 }
-
-player.on('audioOutputReady', function() {
-    console.log('Changed audio output to deviceId:', deviceId);
-});
 
 // error handling
 player.on('enumerateError', function() {
