@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Enumerate Devices Example - Record Plugin for Video.js</title>
+  <title>Audio Input Example - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
@@ -17,20 +17,40 @@
   <script src="../dist/videojs.record.js"></script>
 
   <style>
+  body {
+      font-weight: 300;
+  }
+
   /* change player background color */
   #myAudio {
-      background-color: #8EDBE6;
+      background-color: #CC6745;
+  }
+
+  select {
+      margin: 0 0 0.5em 0;
+  }
+
+  .inputSelector {
+      margin-top: 30px;
   }
   </style>
 
 </head>
 <body>
 
-<audio id="myAudio" class="video-js vjs-default-skin"></audio>
+<div>
+  <audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+  <div class="inputSelector">
+    <label>Select audio input: </label>
+    <select id="selector"></select>
+  </div>
+</div>
+
+<hr>
 
 <div>
-    <button id="enumBtn">Enumerate input and output devices</button>
-    <ul id="devices"></ul>
+    <p>This demo must be run in Chrome 49 or later, Firefox is not supported yet.</p>
 </div>
 
 <script>
@@ -56,50 +76,58 @@ var player = videojs("myAudio", {
             debug: true
         }
     }
-}, function(){
+}, function() {
     // print version information at startup
     videojs.log('Using video.js', videojs.VERSION,
-	    'with videojs-record', videojs.getPluginVersion('record'),
-	    '+ videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'),
-	    'and recordrtc', RecordRTC.version);
-});
+        'with videojs-record', videojs.getPluginVersion('record'),
+        '+ videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'),
+        'and recordrtc', RecordRTC.version);
 
-// user requested to enumerate devices
-document.getElementById('enumBtn').onclick = function(ev) {
+    // enumerate devices at startup
     player.record().enumerateDevices();
-};
-
-player.on('enumerateReady', function() {
-    var devices = player.record().devices;
-    var list = document.getElementById('devices');
-    var node, textnode;
-
-    // remove existing list items
-    while (list.firstChild) {
-        list.removeChild(list.firstChild);
-    }
-    console.log('total devices:', devices.length);
-
-    // The user must have already granted permission to the page
-    // to use the media devices in order to get the device label
-    // populated. When served over HTTPS, the browser will remember
-    // permission granted on subsequent loads, so the permission
-    // will have been granted before requesting media. When using
-    // HTTP, not HTTPS, the getUserMedia request must be made and
-    // accepted before enumerateDevices will populate labels.
-    devices.forEach(function(device) {
-        description = device.kind + ' - label: ' +
-            (device.label || 'unknown') +
-            ' (id: ' + device.deviceId + ')';
-        console.log(description);
-
-        // add device to list
-        node = document.createElement('li');
-        textnode = document.createTextNode(description);
-        node.appendChild(textnode);
-        list.appendChild(node);
-    });
 });
+
+var devices;
+player.on('enumerateReady', function() {
+     devices = player.record().devices;
+
+    // handle selection changes
+    var inputSelector = document.getElementById('selector');
+    inputSelector.addEventListener('change', changeAudioInput);
+
+    // populate select options
+    var deviceInfo, option, i;
+    for (i = 0; i !== devices.length; ++i) {
+        deviceInfo = devices[i];
+        option = document.createElement('option');
+        option.value = deviceInfo.deviceId;
+        if (deviceInfo.kind === 'audioinput') {
+            console.info('Found audio input device: ', deviceInfo.label);
+            option.text = deviceInfo.label || 'speaker ' +
+                (inputSelector.length + 1);
+            inputSelector.appendChild(option);
+        }
+    }
+
+    if (inputSelector.length == 0) {
+        // no output devices found, disable select
+        option = document.createElement('option');
+        option.text = 'No audio input devices found';
+        option.value = undefined;
+        inputSelector.appendChild(option);
+        inputSelector.disabled = true;
+        console.warn(option.text);
+    } else {
+        console.log('Total input devices found:', inputSelector.length);
+    }
+});
+
+var deviceId;
+function changeAudioInput(event) {
+    deviceId = event.target.value;
+
+    console.log('changed audio input to', deviceId);
+}
 
 // error handling
 player.on('enumerateError', function() {

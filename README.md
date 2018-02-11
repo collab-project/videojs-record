@@ -22,7 +22,7 @@ Table of Contents
 - [Options](#options)
 - [Methods](#methods)
 - [Events](#events)
-- [Media Constraints](#media-constraints)
+- [Media constraints](#media-constraints)
 - [Get recorded data](#get-recorded-data)
   - [Save data](#save-data)
   - [Timestamps](#timestamps)
@@ -256,6 +256,7 @@ player.record().destroy();
 | `getDuration` | Get the length of the recorded stream in seconds. Returns 0 if no recording is available (yet). |
 | `getCurrentTime` | Get the current time of the recorded stream during playback. Returns 0 if no recording is available (yet). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
+| `setAudioOutput(deviceId)` | Change the audio output device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
 | `start` | Start recording. |
 | `stop` | Stop recording. |
 | `pause` | Pause recording. |
@@ -283,8 +284,9 @@ player.on('startRecord', function() {
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
+| `audioOutputReady` | Audio output was changed and is now active. |
 
-Media Constraints
+Media constraints
 -----------------
 
 [Media stream constraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Parameters)
@@ -448,6 +450,29 @@ record: {
     },
 }
 ```
+
+If your device has multiple audio output devices, use `setAudioOutput(deviceId)` to change
+the active audio output device, and listen for the `audioOutputReady` event to be notified
+when the new output device is active.
+
+```javascript
+player.on('audioOutputReady', function() {
+    console.log('Changed audio output to deviceId:', deviceId);
+});
+
+// change audio output device
+player.record().setAudioOutput(deviceId);
+```
+
+See the full `change-audio-output` example
+([demo](https://collab-project.github.io/videojs-record/examples/change-audio-output.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html)).
+
+If your device has multiple audio input devices and you want to display
+these devices and allow the user to choose one, check out the the full `change-audio-input` example
+([demo](https://collab-project.github.io/videojs-record/examples/change-audio-input.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-input.html)).
+
 
 Responsive layout
 -----------------

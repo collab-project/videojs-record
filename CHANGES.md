@@ -1,11 +1,21 @@
 videojs-record changelog
 ========================
 
-2.1.0 - unreleased
+2.1.1 - unreleased
 ------------------
 
 - New plugin that uses ffmpeg.js to convert the recorded data into other
   audio/video file formats in the browser
+
+
+2.1.0 - 2018/02/10
+------------------
+
+- Support for selecting audio output device (#16)
+- Bump required version for videojs-wavesurfer to 2.2.0 for `setAudioOutput`
+- Added example for audio input selection (#13)
+- The opus-recorder plugin requires v4.0.0 or newer now: older versions are no
+  longer supported (#204)
 
 
 2.0.6 - 2018/01/15

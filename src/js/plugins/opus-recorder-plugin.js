@@ -22,6 +22,10 @@ class OpusRecorderEngine extends RecordEngine {
         this.mediaType = mediaType;
         this.debug = debug;
 
+        // also supports 'audio/wav'; but make sure to use waveEncoder worker
+        // in that case
+        this.audioType = 'audio/ogg';
+
         this.engine = new Recorder({
             leaveStreamOpen: true,
             numberOfChannels: this.audioChannels,
@@ -29,23 +33,23 @@ class OpusRecorderEngine extends RecordEngine {
             encoderSampleRate: this.sampleRate,
             encoderPath: this.audioWorkerURL
         });
-        this.engine.addEventListener('dataAvailable',
-            this.onRecordingAvailable.bind(this));
+        this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
 
-        this.engine.stream = stream;
-        this.engine.sourceNode = this.engine.audioContext.createMediaStreamSource(
-            stream);
-        this.engine.sourceNode.connect(this.engine.filterNode ||
-            this.engine.scriptProcessorNode);
-        this.engine.sourceNode.connect(this.engine.monitorNode);
-        this.engine.eventTarget.dispatchEvent(new Event('streamReady'));
+        this.audioContext = new AudioContext();
+        this.audioSourceNode = this.audioContext.createMediaStreamSource(
+            this.inputStream);
     }
 
     /**
      * Start recording.
      */
     start() {
-        this.engine.start();
+        this.engine.start(this.audioSourceNode).then(() => {
+            // recording started ok
+        }).catch((err) => {
+            // can't start playback
+            this.player().trigger('error', err);
+        });
     }
 
     /**
@@ -74,7 +78,7 @@ class OpusRecorderEngine extends RecordEngine {
      */
     onRecordingAvailable(data) {
         // Opus format stored in an Ogg container
-        let blob = new Blob([data.detail], {type: 'audio/ogg'});
+        let blob = new Blob([data], {type: this.audioType});
 
         this.onStopRecording(blob);
     }
