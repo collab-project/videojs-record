@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.1.1 - unreleased
+------------------
+
+- Add missing file info for blobs created with `timeSlice` option (#206)
+
+
 2.1.0 - 2018/02/10
 ------------------
 
