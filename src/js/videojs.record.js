@@ -1315,6 +1315,10 @@ class Record extends Plugin {
         internal = internal.getInternalRecorder();
         if ((internal instanceof MediaStreamRecorder) === true) {
             this.player.recordedData = internal.getArrayOfBlobs();
+
+            // inject file info for newest blob
+            this.engine.addFileInfo(
+                this.player.recordedData[this.player.recordedData.length - 1]);
         }
 
         // notify others
