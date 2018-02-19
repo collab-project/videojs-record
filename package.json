@@ -26,7 +26,7 @@
     "update:libvorbis": "cpx -v 'node_modules/libvorbis.js/js/libvorbis.min.js' examples/lib/libvorbis.js/",
     "update:lamejs": "cpx -v 'node_modules/lamejs/lame.*.js' examples/lib/lamejs/",
     "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' examples/lib/lamejs/worker-example/",
-    "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*.js' examples/lib/opus-recorder/",
+    "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' examples/lib/opus-recorder/",
     "update:recorderjs": "cpx -v 'node_modules/recorderjs/dist/*.js' examples/lib/recorderjs/",
     "test": "echo No tests yet!",
     "watch": "npm-run-all -p watch:lint",
