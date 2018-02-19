@@ -53,6 +53,7 @@ class RecordEngine extends Component {
      */
     addFileInfo(fileObj) {
         if (fileObj instanceof Blob || fileObj instanceof File) {
+            // set modification date
             let now = new Date();
             try {
                 fileObj.lastModified = now.getTime();
@@ -60,7 +61,6 @@ class RecordEngine extends Component {
             } catch (e) {
                 if (e instanceof TypeError) {
                     // ignore: setting getter-only property "lastModifiedDate"
-                    // in some browsers
                 } else {
                     // re-raise error
                     throw e;
@@ -75,7 +75,16 @@ class RecordEngine extends Component {
             }
 
             // use timestamp in filename, e.g. 1451180941326.ogg
-            fileObj.name = now.getTime() + fileExtension;
+            try {
+                fileObj.name = now.getTime() + fileExtension;
+            } catch (e) {
+                if (e instanceof TypeError) {
+                    // ignore: setting getter-only property "name"
+                } else {
+                    // re-raise error
+                    throw e;
+                }
+            }
         }
     }
 
