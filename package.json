@@ -125,7 +125,7 @@
     "cpx": "^1.5.0",
     "del": "^3.0.0",
     "download-tarball": "^1.1.0",
-    "fine-uploader": "^5.15.6",
+    "fine-uploader": ">=5.15",
     "glob": "^7.1.2",
     "htmlhint": "^0.9.13",
     "in-publish": "^2.0.0",
