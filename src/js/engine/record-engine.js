@@ -54,8 +54,18 @@ class RecordEngine extends Component {
     addFileInfo(fileObj) {
         if (fileObj instanceof Blob || fileObj instanceof File) {
             let now = new Date();
-            fileObj.lastModifiedDate = now;
-
+            try {
+                fileObj.lastModified = now.getTime();
+                fileObj.lastModifiedDate = now;
+            } catch (e) {
+                if (e instanceof TypeError) {
+                    // ignore: setting getter-only property "lastModifiedDate"
+                    // in some browsers
+                } else {
+                    // re-raise error
+                    throw e;
+                }
+            }
             // guess extension name from mime type, e.g. audio/ogg, but
             // any extension is valid here. Chrome also accepts extended
             // mime types like video/webm;codecs=h264,vp9,opus

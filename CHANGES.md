@@ -5,6 +5,8 @@ videojs-record changelog
 ------------------
 
 - Add missing file info for blobs created with `timeSlice` option (#206)
+- Use the new `lastModified` property for generated blobs, `lastModifiedDate`
+  is deprecated
 
 
 2.1.0 - 2018/02/10
