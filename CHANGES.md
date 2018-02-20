@@ -5,7 +5,7 @@ videojs-record changelog
 ------------------
 
 - Bump required version for videojs-wavesurfer to 2.2.1 for compatibility
-  with video.js 6.7.x
+  with video.js 6.7.x (#208)
 
 
 2.1.1 - 2018/02/19
