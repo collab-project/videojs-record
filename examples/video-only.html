@@ -37,11 +37,11 @@ var player = videojs("myVideo", {
         record: {
             audio: false,
             video: true,
-            maxLength: 5,
+            maxLength: 10,
             debug: true
         }
     }
-}, function(){
+}, function() {
     // print version information at startup
     videojs.log('Using video.js', videojs.VERSION,
         'with videojs-record', videojs.getPluginVersion('record'),

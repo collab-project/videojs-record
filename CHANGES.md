@@ -1,11 +1,19 @@
 videojs-record changelog
 ========================
 
-2.1.1 - unreleased
+2.1.2 - unreleased
 ------------------
 
 - New plugin that uses ffmpeg.js to convert the recorded data into other
   audio/video file formats in the browser
+
+
+2.1.1 - 2018/02/19
+------------------
+
+- Add missing file info for blobs created with `timeSlice` option (#206)
+- Use the new `lastModified` property for generated blobs, `lastModifiedDate`
+  is deprecated
 
 
 2.1.0 - 2018/02/10

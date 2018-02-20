@@ -54,19 +54,40 @@ class RecordEngine extends Component {
      * @param {(blob|file)} fileObj - Blob or File object.
      */
     addFileInfo(fileObj) {
-        let now = new Date();
-        fileObj.lastModifiedDate = now;
+        if (fileObj instanceof Blob || fileObj instanceof File) {
+            // set modification date
+            let now = new Date();
+            try {
+                fileObj.lastModified = now.getTime();
+                fileObj.lastModifiedDate = now;
+            } catch (e) {
+                if (e instanceof TypeError) {
+                    // ignore: setting getter-only property "lastModifiedDate"
+                } else {
+                    // re-raise error
+                    throw e;
+                }
+            }
+            // guess extension name from mime type, e.g. audio/ogg, but
+            // any extension is valid here. Chrome also accepts extended
+            // mime types like video/webm;codecs=h264,vp9,opus
+            let fileExtension = '.' + fileObj.type.split('/')[1];
+            if (fileExtension.indexOf(';') > -1) {
+                fileExtension = fileExtension.split(';')[0];
+            }
 
-        // guess extension name from mime type, e.g. audio/ogg, but
-        // any extension is valid here. Chrome also accepts extended
-        // mime types like video/webm;codecs=h264,vp9,opus
-        let fileExtension = '.' + fileObj.type.split('/')[1];
-        if (fileExtension.indexOf(';') > -1) {
-            fileExtension = fileExtension.split(';')[0];
+            // use timestamp in filename, e.g. 1451180941326.ogg
+            try {
+                fileObj.name = now.getTime() + fileExtension;
+            } catch (e) {
+                if (e instanceof TypeError) {
+                    // ignore: setting getter-only property "name"
+                } else {
+                    // re-raise error
+                    throw e;
+                }
+            }
         }
-
-        // use timestamp in filename, e.g. 1451180941326.ogg
-        fileObj.name = now.getTime() + fileExtension;
     }
 
     /**
