@@ -22,7 +22,8 @@ class LamejsEngine extends RecordEngine {
 
         let config = {
             debug: this.debug,
-            sampleRate: this.sampleRate
+            sampleRate: this.sampleRate,
+            bitRate: this.bitRate
         };
 
         this.audioContext = new AudioContext();
