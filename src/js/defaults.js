@@ -59,6 +59,8 @@ const pluginDefaultOptions = {
     // An implementation must support sample-rates in at least
     // the range 22050 to 96000.
     audioSampleRate: 44100,
+    // The audio bitrate in kbps (only used in lamejs plugin).
+    audioBitRate: 128,
     // Allows you to record single-channel audio, which can reduce the
     // filesize.
     audioChannels: 2,

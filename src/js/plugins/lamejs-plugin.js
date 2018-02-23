@@ -19,6 +19,7 @@ class LamejsEngine extends RecordEngine {
         this.inputStream = stream;
         this.mediaType = mediaType;
         this.debug = debug;
+        this.audioType = 'audio/mp3';
 
         let config = {
             debug: this.debug,
@@ -68,7 +69,7 @@ class LamejsEngine extends RecordEngine {
         switch (ev.data.cmd) {
             case 'end':
                 this.onStopRecording(new Blob(ev.data.buf,
-                    {type: 'audio/mp3'}));
+                    {type: this.audioType}));
                 break;
 
             case 'error':
