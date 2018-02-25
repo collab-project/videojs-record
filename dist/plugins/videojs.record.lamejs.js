@@ -1,6 +1,6 @@
 /**
  * lamejs plugin for videojs-record
- * @version 2.1.1
+ * @version 2.1.2
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -53,16 +53,17 @@ var LamejsEngine = function (_RecordEngine) {
             this.inputStream = stream;
             this.mediaType = mediaType;
             this.debug = debug;
+            this.audioType = 'audio/mp3';
 
             var config = {
                 debug: this.debug,
-                sampleRate: this.sampleRate
+                sampleRate: this.sampleRate,
+                bitRate: this.bitRate
             };
 
             this.audioContext = new AudioContext();
             this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);
             this.processor = this.audioContext.createScriptProcessor(16384, 1, 1);
-            config.sampleRate = this.audioContext.sampleRate;
 
             this.engine = new Worker(this.audioWorkerURL);
             this.engine.onmessage = this.onWorkerMessage.bind(this);
@@ -109,7 +110,7 @@ var LamejsEngine = function (_RecordEngine) {
         value: function onWorkerMessage(ev) {
             switch (ev.data.cmd) {
                 case 'end':
-                    this.onStopRecording(new Blob(ev.data.buf, { type: 'audio/mp3' }));
+                    this.onStopRecording(new Blob(ev.data.buf, { type: this.audioType }));
                     break;
 
                 case 'error':

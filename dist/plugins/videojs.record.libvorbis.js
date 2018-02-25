@@ -1,6 +1,6 @@
 /**
  * libvorbis plugin for videojs-record
- * @version 2.1.1
+ * @version 2.1.2
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -56,7 +56,7 @@ var LibVorbisEngine = function (_RecordEngine) {
 
             // setup libvorbis.js
             this.options = {
-                audioBitsPerSecond: 32000
+                audioBitsPerSecond: this.sampleRate
             };
         }
 
