@@ -135,6 +135,7 @@ class Record extends Plugin {
         this.audioWorkerURL = recordOptions.audioWorkerURL;
         this.audioBufferSize = recordOptions.audioBufferSize;
         this.audioSampleRate = recordOptions.audioSampleRate;
+        this.audioBitRate = recordOptions.audioBitRate;
         this.audioChannels = recordOptions.audioChannels;
         this.audioMimeType = recordOptions.audioMimeType;
 
@@ -444,6 +445,7 @@ class Record extends Plugin {
             // audio settings
             this.engine.bufferSize = this.audioBufferSize;
             this.engine.sampleRate = this.audioSampleRate;
+            this.engine.bitRate = this.audioBitRate;
             this.engine.audioChannels = this.audioChannels;
             this.engine.audioWorkerURL = this.audioWorkerURL;
 
