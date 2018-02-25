@@ -32,7 +32,6 @@ class LamejsEngine extends RecordEngine {
             this.inputStream);
         this.processor = this.audioContext.createScriptProcessor(
             16384, 1, 1);
-        config.sampleRate = this.audioContext.sampleRate;
 
         this.engine = new Worker(this.audioWorkerURL);
         this.engine.onmessage = this.onWorkerMessage.bind(this);

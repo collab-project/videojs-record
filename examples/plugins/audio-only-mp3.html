@@ -49,7 +49,9 @@ var player = videojs("myAudio", {
             maxLength: 20,
             debug: true,
             audioEngine: "lamejs",
-            audioWorkerURL: "../../node_modules/lamejs/worker-example/worker-realtime.js"
+            audioWorkerURL: "../../node_modules/lamejs/worker-example/worker-realtime.js",
+            audioSampleRate: 44100,
+            audioBitRate: 128
         }
     }
 }, function() {
