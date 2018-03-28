@@ -1,11 +1,19 @@
 videojs-record changelog
 ========================
 
-2.1.2 - unreleased
+x.x.x - unreleased
 ------------------
 
 - New plugin that uses ffmpeg.js to convert the recorded data into other
   audio/video file formats in the browser
+
+
+2.1.2 - 2018/02/25
+------------------
+
+- Bump required version for videojs-wavesurfer to 2.2.1 for compatibility
+  with video.js 6.7.x (#208)
+- Ability to specify bitrate setting in lamejs plugin (#213)
 
 
 2.1.1 - 2018/02/19

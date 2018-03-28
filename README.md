@@ -229,6 +229,7 @@ The available options for this plugin are:
 | `audioMimeType` | string | `'auto'` | The mime type for the audio recorder. Defaults to `auto` which will pick the best option available in the browser (e.g. either `audio/wav`, `audio/ogg` or `audio/webm`). A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html).|
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
+| `audioBitRate` | float | `128` | The audio bitrate in kbps (only used in the lamejs plugin). |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller filesize. |
 | `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/build/encoderWorker.min.js`. Currently only used for opus-recorder and lamejs plugins. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |

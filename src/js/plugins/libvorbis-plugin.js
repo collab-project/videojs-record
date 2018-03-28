@@ -22,7 +22,7 @@ class LibVorbisEngine extends RecordEngine {
 
         // setup libvorbis.js
         this.options = {
-            audioBitsPerSecond: 32000
+            audioBitsPerSecond: this.sampleRate
         };
     }
 
