@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.1.3 - unreleased
+------------------
+
+- Fix issue with `ImageCapture.takePhoto` on Chrome (#225)
+
+
 2.1.2 - 2018/02/25
 ------------------
 
