@@ -1194,8 +1194,13 @@ class Record extends Plugin {
                 try {
                     var track = this.stream.getVideoTracks()[0];
                     var imageCapture = new ImageCapture(track);
+                    let photoSettings = {
+                        imageWidth: recordCanvas.width,
+                        imageHeight: recordCanvas.height
+                    };
 
-                    imageCapture.takePhoto().then((blob) => {
+                    // take picture
+                    imageCapture.takePhoto(photoSettings).then((blob) => {
                         return createImageBitmap(blob);
 
                     }).then((imageBitmap) => {
