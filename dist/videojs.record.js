@@ -1,6 +1,6 @@
 /**
  * videojs-record
- * @version 2.1.2
+ * @version 2.1.3
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -2752,8 +2752,13 @@ var Record = function (_Plugin) {
                     try {
                         var track = _this8.stream.getVideoTracks()[0];
                         var imageCapture = new ImageCapture(track);
+                        var photoSettings = {
+                            imageWidth: recordCanvas.width,
+                            imageHeight: recordCanvas.height
+                        };
 
-                        imageCapture.takePhoto().then(function (blob) {
+                        // take picture
+                        imageCapture.takePhoto(photoSettings).then(function (blob) {
                             return createImageBitmap(blob);
                         }).then(function (imageBitmap) {
                             // get a frame and copy it onto the canvas
@@ -3005,7 +3010,7 @@ var Record = function (_Plugin) {
 // version nr gets replaced during build
 
 
-Record.VERSION = '2.1.2';
+Record.VERSION = '2.1.3';
 
 // register plugin
 _video2.default.Record = Record;
