@@ -40,7 +40,7 @@
     "lint:js": "jscs --config .jscsrc src/js",
     "lint:json": "jsonlint-cli lang/*.json font/*.json",
     "lint:html": "htmlhint examples",
-    "start": "npm run build:main && webpack-dev-server --config ./build-config/webpack.dev.main.js",
+    "start": "npm run build:main && npm run build:plugins && webpack-dev-server --config ./build-config/webpack.dev.main.js",
     "test": "karma start karma.conf.js",
     "release:zip": "node scripts/release-zip.js",
     "prepublish": "not-in-install && npm run build || in-install"
