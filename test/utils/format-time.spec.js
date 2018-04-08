@@ -2,10 +2,10 @@
  * @since 2.2.0
  */
 
-import formatTime from '../src/js/utils/format-time.js';
+import formatTime from '../../src/js/utils/format-time.js';
 
 /** @test {format-time} */
-describe('formatTime', function() {
+describe('utils.formatTime', function() {
 
     /** @test {formatTime} */
     it('returns a formatted string for seconds', function() {
