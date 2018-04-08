@@ -11,8 +11,10 @@ install:
   - npm install
   - npm update
 script:
-  - npm run test
   - npm run build
+  - npm run build:fonts
+  - npm run test
+  - npm run lint
 cache:
   directories:
     - node_modules
