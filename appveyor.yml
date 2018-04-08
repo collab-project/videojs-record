@@ -1,7 +1,6 @@
 environment:
   matrix:
     - nodejs_version: '8'
-    - nodejs_version: '6'
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
@@ -15,6 +14,7 @@ shallow_clone: true
 test_script:
   - node --version
   - npm --version
-  - npm test
+  - npm run test
+  - npm run build
 cache:
   - '%APPDATA%\npm-cache'
