@@ -27,7 +27,7 @@ describe('Record', function() {
             expect(player.el().nodeName).toEqual('DIV');
             expect(player.on).toBeFunction();
 
-            // plugins exists
+            // plugins exist
             expect(videojs.getPlugin('wavesurfer')).toBeFunction();
             expect(videojs.getPlugin('record')).toBeFunction();
 

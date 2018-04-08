@@ -178,7 +178,7 @@ And start the local webserver:
 npm run start
 ```
 
-And open http://localhost:9999/examples/audio-video.html in a browser.
+And open http://localhost:8080/examples/audio-video.html in a browser.
 
 Options
 -------
@@ -577,7 +577,7 @@ npm run start
 ```
 
 This will watch the source directory and rebuild when any changes
-are detected. It will also serve the files on http://127.0.0.1:9999.
+are detected. It will also serve the files on http://127.0.0.1:8080.
 
 All commands for development are listed in the `package.json` file and
 are run using:
