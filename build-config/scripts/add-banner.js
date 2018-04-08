@@ -7,7 +7,6 @@
 
 var fs = require('fs');
 var path = require('path');
-var moment = require('moment');
 var banner = require('add-banner');
 var argvAutoGlob = require('argv-auto-glob');
 
