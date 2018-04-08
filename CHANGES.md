@@ -1,6 +1,13 @@
 videojs-record changelog
 ========================
 
+2.2.0 - unreleased
+------------------
+
+- Package library using webpack (#226)
+- Add unit tests using karma/webpack/jasmine (#226)
+
+
 2.1.3 - 2018/04/08
 ------------------
 
