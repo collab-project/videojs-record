@@ -22,6 +22,7 @@ describe('engine.record-mode', function() {
         expect(getRecorderMode(false, true, false, false)).toEqual(AUDIO_ONLY);
         expect(getRecorderMode(true, false, false, false)).toEqual(IMAGE_ONLY);
         expect(getRecorderMode(false, true, true, false)).toEqual(AUDIO_VIDEO);
+        expect(getRecorderMode(false, false, false, false)).toBeUndefined();
 
         // and object
         expect(getRecorderMode(false, false, false, {})).toEqual(ANIMATION);

@@ -37,4 +37,15 @@ describe('engine.record-engine', function() {
         expect(OPUSRECORDER).toEqual('opus-recorder');
     });
 
+    it('should trigger recordComplete event', function(done) {
+        let engine = new RecordEngine(player, {});
+        engine.on('recordComplete', function() {
+            done();
+        })
+
+        let data = {};
+        engine.onStopRecording(data);
+    });
+    
+
 });
