@@ -28,7 +28,7 @@ const TestHelpers = {
     },
 
     /**
-     * Create a test player containing the videojs-wavesurfer plugin.
+     * Create a test player containing the plugin.
      * 
      * @param  {Element|String} elementTag
      * @param  {Object} playerOptions

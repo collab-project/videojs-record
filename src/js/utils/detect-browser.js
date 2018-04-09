@@ -25,50 +25,28 @@ const detectBrowser = function() {
         return result;
     }
 
-    // Firefox
-    if (navigator.mozGetUserMedia) {
-        result.browser = 'firefox';
-        result.version = extractVersion(navigator.userAgent,
-            /Firefox\/(\d+)\./, 1);
-        result.minVersion = 31;
+    if (navigator.mozGetUserMedia) { // Firefox.
+      result.browser = 'firefox';
+      result.version = extractVersion(navigator.userAgent,
+          /Firefox\/(\d+)\./, 1);
     } else if (navigator.webkitGetUserMedia) {
-        // Chrome, Chromium, Webview, Opera
-        if (window.webkitRTCPeerConnection) {
-            result.browser = 'chrome';
-            result.version = extractVersion(navigator.userAgent,
-              /Chrom(e|ium)\/(\d+)\./, 2);
-            result.minVersion = 38;
-        } else {
-            // Safari (in an unpublished version) or unknown webkit-based.
-            if (navigator.userAgent.match(/Version\/(\d+).(\d+)/)) {
-                result.browser = 'safari';
-                result.version = extractVersion(navigator.userAgent,
-                    /AppleWebKit\/(\d+)\./, 1);
-                result.minVersion = 11;
-            } else {
-                // unknown webkit-based browser.
-                result.browser = 'Unsupported webkit-based browser ' +
-                    'with GUM support but no WebRTC support.';
-                return result;
-            }
-        }
-    // Edge
-    } else if (navigator.mediaDevices &&
-        navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) {
-        result.browser = 'edge';
-        result.version = extractVersion(navigator.userAgent,
-            /Edge\/(\d+).(\d+)$/, 2);
-        result.minVersion = 10547;
-    } else if (navigator.mediaDevices &&
-        navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) {
-        // Safari, with webkitGetUserMedia removed.
-        result.browser = 'safari';
-        result.version = extractVersion(navigator.userAgent,
-            /AppleWebKit\/(\d+)\./, 1);
-    } else {
-        // default fallthrough: not supported.
-        result.browser = 'Not a supported browser.';
-        return result;
+      // Chrome, Chromium, Webview, Opera.
+      // Version matches Chrome/WebRTC version.
+      result.browser = 'chrome';
+      result.version = extractVersion(navigator.userAgent,
+          /Chrom(e|ium)\/(\d+)\./, 2);
+    } else if (navigator.mediaDevices && navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) { // Edge.
+      result.browser = 'edge';
+      result.version = extractVersion(navigator.userAgent,
+          /Edge\/(\d+).(\d+)$/, 2);
+    } else if (window.RTCPeerConnection &&
+        navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) { // Safari.
+      result.browser = 'safari';
+      result.version = extractVersion(navigator.userAgent,
+          /AppleWebKit\/(\d+)\./, 1);
+    } else { // Default fallthrough: not supported.
+      result.browser = 'Not a supported browser.';
+      return result;
     }
 
     return result;
