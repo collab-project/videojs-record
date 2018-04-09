@@ -831,7 +831,7 @@ class Record extends Plugin {
                 this._processing = false;
 
                 // hide loader
-                this.player.loadingSpinner.hide( );
+                this.player.loadingSpinner.hide();
 
                 // show animation total duration
                 this.setDuration(this.streamDuration);
