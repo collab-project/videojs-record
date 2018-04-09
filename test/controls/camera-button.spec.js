@@ -28,7 +28,7 @@ describe('controls.CameraButton', function() {
         expect(button.controlText_).toEqual('Image');
 
         ['vjs-camera-button', 'vjs-control', 'vjs-button', 'vjs-icon-photo-camera'].forEach(
-        function(e) {
+        (e) => {
             expect(button.hasClass(e)).toBeTrue();
         });
     });
@@ -37,9 +37,35 @@ describe('controls.CameraButton', function() {
         let button = new CameraButton(player);
         button.disable();
         expect(button.enabled_).toBeFalse();
+    });
 
-        button.enable();
-        expect(button.enabled_).toBeTrue();
+    it('should change appearance when startRecord or stopRecord is triggered', function() {
+        let button = new CameraButton(player);
+
+        expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+
+        player.trigger('startRecord');
+
+        expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
+        expect(button.hasClass('vjs-icon-replay')).toBeTrue();
+        expect(button.controlText_).toEqual('Retry');
+
+        player.trigger('stopRecord');
+
+        expect(button.hasClass('vjs-icon-replay')).toBeFalse();
+        expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+        expect(button.controlText_).toEqual('Image');
+    });
+
+    it('should accept interaction', function() {
+        let button = new CameraButton(player);
+
+        button.trigger('click');
+
+        expect(player.record()._recording).toBeTrue();
+
+        // try again
+        button.trigger('click');
     });
 
 });
