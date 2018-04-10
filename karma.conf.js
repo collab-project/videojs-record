@@ -21,7 +21,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: false,
+        singleRun: true,
         autoWatch: false,
         files: [
             // demo files
