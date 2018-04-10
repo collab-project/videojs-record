@@ -9,6 +9,7 @@ require('babel-register');
 var webpackConfig = require('./build-config/webpack.prod.main.js');
 
 var chromeFlags = [
+    '--no-sandbox',
     '--use-fake-device-for-media-stream',
     '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
     '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m'
