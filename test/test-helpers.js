@@ -8,6 +8,8 @@ import Player from 'video.js';
 
 
 const TestHelpers = {
+    TEST_OGG: '/base/test/support/audio.ogg',
+
     /**
      * Create DOM element.
      */

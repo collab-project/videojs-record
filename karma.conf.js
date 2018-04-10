@@ -18,6 +18,14 @@ module.exports = function(config) {
         singleRun: true,
         autoWatch: false,
         files: [
+            // demo files
+            {
+                pattern: 'test/support/*',
+                included: false,
+                watched: false,
+                served: true
+            },
+
              // style
             'dist/css/videojs.record.css',
 

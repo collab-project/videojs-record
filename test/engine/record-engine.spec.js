@@ -46,6 +46,39 @@ describe('engine.record-engine', function() {
         let data = {};
         engine.onStopRecording(data);
     });
-    
 
+    it('should add file info', function(done) {
+        let engine = new RecordEngine(player, {});
+        engine.on('recordComplete', function() {
+            expect(engine.recordedData.name).toEqual(
+                   engine.recordedData.lastModified + '.ogg');
+            done();
+        })
+
+        let req = new Request(TestHelpers.TEST_OGG);
+        fetch(req).then(function(response) {
+            return response.blob();
+        }).then(function(blob){
+            engine.onStopRecording(blob);
+        });
+    });
+
+    it('should save as', function(done) {
+        let engine = new RecordEngine(player, {});
+        engine.on('recordComplete', function() {
+            let fileName = 'foo';
+            engine.saveAs({'audio': fileName});
+
+            let element = document.getElementsByTagName('a')[0];
+            expect(element.download).toEqual(fileName);
+            done();
+        })
+
+        let req = new Request(TestHelpers.TEST_OGG);
+        fetch(req).then(function(response) {
+            return response.blob();
+        }).then(function(blob){
+            engine.onStopRecording(blob);
+        });
+    });
 });
