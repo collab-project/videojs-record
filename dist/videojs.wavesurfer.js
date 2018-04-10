@@ -1,6 +1,6 @@
 /**
  * videojs-wavesurfer
- * @version 2.2.1
+ * @version 2.2.2
  * @see https://github.com/collab-project/videojs-wavesurfer
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -676,12 +676,13 @@ var Wavesurfer = function (_Plugin) {
          *
          * @param {string|blob|file} url - Either the URL of the audio file,
          *     a Blob or a File object.
-         * @param {string} peakUrl - The URL of peak data for the audio file.
+         * @param {string|?number[]|number[][]} peaks - Either the URL of peaks
+         *     data for the audio file, or an array with peaks data.
          */
 
     }, {
         key: 'load',
-        value: function load(url, peakUrl) {
+        value: function load(url, peaks) {
             var _this2 = this;
 
             if (url instanceof Blob || url instanceof File) {
@@ -689,22 +690,35 @@ var Wavesurfer = function (_Plugin) {
                 this.surfer.loadBlob(url);
             } else {
                 // load peak data from file
-                if (peakUrl !== undefined) {
-                    var ajax = _wavesurfer2.default.util.ajax({
-                        url: peakUrl,
-                        responseType: 'json'
-                    });
+                if (peaks !== undefined) {
+                    if (Array.isArray(peaks)) {
+                        // use supplied peaks data
+                        this.log('Loading URL: ' + url);
+                        this.surfer.load(url, peaks);
+                    } else {
+                        // load peak data from file
+                        var ajaxOptions = {
+                            url: peaks,
+                            responseType: 'json'
+                        };
+                        // supply xhr options, if any
+                        if (this.player.options_.plugins.wavesurfer.xhr !== undefined) {
+                            ajaxOptions.xhr = this.player.options_.plugins.wavesurfer.xhr;
+                        }
+                        var ajax = _wavesurfer2.default.util.ajax(ajaxOptions);
 
-                    ajax.on('success', function (data, e) {
-                        _this2.log('Loading URL: ' + url + '\nLoading Peak Data URL: ' + peakUrl);
-                        _this2.surfer.load(url, data.data);
-                    });
-                    ajax.on('error', function (e) {
-                        _this2.log('Unable to retrieve peak data from ' + peakUrl + '. Status code: ' + e.target.status, 'warn');
-                        _this2.log('Loading URL: ' + url);
-                        _this2.surfer.load(url);
-                    });
+                        ajax.on('success', function (data, e) {
+                            _this2.log('Loading URL: ' + url + '\nLoading Peak Data URL: ' + peaks);
+                            _this2.surfer.load(url, data.data);
+                        });
+                        ajax.on('error', function (e) {
+                            _this2.log('Unable to retrieve peak data from ' + peaks + '. Status code: ' + e.target.status, 'warn');
+                            _this2.log('Loading URL: ' + url);
+                            _this2.surfer.load(url);
+                        });
+                    }
                 } else {
+                    // no peaks
                     this.log('Loading URL: ' + url);
                     this.surfer.load(url);
                 }
@@ -1203,7 +1217,7 @@ var Wavesurfer = function (_Plugin) {
 // version nr gets replaced during build
 
 
-Wavesurfer.VERSION = '2.2.1';
+Wavesurfer.VERSION = '2.2.2';
 
 // register plugin
 _video2.default.Wavesurfer = Wavesurfer;
