@@ -3,7 +3,8 @@ const path = require('path');
 /**
  * buildPluginEntry - Description
  *
- * @param {Array} plugins Name of plugins in src/plugin
+ * @param {Array} plugins Name of plugin file in src/js/plugins (and strips off
+ *     the '-plugin' part of the filename).
  *
  * @returns {object} Entry object { name: nameUrl }
  */
