@@ -31,7 +31,8 @@
     "test": "echo No tests yet!",
     "watch": "npm-run-all -p watch:lint",
     "watch:lint": "nodemon --watch examples --exec npm run lint",
-    "prepublish": "not-in-install && npm run build || in-install"
+    "prepublish": "not-in-install && npm run build || in-install",
+    "release:zip": "node scripts/release-zip.js"
   },
   "repository": {
     "type": "git",
@@ -51,12 +52,18 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "connect": "^3.6.6",
+    "copy-dir": "^0.3.0",
+    "release:zip": "node scripts/release-zip.js",
     "cpx": "^1.5.0",
+    "del": "^3.0.0",
+    "download-tarball": "^1.1.0",
     "htmlhint": "^0.9.13",
     "in-publish": "^2.0.0",
+    "mv": "^2.1.1",
     "nodemon": "^1.15.1",
     "npm-run-all": "^4.1.2",
     "portscanner": "^2.1.1",
-    "serve-static": "^1.13.2"
+    "serve-static": "^1.13.2",
+    "zip-dir": "^1.0.2"
   }
 }
