@@ -45,12 +45,8 @@
     "prepublish": "not-in-install && npm run build || in-install"
   },
   "files": [
-    ".babelrc",
-    ".jscsrc",
     "dist/",
-    "build-config/",
-    "src/",
-    "test/"
+    "src/"
   ],
   "keywords": [
     "waveform",
