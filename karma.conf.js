@@ -8,14 +8,20 @@ require('babel-register');
 
 var webpackConfig = require('./build-config/webpack.prod.main.js');
 
+var chromeFlags = [
+    '--use-fake-device-for-media-stream',
+    '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
+    '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m'
+];
+
 module.exports = function(config) {
     var configuration = {
         basePath: '',
         frameworks: ['jasmine', 'jasmine-matchers', 'sinon'],
         hostname: 'localhost',
         port: 9876,
-        logLevel: config.LOG_DEBUG,
-        singleRun: true,
+        logLevel: config.LOG_INFO,
+        singleRun: false,
         autoWatch: false,
         files: [
             // demo files
@@ -27,15 +33,15 @@ module.exports = function(config) {
             },
 
              // style
+            'node_modules/video.js/dist/video-js.css',
+            'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
             'dist/css/videojs.record.css',
 
             // dependencies
             'node_modules/video.js/dist/video.js',
-            'node_modules/video.js/dist/video-js.css',
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
-            'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
 
             // specs
             'test/**/*.spec.js'
@@ -59,7 +65,7 @@ module.exports = function(config) {
             'karma-coverage',
             'karma-verbose-reporter'
         ],
-        browsers: ['Chrome_travis_ci'],
+        browsers: ['Chrome_dev'],
         captureConsole: true,
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
@@ -69,14 +75,13 @@ module.exports = function(config) {
         },
         webpack: webpackConfig,
         customLaunchers: {
+            Chrome_dev: {
+                base: 'Chrome',
+                flags: chromeFlags
+            },
             Chrome_travis_ci: {
                 base: 'ChromeHeadless',
-                flags: [
-                    '--no-sandbox',
-                    '--use-fake-device-for-media-stream',
-                    '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
-                    '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m'
-                ]
+                flags: chromeFlags
             }
         }
     };
