@@ -14,7 +14,7 @@ module.exports = function(config) {
         frameworks: ['jasmine', 'jasmine-matchers', 'sinon'],
         hostname: 'localhost',
         port: 9876,
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_DEBUG,
         singleRun: true,
         autoWatch: false,
         files: [
@@ -59,7 +59,7 @@ module.exports = function(config) {
             'karma-coverage',
             'karma-verbose-reporter'
         ],
-        browsers: ['ChromeHeadless'],
+        browsers: ['Chrome_travis_ci'],
         captureConsole: true,
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
@@ -70,9 +70,12 @@ module.exports = function(config) {
         webpack: webpackConfig,
         customLaunchers: {
             Chrome_travis_ci: {
-                base: 'Chrome',
+                base: 'ChromeHeadless',
                 flags: [
-                    '--no-sandbox'
+                    '--no-sandbox',
+                    '--use-fake-device-for-media-stream',
+                    '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
+                    '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m'
                 ]
             }
         }
