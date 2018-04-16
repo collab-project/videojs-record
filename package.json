@@ -70,7 +70,7 @@
   "dependencies": {
     "recordrtc": ">=5.4.6",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.2.1",
+    "videojs-wavesurfer": ">=2.3.0",
     "webrtc-adapter": ">=5.0.4"
   },
   "devDependencies": {
@@ -101,7 +101,7 @@
     "karma-webpack": "^3.0.0",
     "lamejs": ">=1.2.0",
     "libvorbis.js": ">=1.1.2",
-    "moment": "^2.22.0",
+    "moment": "^2.22.1",
     "node-sass": "^4.8.3",
     "npm-run-all": "^4.1.2",
     "opus-recorder": ">=4.0.0",
