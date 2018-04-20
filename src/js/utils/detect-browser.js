@@ -29,23 +29,27 @@ const detectBrowser = function() {
         result.browser = 'firefox';
         result.version = extractVersion(navigator.userAgent,
             /Firefox\/(\d+)\./, 1);
+        result.minVersion = 31;
     } else if (navigator.webkitGetUserMedia) {
         // Chrome, Chromium, Webview, Opera.
         // Version matches Chrome/WebRTC version.
         result.browser = 'chrome';
         result.version = extractVersion(navigator.userAgent,
             /Chrom(e|ium)\/(\d+)\./, 2);
+        result.minVersion = 38;
     } else if (navigator.mediaDevices &&
                navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) { // Edge.
         result.browser = 'edge';
         result.version = extractVersion(navigator.userAgent,
             /Edge\/(\d+).(\d+)$/, 2);
+        result.minVersion = 10547;
     } else if (window.RTCPeerConnection &&
         navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) { // Safari.
         result.browser = 'safari';
         result.version = extractVersion(navigator.userAgent,
             /AppleWebKit\/(\d+)\./, 1);
-    } else { // Default fallthrough: not supported.
+    } else {
+        // Default fallthrough: not supported.
         result.browser = 'Not a supported browser.';
         return result;
     }
