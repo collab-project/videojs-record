@@ -22,7 +22,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: true,
+        singleRun: true,  // enable for headless testing
         autoWatch: false,
         files: [
             // demo files
@@ -40,6 +40,7 @@ module.exports = function(config) {
 
             // dependencies
             'node_modules/video.js/dist/video.js',
+            'node_modules/recordrtc/RecordRTC.js',
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',

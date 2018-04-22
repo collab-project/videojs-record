@@ -31,8 +31,10 @@ describe('controls.DeviceButton', function() {
     it('should accept interaction', function() {
         let button = new DeviceButton(player);
 
-        button.trigger('click');
+        player.on('ready', function() {
+            button.trigger('click');
 
-        expect(player.record().mediaType).toBeDefined();
+            expect(player.record().mediaType).toBeDefined();
+        });
     });
 });

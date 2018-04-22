@@ -12,16 +12,13 @@ import Record from '../src/js/videojs.record.js';
 describe('Record', function() {
     var player;
 
-    beforeEach(function() {
+    /** @test {Record} */
+    it('should be an advanced plugin instance', function(done) {
         // cleanup all players
         TestHelpers.cleanup();
 
         // create new player
         player = TestHelpers.makePlayer();
-    });
-
-    /** @test {Record} */
-    it('should be an advanced plugin instance', function(done) {
 
         player.one('ready', function() {
             expect(player.el().nodeName).toEqual('DIV');
@@ -35,6 +32,31 @@ describe('Record', function() {
             let version = require('../package.json').version;
             expect(videojs.getPluginVersion('record')).toEqual(version);
 
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass()).toEndWith(
+                'audio-perm')
+            done();
+        });
+    });
+
+    /** @test {Record} */
+    it('should run as a video-only plugin', function(done) {
+        // cleanup all players
+        TestHelpers.cleanup();
+
+        // create new player
+        player = TestHelpers.makeVideoOnlyPlayer();
+
+        player.one('ready', function() {
+            expect(player.el().nodeName).toEqual('DIV');
+            expect(player.on).toBeFunction();
+
+            // plugins exist
+            expect(videojs.getPlugin('record')).toBeFunction();
+
+            // correct device button icon
+            /*expect(player.deviceButton.buildCSSClass()).endingWith(
+                'video-perm')*/
             done();
         });
     });

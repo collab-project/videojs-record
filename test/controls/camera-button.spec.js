@@ -44,28 +44,32 @@ describe('controls.CameraButton', function() {
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        player.trigger('startRecord');
+        player.on('ready', function() {
+            player.trigger('startRecord');
 
-        expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
-        expect(button.hasClass('vjs-icon-replay')).toBeTrue();
-        expect(button.controlText_).toEqual('Retry');
+            expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
+            expect(button.hasClass('vjs-icon-replay')).toBeTrue();
+            expect(button.controlText_).toEqual('Retry');
 
-        player.trigger('stopRecord');
+            player.trigger('stopRecord');
 
-        expect(button.hasClass('vjs-icon-replay')).toBeFalse();
-        expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
-        expect(button.controlText_).toEqual('Image');
+            expect(button.hasClass('vjs-icon-replay')).toBeFalse();
+            expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+            expect(button.controlText_).toEqual('Image');
+        });
     });
 
     it('should accept interaction', function() {
         let button = new CameraButton(player);
 
-        button.trigger('click');
+        player.on('ready', function() {
+            button.trigger('click');
 
-        expect(player.record()._recording).toBeTrue();
+            expect(player.record()._recording).toBeTrue();
 
-        // try again
-        button.trigger('click');
+            // try again
+            button.trigger('click');
+        });
     });
 
 });

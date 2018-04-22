@@ -71,6 +71,26 @@ const TestHelpers = {
         return videojs(elementTag.id, playerOptions);
     },
 
+    makeVideoOnlyPlayer() {
+        var tag = TestHelpers.makeTag('video', 'videoOnly');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            plugins: {
+                record: {
+                    audio: false,
+                    video: true,
+                    maxLength: 20,
+                    debug: true
+                }
+            }
+        });
+    },
+
     /**
      * Dispose all players.
      */
