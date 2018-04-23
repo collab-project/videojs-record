@@ -68,24 +68,21 @@ describe('controls.RecordToggle', function() {
 
     it('should accept interaction', function(done) {
         let toggle = new RecordToggle(player);
-        let getDevice = sinon.stub(player.record(), 'getDevice');
-        let start = sinon.stub(player.record(), 'start');
 
         player.one('deviceReady', function() {
             // start
             toggle.trigger('click');
+            expect(player.record().isRecording()).toEqual(true);
 
-            expect(start.called).toEqual(true);
+            // stop
+            toggle.trigger('click');
+            expect(player.record().isRecording()).toEqual(false);
 
             done();
         });
 
         player.one('ready', function() {
             player.record().getDevice();
-
-            expect(getDevice.called).toEqual(true);
-
-            player.trigger('deviceReady');
         });
     });
 });

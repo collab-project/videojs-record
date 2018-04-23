@@ -10,13 +10,21 @@ import CameraButton from '../../src/js/controls/camera-button.js';
 /** @test {camera-button} */
 describe('controls.CameraButton', function() {
     var player;
+    var originalTimeout;
 
     beforeEach(function() {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+
         // cleanup all players
         TestHelpers.cleanup();
 
         // create new image-only player
         player = TestHelpers.makeImageOnlyPlayer();
+    });
+
+    afterEach(function() {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     it('should create the correct DOM element', function() {
@@ -63,14 +71,16 @@ describe('controls.CameraButton', function() {
 
     it('should accept interaction', function(done) {
         let button = new CameraButton(player);
-        let stub = sinon.stub(player.record(), 'start');
 
-        player.one('ready', function() {
+        player.one('deviceReady', function() {
+            // start
             button.trigger('click');
 
-            expect(stub.called).toEqual(true);
-
             done();
+        });
+
+        player.one('ready', function() {
+            player.record().getDevice();
         });
     });
 

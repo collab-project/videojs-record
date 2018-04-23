@@ -31,12 +31,14 @@ describe('controls.DeviceButton', function() {
     it('should accept interaction', function(done) {
         let button = new DeviceButton(player);
 
+        player.one('deviceReady', function() {
+            done();
+        });
+
         player.one('ready', function() {
             button.trigger('click');
 
             expect(player.record().mediaType).toBeDefined();
-
-            done();
         });
     });
 });
