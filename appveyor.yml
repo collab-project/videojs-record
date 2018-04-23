@@ -2,6 +2,7 @@ environment:
   matrix:
     - nodejs_version: '8'
 install:
+  - choco install -y googlechrome --ignore-checksums
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
   - npm install --global npm@latest
@@ -9,7 +10,10 @@ install:
   - npm install
 matrix:
   fast_finish: true
+# Disable automatic builds
 build: off
+# Do not build on gh tags
+skip_tags: true
 shallow_clone: true
 test_script:
   - node --version
@@ -18,3 +22,4 @@ test_script:
   - npm run build
 cache:
   - '%APPDATA%\npm-cache'
+  - node_modules -> package.json
