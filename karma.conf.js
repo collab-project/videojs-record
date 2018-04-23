@@ -71,6 +71,7 @@ module.exports = function(config) {
         ],
         browsers: ['Chrome_dev'],
         captureConsole: true,
+        browserNoActivityTimeout: 50000,
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
