@@ -24,17 +24,19 @@ describe('controls.DeviceButton', function() {
 
         expect(button.el().nodeName).toEqual('BUTTON');
         expect(button.on).toBeFunction();
-        expect(button.enabled_).toBeTrue();
+        expect(button.enabled_).toEqual(true);
         expect(button.controlText_).toEqual('Device');
     });
 
-    it('should accept interaction', function() {
+    it('should accept interaction', function(done) {
         let button = new DeviceButton(player);
 
-        player.on('ready', function() {
+        player.one('ready', function() {
             button.trigger('click');
 
             expect(player.record().mediaType).toBeDefined();
+
+            done();
         });
     });
 });

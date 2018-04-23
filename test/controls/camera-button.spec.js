@@ -15,8 +15,8 @@ describe('controls.CameraButton', function() {
         // cleanup all players
         TestHelpers.cleanup();
 
-        // create new player
-        player = TestHelpers.makePlayer();
+        // create new image-only player
+        player = TestHelpers.makeImageOnlyPlayer();
     });
 
     it('should create the correct DOM element', function() {
@@ -24,12 +24,12 @@ describe('controls.CameraButton', function() {
 
         expect(button.el().nodeName).toEqual('BUTTON');
         expect(button.on).toBeFunction();
-        expect(button.enabled_).toBeTrue();
+        expect(button.enabled_).toEqual(true);
         expect(button.controlText_).toEqual('Image');
 
         ['vjs-camera-button', 'vjs-control', 'vjs-button', 'vjs-icon-photo-camera'].forEach(
         (e) => {
-            expect(button.hasClass(e)).toBeTrue();
+            expect(button.hasClass(e)).toEqual(true);
         });
     });
 
@@ -39,36 +39,38 @@ describe('controls.CameraButton', function() {
         expect(button.enabled_).toBeFalse();
     });
 
-    it('should change appearance when startRecord or stopRecord is triggered', function() {
+    it('should change appearance when startRecord or stopRecord is triggered', function(done) {
         let button = new CameraButton(player);
 
-        expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+        expect(button.hasClass('vjs-icon-photo-camera')).toEqual(true);
 
-        player.on('ready', function() {
+        player.one('ready', function() {
             player.trigger('startRecord');
 
-            expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
-            expect(button.hasClass('vjs-icon-replay')).toBeTrue();
+            expect(button.hasClass('vjs-icon-photo-camera')).toEqual(false);
+            expect(button.hasClass('vjs-icon-replay')).toEqual(true);
             expect(button.controlText_).toEqual('Retry');
 
             player.trigger('stopRecord');
 
-            expect(button.hasClass('vjs-icon-replay')).toBeFalse();
-            expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+            expect(button.hasClass('vjs-icon-replay')).toEqual(false);
+            expect(button.hasClass('vjs-icon-photo-camera')).toEqual(true);
             expect(button.controlText_).toEqual('Image');
+
+            done();
         });
     });
 
-    it('should accept interaction', function() {
+    it('should accept interaction', function(done) {
         let button = new CameraButton(player);
+        let stub = sinon.stub(player.record(), 'start');
 
-        player.on('ready', function() {
+        player.one('ready', function() {
             button.trigger('click');
 
-            expect(player.record()._recording).toBeTrue();
+            expect(stub.called).toEqual(true);
 
-            // try again
-            button.trigger('click');
+            done();
         });
     });
 

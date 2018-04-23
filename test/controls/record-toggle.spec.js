@@ -24,48 +24,68 @@ describe('controls.RecordToggle', function() {
 
         expect(toggle.el().nodeName).toEqual('BUTTON');
         expect(toggle.on).toBeFunction();
-        expect(toggle.enabled_).toBeTrue();
+        expect(toggle.enabled_).toEqual(true);
         expect(toggle.controlText_).toEqual('Record');
 
         ['vjs-record-button', 'vjs-control', 'vjs-button', 'vjs-icon-record-start'].forEach(
         (e) => {
-            expect(toggle.hasClass(e)).toBeTrue();
+            expect(toggle.hasClass(e)).toEqual(true);
         });
     });
 
-    it('should disable', function() {
+    it('should disable', function(done) {
         let toggle = new RecordToggle(player);
-        toggle.disable();
-        expect(toggle.enabled_).toBeFalse();
+
+        player.one('ready', function() {
+            toggle.disable();
+            expect(toggle.enabled_).toEqual(false);
+
+            done();
+        })
     });
 
-    it('should change appearance when startRecord or stopRecord is triggered', function() {
+    it('should change appearance when startRecord or stopRecord is triggered', function(done) {
         let toggle = new RecordToggle(player);
 
-        expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
+        expect(toggle.hasClass('vjs-icon-record-start')).toEqual(true);
 
-        player.trigger('startRecord');
+        player.one('ready', function() {
+            player.trigger('startRecord');
 
-        expect(toggle.hasClass('vjs-icon-record-start')).toBeFalse();
-        expect(toggle.hasClass('vjs-icon-record-stop')).toBeTrue();
-        expect(toggle.controlText_).toEqual('Stop');
+            expect(toggle.hasClass('vjs-icon-record-start')).toEqual(false);
+            expect(toggle.hasClass('vjs-icon-record-stop')).toEqual(true);
+            expect(toggle.controlText_).toEqual('Stop');
 
-        player.trigger('stopRecord');
+            player.trigger('stopRecord');
 
-        expect(toggle.hasClass('vjs-icon-record-stop')).toBeFalse();
-        expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
-        expect(toggle.controlText_).toEqual('Record');
+            expect(toggle.hasClass('vjs-icon-record-stop')).toEqual(false);
+            expect(toggle.hasClass('vjs-icon-record-start')).toEqual(true);
+            expect(toggle.controlText_).toEqual('Record');
+
+            done();
+        });
     });
 
-    it('should accept interaction', function() {
+    it('should accept interaction', function(done) {
         let toggle = new RecordToggle(player);
+        let getDevice = sinon.stub(player.record(), 'getDevice');
+        let start = sinon.stub(player.record(), 'start');
 
-        // start
-        toggle.trigger('click');
-        expect(player.record()._recording).toBeTrue();
+        player.one('deviceReady', function() {
+            // start
+            toggle.trigger('click');
 
-        // stop
-        toggle.trigger('click');
-        expect(player.record()._recording).toBeFalse();
+            expect(start.called).toEqual(true);
+
+            done();
+        });
+
+        player.one('ready', function() {
+            player.record().getDevice();
+
+            expect(getDevice.called).toEqual(true);
+
+            player.trigger('deviceReady');
+        });
     });
 });

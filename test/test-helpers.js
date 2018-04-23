@@ -91,6 +91,28 @@ const TestHelpers = {
         });
     },
 
+    makeImageOnlyPlayer() {
+        var tag = TestHelpers.makeTag('video', 'imageOnly');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            controlBar: {
+                volumePanel: false,
+                fullscreenToggle: false
+            },
+            plugins: {
+                record: {
+                    image: true,
+                    debug: true
+                }
+            }
+        });
+    },
+
     /**
      * Dispose all players.
      */
