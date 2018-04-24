@@ -13,7 +13,8 @@ var chromeFlags = [
     '--use-fake-device-for-media-stream',
     '--use-fake-ui-for-media-stream',
     '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
-    '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m'
+    '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m',
+    '--autoplay-policy=no-user-gesture-required'
 ];
 
 module.exports = function(config) {
