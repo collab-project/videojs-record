@@ -68,19 +68,5 @@ describe('controls.CameraButton', function() {
         });
     });
 
-    it('should accept interaction', function(done) {
-        let button = new CameraButton(player);
-
-        player.one('deviceReady', function() {
-            // start
-            button.trigger('click');
-
-            done();
-        });
-
-        player.one('ready', function() {
-            player.record().getDevice();
-        });
-    });
 
 });
