@@ -12,11 +12,12 @@ import Record from '../src/js/videojs.record.js';
 describe('Record', function() {
     var player;
 
+    afterEach(function() {
+        player.dispose();
+    });
+
     /** @test {Record} */
     it('should be an advanced plugin instance', function(done) {
-        // cleanup all players
-        TestHelpers.cleanup();
-
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -41,9 +42,6 @@ describe('Record', function() {
 
     /** @test {Record} */
     it('should run as a video-only plugin', function(done) {
-        // cleanup all players
-        TestHelpers.cleanup();
-
         // create new player
         player = TestHelpers.makeVideoOnlyPlayer();
 

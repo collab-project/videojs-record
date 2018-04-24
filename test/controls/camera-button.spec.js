@@ -16,14 +16,13 @@ describe('controls.CameraButton', function() {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
-        // cleanup all players
-        TestHelpers.cleanup();
-
         // create new image-only player
         player = TestHelpers.makeImageOnlyPlayer();
     });
 
     afterEach(function() {
+        player.dispose();
+
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 

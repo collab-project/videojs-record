@@ -9,6 +9,6 @@ describe('utils.setSrcObject', function() {
 
     /** @test {setSrcObject} */
     it('should work', function() {
-        let time = setSrcObject({}, {}, false);
+        let obj = setSrcObject({}, {}, false);
     });
 });

@@ -1427,7 +1427,9 @@ Record.VERSION = __VERSION__;
 
 // register plugin
 videojs.Record = Record;
-videojs.registerPlugin('record', Record);
+if (videojs.getPlugin('record') === undefined) {
+    videojs.registerPlugin('record', Record);
+}
 
 // export plugin
 module.exports = {

@@ -12,11 +12,12 @@ describe('controls.RecordToggle', function() {
     var player;
 
     beforeEach(function() {
-        // cleanup all players
-        TestHelpers.cleanup();
-
         // create new player
         player = TestHelpers.makePlayer();
+    });
+
+    afterEach(function() {
+        player.dispose();
     });
 
     it('should create the correct DOM element', function() {
@@ -73,10 +74,6 @@ describe('controls.RecordToggle', function() {
             // start
             toggle.trigger('click');
             expect(player.record().isRecording()).toEqual(true);
-
-            // stop
-            toggle.trigger('click');
-            expect(player.record().isRecording()).toEqual(false);
 
             done();
         });

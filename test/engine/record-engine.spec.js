@@ -13,11 +13,12 @@ describe('engine.record-engine', function() {
     var player;
 
     beforeEach(function() {
-        // cleanup all players
-        TestHelpers.cleanup();
-
         // create new player
         player = TestHelpers.makePlayer();
+    });
+
+    afterEach(function() {
+        player.dispose();
     });
 
     it('should create the correct component', function() {
