@@ -1,3 +1,6 @@
+/**
+ * @since 2.2.0
+ */
 const merge = require('webpack-merge');
 const path = require('path');
 
