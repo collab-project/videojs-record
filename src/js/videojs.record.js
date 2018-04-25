@@ -831,7 +831,7 @@ class Record extends Plugin {
                 this._processing = false;
 
                 // hide loader
-                this.player.loadingSpinner.hide( );
+                this.player.loadingSpinner.hide();
 
                 // show animation total duration
                 this.setDuration(this.streamDuration);
@@ -1422,12 +1422,14 @@ class Record extends Plugin {
     }
 }
 
-// version nr gets replaced during build
-Record.VERSION = 'dev';
+// version nr is injected during build
+Record.VERSION = __VERSION__;
 
 // register plugin
 videojs.Record = Record;
-videojs.registerPlugin('record', Record);
+if (videojs.getPlugin('record') === undefined) {
+    videojs.registerPlugin('record', Record);
+}
 
 // export plugin
 module.exports = {
