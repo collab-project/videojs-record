@@ -22,3 +22,6 @@ dist/
 docs/
 tmp
 coverage/
+
+# Test
+chrome-user-data/
