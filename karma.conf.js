@@ -16,7 +16,9 @@ var chromeFlags = [
     '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m',
     '--autoplay-policy=no-user-gesture-required',
     '--user-data-dir=chrome-user-data',
-    '--no-default-browser-check'
+    '--no-default-browser-check',
+    '--disable-translate',
+    '--disable-extensions'
 ];
 
 module.exports = function(config) {
