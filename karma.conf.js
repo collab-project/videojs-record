@@ -18,7 +18,7 @@ var chromeFlags = [
     '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
     '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m',
     '--autoplay-policy=no-user-gesture-required',
-    '--user-data-dir=chrome-user-data',
+    '--user-data-dir=.chrome',
     '--disable-translate',
     '--disable-extensions',
     '--disable-infobars',
