@@ -6,9 +6,21 @@ import document from 'global/document';
 
 import Player from 'video.js';
 
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
+
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
+
+    DEFAULT_WAVESURFER_OPTIONS: {
+        src: 'live',
+        waveColor: '#36393b',
+        progressColor: 'black',
+        debug: true,
+        cursorWidth: 1,
+        msDisplayMax: 20,
+        hideScrollbar: true
+    },
 
     /**
      * Create DOM element.
@@ -50,15 +62,7 @@ const TestHelpers = {
             width: 600,
             height: 300,
             plugins: {
-                wavesurfer: {
-                    src: "live",
-                    waveColor: "#36393b",
-                    progressColor: "black",
-                    debug: true,
-                    cursorWidth: 1,
-                    msDisplayMax: 20,
-                    hideScrollbar: true
-                },
+                wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
                     audio: true,
                     video: false,
@@ -81,21 +85,44 @@ const TestHelpers = {
             width: 500,
             height: 400,
             plugins: {
-                wavesurfer: {
-                    src: "live",
-                    waveColor: "#36393b",
-                    progressColor: "black",
-                    debug: true,
-                    cursorWidth: 1,
-                    msDisplayMax: 20,
-                    hideScrollbar: true
-                },
+                wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
                     audio: true,
                     video: false,
                     maxLength: 5,
                     debug: true
                 }
+            }
+        });
+    },
+
+    makeAudioOnlyPluginPlayer(pluginName) {
+        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        var recordPluginOptions = {
+            audio: true,
+            video: false,
+            maxLength: 5,
+            debug: true
+        };
+        // setup audio plugin
+        switch (pluginName) {
+            case LAMEJS:
+                recordPluginOptions.audioEngine = LAMEJS;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/lamejs/worker-example/worker-realtime.js';
+                recordPluginOptions.audioSampleRate = 44100;
+                recordPluginOptions.audioBitRate = 128;
+                break;
+        }
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 600,
+            height: 350,
+            plugins: {
+                wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
+                record: recordPluginOptions
             }
         });
     },

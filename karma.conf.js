@@ -55,13 +55,17 @@ module.exports = function(config) {
             'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
             'dist/css/videojs.record.css',
 
-            // dependencies
+            // library dependencies
             'node_modules/video.js/dist/video.js',
             'node_modules/webrtc-adapter/out/adapter.js',
             'node_modules/recordrtc/RecordRTC.js',
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
+
+            // optional library dependencies for plugins
+            {pattern: 'node_modules/lamejs/worker-example/*worker*.js', included: false},
+            'node_modules/lamejs/lame.min.js',
 
             // specs
             'test/**/*.spec.js'
