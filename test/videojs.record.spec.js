@@ -73,7 +73,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as a image-only plugin', function(done) {
+    it('should run as an image-only plugin', function(done) {
         // create image-only plugin
         player = TestHelpers.makeImageOnlyPlayer();
         // workaround weird test TypeError: Cannot read property 'videoWidth' of null tech error
@@ -81,7 +81,7 @@ describe('Record', function() {
         player.recordCanvas.el().firstChild.videoHeight = 240;
 
         player.one('finishRecord', function() {
-            // received an base-64 encoded PNG string
+            // received a base-64 encoded PNG string
             expect(player.recordedData.startsWith('data:image/png;base64,i')).toBeTrue();
         });
 
@@ -100,6 +100,41 @@ describe('Record', function() {
         player.one('ready', function() {
             // correct device button icon
             expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
+
+            // start device
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record} */
+    it('should run as an audio-only plugin', function(done) {
+        // create audio-only plugin
+        player = TestHelpers.makeAudioOnlyPlayer();
+
+        player.one('finishRecord', function() {
+            // received a blob file
+            expect(player.recordedData instanceof Blob).toBeTruthy();
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', function() {
+            // record some audio
+            setTimeout(function() {
+                player.record().stop();
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            // create snapshot
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass().endsWith('audio-perm')).toBeTrue();
 
             // start device
             player.record().getDevice();

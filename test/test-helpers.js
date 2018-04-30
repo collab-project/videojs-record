@@ -53,7 +53,7 @@ const TestHelpers = {
                 wavesurfer: {
                     src: "live",
                     waveColor: "#36393b",
-                    progressColor: "#black",
+                    progressColor: "black",
                     debug: true,
                     cursorWidth: 1,
                     msDisplayMax: 20,
@@ -69,6 +69,35 @@ const TestHelpers = {
         };
 
         return videojs(elementTag.id, playerOptions);
+    },
+
+    makeAudioOnlyPlayer() {
+        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            plugins: {
+                wavesurfer: {
+                    src: "live",
+                    waveColor: "#36393b",
+                    progressColor: "black",
+                    debug: true,
+                    cursorWidth: 1,
+                    msDisplayMax: 20,
+                    hideScrollbar: true
+                },
+                record: {
+                    audio: true,
+                    video: false,
+                    maxLength: 5,
+                    debug: true
+                }
+            }
+        });
     },
 
     makeVideoOnlyPlayer() {
