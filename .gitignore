@@ -24,4 +24,4 @@ tmp
 coverage/
 
 # Test
-chrome-user-data/
+.chrome/

@@ -10,13 +10,20 @@ var webpackConfig = require('./build-config/webpack.prod.main.js');
 
 var chromeFlags = [
     '--no-sandbox',
+    '--no-first-run',
+    '--noerrdialogs',
+    '--no-default-browser-check',
     '--use-fake-device-for-media-stream',
     '--use-fake-ui-for-media-stream',
     '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
     '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m',
     '--autoplay-policy=no-user-gesture-required',
-    '--user-data-dir=chrome-user-data',
-    '--no-default-browser-check'
+    '--user-data-dir=.chrome',
+    '--disable-translate',
+    '--disable-extensions',
+    '--disable-infobars',
+    '--ignore-certificate-errors',
+    '--allow-insecure-localhost'
 ];
 
 module.exports = function(config) {

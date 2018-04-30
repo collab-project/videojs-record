@@ -6,7 +6,7 @@ videojs-record changelog
 
 - Package library using webpack (#226)
 - Add unit tests using karma/webpack/jasmine (#226)
-- Bump required version for videojs-wavesurfer to 2.3.0 for wavesurfer
+- Bump required version for videojs-wavesurfer to 2.3.1 for wavesurfer
   destroy fixes
 
 
