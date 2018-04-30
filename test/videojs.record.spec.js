@@ -76,7 +76,8 @@ describe('Record', function() {
     it('should run as an image-only plugin', function(done) {
         // create image-only plugin
         player = TestHelpers.makeImageOnlyPlayer();
-        // workaround weird test TypeError: Cannot read property 'videoWidth' of null tech error
+        // XXX: workaround weird error during test
+        // TypeError: Cannot read property 'videoWidth' of null tech error
         player.recordCanvas.el().firstChild.videoWidth = 320;
         player.recordCanvas.el().firstChild.videoHeight = 240;
 
@@ -86,7 +87,6 @@ describe('Record', function() {
         });
 
         player.one('startRecord', function() {
-            // take snapshot
             setTimeout(function() {
                 done();
             }, 2000);
@@ -121,14 +121,14 @@ describe('Record', function() {
         });
 
         player.one('startRecord', function() {
-            // record some audio
+            // stop recording after few seconds
             setTimeout(function() {
                 player.record().stop();
             }, 2000);
         });
 
         player.one('deviceReady', function() {
-            // create snapshot
+            // record some audio
             player.record().start();
         });
 

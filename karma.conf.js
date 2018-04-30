@@ -63,9 +63,10 @@ module.exports = function(config) {
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
-            // optional library dependencies for plugins
+            // optional library dependencies for audio plugins
             {pattern: 'node_modules/lamejs/worker-example/*worker*.js', included: false},
             'node_modules/lamejs/lame.min.js',
+            'node_modules/libvorbis.js/js/libvorbis.min.js',
 
             // specs
             'test/**/*.spec.js'
@@ -73,7 +74,7 @@ module.exports = function(config) {
         preprocessors: {
             'test/**/*.spec.js': ['webpack'],
 
-            // source files, that you want to generate coverage for
+            // source files to generate coverage for,
             // do not include tests or libraries
             'src/js/**/*.js': ['coverage']
         },

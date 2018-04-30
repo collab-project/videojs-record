@@ -43,7 +43,11 @@ class LibVorbisEngine extends RecordEngine {
      * Stop recording.
      */
     stop() {
-        this.engine.stop();
+        try {
+            this.engine.stop();
+        } catch (err) {
+            // ignore errors about invalid state
+        }
     }
 
     /**

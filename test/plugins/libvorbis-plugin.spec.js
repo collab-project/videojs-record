@@ -5,22 +5,22 @@
 import TestHelpers from '../test-helpers.js';
 
 // registers the plugin
-import LamejsEngine from '../../src/js/plugins/lamejs-plugin.js';
-import {LAMEJS} from '../../src/js/engine/record-engine.js';
+import LibVorbisEngine from '../../src/js/plugins/libvorbis-plugin.js';
+import {LIBVORBISJS} from '../../src/js/engine/record-engine.js';
 
 
-/** @test {LamejsEngine} */
-describe('plugins.lamejs-plugin', function() {
+/** @test {LibVorbisEngine} */
+describe('plugins.libvorbis-plugin', function() {
     var player;
 
     afterEach(function() {
         player.dispose();
     });
 
-    /** @test {LamejsEngine} */
+    /** @test {LibVorbisEngine} */
     it('should run as an audio-only plugin', function(done) {
-        // create audio-only player with lamejs plugin
-        player = TestHelpers.makeAudioOnlyPluginPlayer(LAMEJS);
+        // create audio-only player with libvorbis.js plugin
+        player = TestHelpers.makeAudioOnlyPluginPlayer(LIBVORBISJS);
 
         player.one('finishRecord', function() {
             // received a blob file

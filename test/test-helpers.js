@@ -112,6 +112,11 @@ const TestHelpers = {
                 recordPluginOptions.audioSampleRate = 44100;
                 recordPluginOptions.audioBitRate = 128;
                 break;
+
+            case LIBVORBISJS:
+                recordPluginOptions.audioEngine = LIBVORBISJS;
+                recordPluginOptions.audioSampleRate = 32000;
+                break;
         }
         return this.makePlayer(tag, {
             controls: true,
