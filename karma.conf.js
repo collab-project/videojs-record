@@ -39,7 +39,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: true,  // enable for headless testing
+        singleRun: false,  // enable for headless testing
         autoWatch: false,
         files: [
             // demo files
@@ -64,9 +64,11 @@ module.exports = function(config) {
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
             // optional library dependencies for audio plugins
+            'node_modules/libvorbis.js/js/libvorbis.min.js',
             {pattern: 'node_modules/lamejs/worker-example/*worker*.js', included: false},
             'node_modules/lamejs/lame.min.js',
-            'node_modules/libvorbis.js/js/libvorbis.min.js',
+            {pattern: 'node_modules/opus-recorder/dist/*Worker.js', included: false},
+            'node_modules/opus-recorder/dist/*',
 
             // specs
             'test/**/*.spec.js'

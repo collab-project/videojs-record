@@ -108,14 +108,21 @@ const TestHelpers = {
         switch (pluginName) {
             case LAMEJS:
                 recordPluginOptions.audioEngine = LAMEJS;
-                recordPluginOptions.audioWorkerURL = '/base/node_modules/lamejs/worker-example/worker-realtime.js';
                 recordPluginOptions.audioSampleRate = 44100;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/lamejs/worker-example/worker-realtime.js';
                 recordPluginOptions.audioBitRate = 128;
                 break;
 
             case LIBVORBISJS:
                 recordPluginOptions.audioEngine = LIBVORBISJS;
                 recordPluginOptions.audioSampleRate = 32000;
+                break;
+
+            case OPUSRECORDER:
+                recordPluginOptions.audioEngine = OPUSRECORDER;
+                recordPluginOptions.audioSampleRate = 48000;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
+                recordPluginOptions.audioChannels = 2;
                 break;
         }
         return this.makePlayer(tag, {
