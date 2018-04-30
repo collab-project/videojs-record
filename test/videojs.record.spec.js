@@ -42,21 +42,67 @@ describe('Record', function() {
 
     /** @test {Record} */
     it('should run as a video-only plugin', function(done) {
-        // create new player
+        // create video-only plugin
         player = TestHelpers.makeVideoOnlyPlayer();
 
+        player.one('finishRecord', function() {
+            // received a blob file
+            expect(player.recordedData instanceof Blob).toBeTruthy();
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('deviceReady', function() {
+            // start recording for few seconds
+            player.record().start();
+            setTimeout(function() {
+                // stop recording
+                player.record().stop();
+            }, 2000);
+        });
+
         player.one('ready', function() {
-            expect(player.el().nodeName).toEqual('DIV');
-            expect(player.on).toBeFunction();
-
-            // plugins exist
-            expect(videojs.getPlugin('record')).toBeFunction();
-
             // correct device button icon
-            /*expect(player.deviceButton.buildCSSClass()).endingWith(
-                'video-perm')*/
-            done();
+            expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
+
+            // start device
+            player.record().getDevice();
         });
     });
 
+    /** @test {Record} */
+    it('should run as a image-only plugin', function(done) {
+        // create image-only plugin
+        player = TestHelpers.makeImageOnlyPlayer();
+        // workaround weird test TypeError: Cannot read property 'videoWidth' of null tech error
+        player.recordCanvas.el().firstChild.videoWidth = 320;
+        player.recordCanvas.el().firstChild.videoHeight = 240;
+
+        player.one('finishRecord', function() {
+            // received an base-64 encoded PNG string
+            expect(player.recordedData.startsWith('data:image/png;base64,i')).toBeTrue();
+        });
+
+        player.one('startRecord', function() {
+            // take snapshot
+            setTimeout(function() {
+                done();
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            // create snapshot
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
+
+            // start device
+            player.record().getDevice();
+        });
+    });
 });

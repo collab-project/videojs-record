@@ -84,7 +84,7 @@ const TestHelpers = {
                 record: {
                     audio: false,
                     video: true,
-                    maxLength: 20,
+                    maxLength: 5,
                     debug: true
                 }
             }
