@@ -57,6 +57,7 @@ module.exports = function(config) {
 
             // dependencies
             'node_modules/video.js/dist/video.js',
+            'node_modules/webrtc-adapter/out/adapter.js',
             'node_modules/recordrtc/RecordRTC.js',
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
