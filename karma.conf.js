@@ -8,6 +8,8 @@ require('babel-register');
 
 var webpackConfig = require('./build-config/webpack.prod.main.js');
 
+// Chrome CLI options
+// http://peter.sh/experiments/chromium-command-line-switches/
 var chromeFlags = [
     '--no-sandbox',
     '--no-first-run',
@@ -25,6 +27,10 @@ var chromeFlags = [
     '--ignore-certificate-errors',
     '--allow-insecure-localhost'
 ];
+var firefoxFlags = {
+    'media.navigator.permission.disabled': true,
+    'media.navigator.streams.fake': true
+};
 
 module.exports = function(config) {
     var configuration = {
@@ -75,11 +81,12 @@ module.exports = function(config) {
             'karma-sinon',
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
+            'karma-firefox-launcher',
             'karma-coverage',
             'karma-coveralls',
             'karma-verbose-reporter'
         ],
-        browsers: ['Chrome_dev'],
+        browsers: ['Firefox_dev', 'Chrome_dev'],
         captureConsole: true,
         browserNoActivityTimeout: 50000,
         colors: true,
@@ -94,21 +101,27 @@ module.exports = function(config) {
                 base: 'Chrome',
                 flags: chromeFlags
             },
-            Chrome_travis_ci: {
+            Chrome_ci: {
                 base: 'ChromeHeadless',
                 flags: chromeFlags
+            },
+            Firefox_dev: {
+                base: 'Firefox',
+                prefs: firefoxFlags
             }
         }
     };
 
-    if (process.env.TRAVIS) {
-        configuration.browsers = ['Chrome_travis_ci'];
+    if (process.env.TRAVIS || process.env.APPVEYOR) {
+        configuration.browsers = ['Chrome_ci'];
         configuration.singleRun = true;
 
-        // enable coveralls
-        configuration.reporters.push('coveralls');
-        // lcov or lcovonly are required for generating lcov.info files
-        configuration.coverageReporter.type = 'lcov';
+        if (process.env.TRAVIS) {
+            // enable coveralls
+            configuration.reporters.push('coveralls');
+            // lcov or lcovonly are required for generating lcov.info files
+            configuration.coverageReporter.type = 'lcov';
+        }
     }
 
     config.set(configuration);
