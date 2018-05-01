@@ -2,6 +2,7 @@
  * @since 2.2.0
  */
 
+process.traceDeprecation = true;
 process.env.BABEL_ENV = 'test';
 
 require('babel-register');
@@ -39,7 +40,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: false,  // enable for headless testing
+        singleRun: true,  // enable for headless testing
         autoWatch: false,
         files: [
             // demo files
@@ -67,7 +68,8 @@ module.exports = function(config) {
             'node_modules/libvorbis.js/js/libvorbis.min.js',
             {pattern: 'node_modules/lamejs/worker-example/*worker*.js', included: false},
             'node_modules/lamejs/lame.min.js',
-            {pattern: 'node_modules/opus-recorder/dist/*Worker.js', included: false},
+            {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false},
+            {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false},
             'node_modules/opus-recorder/dist/*',
 
             // specs

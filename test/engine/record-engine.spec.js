@@ -4,8 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
-import RecordEngine from '../../src/js/engine/record-engine';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RecordEngine} from '../../src/js/engine/record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RecordEngine} from '../../src/js/engine/record-engine.js';
 
 
 /** @test {record-engine} */
