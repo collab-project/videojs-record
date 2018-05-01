@@ -21,7 +21,8 @@
     "url": "https://github.com/collab-project/videojs-record.git"
   },
   "scripts": {
-    "build": "npm run build:dev && npm run build:min && npm run build:language && npm run build:css",
+    "clean": "rimraf dist docs",
+    "build": "npm run clean && npm run build:dev && npm run build:min && npm run build:language && npm run build:css",
     "build:main": "webpack --config ./build-config/webpack.dev.main.js",
     "build:main:min": "webpack --config ./build-config/webpack.prod.main.js",
     "build:plugins": "webpack --config ./build-config/webpack.dev.plugins.js",
@@ -40,7 +41,7 @@
     "lint:js": "jscs --config .jscsrc src/js",
     "lint:json": "jsonlint-cli src/lang/*.json font/*.json",
     "lint:html": "htmlhint examples",
-    "start": "npm run build:main && npm run build:plugins && npm run build:css && webpack-dev-server --config ./build-config/webpack.dev.main.js",
+    "start": "npm run build && webpack-dev-server --config ./build-config/webpack.dev.main.js",
     "test": "karma start karma.conf.js",
     "prepublish": "not-in-install && npm run build || in-install"
   },
@@ -109,6 +110,7 @@
     "npm-run-all": "^4.1.2",
     "opus-recorder": ">=4.0.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
+    "rimraf": "^2.6.2",
     "sinon": "^5.0.2",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "videojs-languages": "^1.0.0",

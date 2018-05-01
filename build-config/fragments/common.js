@@ -18,12 +18,11 @@ var bannerPlugin = new webpack.BannerPlugin(
 @copyright 2014-${time} ${pckg.author}
 @license ${pckg.license}`
 );
-
 // inject version number
 var replaceVersionPlugin = new webpack.DefinePlugin({
   '__VERSION__': JSON.stringify(pckg.version)
 });
-var rootDir = path.resolve(__dirname, '..', '..');
+let rootDir = path.resolve(__dirname, '..', '..');
 
 module.exports = {
     context: rootDir,
@@ -54,5 +53,8 @@ module.exports = {
             }
         ]
     },
-    plugins: [bannerPlugin, replaceVersionPlugin]
+    plugins: [
+        bannerPlugin,
+        replaceVersionPlugin
+    ]
 };
