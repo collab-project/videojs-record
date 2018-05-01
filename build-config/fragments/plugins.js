@@ -35,10 +35,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../', '../', 'dist', 'plugins'),
         filename: 'videojs.record.[name].js',
-        library: ['VideojsRecord', '[name]'],
-        publicPath: 'localhost:8080/dist/plugin/'
-    },
-    devServer: {
-        publicPath: 'localhost:8080/dist/plugin/'
+        library: ['VideojsRecord', '[name]']
     }
 };

@@ -23,9 +23,10 @@ var bannerPlugin = new webpack.BannerPlugin(
 var replaceVersionPlugin = new webpack.DefinePlugin({
   '__VERSION__': JSON.stringify(pckg.version)
 });
+var rootDir = path.resolve(__dirname, '..', '..');
 
 module.exports = {
-    context: path.resolve(__dirname, '../', '../'),
+    context: rootDir,
     output: {
         libraryTarget: 'umd',
         umdNamedDefine: true
@@ -38,12 +39,14 @@ module.exports = {
     // environment during runtime.
     externals: [
         {'video.js': 'videojs'},
-        {'wavesurfer.js': 'WaveSurfer'}
+        {'wavesurfer.js': 'WaveSurfer'},
+        {'recordrtc': 'RecordRTC'}
     ],
     module: {
         rules: [
             {
                 test: /\.js$/,
+                include: path.resolve(rootDir, 'src', 'js'),
                 exclude: /(node_modules|bower_components|test)/,
                 use: {
                     loader: 'babel-loader'
