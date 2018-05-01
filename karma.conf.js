@@ -124,10 +124,10 @@ module.exports = function(config) {
     };
 
     if (process.env.TRAVIS || process.env.APPVEYOR) {
-        configuration.browsers = ['Chrome_ci'];
         configuration.singleRun = true;
 
         if (process.env.TRAVIS) {
+            configuration.browsers = ['Chrome_ci'];
             // enable coveralls
             configuration.reporters.push('coveralls');
             // lcov or lcovonly are required for generating lcov.info files

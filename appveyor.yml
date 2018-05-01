@@ -2,6 +2,7 @@ environment:
   matrix:
     - nodejs_version: '8'
 install:
+  - choco install -y firefox --ignore-checksums
   - choco install -y googlechrome --ignore-checksums
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
