@@ -35,7 +35,10 @@ describe('pluginDefaultOptions', function() {
             audioWorkerURL: '',
             animationFrameRate: 200,
             animationQuality: 10,
-            timeSlice: 0
+            timeSlice: 0,
+            convertEngine: '',
+            convertWorkerURL: '',
+            convertOptions: []
         });
     });
 });
