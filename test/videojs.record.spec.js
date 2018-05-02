@@ -140,4 +140,17 @@ describe('Record', function() {
             player.record().getDevice();
         });
     });
+
+    /** @test {Record} */
+    it('should run as an animation-only plugin', function(done) {
+        // create animated GIF plugin
+        player = TestHelpers.makeAnimatedPlayer();
+
+        player.one('ready', function() {
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
+
+            done();
+        });
+    });
 });

@@ -185,6 +185,31 @@ const TestHelpers = {
         });
     },
 
+    makeAnimatedPlayer() {
+        var tag = TestHelpers.makeTag('video', 'animationOnly');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 320,
+            height: 240,
+            controlBar: {
+                volumePanel: false,
+                fullscreenToggle: false
+            },
+            plugins: {
+                record: {
+                    animation: true,
+                    animationQuality: 20,
+                    animationFrameRate: 200,
+                    maxLength: 5,
+                    debug: true
+                }
+            }
+        });
+    },
+
     /**
      * Dispose all players.
      */
