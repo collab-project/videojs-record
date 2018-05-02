@@ -80,9 +80,19 @@ module.exports = function(config) {
             {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
             'node_modules/opus-recorder/dist/recorder.min.js',
 
+            // only available on CDN
+            'http://cdn.webrtc-experiment.com/gif-recorder.js',
+
             // specs
             'test/**/*.spec.js'
         ],
+        // for CDN scripts
+        crossOriginAttribute: false,
+        proxies: {
+            // lame workaround for opus-recorder
+            '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
+            '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
+        },
         mime: {
             'application/wasm': ['wasm']
         },
