@@ -8,8 +8,7 @@ const path = require('path');
 module.exports = {
     entry: {
         'videojs.record': path.resolve(
-            __dirname,
-            '../', '../', 'src', 'js', 'videojs.record.js'
+            __dirname, '..', '..', 'src', 'js', 'videojs.record.js'
         )
     },
     output: {

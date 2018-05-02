@@ -31,10 +31,9 @@
     "build:min": "npm run build:main:min && npm run build:plugins:min",
     "build:language": "vjslang -d dist/lang src/lang/*.json",
     "build:fonts": "cpx --verbose 'font/*.{eot,svg,ttf,woff}' dist/fonts/",
-    "build:css": "npm-run-all -s build:fonts build:css:sass build:css:min build:css:banner",
+    "build:css": "npm-run-all -s build:fonts build:css:sass build:css:min",
     "build:css:sass": "node-sass --include-path src/css src/css/videojs.record.scss dist/css/videojs.record.css",
     "build:css:min": "cleancss -o dist/css/videojs.record.min.css dist/css/videojs.record.css",
-    "build:css:banner": "node build-config/scripts/add-banner.js dist/css/*.css",
     "docs": "npm-run-all docs:*",
     "docs:api": "jsdoc src/js -r -d docs/api",
     "lint": "npm-run-all lint:*",
@@ -75,8 +74,6 @@
     "webrtc-adapter": ">=5.0.4"
   },
   "devDependencies": {
-    "add-banner": "^0.1.0",
-    "argv-auto-glob": "^1.0.1",
     "babel-loader": "^7.1.4",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-istanbul": "^4.1.6",
