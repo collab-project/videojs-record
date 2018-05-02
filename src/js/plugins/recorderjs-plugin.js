@@ -44,9 +44,12 @@ class RecorderjsEngine extends RecordEngine {
     stop() {
         this.engine.stop();
 
-        this.engine.exportWAV(this.onStopRecording.bind(this));
-
-        this.engine.clear();
+        if (this.engine.exportWAV !== undefined) {
+            this.engine.exportWAV(this.onStopRecording.bind(this));
+        }
+        if (this.engine.clear !== undefined) {
+            this.engine.clear();
+        }
     }
 }
 
