@@ -3,6 +3,7 @@
  */
 
 import TestHelpers from './test-helpers.js';
+import * as detectBrowser from '../src/js/utils/detect-browser.js';
 
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
@@ -135,6 +136,45 @@ describe('Record', function() {
         player.one('ready', function() {
             // correct device button icon
             expect(player.deviceButton.buildCSSClass().endsWith('audio-perm')).toBeTrue();
+
+            // start device
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record} */
+    it('should run as an audio-video plugin', function(done) {
+        // create audio-video plugin
+        player = TestHelpers.makeAudioVideoPlayer();
+
+        player.one('finishRecord', function() {
+            let data = player.recordedData;
+            if (detectBrowser.isChrome()) {
+                // got an object with a video property containing a blob
+                data = player.recordedData.video;
+            }
+            expect(data instanceof Blob).toBeTruthy();
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', function() {
+            // stop recording after few seconds
+            setTimeout(function() {
+                player.record().stop();
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            // record some audio
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass().endsWith('av-perm')).toBeTrue();
 
             // start device
             player.record().getDevice();
