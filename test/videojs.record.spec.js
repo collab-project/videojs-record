@@ -353,4 +353,33 @@ describe('Record', function() {
             player.record().getDevice();
         });
     });
+
+    /** @test {Record#stopDevice} */
+    it('should stop device', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('finishRecord', function() {
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', function() {
+            // stop device after few seconds
+            setTimeout(function() {
+                player.record().stopDevice();
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            // record some
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // start device
+            player.record().getDevice();
+        });
+    });
 });
