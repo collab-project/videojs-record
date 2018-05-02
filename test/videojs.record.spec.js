@@ -212,6 +212,21 @@ describe('Record', function() {
         });
     });
 
+    /** @test {Record#reset} */
+    it('should reset', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('ready', function() {
+            // reset
+            player.record().reset();
+
+            expect(player.record().getDuration()).toEqual(0);
+            expect(player.record().getCurrentTime()).toEqual(0);
+            done();
+        });
+    });
+
     /** @test {Record#enumerateDevices} */
     it('should enumerate devices', function(done) {
         // create new player
