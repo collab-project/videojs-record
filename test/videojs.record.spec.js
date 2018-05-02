@@ -14,7 +14,9 @@ describe('Record', function() {
     var player;
 
     afterEach(function() {
-        player.dispose();
+        try {
+            player.dispose();
+        } catch (err) {}
     });
 
     /** @test {Record} */
@@ -191,6 +193,35 @@ describe('Record', function() {
             expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
 
             done();
+        });
+    });
+    
+    /** @test {Record#destroy} */
+    it('should destroy', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('ready', function() {
+            expect(player.record().isDestroyed()).toBeFalse();
+            player.record().destroy();
+
+            done();
+        });
+    });
+
+    /** @test {Record#enumerateDevices} */
+    it('should enumerate devices', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('enumerateReady', function() {
+            expect(player.record().devices).toBeArray();
+
+            done();
+        });
+
+        player.one('ready', function() {
+            player.record().enumerateDevices();
         });
     });
 });
