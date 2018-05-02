@@ -5,9 +5,13 @@
 process.traceDeprecation = true;
 process.env.BABEL_ENV = 'test';
 
+const path = require('path');
 require('babel-register');
 
 var webpackConfig = require('./build-config/webpack.prod.main.js');
+var support_dir = path.resolve(__dirname, 'test', 'support');
+var fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
+var fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 
 // Chrome CLI options
 // http://peter.sh/experiments/chromium-command-line-switches/
@@ -18,8 +22,8 @@ var chromeFlags = [
     '--no-default-browser-check',
     '--use-fake-device-for-media-stream',
     '--use-fake-ui-for-media-stream',
-    '--use-file-for-fake-audio-capture=test/support/Front_Center.wav',
-    '--use-file-for-fake-video-capture=test/support/bus_qcif_7.5fps.y4m',
+    '--use-file-for-fake-audio-capture=' + fakeAudioStream,
+    '--use-file-for-fake-video-capture=' + fakeVideoStream,
     '--autoplay-policy=no-user-gesture-required',
     '--user-data-dir=.chrome',
     '--disable-translate',
@@ -50,7 +54,6 @@ module.exports = function(config) {
                 watched: false,
                 served: true
             },
-
              // style
             'node_modules/video.js/dist/video-js.css',
             'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
@@ -65,16 +68,29 @@ module.exports = function(config) {
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
             // optional library dependencies for audio plugins
+            // recorder.js
+            'node_modules/recorderjs/dist/recorder.js',
+            // libvorbis.js
             'node_modules/libvorbis.js/js/libvorbis.min.js',
-            {pattern: 'node_modules/lamejs/worker-example/*worker*.js', included: false},
+            // lamejs
+            {pattern: 'node_modules/lamejs/worker-example/*worker*.js', included: false, served: true},
             'node_modules/lamejs/lame.min.js',
-            {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false},
-            {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false},
-            'node_modules/opus-recorder/dist/*',
+            // opus-recorder
+            {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false, served: true},
+            {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
+            'node_modules/opus-recorder/dist/recorder.min.js',
 
             // specs
             'test/**/*.spec.js'
         ],
+        proxies: {
+            // lame workaround for opus-recorder
+            '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
+            '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
+        },
+        mime: {
+            'application/wasm': ['wasm']
+        },
         preprocessors: {
             'test/**/*.spec.js': ['webpack'],
 
@@ -127,6 +143,7 @@ module.exports = function(config) {
         configuration.singleRun = true;
 
         if (process.env.TRAVIS) {
+            // only chrome on travis
             configuration.browsers = ['Chrome_ci'];
             // enable coveralls
             configuration.reporters.push('coveralls');
