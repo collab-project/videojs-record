@@ -233,9 +233,28 @@ describe('Record', function() {
         player = TestHelpers.makePlayer();
 
         player.one('enumerateReady', function() {
-            expect(player.record().devices).toBeArray();
+            expect(player.record().devices).toBeNonEmptyArray();
+            done();
+        });
+
+        player.one('ready', function() {
+            player.record().enumerateDevices();
+        });
+    });
+
+    /** @test {Record#setAudioOutput} */
+    it('should set audio output', function(done) {
+        // create new audio player
+        player = TestHelpers.makeAudioOnlyPlayer();
+
+        player.one('error', function(e) {
+            expect(e.type).toEqual('error');
 
             done();
+        });
+
+        player.one('enumerateReady', function() {
+            player.record().setAudioOutput('fakeId');
         });
 
         player.one('ready', function() {
