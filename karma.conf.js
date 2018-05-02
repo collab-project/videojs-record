@@ -83,11 +83,6 @@ module.exports = function(config) {
             // specs
             'test/**/*.spec.js'
         ],
-        proxies: {
-            // lame workaround for opus-recorder
-            '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
-            '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
-        },
         mime: {
             'application/wasm': ['wasm']
         },
@@ -140,11 +135,11 @@ module.exports = function(config) {
     };
 
     if (process.env.TRAVIS || process.env.APPVEYOR) {
+        // only chrome
+        configuration.browsers = ['Chrome_ci'];
         configuration.singleRun = true;
 
         if (process.env.TRAVIS) {
-            // only chrome on travis
-            configuration.browsers = ['Chrome_ci'];
             // enable coveralls
             configuration.reporters.push('coveralls');
             // lcov or lcovonly are required for generating lcov.info files
