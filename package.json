@@ -111,7 +111,7 @@
     "opus-recorder": ">=4.0.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "rimraf": "^2.6.2",
-    "sinon": "^5.0.2",
+    "sinon": "^5.0.3",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "videojs-languages": "^1.0.0",
     "webpack": "^4.6.0",
