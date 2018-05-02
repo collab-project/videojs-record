@@ -22,10 +22,15 @@ describe('plugins.recorderjs-plugin', function() {
         // create audio-only player with recorderjs plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(RECORDERJS);
 
-        player.one('ready', function() {
+        player.one('deviceReady', function() {
             // the recorderjs library is hard to test (and unmaintained),
-            // so leave it at this.
+            // so leave it at this
             done();
+        });
+
+        player.one('ready', function() {
+            // start device
+            player.record().getDevice();
         });
     });
 });
