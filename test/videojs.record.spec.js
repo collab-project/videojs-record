@@ -9,6 +9,9 @@ import * as detectBrowser from '../src/js/utils/detect-browser.js';
 import Record from '../src/js/videojs.record.js';
 
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+
+
 /** @test {Record} */
 describe('Record', function() {
     var player;
@@ -170,7 +173,7 @@ describe('Record', function() {
         });
 
         player.one('deviceReady', function() {
-            // record some audio
+            // record some audio+video
             player.record().start();
         });
 
@@ -222,6 +225,117 @@ describe('Record', function() {
 
         player.one('ready', function() {
             player.record().enumerateDevices();
+        });
+    });
+
+    /** @test {Record#saveAs} */
+    it('should save as', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('finishRecord', function() {
+            player.record().saveAs({'video': 'name-of-video-file'});
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', function() {
+            // stop recording after few seconds
+            setTimeout(function() {
+                player.record().stop();
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            // record some
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // start device
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#getDuration} */
+    it('should get duration and current time', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('finishRecord', function() {
+            expect(player.record().getDuration()).toBeWithinRange(1.5, 2.1);
+            expect(player.record().getCurrentTime()).toEqual(0);
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', function() {
+            // stop recording after few seconds
+            setTimeout(function() {
+                player.record().stop();
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            expect(player.record().getDuration()).toEqual(0);
+            expect(player.record().getCurrentTime()).toEqual(0);
+
+            // record some
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // start device
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#pause} */
+    it('should pause and resume recording', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('finishRecord', function() {
+            expect(player.record().getDuration()).toBeWithinRange(3.9, 4.1);
+            expect(player.record().getCurrentTime()).toEqual(0);
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', function() {
+            // pause recording after few seconds
+            setTimeout(function() {
+                player.record().pause();
+                
+                expect(player.record().getDuration()).toBeWithinRange(1.5, 2.1);
+                expect(player.record().getCurrentTime()).toEqual(0);
+                
+                // resume a few seconds later
+                setTimeout(function() {
+                    player.record().resume();
+                    
+                    // stop a few seconds later
+                    setTimeout(function() {
+                        player.record().stop();
+                    }, 2000);
+                }, 2000);
+            }, 2000);
+        });
+
+        player.one('deviceReady', function() {
+            // record some
+            player.record().start();
+        });
+
+        player.one('ready', function() {
+            // start device
+            player.record().getDevice();
         });
     });
 });
