@@ -56,7 +56,8 @@ class LamejsEngine extends RecordEngine {
         this.processor.disconnect();
         this.processor.onaudioprocess = null;
         this.inputStream.getAudioTracks().forEach(track => track.stop());
-        this.audioContext.close();
+        // ignore errors about already being closed
+        this.audioContext.close().then(() => {}).catch((reason) => {});
 
         this.engine.postMessage({cmd: 'finish'});
     }

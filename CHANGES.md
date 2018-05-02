@@ -8,6 +8,21 @@ x.x.x - unreleased
   audio/video file formats in the browser
 
 
+2.2.0 - unreleased
+------------------
+
+- Package library using webpack 4 (#226)
+- Add unit tests using karma/webpack/jasmine (#226)
+- Bump required version for videojs-wavesurfer to 2.3.1 for wavesurfer
+  destroy fixes
+
+
+2.1.3 - 2018/04/08
+------------------
+
+- Fix issue with `ImageCapture.takePhoto` on Chrome (#225)
+
+
 2.1.2 - 2018/02/25
 ------------------
 
