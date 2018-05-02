@@ -124,6 +124,10 @@ const TestHelpers = {
                 recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
                 recordPluginOptions.audioChannels = 2;
                 break;
+
+            case RECORDERJS:
+                recordPluginOptions.audioEngine = RECORDERJS;
+                break;
         }
         return this.makePlayer(tag, {
             controls: true,
