@@ -147,7 +147,7 @@ module.exports = function(config) {
 
     if (process.env.TRAVIS || process.env.APPVEYOR) {
         // only chrome
-        //configuration.browsers = ['Chrome_ci'];
+        configuration.browsers = ['Chrome_ci'];
         configuration.singleRun = true;
 
         if (process.env.TRAVIS) {
