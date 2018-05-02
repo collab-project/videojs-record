@@ -514,7 +514,7 @@ Localization
 ------------
 
 This plugin supports multiple languages. Each language has it's own file
-(found in the `lang` directory) that contains the translated text.
+(found in the `src/lang` directory) that contains the translated text.
 
 Using a different language, for example Dutch (`nl`), is done by including
 the plugin's language file and the Video.js language file:

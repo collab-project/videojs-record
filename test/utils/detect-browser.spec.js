@@ -8,38 +8,53 @@ import TestHelpers from '../test-helpers.js';
 
 import * as detectBrowser from '../../src/js/utils/detect-browser.js';
 
+require('karma-host-environment');
+
 
 /** @test {detect-browser} */
 describe('utils.detect-browser', function() {
 
     /** @test {isChrome} */
     it('should detect Chrome browser', function() {
-        let cleanup = false;
-        if (!window.navigator.webkitGetUserMedia) {
-            window.navigator.webkitGetUserMedia = cleanup = true;
-        }
+        let runningChromeHost = (host.browser.chrome !== false);
+        let isChrome = detectBrowser.isChrome();
 
-        let chrome = detectBrowser.isChrome();
-        expect(chrome).toBeTrue();
-
-        if (cleanup) {
-            delete window.navigator.webkitGetUserMedia;
-        }
+        expect(isChrome).toEqual(runningChromeHost);
     });
 
     /** @test {detectBrowser} */
     it('should detect Firefox', function() {
-        let cleanup = false;
-        if (!window.navigator.mozGetUserMedia) {
-            window.navigator.mozGetUserMedia = cleanup = true;
-        }
-
+        let runningFirefoxHost = (host.browser.firefox !== false);
         let result = detectBrowser.detectBrowser();
-        expect(result.browser).toEqual('firefox');
 
-        if (cleanup) {
-            delete window.navigator.mozGetUserMedia;
+        if (runningFirefoxHost) {
+            expect(result.browser).toEqual('firefox');
+        } else {
+            expect(result.browser).not.toEqual('firefox');
         }
+    });
+    
+    /** @test {detectBrowser} */
+    it('should detect Edge', function() {
+        let runningEdgeHost = (host.browser.IE !== false);
+        let isEdge = detectBrowser.isEdge();
+
+        expect(isEdge).toEqual(runningEdgeHost);
+    });
+
+    /** @test {detectBrowser} */
+    it('should detect Safari', function() {
+        let runningSafariHost = (host.browser.safari !== false);
+        let isSafari = detectBrowser.isSafari();
+
+        expect(isSafari).toEqual(runningSafariHost);
+    });
+
+    /** @test {detectBrowser} */
+    it('should detect Opera', function() {
+        let isOpera = detectBrowser.isOpera();
+
+        expect(isOpera).toEqual(false);
     });
 
     /** @test {detectBrowser} */

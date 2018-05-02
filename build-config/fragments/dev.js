@@ -6,7 +6,8 @@
 const path = require('path');
 
 module.exports = {
-    devtool: 'eval-source-map',
+    mode: 'development',
+    devtool: 'source-map',
     output: {
         publicPath: 'localhost:8080/dist/'
     },

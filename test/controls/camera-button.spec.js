@@ -51,22 +51,32 @@ describe('controls.CameraButton', function() {
 
         expect(button.hasClass('vjs-icon-photo-camera')).toEqual(true);
 
-        player.one('ready', function() {
-            player.trigger('startRecord');
-
+        player.one('startRecord', function() {
             expect(button.hasClass('vjs-icon-photo-camera')).toEqual(false);
             expect(button.hasClass('vjs-icon-replay')).toEqual(true);
             expect(button.controlText_).toEqual('Retry');
 
-            player.trigger('stopRecord');
+            setTimeout(function() {
+                // stop recording
+                player.record().stop();
 
+                done();
+            }, 2000);
+        });
+        player.one('stopRecord', function() {
             expect(button.hasClass('vjs-icon-replay')).toEqual(false);
             expect(button.hasClass('vjs-icon-photo-camera')).toEqual(true);
             expect(button.controlText_).toEqual('Image');
 
             done();
         });
-    });
+        player.one('deviceReady', function() {
+            player.record().start();
+        });
 
+        player.one('ready', function() {
+            player.record().getDevice();
+        });
+    });
 
 });

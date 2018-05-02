@@ -6,9 +6,21 @@ import document from 'global/document';
 
 import Player from 'video.js';
 
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
+
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
+
+    DEFAULT_WAVESURFER_OPTIONS: {
+        src: 'live',
+        waveColor: '#36393b',
+        progressColor: 'black',
+        debug: true,
+        cursorWidth: 1,
+        msDisplayMax: 20,
+        hideScrollbar: true
+    },
 
     /**
      * Create DOM element.
@@ -50,15 +62,7 @@ const TestHelpers = {
             width: 600,
             height: 300,
             plugins: {
-                wavesurfer: {
-                    src: "live",
-                    waveColor: "#36393b",
-                    progressColor: "#black",
-                    debug: true,
-                    cursorWidth: 1,
-                    msDisplayMax: 20,
-                    hideScrollbar: true
-                },
+                wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
                     audio: true,
                     video: false,
@@ -69,6 +73,74 @@ const TestHelpers = {
         };
 
         return videojs(elementTag.id, playerOptions);
+    },
+
+    makeAudioOnlyPlayer() {
+        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            plugins: {
+                wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
+                record: {
+                    audio: true,
+                    video: false,
+                    maxLength: 5,
+                    debug: true
+                }
+            }
+        });
+    },
+
+    makeAudioOnlyPluginPlayer(pluginName) {
+        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        var recordPluginOptions = {
+            audio: true,
+            video: false,
+            maxLength: 5,
+            debug: true
+        };
+        // setup audio plugin
+        switch (pluginName) {
+            case LAMEJS:
+                recordPluginOptions.audioEngine = LAMEJS;
+                recordPluginOptions.audioSampleRate = 44100;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/lamejs/worker-example/worker-realtime.js';
+                recordPluginOptions.audioBitRate = 128;
+                break;
+
+            case LIBVORBISJS:
+                recordPluginOptions.audioEngine = LIBVORBISJS;
+                recordPluginOptions.audioSampleRate = 32000;
+                break;
+
+            case OPUSRECORDER:
+                recordPluginOptions.audioEngine = OPUSRECORDER;
+                recordPluginOptions.audioSampleRate = 48000;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
+                recordPluginOptions.audioChannels = 2;
+                break;
+
+            case RECORDERJS:
+                recordPluginOptions.audioEngine = RECORDERJS;
+                break;
+        }
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 600,
+            height: 350,
+            plugins: {
+                wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
+                record: recordPluginOptions
+            }
+        });
     },
 
     makeVideoOnlyPlayer() {
@@ -84,7 +156,7 @@ const TestHelpers = {
                 record: {
                     audio: false,
                     video: true,
-                    maxLength: 20,
+                    maxLength: 5,
                     debug: true
                 }
             }
@@ -107,6 +179,31 @@ const TestHelpers = {
             plugins: {
                 record: {
                     image: true,
+                    debug: true
+                }
+            }
+        });
+    },
+
+    makeAnimatedPlayer() {
+        var tag = TestHelpers.makeTag('video', 'animationOnly');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 320,
+            height: 240,
+            controlBar: {
+                volumePanel: false,
+                fullscreenToggle: false
+            },
+            plugins: {
+                record: {
+                    animation: true,
+                    animationQuality: 20,
+                    animationFrameRate: 200,
+                    maxLength: 5,
                     debug: true
                 }
             }
