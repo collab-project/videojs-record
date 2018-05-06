@@ -125,6 +125,7 @@ module.exports = function(config) {
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
             type: 'html',
+            // specify a common output directory
             dir: 'coverage/'
         },
         webpack: webpackConfig,

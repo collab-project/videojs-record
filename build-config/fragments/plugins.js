@@ -14,8 +14,8 @@ function buildPluginEntry(plugins) {
         plugin =>
             (result[plugin.split('-plugin')[0]] = path.resolve(
                 __dirname,
-                '../',
-                '../',
+                '..',
+                '..',
                 'src',
                 'js',
                 'plugins',
@@ -33,7 +33,7 @@ module.exports = {
         'recorderjs-plugin'
     ]),
     output: {
-        path: path.resolve(__dirname, '../', '../', 'dist', 'plugins'),
+        path: path.resolve(__dirname, '..', '..', 'dist', 'plugins'),
         filename: 'videojs.record.[name].js',
         library: ['VideojsRecord', '[name]']
     }

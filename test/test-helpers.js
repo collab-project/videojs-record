@@ -143,6 +143,26 @@ const TestHelpers = {
         });
     },
 
+    makeAudioVideoPlayer() {
+        var tag = TestHelpers.makeTag('video', 'audioVideo');
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            plugins: {
+                record: {
+                    audio: true,
+                    video: true,
+                    maxLength: 5,
+                    debug: true
+                }
+            }
+        });
+    },
+
     makeVideoOnlyPlayer() {
         var tag = TestHelpers.makeTag('video', 'videoOnly');
         return this.makePlayer(tag, {
