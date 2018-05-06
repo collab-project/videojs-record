@@ -12,20 +12,34 @@ import {RECORDERJS} from '../../src/js/engine/record-engine.js';
 /** @test {RecorderjsEngine} */
 describe('plugins.recorderjs-plugin', function() {
     var player;
+    var originalTimeout;
+
+    beforeEach(function() {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+
+        // create audio-only player with recorderjs plugin
+        player = TestHelpers.makeAudioOnlyPluginPlayer(RECORDERJS);
+    });
 
     afterEach(function() {
         player.dispose();
+
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     /** @test {RecorderjsEngine} */
     it('should run as an audio-only plugin', function(done) {
-        // create audio-only player with recorderjs plugin
-        player = TestHelpers.makeAudioOnlyPluginPlayer(RECORDERJS);
+
+        player.one('deviceReady', function() {
+            setTimeout(function() {
+                done();
+            }, 2000);
+        });
 
         player.one('ready', function() {
-            // the recorderjs library is hard to test (and unmaintained),
-            // so leave it at this
-            done();
+            // start device
+            player.record().getDevice();
         });
     });
 });
