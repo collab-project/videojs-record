@@ -8,12 +8,18 @@ x.x.x - unreleased
   audio/video file formats in the browser
 
 
-2.2.0 - unreleased
+2.2.1 - unreleased
+------------------
+
+- Add simple upload example for node.js and python (#233)
+
+
+2.2.0 - 2018/05/07
 ------------------
 
 - Package library using webpack 4 (#226)
 - Add unit tests using karma/webpack/jasmine (#226)
-- Bump required version for videojs-wavesurfer to 2.3.1 for wavesurfer
+- Bump required version for videojs-wavesurfer to 2.3.2 for wavesurfer
   destroy fixes
 
 

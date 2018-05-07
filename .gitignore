@@ -11,6 +11,7 @@
 composer.json
 php.ini
 vendor
+uploads/
 
 # Dependency-related directories
 node_modules
