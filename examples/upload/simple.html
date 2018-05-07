@@ -80,19 +80,14 @@ function upload(blob) {
 
     console.log('uploading recording:', blob.name);
 
-    var request = new XMLHttpRequest();
-    request.open('POST', serverUrl, true);
-
-    // handler for when the upload finishes
-    request.onload = function () {
-        if (request.status === 200) {
-            // file uploaded
-            console.log('recording upload complete.');
-        } else {
-            console.error('an upload error occurred!');
-        }
-    };
-    request.send(formData);
+    fetch(serverUrl, {
+        method: 'POST',
+        body: formData
+    }).then(
+        success => console.log('recording upload complete.')
+    ).catch(
+        error => console.error('an upload error occurred!')
+    );
 }
 </script>
 
