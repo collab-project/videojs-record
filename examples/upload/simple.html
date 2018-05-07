@@ -74,7 +74,7 @@ player.on('finishRecord', function() {
 });
 
 function upload(blob) {
-    var serverUrl = '/';
+    var serverUrl = '/upload';
     var formData = new FormData();
     formData.append('file', blob, blob.name);
 
