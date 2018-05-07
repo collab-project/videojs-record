@@ -65,7 +65,12 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
     
-    upload(player.recordedData);
+    if (player.recordedData.video) {
+        // for chrome
+        upload(player.recordedData.video);
+    } else {
+        upload(player.recordedData);
+    }
 });
 
 function upload(blob) {
@@ -82,9 +87,9 @@ function upload(blob) {
     request.onload = function () {
         if (request.status === 200) {
             // file uploaded
-            console.log('Recording upload complete.');
+            console.log('recording upload complete.');
         } else {
-            console.error('An upload error occurred!');
+            console.error('an upload error occurred!');
         }
     };
     request.send(formData);
