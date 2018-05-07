@@ -65,12 +65,13 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording:', player.recordedData);
 
+    var data = player.recordedData;
     if (player.recordedData.video) {
-        // for chrome
-        upload(player.recordedData.video);
-    } else {
-        upload(player.recordedData);
+        // for chrome for audio+video
+        data = player.recordedData.video;
     }
+
+    upload(data);
 });
 
 function upload(blob) {

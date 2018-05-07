@@ -404,7 +404,7 @@ player.on('finishRecord', function() {
     var data = player.recordedData;
     if (player.recordedData.video) {
         // for chrome (when recording audio+video)
-        upload(player.recordedData.video);
+        data = player.recordedData.video;
     }
 
     var serverUrl = '/upload';
