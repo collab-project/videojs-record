@@ -393,6 +393,40 @@ player.on('timestamp', function() {
 
 ### Upload data
 
+The example below shows how to upload each recording:
+
+```javascript
+player.on('finishRecord', function() {
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording:', player.recordedData);
+
+    var data = player.recordedData;
+    if (player.recordedData.video) {
+        // for chrome (when recording audio+video)
+        upload(player.recordedData.video);
+    }
+
+    var serverUrl = '/upload';
+    var formData = new FormData();
+    formData.append('file', data, data.name);
+
+    console.log('uploading recording:', data.name);
+
+    fetch(serverUrl, {
+        method: 'POST',
+        body: formData
+    }).then(
+        success => console.log('recording upload complete.')
+    ).catch(
+        error => console.error('an upload error occurred!')
+    );
+});
+```
+
+Check the [simple upload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html)
+for the complete example.
+
 The example below shows how to 'stream' upload recorded data segments to a server
 using the [jQuery](http://jquery.com/) library and the `timestamp` event:
 
