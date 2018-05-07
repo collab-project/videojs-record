@@ -63,7 +63,7 @@ player.on('startRecord', function() {
 player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
+    console.log('finished recording:', player.recordedData);
     
     if (player.recordedData.video) {
         // for chrome
@@ -78,7 +78,7 @@ function upload(blob) {
     var formData = new FormData();
     formData.append('file', blob, blob.name);
 
-    console.log('uploading recording: ', blob.name);
+    console.log('uploading recording:', blob.name);
 
     var request = new XMLHttpRequest();
     request.open('POST', serverUrl, true);
