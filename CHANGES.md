@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.2.1 - unreleased
+2.2.1 - 2018/05/09
 ------------------
 
 - Add simple upload example for node.js and python (#233)
