@@ -299,7 +299,7 @@ describe('Record', function() {
         player = TestHelpers.makePlayer();
 
         player.one('finishRecord', function() {
-            expect(player.record().getDuration()).toBeWithinRange(1.5, 2.1);
+            expect(player.record().getDuration()).toBeWithinRange(1.5, 2.5);
             expect(player.record().getCurrentTime()).toEqual(0);
 
             // wait till it's loaded before destroying
@@ -334,7 +334,7 @@ describe('Record', function() {
         player = TestHelpers.makePlayer();
 
         player.one('finishRecord', function() {
-            expect(player.record().getDuration()).toBeWithinRange(3.9, 4.1);
+            expect(player.record().getDuration()).toBeWithinRange(3.9, 4.5);
             expect(player.record().getCurrentTime()).toEqual(0);
 
             // wait till it's loaded before destroying
@@ -347,7 +347,7 @@ describe('Record', function() {
             setTimeout(function() {
                 player.record().pause();
                 
-                expect(player.record().getDuration()).toBeWithinRange(1.5, 2.1);
+                expect(player.record().getDuration()).toBeWithinRange(1.5, 2.5);
                 expect(player.record().getCurrentTime()).toEqual(0);
                 
                 // resume a few seconds later
