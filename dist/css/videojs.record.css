@@ -1,5 +1,5 @@
 /*!
-Default styles for videojs-record 2.2.0
+Default styles for videojs-record 2.2.1
 */
 @font-face {
   font-family: videojs-record;
@@ -199,6 +199,7 @@ button.vjs-device-button.vjs-control.vjs-icon-video-perm:before {
   width: .8em;
   height: .8em;
   background-color: #ff625e;
+  line-height: 1.1em;
   border-radius: 50%;
   right: 2.5ex;
   top: 2ex;
