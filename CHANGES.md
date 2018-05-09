@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Add simple upload example for node.js and python (#233)
+- Fix misaligned text in record indicator on Chrome (by @ikbensiep)
 
 
 2.2.0 - 2018/05/07
