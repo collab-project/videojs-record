@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.2.2 - unreleased
+------------------
+
+- Use `grabFrame` for image capture on Chrome (#225)
+
+
 2.2.1 - 2018/05/09
 ------------------
 

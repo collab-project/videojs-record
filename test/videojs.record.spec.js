@@ -90,9 +90,7 @@ describe('Record', function() {
         player.one('finishRecord', function() {
             // received a base-64 encoded PNG string
             expect(player.recordedData.startsWith('data:image/png;base64,i')).toBeTrue();
-        });
 
-        player.one('startRecord', function() {
             setTimeout(function() {
                 done();
             }, 2000);

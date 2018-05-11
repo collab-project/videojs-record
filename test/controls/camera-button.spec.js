@@ -58,7 +58,7 @@ describe('controls.CameraButton', function() {
 
             setTimeout(function() {
                 // stop recording
-                player.record().stop();
+                button.trigger('click');
 
                 done();
             }, 2000);
@@ -71,7 +71,7 @@ describe('controls.CameraButton', function() {
             done();
         });
         player.one('deviceReady', function() {
-            player.record().start();
+            button.trigger('click');
         });
 
         player.one('ready', function() {

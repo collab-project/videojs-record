@@ -1194,23 +1194,16 @@ class Record extends Plugin {
                 try {
                     var track = this.stream.getVideoTracks()[0];
                     var imageCapture = new ImageCapture(track);
-                    let photoSettings = {
-                        imageWidth: recordCanvas.width,
-                        imageHeight: recordCanvas.height
-                    };
-
                     // take picture
-                    imageCapture.takePhoto(photoSettings).then((blob) => {
-                        return createImageBitmap(blob);
-
-                    }).then((imageBitmap) => {
+                    imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
                         this.drawCanvas(recordCanvas, imageBitmap);
 
                         // notify others
                         resolve(recordCanvas);
+                    }).catch((error) => {
+                        // ignore, try oldskool
                     });
-                    return;
                 } catch(err) {}
             }
             // no ImageCapture available: do it the oldskool way
