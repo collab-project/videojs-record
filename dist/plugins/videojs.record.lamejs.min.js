@@ -1,6 +1,6 @@
 /*!
  * lamejs plugin for videojs-record
- * @version 2.2.1
+ * @version 2.2.2
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
