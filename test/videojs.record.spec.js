@@ -29,6 +29,7 @@ describe('Record', function() {
 
         player.one('ready', function() {
             expect(player.el().nodeName).toEqual('DIV');
+            expect(player.hasClass('vjs-record')).toBeTrue();
             expect(player.on).toBeFunction();
 
             // plugins exist
