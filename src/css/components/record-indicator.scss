@@ -2,18 +2,14 @@
 --------------------------------------------------------------------------------
 */
 
-.vjs-record {
-    overflow: hidden;
-}
-
-.video-js .vjs-control.vjs-record-indicator.vjs-hidden {
+.vjs-record.video-js .vjs-control.vjs-record-indicator.vjs-hidden {
     display: block!important;
     opacity: 0;
     transform: translateX(1em) rotateX(-90deg) scale(0.9);
     transition: all .5s, transform .5s .25s;
 }
 
-.video-js .vjs-control.vjs-record-indicator {
+.vjs-record.video-js .vjs-control.vjs-record-indicator {
     width: .8em;
     height: .8em;
     background-color: #ff625e;
@@ -27,7 +23,7 @@
     transition: all .5s, transform .2s .1s;
 }
 
-.video-js .vjs-control.vjs-record-indicator:before {
+.vjs-record.video-js .vjs-control.vjs-record-indicator:before {
     content: "REC";
     color: white;
     position: absolute;
@@ -42,7 +38,7 @@
     transition: opacity .5s .2s;
 }
 
-.video-js .vjs-control.vjs-record-indicator:after {
+.vjs-record.video-js .vjs-control.vjs-record-indicator:after {
     content: "";
     display: block;
     height: calc(.8em - 4px);
