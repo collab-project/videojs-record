@@ -1,22 +1,8 @@
-/* Area containing the recorder elements.
+/* General plugin style.
 --------------------------------------------------------------------------------
 */
 .vjs-record
 {
-  display: inline-block;
-  vertical-align: middle;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-size: contain;
-  cursor: default;
-  margin: 0px;
-  padding: 0px;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  height: 100%;
 }
 
 /* Position fullscreen control on right side of the player.
