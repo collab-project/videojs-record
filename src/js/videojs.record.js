@@ -55,6 +55,9 @@ class Record extends Plugin {
     constructor(player, options) {
         super(player, options);
 
+        // add player style
+        player.addClass('vjs-record');
+
         // setup plugin options
         this.loadOptions();
 
