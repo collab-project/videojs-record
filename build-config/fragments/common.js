@@ -24,7 +24,6 @@ var cssBannerPlugin = new webpack.BannerPlugin({
     test: /\.css$/
 });
 
-
 module.exports = {
     context: rootDir,
     output: {
@@ -54,7 +53,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                include: path.resolve(rootDir, 'src', 'css'),
+                exclude: /(node_modules|bower_components|test)/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
@@ -63,7 +62,6 @@ module.exports = {
             },
             {
                 test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
-                include: path.resolve(rootDir, 'src', 'fonts'),
                 exclude: /(node_modules|bower_components|test)/,
                 use: [{
                     loader: 'url-loader',

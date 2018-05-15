@@ -9,6 +9,7 @@ const webpack = require('webpack');
 const time = moment().format('YYYY');
 const rootDir = path.resolve(__dirname, '..', '..');
 const pckg = require(path.join(rootDir, 'package.json'));
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // library banner with copyright and version info
 var jsBanner = `${pckg.name}
@@ -20,6 +21,16 @@ var jsBannerPlugin = new webpack.BannerPlugin({
     banner: jsBanner,
     test: /\.js$/
 });
+
+// copy fonts to dist
+var copyFontsPlugin = new CopyWebpackPlugin([
+    {
+        from: 'src/fonts/*',
+        to: 'fonts',
+        flatten: true,
+        ignore: ['*.json', '*.md']
+    }
+]);
 
 module.exports = {
     entry: {
@@ -36,6 +47,7 @@ module.exports = {
         library: 'VideojsRecord'
     },
     plugins: [
-        jsBannerPlugin
+        jsBannerPlugin,
+        copyFontsPlugin
     ]
 };
