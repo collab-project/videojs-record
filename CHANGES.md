@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.3.0 - unreleased
+2.3.0 - 2018/05/15
 ------------------
 
 - Add plugin style `vjs-record` and prefix all custom plugin styles with this
