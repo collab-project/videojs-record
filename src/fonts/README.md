@@ -37,7 +37,7 @@ Customize
 Copy [icons.json](icons.json) and replace it in the root of the `font` repository:
 
 ```
-cp -v /path/to/videojs-record/font/icons.json /path/to/font/
+cp -v /path/to/videojs-record/src/fonts/icons.json /path/to/font/
 ```
 
 Now run `grunt` to build the fonts and styles:
@@ -56,7 +56,7 @@ repository:
 
 ```
 cp -v scss/_icons.scss /path/to/videojs-record/src/css
-cp -v fonts/videojs-record.* /path/to/videojs-record/font/
+cp -v fonts/videojs-record.* /path/to/videojs-record/src/fonts/
 ```
 
 If you also want to copy them to the `dist` directory (optional as it's done
@@ -64,7 +64,7 @@ again during a build):
 
 ```
 cd /path/to/videojs-record/
-npm run build:fonts
+npm run build
 ```
 
 References
