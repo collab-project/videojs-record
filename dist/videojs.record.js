@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 2.2.2
+ * @version 2.3.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -83,7 +83,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/videojs.record.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -141,6 +141,17 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+
+/***/ "./src/css/videojs.record.scss":
+/*!*************************************!*\
+  !*** ./src/css/videojs.record.scss ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -1799,9 +1810,12 @@ var Record = function (_Plugin) {
     function Record(player, options) {
         _classCallCheck(this, Record);
 
-        // setup plugin options
+        // add plugin style
         var _this = _possibleConstructorReturn(this, (Record.__proto__ || Object.getPrototypeOf(Record)).call(this, player, options));
 
+        player.addClass('vjs-record');
+
+        // setup plugin options
         _this.loadOptions();
 
         // (re)set recorder state
@@ -1821,7 +1835,7 @@ var Record = function (_Plugin) {
         }
         _deviceButton2.default.prototype.buildCSSClass = function () {
             // use dynamic icon class
-            return 'vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+            return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
         };
         player.deviceButton = new _deviceButton2.default(player, options);
         player.addChild(player.deviceButton);
@@ -3261,7 +3275,7 @@ var Record = function (_Plugin) {
 // version nr is injected during build
 
 
-Record.VERSION = "2.2.2";
+Record.VERSION = "2.3.0";
 
 // register plugin
 _video2.default.Record = Record;
@@ -3273,6 +3287,19 @@ if (_video2.default.getPlugin('record') === undefined) {
 module.exports = {
     Record: Record
 };
+
+/***/ }),
+
+/***/ 0:
+/*!**********************************************************************!*\
+  !*** multi ./src/js/videojs.record.js ./src/css/videojs.record.scss ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! /home/thijs/projects/videojs-record/src/js/videojs.record.js */"./src/js/videojs.record.js");
+module.exports = __webpack_require__(/*! /home/thijs/projects/videojs-record/src/css/videojs.record.scss */"./src/css/videojs.record.scss");
+
 
 /***/ }),
 
