@@ -624,7 +624,7 @@ npm run <command>
 Font
 ----
 
-Check the [the font readme](font/README.md) for more information.
+Check the [the font readme](src/fonts/README.md) for more information.
 
 License
 -------
