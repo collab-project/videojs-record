@@ -40,7 +40,7 @@ var firefoxFlags = {
 module.exports = function(config) {
     var configuration = {
         basePath: '',
-        frameworks: ['jasmine', 'jasmine-matchers', 'sinon', 'host-environment'],
+        frameworks: ['jasmine', 'jasmine-matchers', 'host-environment'],
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
@@ -109,7 +109,6 @@ module.exports = function(config) {
         plugins: [
             'karma-webpack',
             'karma-jasmine',
-            'karma-sinon',
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
