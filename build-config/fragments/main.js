@@ -6,31 +6,48 @@
 const path = require('path');
 const moment = require('moment');
 const webpack = require('webpack');
-
 const time = moment().format('YYYY');
-const pckg = require(path.join(__dirname, '..', '..', 'package.json'));
+const rootDir = path.resolve(__dirname, '..', '..');
+const pckg = require(path.join(rootDir, 'package.json'));
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // library banner with copyright and version info
-var bannerPlugin = new webpack.BannerPlugin(
-`${pckg.name}
+var jsBanner = `${pckg.name}
 @version ${pckg.version}
 @see ${pckg.homepage}
 @copyright 2014-${time} ${pckg.author}
-@license ${pckg.license}`
-);
+@license ${pckg.license}`;
+var jsBannerPlugin = new webpack.BannerPlugin({
+    banner: jsBanner,
+    test: /\.js$/
+});
+
+// copy fonts to dist
+var copyFontsPlugin = new CopyWebpackPlugin([
+    {
+        from: 'src/fonts/*',
+        to: 'fonts',
+        flatten: true,
+        ignore: ['*.json', '*.md']
+    }
+]);
 
 module.exports = {
     entry: {
-        'videojs.record': path.resolve(
-            __dirname, '..', '..', 'src', 'js', 'videojs.record.js'
-        )
+        'videojs.record': [
+            // JS
+            path.join(rootDir, 'src', 'js', 'videojs.record.js'),
+            // SCSS
+            path.join(rootDir, 'src', 'css', 'videojs.record.scss')
+        ]
     },
     output: {
-        path: path.resolve(__dirname, '..', '..', 'dist'),
+        path: path.join(rootDir, 'dist'),
         filename: '[name].js',
         library: 'VideojsRecord'
     },
     plugins: [
-        bannerPlugin
+        jsBannerPlugin,
+        copyFontsPlugin
     ]
 };

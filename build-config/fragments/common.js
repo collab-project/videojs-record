@@ -5,14 +5,24 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const rootDir = path.resolve(__dirname, '..', '..');
+const pckg = require(path.join(rootDir, 'package.json'));
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const pckg = require(path.join(__dirname, '..', '..', 'package.json'));
-
-// inject version number
-var replaceVersionPlugin = new webpack.DefinePlugin({
+// inject JS version number
+var jsVersionPlugin = new webpack.DefinePlugin({
     '__VERSION__': JSON.stringify(pckg.version)
 });
-let rootDir = path.resolve(__dirname, '..', '..');
+
+// add CSS banner with version info
+var cssBanner = `/*!
+Default styles for ${pckg.name} ${pckg.version}
+*/`;
+var cssBannerPlugin = new webpack.BannerPlugin({
+    banner: cssBanner,
+    raw: true,
+    test: /\.css$/
+});
 
 module.exports = {
     context: rootDir,
@@ -40,10 +50,33 @@ module.exports = {
                 use: {
                     loader: 'babel-loader'
                 }
+            },
+            {
+                test: /\.scss$/,
+                exclude: /(node_modules|bower_components|test)/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+                exclude: /(node_modules|bower_components|test)/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        // byte limit to inline files as Data URL
+                        limit: 1000,
+                        name: '../fonts/[name].[ext]',
+                        emitFile: false
+                    }
+                }]
             }
         ]
     },
     plugins: [
-        replaceVersionPlugin
+        jsVersionPlugin,
+        cssBannerPlugin
     ]
 };
