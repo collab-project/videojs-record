@@ -1,6 +1,14 @@
 videojs-record changelog
 ========================
 
+2.3.0 - unreleased
+------------------
+
+- Add plugin style `vjs-record` and prefix all custom plugin styles with this
+  selector. This should prevent clashes with regular video.js players loaded
+  on the same page (#235)
+
+
 2.2.2 - 2018/05/11
 ------------------
 

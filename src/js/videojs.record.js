@@ -55,6 +55,9 @@ class Record extends Plugin {
     constructor(player, options) {
         super(player, options);
 
+        // add plugin style
+        player.addClass('vjs-record');
+
         // setup plugin options
         this.loadOptions();
 
@@ -75,7 +78,7 @@ class Record extends Plugin {
         }
         DeviceButton.prototype.buildCSSClass = function() {
             // use dynamic icon class
-            return 'vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+            return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
         };
         player.deviceButton = new DeviceButton(player, options);
         player.addChild(player.deviceButton);
