@@ -33,6 +33,7 @@ Table of Contents
 - [Customizing controls](#customizing-controls)
 - [Other audio libraries](#other-audio-libraries)
 - [Localization](#localization)
+- [Webpack](#webpack)
 - [Using with React](#using-with-react)
 - [More features using other plugins](#more-features-using-other-plugins)
 - [Development](#development)
@@ -580,6 +581,10 @@ The `react` example shows how to integrate this plugin in a [React](https://reac
 ([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
 
+Webpack
+-------
+
+The [webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
 
 More features using other plugins
 ---------------------------------
