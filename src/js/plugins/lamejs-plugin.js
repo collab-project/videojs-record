@@ -27,7 +27,7 @@ class LamejsEngine extends RecordEngine {
             bitRate: this.bitRate
         };
 
-        let AudioContext= window.AudioContext || window.webkitAudioContext;
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
         this.audioContext = new AudioContext();
         this.audioSourceNode = this.audioContext.createMediaStreamSource(
             this.inputStream);

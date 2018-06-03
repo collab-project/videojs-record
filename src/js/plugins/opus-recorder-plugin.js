@@ -35,7 +35,7 @@ class OpusRecorderEngine extends RecordEngine {
         });
         this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
 
-        let AudioContext= window.AudioContext || window.webkitAudioContext;
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
         this.audioContext = new AudioContext();
         this.audioSourceNode = this.audioContext.createMediaStreamSource(
             this.inputStream);
