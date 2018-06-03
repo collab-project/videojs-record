@@ -56,9 +56,10 @@ if (!!window.opera || navigator.userAgent.indexOf('OPR/') !== -1) {
 
 var player = videojs("myVideo", options, function(){
     // print version information at startup
-    videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'),
-        'and recordrtc', RecordRTC.version);
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ' and recordrtc ' + RecordRTC.version;
+    videojs.log(msg);
 });
 
 // error handling
