@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.3.1 - unreleased
+------------------
+
+- Fix Safari support in audio plugins
+
+
 2.3.0 - 2018/05/15
 ------------------
 
