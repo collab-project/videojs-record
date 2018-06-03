@@ -4,6 +4,8 @@ videojs-record changelog
 2.3.1 - unreleased
 ------------------
 
+- Bump required version for videojs-wavesurfer to 2.5.0 to fix clashes with
+  regular video.js players loaded on the same page (#235)
 - Fix Safari support in audio plugins
 
 
