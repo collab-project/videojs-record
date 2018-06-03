@@ -7,9 +7,10 @@ class VideojsRecordPlayer extends React.Component {
         // instantiate Video.js
         this.player = videojs(this.videoNode, this.props, function onPlayerReady(){
             // print version information at startup
-            videojs.log('Using video.js', videojs.VERSION,
-                'with videojs-record', videojs.getPluginVersion('record'),
-                'and recordrtc', RecordRTC.version);
+            var msg = 'Using video.js ' + videojs.VERSION +
+                ' with videojs-record ' + videojs.getPluginVersion('record') +
+                ' and recordrtc ' + RecordRTC.version;
+            videojs.log(msg);
         });
 
         // error handling

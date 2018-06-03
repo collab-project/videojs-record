@@ -55,9 +55,10 @@ var player = videojs("myAudio", {
     }
 }, function() {
     // print version information at startup
-    videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'),
-        'and videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'));
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ' and videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer');
+    videojs.log(msg);
 });
 
 // error handling
