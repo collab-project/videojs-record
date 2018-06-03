@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.3.1 - unreleased
+2.3.1 - 2018/06/04
 ------------------
 
 - Bump required version for videojs-wavesurfer to 2.5.0 to fix clashes with

@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "homepage": "https://github.com/collab-project/videojs-record",
   "description": "A video.js plugin for recording audio/video/image files.",
   "license": "MIT",
@@ -48,12 +48,10 @@
   "dependencies": {
     "recordrtc": ">=5.4.6",
     "video.js": ">=6.0.0",
-    "videojs-wavesurfer": ">=2.3.2",
+    "videojs-wavesurfer": ">=2.5.0",
     "webrtc-adapter": ">=5.0.0"
   },
   "devDependencies": {
-    "blueimp-file-upload": ">=9.19.1",
-    "fine-uploader": ">=5.4.1",
     "lamejs": "https://github.com/zhuker/lamejs.git",
     "libvorbis.js": ">=1.1.1",
     "opus-recorderjs": ">=4.0.0",
