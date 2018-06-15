@@ -26,7 +26,7 @@ describe('controls.CameraButton', function() {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('should create the correct DOM element', function() {
+    it('create the correct DOM element', function() {
         let button = new CameraButton(player);
 
         expect(button.el().nodeName).toEqual('BUTTON');
@@ -40,13 +40,13 @@ describe('controls.CameraButton', function() {
         });
     });
 
-    it('should disable', function() {
+    it('disable', function() {
         let button = new CameraButton(player);
         button.disable();
         expect(button.enabled_).toBeFalse();
     });
 
-    it('should change appearance when startRecord or stopRecord is triggered', function(done) {
+    it('change appearance when startRecord or stopRecord is triggered', function(done) {
         let button = new CameraButton(player);
 
         expect(button.hasClass('vjs-icon-photo-camera')).toEqual(true);

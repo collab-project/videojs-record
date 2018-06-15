@@ -8,7 +8,7 @@ import setSrcObject from '../../src/js/utils/browser-shim.js';
 describe('utils.setSrcObject', function() {
 
     /** @test {setSrcObject} */
-    it('should work', function() {
+    it('work', function() {
         let obj = setSrcObject({}, {}, false);
     });
 });

@@ -20,16 +20,16 @@ describe('engine.record-engine', function() {
         player.dispose();
     });
 
-    it('should create the correct component', function() {
+    it('create the correct component', function() {
         let engine = new RecordEngine(player, {});
 
         expect(engine.on).toBeFunction();
-        
+
         // should auto mixin the evented mixin (required since video.js v6.6.0)
         expect(engine.options_.evented).toBeTrue();
     });
 
-    it('should contain supported recorder plugin engines', function() {
+    it('contain supported recorder plugin engines', function() {
         expect(RECORDRTC).toEqual('recordrtc');
         expect(LIBVORBISJS).toEqual('libvorbis.js');
         expect(RECORDERJS).toEqual('recorder.js');
@@ -37,7 +37,7 @@ describe('engine.record-engine', function() {
         expect(OPUSRECORDER).toEqual('opus-recorder');
     });
 
-    it('should trigger recordComplete event', function(done) {
+    it('trigger recordComplete event', function(done) {
         let engine = new RecordEngine(player, {});
         engine.on('recordComplete', function() {
             done();
@@ -47,7 +47,7 @@ describe('engine.record-engine', function() {
         engine.onStopRecording(data);
     });
 
-    it('should add file info', function(done) {
+    it('add file info', function(done) {
         let engine = new RecordEngine(player, {});
         engine.on('recordComplete', function() {
             expect(engine.recordedData.name).toEqual(
@@ -63,7 +63,7 @@ describe('engine.record-engine', function() {
         });
     });
 
-    it('should save as', function(done) {
+    it('save as', function(done) {
         let engine = new RecordEngine(player, {});
         engine.on('recordComplete', function() {
             let fileName = 'foo';

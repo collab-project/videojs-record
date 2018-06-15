@@ -20,7 +20,7 @@ describe('controls.RecordToggle', function() {
         player.dispose();
     });
 
-    it('should create the correct DOM element', function() {
+    it('create the correct DOM element', function() {
         let toggle = new RecordToggle(player);
 
         expect(toggle.el().nodeName).toEqual('BUTTON');
@@ -34,7 +34,7 @@ describe('controls.RecordToggle', function() {
         });
     });
 
-    it('should disable', function(done) {
+    it('disable', function(done) {
         let toggle = new RecordToggle(player);
 
         player.one('ready', function() {
@@ -45,7 +45,7 @@ describe('controls.RecordToggle', function() {
         })
     });
 
-    it('should change appearance when startRecord or stopRecord is triggered', function(done) {
+    it('change appearance when startRecord or stopRecord is triggered', function(done) {
         let toggle = new RecordToggle(player);
 
         expect(toggle.hasClass('vjs-icon-record-start')).toEqual(true);
@@ -67,7 +67,7 @@ describe('controls.RecordToggle', function() {
         });
     });
 
-    it('should accept interaction', function(done) {
+    it('accept interaction', function(done) {
         let toggle = new RecordToggle(player);
 
         player.one('deviceReady', function() {

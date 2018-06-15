@@ -18,7 +18,7 @@ describe('plugins.opus-recorder-plugin', function() {
     });
 
     /** @test {OpusRecorderEngine} */
-    it('should run as an audio-only plugin', function(done) {
+    it('run as audio-only plugin', function(done) {
         // create audio-only player with opus-recorder plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(OPUSRECORDER);
 

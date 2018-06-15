@@ -20,7 +20,7 @@ describe('controls.RecordIndicator', function() {
         player.dispose();
     });
 
-    it('should create the correct DOM element', function() {
+    it('create the correct DOM element', function() {
         let indicator = new RecordIndicator(player);
 
         expect(indicator.el().nodeName).toEqual('DIV');
@@ -30,7 +30,7 @@ describe('controls.RecordIndicator', function() {
         expect(indicator.el().dir).toEqual('ltr')
     });
 
-    it('should disable', function() {
+    it('disable', function() {
         let indicator = new RecordIndicator(player);
         indicator.disable();
     });

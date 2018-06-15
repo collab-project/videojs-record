@@ -15,7 +15,7 @@ require('karma-host-environment');
 describe('utils.detect-browser', function() {
 
     /** @test {isChrome} */
-    it('should detect Chrome browser', function() {
+    it('detect Chrome browser', function() {
         let runningChromeHost = (host.browser.chrome !== false);
         let isChrome = detectBrowser.isChrome();
 
@@ -23,7 +23,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('should detect Firefox', function() {
+    it('detect Firefox', function() {
         let runningFirefoxHost = (host.browser.firefox !== false);
         let result = detectBrowser.detectBrowser();
 
@@ -33,9 +33,9 @@ describe('utils.detect-browser', function() {
             expect(result.browser).not.toEqual('firefox');
         }
     });
-    
+
     /** @test {detectBrowser} */
-    it('should detect Edge', function() {
+    it('detect Edge', function() {
         let runningEdgeHost = (host.browser.IE !== false);
         let isEdge = detectBrowser.isEdge();
 
@@ -43,7 +43,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('should detect Safari', function() {
+    it('detect Safari', function() {
         let runningSafariHost = (host.browser.safari !== false);
         let isSafari = detectBrowser.isSafari();
 
@@ -51,14 +51,14 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('should detect Opera', function() {
+    it('detect Opera', function() {
         let isOpera = detectBrowser.isOpera();
 
         expect(isOpera).toEqual(false);
     });
 
     /** @test {detectBrowser} */
-    it('should detect unknown browser', function() {
+    it('detect unknown browser', function() {
         var originalNav = window.navigator;
         window['__defineGetter__']('navigator', function() {
             return false;

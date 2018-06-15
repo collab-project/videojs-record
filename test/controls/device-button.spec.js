@@ -20,7 +20,7 @@ describe('controls.DeviceButton', function() {
         player.dispose();
     });
 
-    it('should create the correct DOM element', function() {
+    it('create the correct DOM element', function() {
         let button = new DeviceButton(player);
 
         expect(button.el().nodeName).toEqual('BUTTON');
@@ -29,7 +29,7 @@ describe('controls.DeviceButton', function() {
         expect(button.controlText_).toEqual('Device');
     });
 
-    it('should accept interaction', function(done) {
+    it('accept interaction', function(done) {
         let button = new DeviceButton(player);
 
         player.one('deviceReady', function() {

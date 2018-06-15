@@ -23,7 +23,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should be an advanced plugin instance', function(done) {
+    it('advanced plugin instance', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -48,7 +48,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as a video-only plugin', function(done) {
+    it('run as video-only plugin', function(done) {
         // create video-only plugin
         player = TestHelpers.makeVideoOnlyPlayer();
 
@@ -80,7 +80,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an image-only plugin', function(done) {
+    it('run as image-only plugin', function(done) {
         // create image-only plugin
         player = TestHelpers.makeImageOnlyPlayer();
         // XXX: workaround weird error during test
@@ -112,7 +112,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an audio-only plugin', function(done) {
+    it('run as audio-only plugin', function(done) {
         // create audio-only plugin
         player = TestHelpers.makeAudioOnlyPlayer();
 
@@ -147,7 +147,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an audio-video plugin', function(done) {
+    it('run as audio-video plugin', function(done) {
         // create audio-video plugin
         player = TestHelpers.makeAudioVideoPlayer();
 
@@ -186,7 +186,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an animation-only plugin', function(done) {
+    it('run as animation-only plugin', function(done) {
         // create animated GIF plugin
         player = TestHelpers.makeAnimatedPlayer();
 
@@ -197,9 +197,9 @@ describe('Record', function() {
             done();
         });
     });
-    
+
     /** @test {Record#destroy} */
-    it('should destroy', function(done) {
+    it('destroy', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -212,7 +212,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#reset} */
-    it('should reset', function(done) {
+    it('reset', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -227,7 +227,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#enumerateDevices} */
-    it('should enumerate devices', function(done) {
+    it('enumerate devices', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -242,7 +242,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#setAudioOutput} */
-    it('should set audio output', function(done) {
+    it('set audio output', function(done) {
         // create new audio player
         player = TestHelpers.makeAudioOnlyPlayer();
 
@@ -262,7 +262,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#saveAs} */
-    it('should save as', function(done) {
+    it('save as', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -293,7 +293,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#getDuration} */
-    it('should get duration and current time', function(done) {
+    it('get duration and current time', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -328,7 +328,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#pause} */
-    it('should pause and resume recording', function(done) {
+    it('pause and resume recording', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -345,14 +345,14 @@ describe('Record', function() {
             // pause recording after few seconds
             setTimeout(function() {
                 player.record().pause();
-                
+
                 expect(player.record().getDuration()).toBeWithinRange(1.5, 2.5);
                 expect(player.record().getCurrentTime()).toEqual(0);
-                
+
                 // resume a few seconds later
                 setTimeout(function() {
                     player.record().resume();
-                    
+
                     // stop a few seconds later
                     setTimeout(function() {
                         player.record().stop();
@@ -373,7 +373,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#stopDevice} */
-    it('should stop device', function(done) {
+    it('stop device', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 

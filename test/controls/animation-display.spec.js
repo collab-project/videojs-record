@@ -8,7 +8,7 @@ import AnimationDisplay from '../../src/js/controls/animation-display.js';
 /** @test {animation-display} */
 describe('controls.AnimationDisplay', function() {
 
-    it('should create the correct DOM element', function() {
+    it('create the correct DOM element', function() {
         let display = new AnimationDisplay();
 
         expect(display.el().nodeName).toEqual('DIV');
