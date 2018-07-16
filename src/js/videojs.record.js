@@ -112,6 +112,8 @@ class Record extends Plugin {
 
     /**
      * Setup plugin options.
+     *
+     * @param {Object} options - Optional new player options.
      */
     loadOptions(newOptions = {}) {
         let recordOptions = videojs.mergeOptions(pluginDefaultOptions,

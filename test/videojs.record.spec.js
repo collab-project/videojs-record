@@ -1,3 +1,5 @@
+/* eslint prefer-arrow-callback: "error" */
+
 /**
  * @since 2.2.0
  */
@@ -398,6 +400,28 @@ describe('Record', function() {
         player.one('ready', function() {
             // start device
             player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#loadOptions} */
+    it('reload options', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('ready', function() {
+            expect(player.options_.plugins.record.video).toBeFalse();
+
+            var newOptions = {
+                video: {
+                    facingMode: 'environment'
+                }
+            };
+            player.record().loadOptions(newOptions);
+
+            expect(player.record().recordVideo).toEqual(
+                newOptions.video);
+
+            done();
         });
     });
 });
