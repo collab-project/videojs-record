@@ -14,6 +14,6 @@ describe('controls.AnimationDisplay', function() {
         expect(display.el().nodeName).toEqual('DIV');
         expect(display.on).toBeFunction();
         expect(display.hasClass('vjs-animation-display')).toBeTrue();
-        expect(display.el().innerHTML).toEqual('<img>')
+        expect(display.el().innerHTML).toEqual('<img>');
     });
 });

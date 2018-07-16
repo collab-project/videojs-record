@@ -27,7 +27,7 @@ describe('controls.RecordIndicator', function() {
         expect(indicator.on).toBeFunction();
         expect(indicator.hasClass('vjs-record-indicator')).toBeTrue();
         expect(indicator.hasClass('vjs-control')).toBeTrue();
-        expect(indicator.el().dir).toEqual('ltr')
+        expect(indicator.el().dir).toEqual('ltr');
     });
 
     it('disable', function() {

@@ -14,6 +14,6 @@ describe('controls.RecordCanvas', function() {
         expect(canvas.el().nodeName).toEqual('DIV');
         expect(canvas.on).toBeFunction();
         expect(canvas.hasClass('vjs-record-canvas')).toBeTrue();
-        expect(canvas.el().innerHTML).toEqual('<canvas></canvas>')
+        expect(canvas.el().innerHTML).toEqual('<canvas></canvas>');
     });
 });

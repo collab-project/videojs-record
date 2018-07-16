@@ -34,5 +34,13 @@
     "keyword-spacing": ["error", { "before": true }],
     "space-infix-ops": 2,
     "prefer-arrow-callback": 2
-  }
+  },
+  "overrides": [
+    {
+      "files": ["test-*.js", "*.spec.js"],
+      "rules": {
+        "prefer-arrow-callback": "off"
+      }
+    }
+  ]
 }

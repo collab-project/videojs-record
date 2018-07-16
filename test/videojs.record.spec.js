@@ -1,5 +1,3 @@
-/* eslint prefer-arrow-callback: "error" */
-
 /**
  * @since 2.2.0
  */
@@ -44,7 +42,7 @@ describe('Record', function() {
 
             // correct device button icon
             expect(player.deviceButton.buildCSSClass()).toEndWith(
-                'audio-perm')
+                'audio-perm');
             done();
         });
     });

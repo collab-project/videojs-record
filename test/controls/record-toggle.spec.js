@@ -28,8 +28,9 @@ describe('controls.RecordToggle', function() {
         expect(toggle.enabled_).toEqual(true);
         expect(toggle.controlText_).toEqual('Record');
 
-        ['vjs-record-button', 'vjs-control', 'vjs-button', 'vjs-icon-record-start'].forEach(
-        (e) => {
+        let styleClasses = ['vjs-record-button', 'vjs-control', 'vjs-button',
+            'vjs-icon-record-start'];
+        styleClasses.forEach((e) => {
             expect(toggle.hasClass(e)).toEqual(true);
         });
     });
@@ -42,7 +43,7 @@ describe('controls.RecordToggle', function() {
             expect(toggle.enabled_).toEqual(false);
 
             done();
-        })
+        });
     });
 
     it('change appearance when startRecord or stopRecord is triggered', function(done) {

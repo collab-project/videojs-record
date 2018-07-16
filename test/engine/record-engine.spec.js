@@ -41,7 +41,7 @@ describe('engine.record-engine', function() {
         let engine = new RecordEngine(player, {});
         engine.on('recordComplete', function() {
             done();
-        })
+        });
 
         let data = {};
         engine.onStopRecording(data);
@@ -50,10 +50,11 @@ describe('engine.record-engine', function() {
     it('add file info', function(done) {
         let engine = new RecordEngine(player, {});
         engine.on('recordComplete', function() {
-            expect(engine.recordedData.name).toEqual(
-                   engine.recordedData.lastModified + '.ogg');
+            let fileName = engine.recordedData.lastModified + '.ogg';
+            expect(engine.recordedData.name).toEqual(fileName);
+
             done();
-        })
+        });
 
         let req = new Request(TestHelpers.TEST_OGG);
         fetch(req).then(function(response) {
@@ -72,7 +73,7 @@ describe('engine.record-engine', function() {
             let element = document.getElementsByTagName('a')[0];
             expect(element.download).toEqual(fileName);
             done();
-        })
+        });
 
         let req = new Request(TestHelpers.TEST_OGG);
         fetch(req).then(function(response) {

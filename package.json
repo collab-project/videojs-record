@@ -33,7 +33,7 @@
     "docs": "npm-run-all docs:*",
     "docs:api": "jsdoc src/js -r -d docs/api",
     "lint": "npm-run-all lint:*",
-    "lint:js": "eslint src/js",
+    "lint:js": "eslint src/js test",
     "lint:json": "jsonlint-cli src/lang/*.json src/fonts/*.json",
     "lint:html": "htmlhint examples",
     "start": "npm run build && webpack-dev-server --config ./build-config/webpack.dev.main.js",

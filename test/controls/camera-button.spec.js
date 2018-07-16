@@ -34,8 +34,9 @@ describe('controls.CameraButton', function() {
         expect(button.enabled_).toEqual(true);
         expect(button.controlText_).toEqual('Image');
 
-        ['vjs-camera-button', 'vjs-control', 'vjs-button', 'vjs-icon-photo-camera'].forEach(
-        (e) => {
+        let styleClasses = ['vjs-camera-button', 'vjs-control', 'vjs-button',
+            'vjs-icon-photo-camera'];
+        styleClasses.forEach((e) => {
             expect(button.hasClass(e)).toEqual(true);
         });
     });
