@@ -20,6 +20,6 @@ Please include any additional information necessary here. Including the followin
 #### videojs
 what version of videojs does this occur with?
 #### browsers
-what browser are affected? Make sure to test with all third-party browser **extensions disabled**.
+what browser(s) are affected? Make sure to test with all third-party browser **extensions disabled**.
 #### OSes
 what platforms (operating systems and devices) are affected?
