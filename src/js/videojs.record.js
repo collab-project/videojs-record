@@ -487,9 +487,11 @@ class Record extends Plugin {
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
-            let uiElements = [this.player.controlBar.currentTimeDisplay,
-                              this.player.controlBar.timeDivider,
-                              this.player.controlBar.durationDisplay];
+            let uiElements = [
+                this.player.controlBar.currentTimeDisplay,
+                this.player.controlBar.timeDivider,
+                this.player.controlBar.durationDisplay
+            ];
             uiElements.forEach((element) => {
                 if (element !== undefined) {
                     element.el().style.display = 'block';
@@ -1207,7 +1209,7 @@ class Record extends Plugin {
                     }).catch((error) => {
                         // ignore, try oldskool
                     });
-                } catch(err) {}
+                } catch (err) {}
             }
             // no ImageCapture available: do it the oldskool way
 

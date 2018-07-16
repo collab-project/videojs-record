@@ -1,0 +1,38 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-trailing-spaces": 2,
+    "no-mixed-spaces-and-tabs": 2,
+    "no-multi-spaces": 2,
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "semi-spacing": [
+      2,
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "semi": [
+      2,
+      "always"
+    ],
+    "comma-spacing": [
+      2,
+      {
+        "after": true
+      }
+    ],
+    "keyword-spacing": ["error", { "before": true }],
+    "space-infix-ops": 2,
+    "prefer-arrow-callback": 2
+  }
+}
