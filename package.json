@@ -20,7 +20,6 @@
     "start:serve": "babel-node --presets=env scripts/server.js",
     "update": "npm-run-all -s update:*",
     "update:videojs-record": "cpx -v 'node_modules/videojs-record/dist/**/*' dist/",
-    "update:videojs-wavesurfer": "cpx -v 'node_modules/videojs-wavesurfer/dist/**/*' dist/",
     "update:libvorbis": "cpx -v 'node_modules/libvorbis.js/js/libvorbis.min.js' examples/lib/libvorbis.js/",
     "update:lamejs": "cpx -v 'node_modules/lamejs/lame.*.js' examples/lib/lamejs/",
     "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' examples/lib/lamejs/worker-example/",
