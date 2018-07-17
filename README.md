@@ -573,11 +573,14 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
-
 Using with React
 ----------------
 
-The `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
+The React [wiki page](https://github.com/collab-project/videojs-record/wiki/React) wiki page
+shows how to get started with React and videojs-record using the
+[create-react-app](https://github.com/facebook/create-react-app) tool.
+
+Alternatively, the `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
 ([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
 
