@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 2.3.1
+ * @version 2.3.2
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -1885,13 +1885,17 @@ var Record = function (_Plugin) {
 
     /**
      * Setup plugin options.
+     *
+     * @param {Object} options - Optional new player options.
      */
 
 
     _createClass(Record, [{
         key: 'loadOptions',
         value: function loadOptions() {
-            var recordOptions = _video2.default.mergeOptions(_defaults2.default, this.player.options_.plugins.record);
+            var newOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var recordOptions = _video2.default.mergeOptions(_defaults2.default, this.player.options_.plugins.record, newOptions);
 
             // record settings
             this.recordImage = recordOptions.image;
@@ -3290,7 +3294,7 @@ var Record = function (_Plugin) {
 // version nr is injected during build
 
 
-Record.VERSION = "2.3.1";
+Record.VERSION = "2.3.2";
 
 // register plugin
 _video2.default.Record = Record;
@@ -3312,8 +3316,8 @@ module.exports = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/thijs/projects/videojs-record/src/js/videojs.record.js */"./src/js/videojs.record.js");
-module.exports = __webpack_require__(/*! /home/thijs/projects/videojs-record/src/css/videojs.record.scss */"./src/css/videojs.record.scss");
+__webpack_require__(/*! /Users/thijstriemstra/projects/videojs-record/src/js/videojs.record.js */"./src/js/videojs.record.js");
+module.exports = __webpack_require__(/*! /Users/thijstriemstra/projects/videojs-record/src/css/videojs.record.scss */"./src/css/videojs.record.scss");
 
 
 /***/ }),
