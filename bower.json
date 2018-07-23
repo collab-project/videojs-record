@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "homepage": "https://github.com/collab-project/videojs-record",
   "description": "A video.js plugin for recording audio/video/image files.",
   "license": "MIT",
@@ -46,7 +46,7 @@
     "url": "https://github.com/collab-project/videojs-record.git"
   },
   "dependencies": {
-    "recordrtc": ">=5.4.6",
+    "recordrtc": ">=5.4.7",
     "video.js": ">=6.0.0",
     "videojs-wavesurfer": ">=2.5.0",
     "webrtc-adapter": ">=5.0.0"

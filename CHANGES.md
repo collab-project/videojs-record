@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.3.2 - unreleased
+2.3.2 - 2018/07/24
 ------------------
 
 - Ability to pass an options object to the `loadOptions` method (#254
