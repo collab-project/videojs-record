@@ -15,7 +15,7 @@ require('karma-host-environment');
 describe('utils.detect-browser', function() {
 
     /** @test {isChrome} */
-    it('detect Chrome browser', function() {
+    it('detects Chrome browser', function() {
         let runningChromeHost = (host.browser.chrome !== false);
         let isChrome = detectBrowser.isChrome();
 
@@ -23,7 +23,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detect Firefox', function() {
+    it('detects Firefox browser', function() {
         let runningFirefoxHost = (host.browser.firefox !== false);
         let result = detectBrowser.detectBrowser();
 
@@ -35,7 +35,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detect Edge', function() {
+    it('detects Edge browser', function() {
         let runningEdgeHost = (host.browser.IE !== false);
         let isEdge = detectBrowser.isEdge();
 
@@ -43,7 +43,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detect Safari', function() {
+    it('detects Safari browser', function() {
         let runningSafariHost = (host.browser.safari !== false);
         let isSafari = detectBrowser.isSafari();
 
@@ -51,14 +51,14 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detect Opera', function() {
+    it('detects Opera browser', function() {
         let isOpera = detectBrowser.isOpera();
 
         expect(isOpera).toEqual(false);
     });
 
     /** @test {detectBrowser} */
-    it('detect unknown browser', function() {
+    it('detects unknown browser', function() {
         var originalNav = window.navigator;
         window['__defineGetter__']('navigator', function() {
             return false;

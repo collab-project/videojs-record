@@ -8,7 +8,7 @@ import RecordCanvas from '../../src/js/controls/record-canvas.js';
 /** @test {record-canvas} */
 describe('controls.RecordCanvas', function() {
 
-    it('create the correct DOM element', function() {
+    it('creates the correct DOM element', function() {
         let canvas = new RecordCanvas();
 
         expect(canvas.el().nodeName).toEqual('DIV');

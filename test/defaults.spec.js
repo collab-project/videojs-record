@@ -8,12 +8,12 @@ import pluginDefaultOptions from '../src/js/defaults.js';
 describe('pluginDefaultOptions', function() {
 
     /** @test {pluginDefaultOptions} */
-    it('return a non-empty object', function() {
+    it('returns a non-empty object', function() {
         expect(pluginDefaultOptions).toBeNonEmptyObject();
     });
 
     /** @test {pluginDefaultOptions} */
-    it('correct default values', function() {
+    it('returns the correct default values', function() {
         expect(pluginDefaultOptions).toEqual({
             image: false,
             audio: false,

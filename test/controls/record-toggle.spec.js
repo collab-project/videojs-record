@@ -20,7 +20,7 @@ describe('controls.RecordToggle', function() {
         player.dispose();
     });
 
-    it('create the correct DOM element', function() {
+    it('creates the correct DOM element', function() {
         let toggle = new RecordToggle(player);
 
         expect(toggle.el().nodeName).toEqual('BUTTON');
@@ -35,7 +35,7 @@ describe('controls.RecordToggle', function() {
         });
     });
 
-    it('disable', function(done) {
+    it('can be disabled', function(done) {
         let toggle = new RecordToggle(player);
 
         player.one('ready', function() {

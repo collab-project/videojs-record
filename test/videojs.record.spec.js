@@ -48,7 +48,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('run as video-only plugin', function(done) {
+    it('runs as video-only plugin', function(done) {
         // create video-only plugin
         player = TestHelpers.makeVideoOnlyPlayer();
 
@@ -80,7 +80,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('run as image-only plugin', function(done) {
+    it('runs as image-only plugin', function(done) {
         // create image-only plugin
         player = TestHelpers.makeImageOnlyPlayer();
         // XXX: workaround weird error during test
@@ -112,7 +112,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('run as audio-only plugin', function(done) {
+    it('runs as audio-only plugin', function(done) {
         // create audio-only plugin
         player = TestHelpers.makeAudioOnlyPlayer();
 
@@ -147,7 +147,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('run as audio-video plugin', function(done) {
+    it('runs as audio-video plugin', function(done) {
         // create audio-video plugin
         player = TestHelpers.makeAudioVideoPlayer();
 
@@ -186,7 +186,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('run as animation-only plugin', function(done) {
+    it('runs as animation-only plugin', function(done) {
         // create animated GIF plugin
         player = TestHelpers.makeAnimatedPlayer();
 
@@ -199,7 +199,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#destroy} */
-    it('destroy', function(done) {
+    it('destroys', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -212,7 +212,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#reset} */
-    it('reset', function(done) {
+    it('resets', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -227,7 +227,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#enumerateDevices} */
-    it('enumerate devices', function(done) {
+    it('enumerates devices', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -242,7 +242,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#setAudioOutput} */
-    it('set audio output', function(done) {
+    it('can set audio output', function(done) {
         // create new audio player
         player = TestHelpers.makeAudioOnlyPlayer();
 
@@ -262,7 +262,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#saveAs} */
-    it('save as', function(done) {
+    it('saves as', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -293,7 +293,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#getDuration} */
-    it('get duration and current time', function(done) {
+    it('can get duration and current time', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -328,7 +328,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#pause} */
-    it('pause and resume recording', function(done) {
+    it('pauses and resumes recording', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -373,7 +373,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#stopDevice} */
-    it('stop device', function(done) {
+    it('stops the device', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -402,7 +402,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#loadOptions} */
-    it('reload options', function(done) {
+    it('reloads options', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 

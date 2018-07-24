@@ -18,7 +18,7 @@ describe('plugins.libvorbis-plugin', function() {
     });
 
     /** @test {LibVorbisEngine} */
-    it('run as audio-only plugin', function(done) {
+    it('can run as an audio-only plugin', function(done) {
         // create audio-only player with libvorbis.js plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(LIBVORBISJS);
 

@@ -18,7 +18,7 @@ describe('plugins.lamejs-plugin', function() {
     });
 
     /** @test {LamejsEngine} */
-    it('run as audio-only plugin', function(done) {
+    it('can run as an audio-only plugin', function(done) {
         // create audio-only player with lamejs plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(LAMEJS);
 

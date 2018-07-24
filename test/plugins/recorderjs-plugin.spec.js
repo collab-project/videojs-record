@@ -29,7 +29,7 @@ describe('plugins.recorderjs-plugin', function() {
     });
 
     /** @test {RecorderjsEngine} */
-    it('run as audio-only plugin', function(done) {
+    it('can run as an audio-only plugin', function(done) {
 
         player.one('deviceReady', function() {
             setTimeout(function() {
