@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+2.4.0 - unreleased
+------------------
+
+- Fix `RecordRTCEngine` import in React apps (#263)
+
+
 2.3.2 - 2018/07/24
 ------------------
 
