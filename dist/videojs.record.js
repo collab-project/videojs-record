@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 2.3.2
+ * @version 2.4.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -2182,7 +2182,7 @@ var Record = function (_Plugin) {
                 switch (this.audioEngine) {
                     case _recordEngine.RECORDRTC:
                         // RecordRTC.js (default)
-                        EngineClass = _video2.default.RecordRTCEngine;
+                        EngineClass = _recordRtc2.default;
                         break;
 
                     case _recordEngine.LIBVORBISJS:
@@ -3294,7 +3294,7 @@ var Record = function (_Plugin) {
 // version nr is injected during build
 
 
-Record.VERSION = "2.3.2";
+Record.VERSION = "2.4.0";
 
 // register plugin
 _video2.default.Record = Record;

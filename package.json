@@ -38,8 +38,8 @@
     "libvorbis.js": "^1.1.2",
     "opus-recorder": "^4.1.4",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
-    "video.js": "^7.0.5",
-    "videojs-record": "^2.3.2",
+    "video.js": "^7.1.0",
+    "videojs-record": "^2.4.0",
     "videojs-wavesurfer": "^2.5.0",
     "webrtc-adapter": "^6.3.0"
   },

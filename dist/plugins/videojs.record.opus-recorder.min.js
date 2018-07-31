@@ -1,6 +1,6 @@
 /*!
  * opus-recorder plugin for videojs-record
- * @version 2.3.2
+ * @version 2.4.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
