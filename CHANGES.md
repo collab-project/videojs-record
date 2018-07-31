@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Fix `RecordRTCEngine` import in React apps (#263)
+- Fix recording multiple times in lamejs plugin (#265)
 
 
 2.3.2 - 2018/07/24

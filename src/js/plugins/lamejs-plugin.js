@@ -21,7 +21,7 @@ class LamejsEngine extends RecordEngine {
         this.debug = debug;
         this.audioType = 'audio/mp3';
 
-        let config = {
+        this.config = {
             debug: this.debug,
             sampleRate: this.sampleRate,
             bitRate: this.bitRate
@@ -36,14 +36,13 @@ class LamejsEngine extends RecordEngine {
 
         this.engine = new Worker(this.audioWorkerURL);
         this.engine.onmessage = this.onWorkerMessage.bind(this);
-
-        this.engine.postMessage({cmd: 'init', config: config});
     }
 
     /**
      * Start recording.
      */
     start() {
+        this.engine.postMessage({cmd: 'init', config: this.config});
         this.processor.onaudioprocess = this.onAudioProcess.bind(this);
         this.audioSourceNode.connect(this.processor);
         this.processor.connect(this.audioContext.destination);
@@ -56,11 +55,21 @@ class LamejsEngine extends RecordEngine {
         this.audioSourceNode.disconnect();
         this.processor.disconnect();
         this.processor.onaudioprocess = null;
+
+        // free up memory
+        this.engine.postMessage({cmd: 'finish'});
+    }
+
+    /**
+     * Remove any temporary data and references to streams.
+     */
+    dispose() {
+        super.dispose();
+
         this.inputStream.getAudioTracks().forEach(track => track.stop());
+
         // ignore errors about already being closed
         this.audioContext.close().then(() => {}).catch((reason) => {});
-
-        this.engine.postMessage({cmd: 'finish'});
     }
 
     /**
