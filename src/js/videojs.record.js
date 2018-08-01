@@ -567,11 +567,6 @@ class Record extends Plugin {
         if (!this.isProcessing()) {
             this._recording = true;
 
-            if (this.autoMuteDevice) {
-                // unmute device
-                this.muteTracks(false);
-            }
-
             // hide play/pause control
             this.player.controlBar.playToggle.hide();
 
@@ -615,6 +610,11 @@ class Record extends Plugin {
                         this.startVideoPreview();
                     });
                     break;
+            }
+
+            if (this.autoMuteDevice) {
+                // unmute device
+                this.muteTracks(false);
             }
 
             // start recording
