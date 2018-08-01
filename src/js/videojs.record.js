@@ -437,8 +437,7 @@ class Record extends Plugin {
             try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(err);
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
