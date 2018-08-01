@@ -27,22 +27,23 @@ class LamejsEngine extends RecordEngine {
             bitRate: this.bitRate
         };
 
-        let AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.audioContext = new AudioContext();
-        this.audioSourceNode = this.audioContext.createMediaStreamSource(
-            this.inputStream);
-        this.processor = this.audioContext.createScriptProcessor(
-            16384, 1, 1);
-
         this.engine = new Worker(this.audioWorkerURL);
         this.engine.onmessage = this.onWorkerMessage.bind(this);
+        this.engine.postMessage({cmd: 'init', config: this.config});
     }
 
     /**
      * Start recording.
      */
     start() {
-        this.engine.postMessage({cmd: 'init', config: this.config});
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.audioContext = new AudioContext();
+
+        this.audioSourceNode = this.audioContext.createMediaStreamSource(
+            this.inputStream);
+        // a bufferSize of 0 instructs the browser to choose the best bufferSize
+        this.processor = this.audioContext.createScriptProcessor(
+            0, 1, 1);
         this.processor.onaudioprocess = this.onAudioProcess.bind(this);
         this.audioSourceNode.connect(this.processor);
         this.processor.connect(this.audioContext.destination);
@@ -52,24 +53,18 @@ class LamejsEngine extends RecordEngine {
      * Stop recording.
      */
     stop() {
-        this.audioSourceNode.disconnect();
-        this.processor.disconnect();
-        this.processor.onaudioprocess = null;
+        if (this.processor && this.audioSourceNode) {
+            this.audioSourceNode.disconnect();
+            this.processor.disconnect();
+            this.processor.onaudioprocess = null;
+        }
+        if (this.audioContext) {
+            // ignore errors about already being closed
+            this.audioContext.close().then(() => {}).catch((reason) => {});
+        }
 
         // free up memory
         this.engine.postMessage({cmd: 'finish'});
-    }
-
-    /**
-     * Remove any temporary data and references to streams.
-     */
-    dispose() {
-        super.dispose();
-
-        this.inputStream.getAudioTracks().forEach(track => track.stop());
-
-        // ignore errors about already being closed
-        this.audioContext.close().then(() => {}).catch((reason) => {});
     }
 
     /**
