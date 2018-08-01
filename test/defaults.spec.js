@@ -23,6 +23,7 @@ describe('pluginDefaultOptions', function() {
             frameWidth: 320,
             frameHeight: 240,
             debug: false,
+            autoMuteDevice: false,
             videoMimeType: 'video/webm',
             videoRecorderType: 'auto',
             audioEngine: 'recordrtc',

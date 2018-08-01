@@ -4,6 +4,8 @@ videojs-record changelog
 2.4.1 - unreleased
 ------------------
 
+- `autoMuteDevice` option to turn off the device between recordings
+  (for privacy reasons) (#157)
 - Fix lamejs plugin (#265)
 
 
