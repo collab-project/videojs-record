@@ -25,7 +25,7 @@ describe('controls.DeviceButton', function() {
 
         expect(button.el().nodeName).toEqual('BUTTON');
         expect(button.on).toBeFunction();
-        expect(button.enabled_).toEqual(true);
+        expect(button.enabled_).toBeTrue();
         expect(button.controlText_).toEqual('Device');
     });
 

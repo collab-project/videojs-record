@@ -54,7 +54,7 @@ describe('utils.detect-browser', function() {
     it('detects Opera browser', function() {
         let isOpera = detectBrowser.isOpera();
 
-        expect(isOpera).toEqual(false);
+        expect(isOpera).toBeFalse();
     });
 
     /** @test {detectBrowser} */
