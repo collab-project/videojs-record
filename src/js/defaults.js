@@ -21,6 +21,9 @@ const pluginDefaultOptions = {
     frameHeight: 240,
     // Enables console logging for debugging purposes.
     debug: false,
+    // Turn off the camera/mic (and light) when audio and/or video recording
+    // stops, and turns them on again when you resume recording.
+    autoMuteDevice: false,
     // The mime type for the video recorder. Default to 'video/webm'.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.

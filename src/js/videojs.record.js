@@ -127,6 +127,7 @@ class Record extends Plugin {
         this.maxLength = recordOptions.maxLength;
         this.debug = recordOptions.debug;
         this.recordTimeSlice = recordOptions.timeSlice;
+        this.autoMuteDevice = recordOptions.autoMuteDevice;
 
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
@@ -611,6 +612,11 @@ class Record extends Plugin {
                     break;
             }
 
+            if (this.autoMuteDevice) {
+                // unmute device
+                this.muteTracks(false);
+            }
+
             // start recording
             switch (this.getRecordType()) {
                 case IMAGE_ONLY:
@@ -683,6 +689,11 @@ class Record extends Plugin {
                 // stop recording stream (result will be available async)
                 if (this.engine) {
                     this.engine.stop();
+                }
+
+                if (this.autoMuteDevice) {
+                    // mute device
+                    this.muteTracks(true);
                 }
             } else {
                 if (this.player.recordedData) {
@@ -1130,6 +1141,22 @@ class Record extends Plugin {
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
+    }
+
+    /**
+     * Mute LocalMediaStream audio and video tracks.
+     */
+    muteTracks(mute) {
+        if ((this.getRecordType() === AUDIO_ONLY ||
+            this.getRecordType() === AUDIO_VIDEO) &&
+            this.stream.getAudioTracks().length > 0) {
+            this.stream.getAudioTracks()[0].enabled = !mute;
+        }
+
+        if (this.getRecordType() !== AUDIO_ONLY &&
+            this.stream.getVideoTracks().length > 0) {
+            this.stream.getVideoTracks()[0].enabled = !mute;
+        }
     }
 
     /**
