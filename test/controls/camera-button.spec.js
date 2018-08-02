@@ -31,7 +31,7 @@ describe('controls.CameraButton', function() {
 
         expect(button.el().nodeName).toEqual('BUTTON');
         expect(button.on).toBeFunction();
-        expect(button.enabled_).toBeTrue()
+        expect(button.enabled_).toBeTrue();
         expect(button.controlText_).toEqual('Image');
 
         let styleClasses = ['vjs-camera-button', 'vjs-control', 'vjs-button',
