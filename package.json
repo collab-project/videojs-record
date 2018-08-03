@@ -39,9 +39,9 @@
     "opus-recorder": "^4.1.4",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "video.js": "^7.1.0",
-    "videojs-record": "^2.4.0",
+    "videojs-record": "^2.4.1",
     "videojs-wavesurfer": "^2.5.0",
-    "webrtc-adapter": "^6.3.0"
+    "webrtc-adapter": "^6.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

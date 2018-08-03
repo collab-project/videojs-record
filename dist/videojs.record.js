@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 2.4.0
+ * @version 2.4.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -897,6 +897,9 @@ var pluginDefaultOptions = {
     frameHeight: 240,
     // Enables console logging for debugging purposes.
     debug: false,
+    // Turn off the camera/mic (and light) when audio and/or video recording
+    // stops, and turns them on again when you resume recording.
+    autoMuteDevice: false,
     // The mime type for the video recorder. Default to 'video/webm'.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.
@@ -1905,6 +1908,7 @@ var Record = function (_Plugin) {
             this.maxLength = recordOptions.maxLength;
             this.debug = recordOptions.debug;
             this.recordTimeSlice = recordOptions.timeSlice;
+            this.autoMuteDevice = recordOptions.autoMuteDevice;
 
             // video/canvas settings
             this.videoFrameWidth = recordOptions.frameWidth;
@@ -2388,6 +2392,11 @@ var Record = function (_Plugin) {
                         break;
                 }
 
+                if (this.autoMuteDevice) {
+                    // unmute device
+                    this.muteTracks(false);
+                }
+
                 // start recording
                 switch (this.getRecordType()) {
                     case _recordMode.IMAGE_ONLY:
@@ -2465,6 +2474,11 @@ var Record = function (_Plugin) {
                     // stop recording stream (result will be available async)
                     if (this.engine) {
                         this.engine.stop();
+                    }
+
+                    if (this.autoMuteDevice) {
+                        // mute device
+                        this.muteTracks(true);
                     }
                 } else {
                     if (this.player.recordedData) {
@@ -2961,6 +2975,22 @@ var Record = function (_Plugin) {
         }
 
         /**
+         * Mute LocalMediaStream audio and video tracks.
+         */
+
+    }, {
+        key: 'muteTracks',
+        value: function muteTracks(mute) {
+            if ((this.getRecordType() === _recordMode.AUDIO_ONLY || this.getRecordType() === _recordMode.AUDIO_VIDEO) && this.stream.getAudioTracks().length > 0) {
+                this.stream.getAudioTracks()[0].enabled = !mute;
+            }
+
+            if (this.getRecordType() !== _recordMode.AUDIO_ONLY && this.stream.getVideoTracks().length > 0) {
+                this.stream.getVideoTracks()[0].enabled = !mute;
+            }
+        }
+
+        /**
          * Get recorder type.
          */
 
@@ -3294,7 +3324,7 @@ var Record = function (_Plugin) {
 // version nr is injected during build
 
 
-Record.VERSION = "2.4.0";
+Record.VERSION = "2.4.1";
 
 // register plugin
 _video2.default.Record = Record;
