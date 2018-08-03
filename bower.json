@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "homepage": "https://github.com/collab-project/videojs-record",
   "description": "A video.js plugin for recording audio/video/image files.",
   "license": "MIT",

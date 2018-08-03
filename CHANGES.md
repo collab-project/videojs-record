@@ -11,7 +11,7 @@ videojs-record changelog
   is a `Blob` across all recording types and browsers now (#269)
 
 
-2.4.1 - unreleased
+2.4.1 - 2018/08/03
 ------------------
 
 - `autoMuteDevice` option to turn off the device between recordings
