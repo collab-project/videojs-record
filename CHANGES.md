@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-2.4.1 - unreleased
+2.4.1 - 2018/08/03
 ------------------
 
 - `autoMuteDevice` option to turn off the device between recordings
