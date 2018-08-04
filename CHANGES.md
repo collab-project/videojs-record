@@ -8,7 +8,7 @@ videojs-record changelog
 
 - In older versions a `player.recordedData.video` would be available in Chrome
   when recording audio and video. This is removed and `player.recordedData`
-  is a `Blob` across all recording types and browsers now (#269)
+  is always a `Blob` across all recording types and browsers now (#269)
 
 
 2.4.1 - 2018/08/03
