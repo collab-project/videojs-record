@@ -5,7 +5,7 @@
 class VideojsRecordPlayer extends React.Component {
     componentDidMount() {
         // instantiate Video.js
-        this.player = videojs(this.videoNode, this.props, function onPlayerReady(){
+        this.player = videojs(this.videoNode, this.props, () => {
             // print version information at startup
             var msg = 'Using video.js ' + videojs.VERSION +
                 ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -14,8 +14,25 @@ class VideojsRecordPlayer extends React.Component {
         });
 
         // error handling
-        this.player.on('error', function(error) {
+        this.player.on('error', (error) => {
             console.warn(error);
+        });
+
+        // device is ready
+        this.player.on('deviceReady', () => {
+            console.log('device is ready!');
+        });
+
+        // user clicked the record button and started recording
+        this.player.on('startRecord', () => {
+            console.log('started recording!');
+        });
+
+        // user completed recording and stream is available
+        this.player.on('finishRecord', () => {
+            // the blob object contains the recorded data that
+            // can be downloaded by the user, stored on server etc.
+            console.log('finished recording: ', this.player.recordedData);
         });
     }
 
@@ -32,7 +49,7 @@ class VideojsRecordPlayer extends React.Component {
     render() {
         return (
             <div data-vjs-player>
-                <video id="myVideo" ref={ node => this.videoNode = node } className="video-js"></video>
+                <video id="myVideo" ref={ node => this.videoNode = node } className="video-js vjs-default-skin"></video>
             </div>
         )
     }

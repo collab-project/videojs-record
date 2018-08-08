@@ -3,7 +3,6 @@
  */
 
 import TestHelpers from './test-helpers.js';
-import * as detectBrowser from '../src/js/utils/detect-browser.js';
 
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
@@ -153,10 +152,6 @@ describe('Record', function() {
 
         player.one('finishRecord', function() {
             let data = player.recordedData;
-            if (detectBrowser.isChrome()) {
-                // got an object with a video property containing a blob
-                data = player.recordedData.video;
-            }
             expect(data instanceof Blob).toBeTruthy();
 
             // wait till it's loaded before destroying

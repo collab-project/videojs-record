@@ -15,7 +15,7 @@ import RecordIndicator from './controls/record-indicator';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
-import { detectBrowser, isChrome } from './utils/detect-browser';
+import { detectBrowser } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
@@ -831,12 +831,7 @@ class Record extends Plugin {
                     }
 
                     // load recorded media
-                    if (isChrome() && this.getRecordType() === AUDIO_VIDEO) {
-                        // use video property on Chrome
-                        this.load(this.player.recordedData.video);
-                    } else {
-                        this.load(this.player.recordedData);
-                    }
+                    this.load(this.player.recordedData);
                 });
 
                 // pause player so user can start playback
