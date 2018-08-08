@@ -1,8 +1,17 @@
 sudo: false
+dist: trusty
+addons:
+  chrome: stable
 language: node_js
 node_js:
-  - 'node'
-install: npm install
+  - node
+install:
+  - npm prune
+  - npm install
+script:
+  - npm run lint
+  - npm run build
+  - npm run test
 cache:
   directories:
     - node_modules

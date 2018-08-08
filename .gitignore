@@ -11,6 +11,7 @@
 composer.json
 php.ini
 vendor
+uploads/
 
 # Dependency-related directories
 node_modules
@@ -19,8 +20,9 @@ bower_components
 # Build-related
 *.log
 dist/
-dist-test/
 docs/
-es5/
 tmp
 coverage/
+
+# Test
+.chrome/

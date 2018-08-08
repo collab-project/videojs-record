@@ -9,6 +9,7 @@ Video.js plugin for recording audio/video/image files.
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
+[![Coverage Status](https://coveralls.io/repos/github/collab-project/videojs-record/badge.svg?branch=master)](https://coveralls.io/github/collab-project/videojs-record?branch=master)
 
 Table of Contents
 -----------------
@@ -32,6 +33,7 @@ Table of Contents
 - [Customizing controls](#customizing-controls)
 - [Other audio libraries](#other-audio-libraries)
 - [Localization](#localization)
+- [Webpack](#webpack)
 - [Using with React](#using-with-react)
 - [More features using other plugins](#more-features-using-other-plugins)
 - [Development](#development)
@@ -178,7 +180,7 @@ And start the local webserver:
 npm run start
 ```
 
-And open http://localhost:9999/examples/audio-video.html in a browser.
+And open http://localhost:8080/examples/audio-video.html in a browser.
 
 Options
 -------
@@ -220,6 +222,7 @@ The available options for this plugin are:
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
+| `autoMuteDevice` | boolean | `false` | Turns off the camera/mic devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
@@ -392,6 +395,40 @@ player.on('timestamp', function() {
 
 ### Upload data
 
+The example below shows how to upload each recording:
+
+```javascript
+player.on('finishRecord', function() {
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording:', player.recordedData);
+
+    var data = player.recordedData;
+    if (player.recordedData.video) {
+        // for chrome (when recording audio+video)
+        data = player.recordedData.video;
+    }
+
+    var serverUrl = '/upload';
+    var formData = new FormData();
+    formData.append('file', data, data.name);
+
+    console.log('uploading recording:', data.name);
+
+    fetch(serverUrl, {
+        method: 'POST',
+        body: formData
+    }).then(
+        success => console.log('recording upload complete.')
+    ).catch(
+        error => console.error('an upload error occurred!')
+    );
+});
+```
+
+Check the [simple upload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html)
+for the complete example.
+
 The example below shows how to 'stream' upload recorded data segments to a server
 using the [jQuery](http://jquery.com/) library and the `timestamp` event:
 
@@ -513,7 +550,7 @@ Localization
 ------------
 
 This plugin supports multiple languages. Each language has it's own file
-(found in the `lang` directory) that contains the translated text.
+(found in the `src/lang` directory) that contains the translated text.
 
 Using a different language, for example Dutch (`nl`), is done by including
 the plugin's language file and the Video.js language file:
@@ -537,14 +574,21 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
-
 Using with React
 ----------------
 
-The `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
+The React [wiki page](https://github.com/collab-project/videojs-record/wiki/React) wiki page
+shows how to get started with React and videojs-record using the
+[create-react-app](https://github.com/facebook/create-react-app) tool.
+
+Alternatively, the `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
 ([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
 
+Webpack
+-------
+
+The [webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
 
 More features using other plugins
 ---------------------------------
@@ -577,7 +621,7 @@ npm run start
 ```
 
 This will watch the source directory and rebuild when any changes
-are detected. It will also serve the files on http://127.0.0.1:9999.
+are detected. It will also serve the files on http://127.0.0.1:8080.
 
 All commands for development are listed in the `package.json` file and
 are run using:
@@ -589,7 +633,7 @@ npm run <command>
 Font
 ----
 
-Check the [the font readme](font/README.md) for more information.
+Check the [the font readme](src/fonts/README.md) for more information.
 
 License
 -------
