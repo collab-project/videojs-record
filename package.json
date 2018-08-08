@@ -112,7 +112,7 @@
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.22.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
     "videojs-languages": "^1.0.0",
