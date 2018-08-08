@@ -33,6 +33,7 @@ Table of Contents
 - [Customizing controls](#customizing-controls)
 - [Other audio libraries](#other-audio-libraries)
 - [Localization](#localization)
+- [Webpack](#webpack)
 - [Using with React](#using-with-react)
 - [More features using other plugins](#more-features-using-other-plugins)
 - [Development](#development)
@@ -221,6 +222,7 @@ The available options for this plugin are:
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
+| `autoMuteDevice` | boolean | `false` | Turns off the camera/mic devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
@@ -572,14 +574,21 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
-
 Using with React
 ----------------
 
-The `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
+The React [wiki page](https://github.com/collab-project/videojs-record/wiki/React) wiki page
+shows how to get started with React and videojs-record using the
+[create-react-app](https://github.com/facebook/create-react-app) tool.
+
+Alternatively, the `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
 ([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
 
+Webpack
+-------
+
+The [webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
 
 More features using other plugins
 ---------------------------------
@@ -624,7 +633,7 @@ npm run <command>
 Font
 ----
 
-Check the [the font readme](font/README.md) for more information.
+Check the [the font readme](src/fonts/README.md) for more information.
 
 License
 -------

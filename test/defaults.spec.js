@@ -8,12 +8,12 @@ import pluginDefaultOptions from '../src/js/defaults.js';
 describe('pluginDefaultOptions', function() {
 
     /** @test {pluginDefaultOptions} */
-    it('should return a non-empty object', function() {
+    it('returns a non-empty object', function() {
         expect(pluginDefaultOptions).toBeNonEmptyObject();
     });
 
     /** @test {pluginDefaultOptions} */
-    it('should have correct default values', function() {
+    it('returns the correct default values', function() {
         expect(pluginDefaultOptions).toEqual({
             image: false,
             audio: false,
@@ -23,6 +23,7 @@ describe('pluginDefaultOptions', function() {
             frameWidth: 320,
             frameHeight: 240,
             debug: false,
+            autoMuteDevice: false,
             videoMimeType: 'video/webm',
             videoRecorderType: 'auto',
             audioEngine: 'recordrtc',

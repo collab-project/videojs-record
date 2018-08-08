@@ -4,6 +4,8 @@
 */
 
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -17,7 +19,13 @@ module.exports = {
                         inline: false
                     }
                 }
-            })
+            }),
+            new OptimizeCSSAssetsPlugin({})
         ]
-    }
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "css/[name].min.css"
+        })
+    ]
 };

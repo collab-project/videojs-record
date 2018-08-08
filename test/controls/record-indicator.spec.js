@@ -20,17 +20,17 @@ describe('controls.RecordIndicator', function() {
         player.dispose();
     });
 
-    it('should create the correct DOM element', function() {
+    it('creates the correct DOM element', function() {
         let indicator = new RecordIndicator(player);
 
         expect(indicator.el().nodeName).toEqual('DIV');
         expect(indicator.on).toBeFunction();
         expect(indicator.hasClass('vjs-record-indicator')).toBeTrue();
         expect(indicator.hasClass('vjs-control')).toBeTrue();
-        expect(indicator.el().dir).toEqual('ltr')
+        expect(indicator.el().dir).toEqual('ltr');
     });
 
-    it('should disable', function() {
+    it('can be disabled', function() {
         let indicator = new RecordIndicator(player);
         indicator.disable();
     });

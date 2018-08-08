@@ -41,8 +41,9 @@ var player = videojs("myImage", {
     }
 }, function(){
     // print version information at startup
-    videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'));
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record');
+    videojs.log(msg);
 });
 
 // error handling

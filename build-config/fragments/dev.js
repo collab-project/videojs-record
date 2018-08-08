@@ -3,11 +3,12 @@
  * @since 2.2.0
  */
 
-var path = require('path');
-var fs = require('fs');
-var util = require('util');
-var formidable = require('formidable');
-var colors = require('colors/safe');
+const path = require('path');
+const fs = require('fs');
+const util = require('util');
+const formidable = require('formidable');
+const colors = require('colors/safe');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     mode: 'development',
@@ -46,5 +47,10 @@ module.exports = {
                 return;
             });
         }
-    }
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css'
+        })
+    ]
 };

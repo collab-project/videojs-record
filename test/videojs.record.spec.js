@@ -3,7 +3,6 @@
  */
 
 import TestHelpers from './test-helpers.js';
-import * as detectBrowser from '../src/js/utils/detect-browser.js';
 
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
@@ -23,12 +22,13 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should be an advanced plugin instance', function(done) {
+    it('advanced plugin instance', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
         player.one('ready', function() {
             expect(player.el().nodeName).toEqual('DIV');
+            expect(player.hasClass('vjs-record')).toBeTrue();
             expect(player.on).toBeFunction();
 
             // plugins exist
@@ -41,13 +41,13 @@ describe('Record', function() {
 
             // correct device button icon
             expect(player.deviceButton.buildCSSClass()).toEndWith(
-                'audio-perm')
+                'audio-perm');
             done();
         });
     });
 
     /** @test {Record} */
-    it('should run as a video-only plugin', function(done) {
+    it('runs as video-only plugin', function(done) {
         // create video-only plugin
         player = TestHelpers.makeVideoOnlyPlayer();
 
@@ -79,7 +79,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an image-only plugin', function(done) {
+    it('runs as image-only plugin', function(done) {
         // create image-only plugin
         player = TestHelpers.makeImageOnlyPlayer();
         // XXX: workaround weird error during test
@@ -90,9 +90,7 @@ describe('Record', function() {
         player.one('finishRecord', function() {
             // received a base-64 encoded PNG string
             expect(player.recordedData.startsWith('data:image/png;base64,i')).toBeTrue();
-        });
 
-        player.one('startRecord', function() {
             setTimeout(function() {
                 done();
             }, 2000);
@@ -113,7 +111,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an audio-only plugin', function(done) {
+    it('runs as audio-only plugin', function(done) {
         // create audio-only plugin
         player = TestHelpers.makeAudioOnlyPlayer();
 
@@ -148,16 +146,12 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an audio-video plugin', function(done) {
+    it('runs as audio-video plugin', function(done) {
         // create audio-video plugin
         player = TestHelpers.makeAudioVideoPlayer();
 
         player.one('finishRecord', function() {
             let data = player.recordedData;
-            if (detectBrowser.isChrome()) {
-                // got an object with a video property containing a blob
-                data = player.recordedData.video;
-            }
             expect(data instanceof Blob).toBeTruthy();
 
             // wait till it's loaded before destroying
@@ -187,7 +181,7 @@ describe('Record', function() {
     });
 
     /** @test {Record} */
-    it('should run as an animation-only plugin', function(done) {
+    it('runs as animation-only plugin', function(done) {
         // create animated GIF plugin
         player = TestHelpers.makeAnimatedPlayer();
 
@@ -198,9 +192,9 @@ describe('Record', function() {
             done();
         });
     });
-    
+
     /** @test {Record#destroy} */
-    it('should destroy', function(done) {
+    it('destroys', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -213,7 +207,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#reset} */
-    it('should reset', function(done) {
+    it('resets', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -228,7 +222,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#enumerateDevices} */
-    it('should enumerate devices', function(done) {
+    it('enumerates devices', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -243,7 +237,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#setAudioOutput} */
-    it('should set audio output', function(done) {
+    it('can set audio output', function(done) {
         // create new audio player
         player = TestHelpers.makeAudioOnlyPlayer();
 
@@ -263,7 +257,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#saveAs} */
-    it('should save as', function(done) {
+    it('saves as', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -294,12 +288,12 @@ describe('Record', function() {
     });
 
     /** @test {Record#getDuration} */
-    it('should get duration and current time', function(done) {
+    it('can get duration and current time', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
         player.one('finishRecord', function() {
-            expect(player.record().getDuration()).toBeWithinRange(1.5, 2.1);
+            expect(player.record().getDuration()).toBeWithinRange(1.5, 2.5);
             expect(player.record().getCurrentTime()).toEqual(0);
 
             // wait till it's loaded before destroying
@@ -329,12 +323,12 @@ describe('Record', function() {
     });
 
     /** @test {Record#pause} */
-    it('should pause and resume recording', function(done) {
+    it('pauses and resumes recording', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
         player.one('finishRecord', function() {
-            expect(player.record().getDuration()).toBeWithinRange(3.9, 4.1);
+            expect(player.record().getDuration()).toBeWithinRange(3.9, 4.5);
             expect(player.record().getCurrentTime()).toEqual(0);
 
             // wait till it's loaded before destroying
@@ -346,14 +340,14 @@ describe('Record', function() {
             // pause recording after few seconds
             setTimeout(function() {
                 player.record().pause();
-                
-                expect(player.record().getDuration()).toBeWithinRange(1.5, 2.1);
+
+                expect(player.record().getDuration()).toBeWithinRange(1.5, 2.5);
                 expect(player.record().getCurrentTime()).toEqual(0);
-                
+
                 // resume a few seconds later
                 setTimeout(function() {
                     player.record().resume();
-                    
+
                     // stop a few seconds later
                     setTimeout(function() {
                         player.record().stop();
@@ -374,7 +368,7 @@ describe('Record', function() {
     });
 
     /** @test {Record#stopDevice} */
-    it('should stop device', function(done) {
+    it('stops the device', function(done) {
         // create new player
         player = TestHelpers.makePlayer();
 
@@ -399,6 +393,28 @@ describe('Record', function() {
         player.one('ready', function() {
             // start device
             player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#loadOptions} */
+    it('reloads options', function(done) {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one('ready', function() {
+            expect(player.options_.plugins.record.video).toBeFalse();
+
+            var newOptions = {
+                video: {
+                    facingMode: 'environment'
+                }
+            };
+            player.record().loadOptions(newOptions);
+
+            expect(player.record().recordVideo).toEqual(
+                newOptions.video);
+
+            done();
         });
     });
 });

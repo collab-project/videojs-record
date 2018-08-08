@@ -8,10 +8,67 @@ x.x.x - unreleased
   audio/video file formats in the browser
 
 
-2.2.1 - unreleased
+3.0.0 - unreleased
+------------------
+
+**Backwards-incompatible changes** (when upgrading from a previous version):
+
+- In older versions a `player.recordedData.video` would be available in Chrome
+  when recording audio and video. This is removed and `player.recordedData`
+  is always a `Blob` across all recording types and browsers now (#269)
+
+
+2.4.1 - 2018/08/03
+------------------
+
+- `autoMuteDevice` option to turn off the device between recordings
+  (for privacy reasons) (#157)
+- Fix lamejs plugin (#265)
+
+
+2.4.0 - 2018/07/31
+------------------
+
+- Fix `RecordRTCEngine` import in React apps (#263)
+- Fix recording multiple times in lamejs plugin (#265)
+
+
+2.3.2 - 2018/07/24
+------------------
+
+- Ability to pass an options object to the `loadOptions` method (#254
+  by @tomasdev)
+
+
+2.3.1 - 2018/06/04
+------------------
+
+- Bump required version for videojs-wavesurfer to 2.5.0 to fix clashes with
+  regular video.js players loaded on the same page (#235)
+- Fix Safari support in audio plugins
+
+
+2.3.0 - 2018/05/15
+------------------
+
+- Add plugin style `vjs-record` and prefix all custom plugin styles with this
+  selector. This should prevent clashes with regular video.js players loaded
+  on the same page (#235)
+- Compile SCSS into CSS using webpack
+- Move `font` directory to `src/fonts`
+
+
+2.2.2 - 2018/05/11
+------------------
+
+- Use `grabFrame` for image capture on Chrome (#225)
+
+
+2.2.1 - 2018/05/09
 ------------------
 
 - Add simple upload example for node.js and python (#233)
+- Fix misaligned text in record indicator on Chrome (by @ikbensiep)
 
 
 2.2.0 - 2018/05/07

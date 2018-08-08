@@ -40,9 +40,10 @@ var player = videojs("myVideo", {
     }
 }, function(){
     // print version information at startup
-    videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'),
-        'and recordrtc', RecordRTC.version);
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ' and recordrtc ' + RecordRTC.version;
+    videojs.log(msg);
 });
 
 // error handling
@@ -65,13 +66,8 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording:', player.recordedData);
 
-    var data = player.recordedData;
-    if (player.recordedData.video) {
-        // for chrome for audio+video
-        data = player.recordedData.video;
-    }
-
-    upload(data);
+    // upload recorded data
+    upload(player.recordedData);
 });
 
 function upload(blob) {

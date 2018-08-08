@@ -15,7 +15,7 @@ import RecordIndicator from './controls/record-indicator';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
-import { detectBrowser, isChrome } from './utils/detect-browser';
+import { detectBrowser } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, FFMPEGJS} from './engine/record-engine';
@@ -55,6 +55,9 @@ class Record extends Plugin {
     constructor(player, options) {
         super(player, options);
 
+        // add plugin style
+        player.addClass('vjs-record');
+
         // setup plugin options
         this.loadOptions();
 
@@ -75,7 +78,7 @@ class Record extends Plugin {
         }
         DeviceButton.prototype.buildCSSClass = function() {
             // use dynamic icon class
-            return 'vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+            return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
         };
         player.deviceButton = new DeviceButton(player, options);
         player.addChild(player.deviceButton);
@@ -109,10 +112,12 @@ class Record extends Plugin {
 
     /**
      * Setup plugin options.
+     *
+     * @param {Object} options - Optional new player options.
      */
-    loadOptions() {
+    loadOptions(newOptions = {}) {
         let recordOptions = videojs.mergeOptions(pluginDefaultOptions,
-            this.player.options_.plugins.record);
+            this.player.options_.plugins.record, newOptions);
 
         // record settings
         this.recordImage = recordOptions.image;
@@ -122,6 +127,7 @@ class Record extends Plugin {
         this.maxLength = recordOptions.maxLength;
         this.debug = recordOptions.debug;
         this.recordTimeSlice = recordOptions.timeSlice;
+        this.autoMuteDevice = recordOptions.autoMuteDevice;
 
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
@@ -407,7 +413,7 @@ class Record extends Plugin {
             switch (this.audioEngine) {
                 case RECORDRTC:
                     // RecordRTC.js (default)
-                    EngineClass = videojs.RecordRTCEngine;
+                    EngineClass = RecordRTCEngine;
                     break;
 
                 case LIBVORBISJS:
@@ -439,8 +445,7 @@ class Record extends Plugin {
             try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(err);
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
@@ -512,9 +517,11 @@ class Record extends Plugin {
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
-            let uiElements = [this.player.controlBar.currentTimeDisplay,
-                              this.player.controlBar.timeDivider,
-                              this.player.controlBar.durationDisplay];
+            let uiElements = [
+                this.player.controlBar.currentTimeDisplay,
+                this.player.controlBar.timeDivider,
+                this.player.controlBar.durationDisplay
+            ];
             uiElements.forEach((element) => {
                 if (element !== undefined) {
                     element.el().style.display = 'block';
@@ -633,6 +640,11 @@ class Record extends Plugin {
                     break;
             }
 
+            if (this.autoMuteDevice) {
+                // unmute device
+                this.muteTracks(false);
+            }
+
             // start recording
             switch (this.getRecordType()) {
                 case IMAGE_ONLY:
@@ -705,6 +717,11 @@ class Record extends Plugin {
                 // stop recording stream (result will be available async)
                 if (this.engine) {
                     this.engine.stop();
+                }
+
+                if (this.autoMuteDevice) {
+                    // mute device
+                    this.muteTracks(true);
                 }
             } else {
                 if (this.player.recordedData) {
@@ -847,12 +864,7 @@ class Record extends Plugin {
                     }
 
                     // load recorded media
-                    if (isChrome() && this.getRecordType() === AUDIO_VIDEO) {
-                        // use video property on Chrome
-                        this.load(this.player.recordedData.video);
-                    } else {
-                        this.load(this.player.recordedData);
-                    }
+                    this.load(this.player.recordedData);
                 });
 
                 // pause player so user can start playback
@@ -1160,6 +1172,22 @@ class Record extends Plugin {
     }
 
     /**
+     * Mute LocalMediaStream audio and video tracks.
+     */
+    muteTracks(mute) {
+        if ((this.getRecordType() === AUDIO_ONLY ||
+            this.getRecordType() === AUDIO_VIDEO) &&
+            this.stream.getAudioTracks().length > 0) {
+            this.stream.getAudioTracks()[0].enabled = !mute;
+        }
+
+        if (this.getRecordType() !== AUDIO_ONLY &&
+            this.stream.getVideoTracks().length > 0) {
+            this.stream.getVideoTracks()[0].enabled = !mute;
+        }
+    }
+
+    /**
      * Get recorder type.
      */
     getRecordType() {
@@ -1227,24 +1255,17 @@ class Record extends Plugin {
                 try {
                     var track = this.stream.getVideoTracks()[0];
                     var imageCapture = new ImageCapture(track);
-                    let photoSettings = {
-                        imageWidth: recordCanvas.width,
-                        imageHeight: recordCanvas.height
-                    };
-
                     // take picture
-                    imageCapture.takePhoto(photoSettings).then((blob) => {
-                        return createImageBitmap(blob);
-
-                    }).then((imageBitmap) => {
+                    imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
                         this.drawCanvas(recordCanvas, imageBitmap);
 
                         // notify others
                         resolve(recordCanvas);
+                    }).catch((error) => {
+                        // ignore, try oldskool
                     });
-                    return;
-                } catch(err) {}
+                } catch (err) {}
             }
             // no ImageCapture available: do it the oldskool way
 

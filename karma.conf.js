@@ -36,11 +36,12 @@ var firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true
 };
+var ci = process.env.TRAVIS || process.env.APPVEYOR;
 
 module.exports = function(config) {
     var configuration = {
         basePath: '',
-        frameworks: ['jasmine', 'jasmine-matchers', 'sinon', 'host-environment'],
+        frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers'],
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
@@ -109,16 +110,46 @@ module.exports = function(config) {
         plugins: [
             'karma-webpack',
             'karma-jasmine',
-            'karma-sinon',
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
+            'karma-safari-launcher',
+            'karma-edge-launcher',
             'karma-coverage',
             'karma-coveralls',
             'karma-verbose-reporter',
-            'karma-host-environment'
+            'karma-host-environment',
+            'karma-detect-browsers'
         ],
-        browsers: ['Firefox_dev', 'Chrome_dev'],
+        detectBrowsers: {
+            enabled: true,
+            usePhantomJS: false,
+            preferHeadless: true,
+
+            postDetection: function(availableBrowsers) {
+                if (availableBrowsers.length > 1) {
+                    // use custom browser launchers
+                    var result = availableBrowsers;
+                    let cd = availableBrowsers.indexOf('ChromeHeadless');
+                    if (cd > -1) {
+                        availableBrowsers[cd] = 'Chrome_dev';
+                    }
+                    let fd = availableBrowsers.indexOf('FirefoxHeadless');
+                    if (fd > -1) {
+                        availableBrowsers[fd] = 'Firefox_dev';
+                    }
+                    let fh = availableBrowsers.indexOf('Firefox');
+                    if (fh > -1) {
+                        availableBrowsers[fh] = 'Firefox_dev';
+                    }
+                    let ch = availableBrowsers.indexOf('ChromiumHeadless');
+                    if (ch > -1) {
+                        availableBrowsers[ch] = 'Chromium_dev';
+                    }
+                    return result;
+                }
+            }
+        },
         captureConsole: true,
         browserNoActivityTimeout: 50000,
         colors: true,
@@ -126,29 +157,30 @@ module.exports = function(config) {
         coverageReporter: {
             type: 'html',
             // specify a common output directory
-            dir: 'coverage/'
+            dir: 'coverage'
         },
         webpack: webpackConfig,
         customLaunchers: {
             Chrome_dev: {
-                base: 'Chrome',
-                flags: chromeFlags
-            },
-            Chrome_ci: {
                 base: 'ChromeHeadless',
                 flags: chromeFlags
             },
+            Chromium_dev: {
+                base: 'ChromiumHeadless',
+                flags: chromeFlags
+            },
             Firefox_dev: {
-                base: 'Firefox',
+                base: 'FirefoxHeadless',
                 prefs: firefoxFlags
             }
         }
     };
 
-    if (process.env.TRAVIS || process.env.APPVEYOR) {
+    if (ci) {
         // only chrome
-        configuration.browsers = ['Chrome_ci'];
+        configuration.browsers = ['Chrome_dev'];
         configuration.singleRun = true;
+        configuration.detectBrowsers.enabled = false;
 
         if (process.env.TRAVIS) {
             // enable coveralls

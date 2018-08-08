@@ -20,6 +20,7 @@ class RecorderjsEngine extends RecordEngine {
         this.mediaType = mediaType;
         this.debug = debug;
 
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
         this.audioContext = new AudioContext();
         this.audioSourceNode = this.audioContext.createMediaStreamSource(
             this.inputStream);

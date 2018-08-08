@@ -124,52 +124,32 @@ class RecordRTCEngine extends RecordEngine {
         this.engine.getBlob((recording) => {
             switch (recordType) {
                 case AUDIO_ONLY:
-                    this.recordedData = recording.audio;
-
-                    this.addFileInfo(this.recordedData);
-
-                    // notify listeners
-                    this.trigger('recordComplete');
+                    if (recording.audio !== undefined) {
+                        this.recordedData = recording.audio;
+                    }
                     break;
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
-                    // when recording both audio and video, recordrtc
-                    // calls this twice on chrome, first with audio data
-                    // and then with video data.
-                    // on firefox it's called once but with a single
-                    // blob that includes both audio and video data.
+                    // recordrtc returns a single blob that includes both audio
+                    // and video data
                     if (recording.video !== undefined) {
-                        // data is video-only but on firefox audio+video
                         this.recordedData = recording.video;
-
-                        // on the chrome browser two blobs are created
-                        // containing the separate audio/video streams.
-                        if (recordType === AUDIO_VIDEO && isChrome()) {
-                            // store both audio and video
-                            this.recordedData = recording;
-
-                            for (let mtype in this.recordedData) {
-                                this.addFileInfo(this.recordedData[mtype]);
-                            }
-                        } else {
-                            this.addFileInfo(this.recordedData);
-                        }
-
-                        // notify listeners
-                        this.trigger('recordComplete');
                     }
                     break;
 
                 case ANIMATION:
-                    this.recordedData = recording.gif;
-
-                    this.addFileInfo(this.recordedData);
-
-                    // notify listeners
-                    this.trigger('recordComplete');
+                    if (recording.gif !== undefined) {
+                        this.recordedData = recording.gif;
+                    }
                     break;
             }
+            // inject file info
+            this.addFileInfo(this.recordedData);
+
+            // notify listeners
+            this.trigger('recordComplete');
+
         });
     }
 }
