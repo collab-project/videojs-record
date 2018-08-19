@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Audio/Video Example - Record Plugin for Video.js</title>
+  <title>Websocket Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
@@ -10,30 +10,45 @@
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
   <script src="../../node_modules/recordrtc/RecordRTC.js"></script>
   <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
+  <script src="../../node_modules/wavesurfer.js/dist/wavesurfer.min.js"></script>
+  <script src="../../node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
+  <script src="../../node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="../../dist/videojs.record.js"></script>
 
+  <script src="../../node_modules/sockjs-client/dist/sockjs.min.js"></script>
+
   <style>
   /* change player background color */
-  #myVideo {
-      background-color: #9ab87a;
+  #myAudio {
+      background-color: #35F291;
   }
   </style>
 </head>
 <body>
 
-<video id="myVideo" class="video-js vjs-default-skin"></video>
+<audio id="myAudio" class="video-js vjs-default-skin"></video>
 
 <script>
-var player = videojs("myVideo", {
+var sock;
+var player = videojs("myAudio", {
     controls: true,
     width: 320,
     height: 240,
     fluid: false,
     plugins: {
+        wavesurfer: {
+            src: 'live',
+            waveColor: '#19613C',
+            progressColor: 'black',
+            debug: true,
+            cursorWidth: 1,
+            msDisplayMax: 20,
+            hideScrollbar: true
+        },
         record: {
             audio: true,
-            video: true,
+            video: false,
             maxLength: 10,
             debug: true
         }
@@ -42,8 +57,24 @@ var player = videojs("myVideo", {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
         ' and recordrtc ' + RecordRTC.version;
     videojs.log(msg);
+
+    // connect to socket
+    var sockjs_url = '/echo';
+    sock = new SockJS(sockjs_url);
+    sock.onopen = function() {
+        console.log('connected to ' + sockjs_url);
+    };
+
+    sock.onmessage = function(e) {
+        console.log('message received: ', e.data);
+    };
+
+    sock.onclose = function() {
+        console.log('connection closed.');
+    };
 });
 
 // error handling
@@ -71,21 +102,15 @@ player.on('finishRecord', function() {
 });
 
 function upload(blob) {
-    var serverUrl = '/upload';
-    var formData = new FormData();
-    formData.append('file', blob, blob.name);
+    console.log('upload recording ' + blob.name);
 
-    console.log('upload recording ' + blob.name + ' to ' + serverUrl);
+    var a = new FileReader();
+    a.onload = function(e) {
+        sock.send(e.target.result);
 
-    // start upload
-    fetch(serverUrl, {
-        method: 'POST',
-        body: formData
-    }).then(
-        success => console.log('upload recording complete.')
-    ).catch(
-        error => console.error('an upload error occurred!')
-    );
+        console.log('upload recording complete.')
+    };
+    a.readAsDataURL(blob);
 }
 </script>
 
