@@ -53,7 +53,7 @@ var player = videojs('myAudio', {
             debug: true
         }
     }
-}, function(){
+}, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -61,19 +61,19 @@ var player = videojs('myAudio', {
         ' and recordrtc ' + RecordRTC.version;
     videojs.log(msg);
 
-    // connect to socket
+    // connect to websocket server
     var sockjs_url = '/upload-socket';
     sock = new SockJS(sockjs_url);
-    sock.onopen = function() {
-        console.log('connected to ' + sockjs_url);
-    };
 
+    // websocket event handlers
+    sock.onopen = function() {
+        console.log('connected to websocket: ' + sockjs_url);
+    };
     sock.onmessage = function(e) {
         console.log('message received: ', e.data);
     };
-
     sock.onclose = function() {
-        console.log('connection closed.');
+        console.log('websocket connection closed.');
     };
 });
 
