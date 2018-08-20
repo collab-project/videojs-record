@@ -308,6 +308,16 @@ class Record extends Plugin {
                 this.surfer.liveMode = true;
                 this.surfer.surfer.microphone.paused = false;
 
+                // assign custom reloadBufferFunction for microphone plugin
+                this.surfer.surfer.microphone.reloadBufferFunction = (event) => {
+                    if (!this.surfer.surfer.microphone.paused) {
+                        this.surfer.surfer.empty();
+                        this.surfer.surfer.loadDecodedBuffer(event.inputBuffer);
+
+                        this.player.recordedData = event.inputBuffer;
+                        this.player.trigger('audioBufferUpdate');
+                    }
+                };
                 // open browser device selection dialog
                 this.surfer.surfer.microphone.start();
                 break;
