@@ -31,7 +31,7 @@
 
 <script>
 var sock;
-var player = videojs("myAudio", {
+var player = videojs('myAudio', {
     controls: true,
     width: 320,
     height: 240,
@@ -62,7 +62,7 @@ var player = videojs("myAudio", {
     videojs.log(msg);
 
     // connect to socket
-    var sockjs_url = '/echo';
+    var sockjs_url = '/upload-socket';
     sock = new SockJS(sockjs_url);
     sock.onopen = function() {
         console.log('connected to ' + sockjs_url);
@@ -89,6 +89,11 @@ player.on('error', function(error) {
 // user clicked the record button and started recording
 player.on('startRecord', function() {
     console.log('started recording!');
+
+    player.on('audioBufferUpdate', function() {
+        // upload recorded data
+        upload(player.recordedData);
+    });
 });
 
 // user completed recording and stream is available
@@ -97,20 +102,12 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording:', player.recordedData);
 
-    // upload recorded data
-    upload(player.recordedData);
+    // stop uploading
+    player.off('audioBufferUpdate');
 });
 
-function upload(blob) {
-    console.log('upload recording ' + blob.name);
-
-    var a = new FileReader();
-    a.onload = function(e) {
-        sock.send(e.target.result);
-
-        console.log('upload recording complete.')
-    };
-    a.readAsDataURL(blob);
+function upload(data) {
+    sock.send(data);
 }
 </script>
 

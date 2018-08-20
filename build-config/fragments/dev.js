@@ -99,17 +99,21 @@ module.exports = {
             // ===================================================
             // streaming file upload handler for websocket example
             // ===================================================
-            var sockjs_echo = sockjs.createServer();
-            sockjs_echo.on('connection', function(conn) {
+            var sockjs_upload = sockjs.createServer();
+            sockjs_upload.on('connection', function(conn) {
                 conn.on('data', function(data) {
 
-                    console.log('saving uploaded file...');
+                    console.log('received uploaded buffer...', data);
 
+                    // XXX: AudioBuffer to eventual file
+
+                    /*
                     var fileName = uuid.v4() + '.ogg';
                     writeToDisk(data, fileName);
 
                     console.log(colors.green('saved file.'));
                     console.log('');
+                    */
                 });
             });
 
@@ -122,16 +126,16 @@ module.exports = {
             server.addListener('upgrade', function(req,res){
                 res.end();
             });
-            sockjs_echo.installHandlers(server, {prefix: '/echo'});
+            sockjs_upload.installHandlers(server, {prefix: '/upload-socket'});
 
             console.log('');
-            console.log(colors.green(' [examples] Websocket server listening on ') +
+            console.log(colors.green(' [examples] Websocket upload server listening on ') +
                         colors.yellow('0.0.0.0:9999'));
             server.listen(9999, '0.0.0.0');
             console.log('');
         },
         proxy: {
-            '/echo': {
+            '/upload-socket': {
                 target: 'http://0.0.0.0:9999',
                 ws: true
             }
