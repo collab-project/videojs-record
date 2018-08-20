@@ -7,7 +7,7 @@ const fs = require('fs');
 const http = require('http');
 const path = require('path');
 const util = require('util');
-const uuid = require('uuid');
+const uuid = require('uuid/v5');
 const sockjs = require('sockjs');
 const colors = require('colors/safe');
 const formidable = require('formidable');
@@ -89,7 +89,7 @@ module.exports = {
                     // XXX: AudioBuffer to eventual file
 
                     /*
-                    var fileName = uuid.v4() + '.ogg';
+                    var fileName = uuid() + '.ogg';
                     writeToDisk(data, fileName);
 
                     console.log(colors.green('saved file.'));
