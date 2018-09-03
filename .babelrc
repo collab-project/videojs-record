@@ -1,10 +1,9 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 3 versions"]
-      },
-      "debug": false
+    ["@babel/preset-env", {
+      "targets": "last 2 version",
+      "debug": false,
+      "modules": "commonjs"
     }]
   ],
   "plugins": ["add-module-exports"],

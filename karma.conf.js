@@ -6,7 +6,7 @@ process.traceDeprecation = true;
 process.env.BABEL_ENV = 'test';
 
 const path = require('path');
-require('babel-register');
+require('@babel/register');
 
 var webpackConfig = require('./build-config/webpack.prod.main.js');
 var support_dir = path.resolve(__dirname, 'test', 'support');
@@ -85,7 +85,7 @@ module.exports = function(config) {
             'http://cdn.webrtc-experiment.com/gif-recorder.js',
 
             // specs
-            'test/**/*.spec.js'
+            {pattern: 'test/**/*.spec.js', watched: false}
         ],
         // for CDN scripts
         crossOriginAttribute: false,
@@ -177,8 +177,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        // only chrome
-        configuration.browsers = ['Chrome_dev'];
+        configuration.browsers = ['Chrome_dev', 'Firefox_dev'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
