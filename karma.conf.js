@@ -6,7 +6,7 @@ process.traceDeprecation = true;
 process.env.BABEL_ENV = 'test';
 
 const path = require('path');
-require('babel-register');
+require('@babel/register');
 
 var webpackConfig = require('./build-config/webpack.prod.main.js');
 var support_dir = path.resolve(__dirname, 'test', 'support');
