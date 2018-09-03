@@ -85,7 +85,7 @@ module.exports = function(config) {
             'http://cdn.webrtc-experiment.com/gif-recorder.js',
 
             // specs
-            'test/**/*.spec.js'
+            {pattern: 'test/**/*.spec.js', watched: false}
         ],
         // for CDN scripts
         crossOriginAttribute: false,

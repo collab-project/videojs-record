@@ -10,14 +10,32 @@ const formidable = require('formidable');
 const colors = require('colors/safe');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const contentBase = path.resolve(__dirname, '..', '..');
+
 module.exports = {
     mode: 'development',
     devtool: 'source-map',
     devServer: {
-        contentBase: [path.resolve(__dirname, '..', '..')],
+        contentBase: [contentBase],
         publicPath: '/',
         watchContentBase: true,
-        before(app){
+        // webpack-dev-server middleware
+        before(app) {
+            // use proper mime-type for wasm files
+            app.get('*.wasm', function(req, res, next) {
+                var options = {
+                    root: contentBase,
+                    dotfiles: 'deny',
+                    headers: {
+                        'Content-Type': 'application/wasm'
+                    }
+                };
+                res.sendFile(req.url, options, function (err) {
+                    if (err) {
+                        next(err);
+                    }
+                });
+            });
             // file upload handler for examples
             app.post('/upload', function(req, res) {
                 // save uploaded file
