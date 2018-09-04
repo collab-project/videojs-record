@@ -404,11 +404,6 @@ player.on('finishRecord', function() {
     console.log('finished recording:', player.recordedData);
 
     var data = player.recordedData;
-    if (player.recordedData.video) {
-        // for chrome (when recording audio+video)
-        data = player.recordedData.video;
-    }
-
     var serverUrl = '/upload';
     var formData = new FormData();
     formData.append('file', data, data.name);
