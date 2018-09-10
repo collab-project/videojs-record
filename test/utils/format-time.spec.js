@@ -5,10 +5,10 @@
 import formatTime from '../../src/js/utils/format-time.js';
 
 /** @test {format-time} */
-describe('utils.formatTime', function() {
+describe('utils.formatTime', () => {
 
     /** @test {formatTime} */
-    it('returns a formatted string for seconds', function() {
+    it('returns a formatted string for seconds', () => {
         let time = formatTime(10);
         expect(time).toEqual('0:10');
 
@@ -23,7 +23,7 @@ describe('utils.formatTime', function() {
     });
 
     /** @test {formatTime} */
-    it('returns a formatted string when using msDisplayMax', function() {
+    it('returns a formatted string when using msDisplayMax', () => {
         let time = formatTime(2.011, 3, 10);
         expect(time).toEqual('0:02:011');
 
@@ -35,14 +35,14 @@ describe('utils.formatTime', function() {
     });
 
     /** @test {formatTime} */
-    it('returns a string when no arguments are received', function() {
+    it('returns a string when no arguments are received', () => {
         let time = formatTime();
 
         expect(time).toEqual('-:-');
     });
 
     /** @test {formatTime} */
-    it('defaults to 0 when a negative value is received', function() {
+    it('defaults to 0 when a negative value is received', () => {
         let time = formatTime(-2);
 
         expect(time).toEqual('0:00');

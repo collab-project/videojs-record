@@ -12,10 +12,10 @@ require('karma-host-environment');
 
 
 /** @test {detect-browser} */
-describe('utils.detect-browser', function() {
+describe('utils.detect-browser', () => {
 
     /** @test {isChrome} */
-    it('detects Chrome browser', function() {
+    it('detects Chrome browser', () => {
         let runningChromeHost = (host.browser.chrome !== false);
         let isChrome = detectBrowser.isChrome();
 
@@ -23,7 +23,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detects Firefox browser', function() {
+    it('detects Firefox browser', () => {
         let runningFirefoxHost = (host.browser.firefox !== false);
         let result = detectBrowser.detectBrowser();
 
@@ -35,7 +35,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detects Edge browser', function() {
+    it('detects Edge browser', () => {
         let runningEdgeHost = (host.browser.IE !== false);
         let isEdge = detectBrowser.isEdge();
 
@@ -43,7 +43,7 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detects Safari browser', function() {
+    it('detects Safari browser', () => {
         let runningSafariHost = (host.browser.safari !== false);
         let isSafari = detectBrowser.isSafari();
 
@@ -51,16 +51,16 @@ describe('utils.detect-browser', function() {
     });
 
     /** @test {detectBrowser} */
-    it('detects Opera browser', function() {
+    it('detects Opera browser', () => {
         let isOpera = detectBrowser.isOpera();
 
         expect(isOpera).toBeFalse();
     });
 
     /** @test {detectBrowser} */
-    it('detects unknown browser', function() {
+    it('detects unknown browser', () => {
         var originalNav = window.navigator;
-        window['__defineGetter__']('navigator', function() {
+        window['__defineGetter__']('navigator', () => {
             return false;
         });
         let unknown = detectBrowser.detectBrowser();
@@ -69,7 +69,7 @@ describe('utils.detect-browser', function() {
             version: null,
             minVersion: null
         });
-        window['__defineGetter__']('navigator', function() {
+        window['__defineGetter__']('navigator', () => {
             return originalNav;
         });
     });

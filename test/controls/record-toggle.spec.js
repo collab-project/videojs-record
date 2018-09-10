@@ -8,19 +8,19 @@ import RecordToggle from '../../src/js/controls/record-toggle.js';
 
 
 /** @test {record-toggle} */
-describe('controls.RecordToggle', function() {
+describe('controls.RecordToggle', () => {
     var player;
 
-    beforeEach(function() {
+    beforeEach(() => {
         // create new player
         player = TestHelpers.makePlayer();
     });
 
-    afterEach(function() {
+    afterEach(() => {
         player.dispose();
     });
 
-    it('creates the correct DOM element', function() {
+    it('creates the correct DOM element', () => {
         let toggle = new RecordToggle(player);
 
         expect(toggle.el().nodeName).toEqual('BUTTON');
@@ -35,10 +35,10 @@ describe('controls.RecordToggle', function() {
         });
     });
 
-    it('can be disabled', function(done) {
+    it('can be disabled', (done) => {
         let toggle = new RecordToggle(player);
 
-        player.one('ready', function() {
+        player.one('ready', () => {
             toggle.disable();
             expect(toggle.enabled_).toBeFalse();
 
@@ -46,12 +46,12 @@ describe('controls.RecordToggle', function() {
         });
     });
 
-    it('change appearance when startRecord or stopRecord is triggered', function(done) {
+    it('change appearance when startRecord or stopRecord is triggered', (done) => {
         let toggle = new RecordToggle(player);
 
         expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
 
-        player.one('ready', function() {
+        player.one('ready', () => {
             player.trigger('startRecord');
 
             expect(toggle.hasClass('vjs-icon-record-start')).toBeFalse();
@@ -68,10 +68,10 @@ describe('controls.RecordToggle', function() {
         });
     });
 
-    it('accept interaction', function(done) {
+    it('accept interaction', (done) => {
         let toggle = new RecordToggle(player);
 
-        player.one('deviceReady', function() {
+        player.one('deviceReady', () => {
             // start
             toggle.trigger('click');
             expect(player.record().isRecording()).toBeTrue();
@@ -79,7 +79,7 @@ describe('controls.RecordToggle', function() {
             done();
         });
 
-        player.one('ready', function() {
+        player.one('ready', () => {
             player.record().getDevice();
         });
     });

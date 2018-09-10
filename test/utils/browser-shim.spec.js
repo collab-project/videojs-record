@@ -5,10 +5,10 @@
 import setSrcObject from '../../src/js/utils/browser-shim.js';
 
 /** @test {browser-shim} */
-describe('utils.setSrcObject', function() {
+describe('utils.setSrcObject', () => {
 
     /** @test {setSrcObject} */
-    it('works', function() {
+    it('works', () => {
         let obj = setSrcObject({}, {}, false);
     });
 });
