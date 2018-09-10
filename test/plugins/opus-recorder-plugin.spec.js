@@ -33,7 +33,7 @@ describe('plugins.opus-recorder-plugin', () => {
 
         player.one('startRecord', () => {
             // stop recording after few seconds
-            setTimeout(function() {
+            setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
