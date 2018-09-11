@@ -128,6 +128,10 @@ const TestHelpers = {
             case RECORDERJS:
                 recordPluginOptions.audioEngine = RECORDERJS;
                 break;
+
+            default:
+                recordPluginOptions.audioEngine = pluginName;
+                break;
         }
         return this.makePlayer(tag, {
             controls: true,

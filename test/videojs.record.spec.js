@@ -445,4 +445,20 @@ describe('Record', () => {
             }, 2000);
         });
     });
+
+    /** @test {Record#onDeviceReady} */
+    it('throws error for unsupported audio engine', (done) => {
+        // create new player
+        player = TestHelpers.makeAudioOnlyPluginPlayer('foo');
+
+        player.one('error', (e) => {
+            expect(e.type).toEqual('error');
+            done();
+        });
+
+        player.one('ready', () => {
+            // start device
+            player.record().getDevice();
+        });
+    });
 });
