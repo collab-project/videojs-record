@@ -74,7 +74,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.2",
-    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-istanbul": "^5.0.1",
     "blueimp-file-upload": ">=9.19.1",
     "browserslist": "^4.1.1",
