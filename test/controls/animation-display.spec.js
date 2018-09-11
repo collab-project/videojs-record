@@ -6,9 +6,9 @@ import AnimationDisplay from '../../src/js/controls/animation-display.js';
 
 
 /** @test {animation-display} */
-describe('controls.AnimationDisplay', function() {
+describe('controls.AnimationDisplay', () => {
 
-    it('creates the correct DOM element', function() {
+    it('creates the correct DOM element', () => {
         let display = new AnimationDisplay();
 
         expect(display.el().nodeName).toEqual('DIV');

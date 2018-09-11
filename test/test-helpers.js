@@ -4,7 +4,7 @@
 
 import document from 'global/document';
 
-import Player from 'video.js';
+import {Player, mergeOptions} from 'video.js';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
 
@@ -75,9 +75,8 @@ const TestHelpers = {
         return videojs(elementTag.id, playerOptions);
     },
 
-    makeAudioOnlyPlayer() {
-        var tag = TestHelpers.makeTag('audio', 'audioOnly');
-        return this.makePlayer(tag, {
+    makeAudioOnlyPlayer(newOptions) {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -93,7 +92,10 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        return this.makePlayer(tag, opts);
     },
 
     makeAudioOnlyPluginPlayer(pluginName) {
@@ -128,6 +130,10 @@ const TestHelpers = {
             case RECORDERJS:
                 recordPluginOptions.audioEngine = RECORDERJS;
                 break;
+
+            default:
+                recordPluginOptions.audioEngine = pluginName;
+                break;
         }
         return this.makePlayer(tag, {
             controls: true,
@@ -143,9 +149,8 @@ const TestHelpers = {
         });
     },
 
-    makeAudioVideoPlayer() {
-        var tag = TestHelpers.makeTag('video', 'audioVideo');
-        return this.makePlayer(tag, {
+    makeAudioVideoPlayer(newOptions) {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -160,12 +165,14 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        var tag = TestHelpers.makeTag('video', 'audioVideo');
+        return this.makePlayer(tag, opts);
     },
 
-    makeVideoOnlyPlayer() {
-        var tag = TestHelpers.makeTag('video', 'videoOnly');
-        return this.makePlayer(tag, {
+    makeVideoOnlyPlayer(newOptions) {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -180,7 +187,10 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        let tag = TestHelpers.makeTag('video', 'videoOnly');
+        return this.makePlayer(tag, opts);
     },
 
     makeImageOnlyPlayer() {

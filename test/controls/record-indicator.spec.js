@@ -8,19 +8,19 @@ import RecordIndicator from '../../src/js/controls/record-indicator.js';
 
 
 /** @test {record-indicator} */
-describe('controls.RecordIndicator', function() {
+describe('controls.RecordIndicator', () => {
     var player;
 
-    beforeEach(function() {
+    beforeEach(() => {
         // create new player
         player = TestHelpers.makePlayer();
     });
 
-    afterEach(function() {
+    afterEach(() => {
         player.dispose();
     });
 
-    it('creates the correct DOM element', function() {
+    it('creates the correct DOM element', () => {
         let indicator = new RecordIndicator(player);
 
         expect(indicator.el().nodeName).toEqual('DIV');
@@ -30,7 +30,7 @@ describe('controls.RecordIndicator', function() {
         expect(indicator.el().dir).toEqual('ltr');
     });
 
-    it('can be disabled', function() {
+    it('can be disabled', () => {
         let indicator = new RecordIndicator(player);
         indicator.disable();
     });

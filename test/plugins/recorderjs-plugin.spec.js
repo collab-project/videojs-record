@@ -10,11 +10,11 @@ import {RECORDERJS} from '../../src/js/engine/record-engine.js';
 
 
 /** @test {RecorderjsEngine} */
-describe('plugins.recorderjs-plugin', function() {
+describe('plugins.recorderjs-plugin', () => {
     var player;
     var originalTimeout;
 
-    beforeEach(function() {
+    beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
@@ -22,22 +22,22 @@ describe('plugins.recorderjs-plugin', function() {
         player = TestHelpers.makeAudioOnlyPluginPlayer(RECORDERJS);
     });
 
-    afterEach(function() {
+    afterEach(() => {
         player.dispose();
 
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     /** @test {RecorderjsEngine} */
-    it('can run as an audio-only plugin', function(done) {
+    it('can run as an audio-only plugin', (done) => {
 
-        player.one('deviceReady', function() {
-            setTimeout(function() {
+        player.one('deviceReady', () => {
+            setTimeout(() => {
                 done();
             }, 2000);
         });
 
-        player.one('ready', function() {
+        player.one('ready', () => {
             // start device
             player.record().getDevice();
         });

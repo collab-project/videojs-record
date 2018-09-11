@@ -5,9 +5,9 @@
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from '../../src/js/engine/record-mode';
 
 /** @test {record-mode} */
-describe('engine.record-mode', function() {
+describe('engine.record-mode', () => {
 
-    it('provides available recorder modes', function() {
+    it('provides available recorder modes', () => {
         expect(IMAGE_ONLY).toEqual('image_only');
         expect(AUDIO_ONLY).toEqual('audio_only');
         expect(VIDEO_ONLY).toEqual('video_only');
@@ -15,7 +15,7 @@ describe('engine.record-mode', function() {
         expect(ANIMATION).toEqual('animation');
     });
 
-    it('returns the correct recorder mode', function() {
+    it('returns the correct recorder mode', () => {
         // accepts boolean
         expect(getRecorderMode(false, false, false, true)).toEqual(ANIMATION);
         expect(getRecorderMode(false, false, true, false)).toEqual(VIDEO_ONLY);
