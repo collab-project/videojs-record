@@ -70,7 +70,7 @@
     "webrtc-adapter": ">=6.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.0.1",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.2",
