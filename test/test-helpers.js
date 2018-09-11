@@ -4,7 +4,7 @@
 
 import document from 'global/document';
 
-import Player from 'video.js';
+import {Player, mergeOptions} from 'video.js';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
 
@@ -163,9 +163,8 @@ const TestHelpers = {
         });
     },
 
-    makeVideoOnlyPlayer() {
-        var tag = TestHelpers.makeTag('video', 'videoOnly');
-        return this.makePlayer(tag, {
+    makeVideoOnlyPlayer(newOptions) {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -180,7 +179,10 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        let tag = TestHelpers.makeTag('video', 'videoOnly');
+        return this.makePlayer(tag, opts);
     },
 
     makeImageOnlyPlayer() {
