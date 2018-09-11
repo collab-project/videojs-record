@@ -461,4 +461,29 @@ describe('Record', () => {
             player.record().getDevice();
         });
     });
+
+    /** @test {Record#onDeviceReady} */
+    it('accepts a custom audio MIME-type', (done) => {
+        let mtype = 'foo/bar';
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer({
+            plugins: {
+                record: {
+                    audioMimeType: mtype
+                }
+            }
+        });
+
+        player.one('deviceReady', () => {
+            expect(player.options_.plugins.record.audioMimeType).toEqual(
+                mtype);
+            expect(player.record().audioMimeType).toEqual(mtype);
+            done();
+        });
+
+        player.one('ready', () => {
+            // start device
+            player.record().getDevice();
+        });
+    });
 });

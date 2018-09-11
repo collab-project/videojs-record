@@ -75,9 +75,8 @@ const TestHelpers = {
         return videojs(elementTag.id, playerOptions);
     },
 
-    makeAudioOnlyPlayer() {
-        var tag = TestHelpers.makeTag('audio', 'audioOnly');
-        return this.makePlayer(tag, {
+    makeAudioOnlyPlayer(newOptions) {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -93,7 +92,10 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        return this.makePlayer(tag, opts);
     },
 
     makeAudioOnlyPluginPlayer(pluginName) {
