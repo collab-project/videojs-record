@@ -71,7 +71,8 @@ describe('Record', () => {
 
         player.one('ready', () => {
             // correct device button icon
-            expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
+            expect(player.deviceButton.buildCSSClass().endsWith(
+                'video-perm')).toBeTrue();
 
             // start device
             player.record().getDevice();
@@ -89,7 +90,8 @@ describe('Record', () => {
 
         player.one('finishRecord', () => {
             // received a base-64 encoded PNG string
-            expect(player.recordedData.startsWith('data:image/png;base64,i')).toBeTrue();
+            expect(player.recordedData.startsWith(
+                'data:image/png;base64,i')).toBeTrue();
 
             setTimeout(() => {
                 done();
@@ -103,7 +105,8 @@ describe('Record', () => {
 
         player.one('ready', () => {
             // correct device button icon
-            expect(player.deviceButton.buildCSSClass().endsWith('video-perm')).toBeTrue();
+            expect(player.deviceButton.buildCSSClass().endsWith(
+                'video-perm')).toBeTrue();
 
             // start device
             player.record().getDevice();
@@ -138,7 +141,8 @@ describe('Record', () => {
 
         player.one('ready', () => {
             // correct device button icon
-            expect(player.deviceButton.buildCSSClass().endsWith('audio-perm')).toBeTrue();
+            expect(player.deviceButton.buildCSSClass().endsWith(
+                'audio-perm')).toBeTrue();
 
             // start device
             player.record().getDevice();
@@ -417,6 +421,28 @@ describe('Record', () => {
                 newOptions.video);
 
             done();
+        });
+    });
+
+    /** @test {Record#onDeviceReady} */
+    it('ignores unsupported audio engine', (done) => {
+        // create new player
+        player = TestHelpers.makeVideoOnlyPlayer({
+            plugins: {
+                record: {
+                    audioEngine: 'lamejs'
+                }
+            }
+        });
+
+        player.one('ready', () => {
+            // start device
+            player.record().getDevice();
+
+            // wait few seconds
+            setTimeout(() => {
+                done()
+            }, 2000);
         });
     });
 });
