@@ -419,7 +419,10 @@ describe('Record', () => {
             // kill listener
             player.off('timestamp');
 
-            done();
+            // wait few seconds
+            setTimeout(() => {
+                done();
+            }, 2000);
         });
 
         player.on('timestamp', () => {
