@@ -25,13 +25,9 @@ describe('utils.detect-browser', () => {
     /** @test {detectBrowser} */
     it('detects Firefox browser', () => {
         let runningFirefoxHost = (host.browser.firefox !== false);
-        let result = detectBrowser.detectBrowser();
+        let isFirefox = detectBrowser.isFirefox();
 
-        if (runningFirefoxHost) {
-            expect(result.browser).toEqual('firefox');
-        } else {
-            expect(result.browser).not.toEqual('firefox');
-        }
+        expect(isFirefox).toEqual(runningFirefoxHost);
     });
 
     /** @test {detectBrowser} */

@@ -4,6 +4,8 @@
 
 import TestHelpers from './test-helpers.js';
 
+import { isFirefox } from '../src/js/utils/detect-browser.js';
+
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
 
@@ -261,6 +263,45 @@ describe('Record', () => {
 
         player.one('ready', () => {
             player.record().enumerateDevices();
+        });
+    });
+
+    /** @test {Record#autoMuteDevice} */
+    it('accepts the autoMuteDevice setting', (done) => {
+        // create new player
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    autoMuteDevice: true
+                }
+            }
+        });
+
+        player.one('finishRecord', () => {
+            if (isFirefox()) {
+                expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
+                expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
+            }
+
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one('startRecord', () => {
+            // stop recording after few seconds
+            setTimeout(() => {
+                player.record().stop();
+            }, 2000);
+        });
+
+        player.one('deviceReady', () => {
+            // record some
+            player.record().start();
+        });
+
+        player.one('ready', () => {
+            player.record().getDevice();
         });
     });
 

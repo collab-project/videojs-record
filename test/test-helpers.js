@@ -149,9 +149,8 @@ const TestHelpers = {
         });
     },
 
-    makeAudioVideoPlayer() {
-        var tag = TestHelpers.makeTag('video', 'audioVideo');
-        return this.makePlayer(tag, {
+    makeAudioVideoPlayer(newOptions) {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -166,7 +165,10 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        var tag = TestHelpers.makeTag('video', 'audioVideo');
+        return this.makePlayer(tag, opts);
     },
 
     makeVideoOnlyPlayer(newOptions) {
