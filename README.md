@@ -35,6 +35,7 @@ Table of Contents
 - [Localization](#localization)
 - [Webpack](#webpack)
 - [Using with React](#using-with-react)
+- [Using with Angular](#using-with-angular)
 - [More features using other plugins](#more-features-using-other-plugins)
 - [Development](#development)
 - [Font](#font)
@@ -569,6 +570,11 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
+Webpack
+-------
+
+The [Webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
+
 Using with React
 ----------------
 
@@ -580,10 +586,10 @@ Alternatively, the `react` example shows how to integrate this plugin in a [Reac
 ([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
 
-Webpack
--------
+Using with Angular
+------------------
 
-The [webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
+The [Angular](https://github.com/collab-project/videojs-record/wiki/Angular) wiki page shows how to setup Angular and videojs-record.
 
 More features using other plugins
 ---------------------------------
