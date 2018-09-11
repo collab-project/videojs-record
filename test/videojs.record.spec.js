@@ -402,6 +402,48 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record#timeSlice} */
+    it('accepts timeSlice option', (done) => {
+        let total = 0;
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer({
+            plugins: {
+                record: {
+                    maxLength: 10,
+                    timeSlice: 1000
+                }
+            }
+        });
+
+        player.one('finishRecord', () => {
+            // kill listener
+            player.off('timestamp');
+
+            done();
+        });
+
+        player.on('timestamp', () => {
+            total += 1;
+
+            expect(player.currentTimestamp).toBeDefined();
+            expect(player.allTimestamps.length).toEqual(total);
+
+            if (total == 6) {
+                player.record().stop();
+            }
+        });
+
+        player.one('deviceReady', () => {
+            // record some
+            player.record().start();
+        });
+
+        player.one('ready', () => {
+            // start device
+            player.record().getDevice();
+        });
+    });
+
     /** @test {Record#loadOptions} */
     it('reloads options', (done) => {
         // create new player
