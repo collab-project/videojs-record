@@ -441,7 +441,7 @@ describe('Record', () => {
 
             // wait few seconds
             setTimeout(() => {
-                done()
+                done();
             }, 2000);
         });
     });
