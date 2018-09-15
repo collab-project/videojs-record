@@ -62,10 +62,10 @@ module.exports = {
                     }
                 });
             });
-<<<<<<< HEAD
-=======
+            console.log('');
+            console.log(colors.green(' [examples] wasm mime-type handler ready'));
+            console.log('');
 
->>>>>>> d9648854866fd72ec376c88cb1e41a31b4de7e3d
             // =============================================
             // file upload handler for simple upload example
             // =============================================
