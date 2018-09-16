@@ -14,6 +14,8 @@ const formidable = require('formidable');
 const node_static = require('node-static');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+var opus = require('node-opus');
+
 const contentBase = path.resolve(__dirname, '..', '..');
 
 function writeToDisk(dataURL, fileName) {
