@@ -15,6 +15,9 @@ install:
 matrix:
   fast_finish: true
 
+platform:
+  - x64
+
 # Disable automatic builds
 build: off
 
