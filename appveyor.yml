@@ -1,6 +1,8 @@
 environment:
   matrix:
-    - nodejs_version: '8'
+    - nodejs_version: Current
+      platform: x64
+
 install:
   - choco install -y firefox --ignore-checksums
   - choco install -y googlechrome --ignore-checksums
@@ -9,19 +11,24 @@ install:
   - npm install --global npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - npm install
+
 matrix:
   fast_finish: true
+
 # Disable automatic builds
 build: off
+
 # Do not build on gh tags
 skip_tags: true
 shallow_clone: true
+
 test_script:
   - node --version
   - npm --version
   - npm run lint
   - npm run build
   - npm run test
+
 cache:
   - '%APPDATA%\npm-cache'
   - node_modules -> package.json
