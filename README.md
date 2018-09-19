@@ -289,6 +289,7 @@ player.on('startRecord', function() {
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
+| `audioBufferUpdate` | Fires continuously during audio-only recording (until recording is stopped or paused). |
 
 Media constraints
 -----------------
