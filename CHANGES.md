@@ -4,6 +4,8 @@ videojs-record changelog
 3.0.0 - unreleased
 ------------------
 
+- Add Angular example (#274)
+
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
 - In older versions a `player.recordedData.video` would be available in Chrome
