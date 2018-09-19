@@ -5,7 +5,7 @@ This directory contains the generated font used in the videojs-record plugin.
 
 The font provides extra icons used in the plugin.
 
-Continue reading if you want to customize the font.
+Continue reading if you want to customize or generate the font.
 
 Prepare
 -------
@@ -19,7 +19,8 @@ git clone https://github.com/videojs/font.git
 cd font
 ```
 
-Install the `grunt-cli` tool (you might need root user permissions here):
+Install the `grunt-cli` tool if you don't have it already (you might
+need root user permissions here):
 
 ```
 npm install -g grunt-cli
@@ -55,7 +56,7 @@ Copy the generated `_icons.scss` and font files back to the `videojs-record`
 repository:
 
 ```
-cp -v scss/_icons.scss /path/to/videojs-record/src/css
+cp -v scss/_icons.scss /path/to/videojs-record/src/css/
 cp -v fonts/videojs-record.* /path/to/videojs-record/src/fonts/
 ```
 

@@ -61,7 +61,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+                test: /\.woff2?$|\.ttf$|\.svg$/,
                 exclude: /(node_modules|bower_components|test)/,
                 use: [{
                     loader: 'url-loader',
