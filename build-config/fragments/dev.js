@@ -31,7 +31,7 @@ module.exports = {
                         'Content-Type': 'application/wasm'
                     }
                 };
-                res.sendFile(req.url, options, function (err) {
+                res.sendFile(req.url, options, function(err) {
                     if (err) {
                         next(err);
                     }
@@ -76,6 +76,9 @@ module.exports = {
             console.log('');
         },
         proxy: {
+            // =========================================
+            // file upload proxy for websocket example
+            // =========================================
             '/upload-socket': {
                 target: 'http://0.0.0.0:9999',
                 ws: true
