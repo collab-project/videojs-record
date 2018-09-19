@@ -15,6 +15,7 @@ Table of Contents
 -----------------
 
 - [Installation](#installation)
+- [Supported browsers](#supported-browsers)
 - [Dependencies](#dependencies)
 - [Usage](#usage)
   - [Audio/video/image](#audiovideoimage)
@@ -57,6 +58,21 @@ for a 1.7.x or older release.
 
 Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
 version of videojs-record.
+
+Supported browsers
+------------------
+
+| Browser        | Support           | Features |
+| ------------- |-------------|-------------|
+| Firefox | Stable / Aurora / Nightly | Audio + Video + Image |
+| Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image |
+| Opera | Stable / NEXT | Audio + Video + Image |
+| Android | Chrome / Firefox / Opera | Audio + Video + Image |
+| Microsoft Edge | Normal Build | Audio + Image but **no video** |
+| Safari 11 | Stable / Preview/beta (OSX/iOS11) | Audio + Image but **no video** |
+
+Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
+more information.
 
 Dependencies
 ------------
