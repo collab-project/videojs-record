@@ -1327,7 +1327,7 @@ class Record extends Plugin {
         this.player.allTimestamps = all;
 
         // get blob (only for MediaStreamRecorder)
-        var internal;
+        let internal;
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 internal = this.engine.engine.audioRecorder;
@@ -1344,9 +1344,20 @@ class Record extends Plugin {
         if ((internal instanceof MediaStreamRecorder) === true) {
             this.player.recordedData = internal.getArrayOfBlobs();
 
-            // inject file info for newest blob
-            this.engine.addFileInfo(
-                this.player.recordedData[this.player.recordedData.length - 1]);
+            // find newest blob
+            let index = this.player.recordedData.length - 1;
+            let latestBlob = this.player.recordedData[index];
+
+            // sometimes a File object is returned instead of a Blob
+            if ((latestBlob instanceof File) === true) {
+                // we always want Blob (so its possible to add a name
+                // property) so cast it to Blob here
+                this.player.recordedData[index] = new Blob(
+                    [latestBlob], {type: latestBlob.type});
+                latestBlob = this.player.recordedData[index];
+            }
+            // inject file info
+            this.engine.addFileInfo(latestBlob);
         }
 
         // notify others
