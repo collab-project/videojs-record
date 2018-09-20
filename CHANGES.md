@@ -4,7 +4,7 @@ videojs-record changelog
 3.0.0 - unreleased
 ------------------
 
-- Documentation: add Angular wiki page (#274)
+- Documentation: add Angular and Vue.js wiki pages (#274, #283)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
