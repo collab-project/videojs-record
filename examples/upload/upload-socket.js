@@ -11,20 +11,39 @@ const node_static = require('node-static');
 
 // create websocket
 var sockjs_upload = sockjs.createServer();
+
+var index = 0;
+
 sockjs_upload.on('connection', function(conn) {
     conn.on('data', function(data) {
+        if (data == 'start') {
+            //
+            index = 0;
 
-        console.log(colors.blue('received uploaded buffer...'), data);
+            console.log('');
+            console.log(colors.yellow('started recording'));
+            console.log('');
+        } else if (data == 'stop') {
+            //
+            console.log('');
+            console.log(colors.green('finished recording'));
+            console.log('');
+        } else {
+            //
+            index++;
 
-        // XXX: AudioBuffer to eventual file
+            console.log(colors.blue(' received audio buffer [' + colors.cyan(index) + ']...'), data);
 
-        /*
-        var fileName = uuid() + '.ogg';
-        writeToDisk(data, fileName);
+            // XXX: AudioBuffer to eventual file
 
-        console.log(colors.green('saved file.'));
-        console.log('');
-        */
+            /*
+            var fileName = uuid() + '.ogg';
+            writeToDisk(data, fileName);
+
+            console.log(colors.green('saved file.'));
+            console.log('');
+            */
+        }
     });
 });
 

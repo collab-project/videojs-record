@@ -74,15 +74,6 @@ module.exports = {
             console.log('');
             console.log(colors.green(' [examples] /upload handler ready'));
             console.log('');
-        },
-        proxy: {
-            // =========================================
-            // file upload proxy for websocket example
-            // =========================================
-            '/upload-socket': {
-                target: 'http://0.0.0.0:9999',
-                ws: true
-            }
         }
     },
     plugins: [

@@ -31,6 +31,8 @@
 
 <script>
 var sock;
+var startedRecord = false;
+
 var player = videojs('myAudio', {
     controls: true,
     width: 320,
@@ -62,7 +64,7 @@ var player = videojs('myAudio', {
     videojs.log(msg);
 
     // connect to websocket server
-    var sockjs_url = '/upload-socket';
+    var sockjs_url = 'http://0.0.0.0:9999/upload-socket';
     sock = new SockJS(sockjs_url);
 
     // websocket event handlers
@@ -88,6 +90,8 @@ player.on('error', function(error) {
 
 // user clicked the record button and started recording
 player.on('startRecord', function() {
+    startedRecord = true;
+    sock.send('start');
     console.log('started recording!');
 
     player.on('audioBufferUpdate', function() {
@@ -98,12 +102,16 @@ player.on('startRecord', function() {
 
 // user completed recording and stream is available
 player.on('finishRecord', function() {
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording:', player.recordedData);
+    startedRecord = false;
 
     // stop uploading
     player.off('audioBufferUpdate');
+
+    sock.send('stop');
+
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording:', player.recordedData);
 });
 
 function upload(data) {
