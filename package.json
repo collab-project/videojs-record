@@ -57,16 +57,19 @@
     "microphone",
     "recorder",
     "RecordRTC",
+    "MediaRecorder",
     "libvorbis.js",
     "vorbis",
     "ogg",
     "mp3",
+    "wav",
+    "webm",
     "opus"
   ],
   "dependencies": {
     "recordrtc": ">=5.4.8",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.5.0",
+    "videojs-wavesurfer": ">=2.5.1",
     "webrtc-adapter": ">=6.2.1"
   },
   "devDependencies": {
@@ -110,7 +113,7 @@
     "node-sass": "^4.9.3",
     "npm-run-all": "^4.1.3",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "opus-recorder": "^5.0.0",
+    "opus-recorder": ">=5.0.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
@@ -118,7 +121,7 @@
     "terser-webpack-plugin": "^1.1.0",
     "url-loader": "^1.1.1",
     "videojs-languages": "^1.0.0",
-    "vmsg": "^0.3.5",
+    "vmsg": ">=0.3.5",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.8",

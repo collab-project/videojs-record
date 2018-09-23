@@ -25,12 +25,14 @@ class VmsgEngine extends RecordEngine {
 
         this.config = {
             wasmURL: this.audioWorkerURL
-            //shimURL: this.sampleRate
+            // XXX: support shimURL?
+            //shimURL: this.foo
         };
 
         this.engine = new Recorder(this.config,
             this.onRecordingAvailable.bind(this));
         this.engine.stream = this.inputStream;
+
         this.engine.initWorker().then(() => {
             console.log('worker ready');
         }).catch((err) => {
