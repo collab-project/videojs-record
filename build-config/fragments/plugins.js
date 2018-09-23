@@ -45,7 +45,8 @@ module.exports = {
         'lamejs-plugin',
         'libvorbis-plugin',
         'opus-recorder-plugin',
-        'recorderjs-plugin'
+        'recorderjs-plugin',
+        'vmsg-plugin'
     ]),
     output: {
         path: path.join(rootDir, 'dist', 'plugins'),

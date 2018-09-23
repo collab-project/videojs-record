@@ -18,7 +18,7 @@ import setSrcObject from './utils/browser-shim';
 import { detectBrowser } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG} from './engine/record-engine';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
@@ -399,6 +399,7 @@ class Record extends Plugin {
                 (this.audioEngine === LIBVORBISJS ||
                  this.audioEngine === RECORDERJS ||
                  this.audioEngine === LAMEJS ||
+                 this.audioEngine === VMSG ||
                  this.audioEngine === OPUSRECORDER)) {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
@@ -430,6 +431,11 @@ class Record extends Plugin {
                 case OPUSRECORDER:
                     // opus-recorder
                     EngineClass = videojs.OpusRecorderEngine;
+                    break;
+
+                case VMSG:
+                    // vmsg
+                    EngineClass = videojs.VmsgEngine;
                     break;
 
                 default:

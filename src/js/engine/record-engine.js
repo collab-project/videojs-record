@@ -11,6 +11,7 @@ const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
+const VMSG = 'vmsg';
 
 /**
  * Base class for recorder backends.
@@ -152,5 +153,5 @@ Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
     RecordEngine,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
+    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
 };

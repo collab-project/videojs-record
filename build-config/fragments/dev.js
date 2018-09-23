@@ -19,6 +19,9 @@ module.exports = {
         contentBase: [contentBase],
         publicPath: '/',
         watchContentBase: true,
+        watchOptions: {
+            ignored: ['.chrome', 'node_modules', 'bower_components', 'coverage', 'vendor']
+        },
         // webpack-dev-server middleware
         before(app) {
             // use proper mime-type for wasm files

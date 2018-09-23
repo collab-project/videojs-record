@@ -40,10 +40,12 @@ module.exports = {
         {'video.js': 'videojs'},
         {'wavesurfer.js': 'WaveSurfer'},
         {'recordrtc': 'RecordRTC'}
+        //{'vmsg': 'vmsg'}
     ],
     module: {
         rules: [
             {
+                // javascript
                 test: /\.js$/,
                 include: path.resolve(rootDir, 'src', 'js'),
                 exclude: /(node_modules|bower_components|test)/,
@@ -52,7 +54,9 @@ module.exports = {
                 }
             },
             {
+                // scss
                 test: /\.scss$/,
+                include: path.resolve(rootDir, 'src', 'css'),
                 exclude: /(node_modules|bower_components|test)/,
                 use: [
                     MiniCssExtractPlugin.loader,
@@ -61,6 +65,7 @@ module.exports = {
                 ]
             },
             {
+                // fonts
                 test: /\.woff2?$|\.ttf$|\.svg$/,
                 exclude: /(node_modules|bower_components|test)/,
                 use: [{
