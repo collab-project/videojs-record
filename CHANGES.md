@@ -4,6 +4,7 @@ videojs-record changelog
 3.0.0 - unreleased
 ------------------
 
+- Add `msDisplayMax` option to control display of time format (#188)
 - Documentation: add Angular and Vue.js wiki pages (#274, #283)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
