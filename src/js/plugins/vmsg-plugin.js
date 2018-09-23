@@ -34,7 +34,7 @@ class VmsgEngine extends RecordEngine {
         this.engine.initWorker().then(() => {
             console.log('worker ready');
         }).catch((err) => {
-            console.log(err)
+            console.log(err);
         });
     }
 
