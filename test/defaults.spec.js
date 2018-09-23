@@ -20,6 +20,7 @@ describe('pluginDefaultOptions', () => {
             video: false,
             animation: false,
             maxLength: 10,
+            msDisplayMax: 3,
             frameWidth: 320,
             frameHeight: 240,
             debug: false,

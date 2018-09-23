@@ -125,6 +125,7 @@ class Record extends Plugin {
         this.recordVideo = recordOptions.video;
         this.recordAnimation = recordOptions.animation;
         this.maxLength = recordOptions.maxLength;
+        this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
         this.debug = recordOptions.debug;
         this.recordTimeSlice = recordOptions.timeSlice;
         this.autoMuteDevice = recordOptions.autoMuteDevice;

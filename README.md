@@ -238,6 +238,7 @@ The available options for this plugin are:
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
+| `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/mic devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
