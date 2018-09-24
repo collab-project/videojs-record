@@ -45,7 +45,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: false, // enable for headless testing
+        singleRun: true, // enable for headless testing
         autoWatch: false,
         files: [
             // demo files
