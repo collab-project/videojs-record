@@ -45,7 +45,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: true, // enable for headless testing
+        singleRun: false, // enable for headless testing
         autoWatch: false,
         files: [
             // demo files
@@ -80,6 +80,8 @@ module.exports = function(config) {
             {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false, served: true},
             {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
             'node_modules/opus-recorder/dist/recorder.min.js',
+            // vmsg
+            {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
 
             // only available on CDN
             'http://cdn.webrtc-experiment.com/gif-recorder.js',
@@ -176,8 +178,8 @@ module.exports = function(config) {
         }
     };
 
-    if (ci) {
-        configuration.browsers = ['Chrome_dev', 'Firefox_dev'];
+    //if (ci) {
+        configuration.browsers = ['Chrome_dev']; //, 'Firefox_dev'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
@@ -187,7 +189,7 @@ module.exports = function(config) {
             // lcov or lcovonly are required for generating lcov.info files
             configuration.coverageReporter.type = 'lcov';
         }
-    }
+    //}
 
     config.set(configuration);
 };

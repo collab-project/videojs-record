@@ -40,7 +40,6 @@ module.exports = {
         {'video.js': 'videojs'},
         {'wavesurfer.js': 'WaveSurfer'},
         {'recordrtc': 'RecordRTC'}
-        //{'vmsg': 'vmsg'}
     ],
     module: {
         rules: [

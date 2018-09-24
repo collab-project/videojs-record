@@ -31,20 +31,19 @@ class VmsgEngine extends RecordEngine {
             this.onRecordingAvailable.bind(this));
         this.engine.stream = this.inputStream;
 
-        this.engine.initWorker().then(() => {
-            let AudioContext = window.AudioContext || window.webkitAudioContext;
-            this.audioContext = new AudioContext();
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.audioContext = new AudioContext();
 
-            this.audioSourceNode = this.audioContext.createMediaStreamSource(
-                this.inputStream);
-            // a bufferSize of 0 instructs the browser to choose the best bufferSize
-            this.processor = this.audioContext.createScriptProcessor(
-                0, 1, 1);
-            this.audioSourceNode.connect(this.processor);
-        }).catch((err) => {
+        this.audioSourceNode = this.audioContext.createMediaStreamSource(
+            this.inputStream);
+        // a bufferSize of 0 instructs the browser to choose the best bufferSize
+        this.processor = this.audioContext.createScriptProcessor(
+            0, 1, 1);
+        this.audioSourceNode.connect(this.processor);
+
+        this.engine.initWorker().catch((err) => {
             // invalid message received
             this.player().trigger('error', err);
-            console.log(err);
         });
     }
 
@@ -53,7 +52,9 @@ class VmsgEngine extends RecordEngine {
      */
     start() {
         this.engine.blob = null;
-        if (this.engine.blobURL) URL.revokeObjectURL(this.engine.blobURL);
+        if (this.engine.blobURL) {
+            URL.revokeObjectURL(this.engine.blobURL);
+        }
         this.engine.blobURL = null;
 
         this.engine.worker.postMessage({type: 'start', data: this.audioContext.sampleRate});
@@ -65,10 +66,13 @@ class VmsgEngine extends RecordEngine {
      * Stop recording.
      */
     stop() {
-        this.processor.disconnect();
-        this.processor.onaudioprocess = null;
-
-        this.engine.worker.postMessage({type: 'stop', data: null});
+        if (this.processor) {
+            this.processor.disconnect();
+            this.processor.onaudioprocess = null;
+        }
+        if (this.engine && this.engine.worker !== undefined) {
+            this.engine.worker.postMessage({type: 'stop', data: null});
+        }
     }
 
     /**
@@ -77,7 +81,6 @@ class VmsgEngine extends RecordEngine {
      */
     onAudioProcess(ev) {
         const samples = ev.inputBuffer.getChannelData(0);
-
         this.engine.worker.postMessage({type: 'data', data: samples});
     }
 

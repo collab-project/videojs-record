@@ -6,7 +6,7 @@ import document from 'global/document';
 
 import {Player, mergeOptions} from 'video.js';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG} from '../src/js/engine/record-engine.js';
 
 
 const TestHelpers = {
@@ -129,6 +129,11 @@ const TestHelpers = {
 
             case RECORDERJS:
                 recordPluginOptions.audioEngine = RECORDERJS;
+                break;
+
+            case VMSG:
+                recordPluginOptions.audioEngine = VMSG;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/vmsg/vmsg.wasm';
                 break;
 
             default:
