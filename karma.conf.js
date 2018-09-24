@@ -178,8 +178,8 @@ module.exports = function(config) {
         }
     };
 
-    //if (ci) {
-        configuration.browsers = ['Chrome_dev']; //, 'Firefox_dev'];
+    if (ci) {
+        configuration.browsers = ['Chrome_dev', 'Firefox_dev'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
@@ -189,7 +189,7 @@ module.exports = function(config) {
             // lcov or lcovonly are required for generating lcov.info files
             configuration.coverageReporter.type = 'lcov';
         }
-    //}
+    }
 
     config.set(configuration);
 };
