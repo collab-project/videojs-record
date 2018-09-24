@@ -21,12 +21,10 @@ class VmsgEngine extends RecordEngine {
         this.inputStream = stream;
         this.mediaType = mediaType;
         this.debug = debug;
-        this.audioType = 'audio/mp3';
 
         this.config = {
             wasmURL: this.audioWorkerURL
             // XXX: support shimURL?
-            //shimURL: this.foo
         };
 
         this.engine = new Recorder(this.config,
@@ -34,8 +32,18 @@ class VmsgEngine extends RecordEngine {
         this.engine.stream = this.inputStream;
 
         this.engine.initWorker().then(() => {
-            console.log('worker ready');
+            let AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.audioContext = new AudioContext();
+
+            this.audioSourceNode = this.audioContext.createMediaStreamSource(
+                this.inputStream);
+            // a bufferSize of 0 instructs the browser to choose the best bufferSize
+            this.processor = this.audioContext.createScriptProcessor(
+                0, 1, 1);
+            this.audioSourceNode.connect(this.processor);
         }).catch((err) => {
+            // invalid message received
+            this.player().trigger('error', err);
             console.log(err);
         });
     }
@@ -44,52 +52,40 @@ class VmsgEngine extends RecordEngine {
      * Start recording.
      */
     start() {
-        this.engine.startRecording();
-        /*
-        if (!this.stream) throw new Error("missing audio initialization");
-        if (!this.worker) throw new Error("missing worker initialization");
-        this.blob = null;
-        if (this.blobURL) URL.revokeObjectURL(this.blobURL);
-        this.blobURL = null;
-        this.resolve = null;
-        this.reject = null;
-        this.worker.postMessage({type: "start", data: this.audioCtx.sampleRate});
-        this.encNode.onaudioprocess = (e) => {
-          const samples = e.inputBuffer.getChannelData(0);
-          this.worker.postMessage({type: "data", data: samples});
-        };
-        this.encNode.connect(this.audioCtx.destination);
-        */
+        this.engine.blob = null;
+        if (this.engine.blobURL) URL.revokeObjectURL(this.engine.blobURL);
+        this.engine.blobURL = null;
+
+        this.engine.worker.postMessage({type: 'start', data: this.audioContext.sampleRate});
+        this.processor.onaudioprocess = this.onAudioProcess.bind(this);
+        this.processor.connect(this.audioContext.destination);
     }
 
     /**
      * Stop recording.
      */
     stop() {
-        this.engine.stopRecording();
-        /*
-        if (!this.stream) throw new Error("missing audio initialization");
-        if (!this.worker) throw new Error("missing worker initialization");
-        this.encNode.disconnect();
-        this.encNode.onaudioprocess = null;
-        // Might be missed in Safari and old FF/Chrome per MDN.
-        if (this.stream.getTracks) {
-          // Hide browser's recording indicator.
-          this.stream.getTracks().forEach((track) => track.stop());
-        }
-        this.worker.postMessage({type: "stop", data: null});
-        return new Promise((resolve, reject) => {
-          this.resolve = resolve;
-          this.reject = reject;
-        });
-        */
+        this.processor.disconnect();
+        this.processor.onaudioprocess = null;
+
+        this.engine.worker.postMessage({type: 'stop', data: null});
+    }
+
+    /**
+     * Continuous encoding of audio data.
+     * @private
+     */
+    onAudioProcess(ev) {
+        const samples = ev.inputBuffer.getChannelData(0);
+
+        this.engine.worker.postMessage({type: 'data', data: samples});
     }
 
     /**
      * @private
      */
-    onRecordingAvailable(blob) {
-        this.onStopRecording(blob);
+    onRecordingAvailable() {
+        this.onStopRecording(this.engine.blob);
     }
 }
 
