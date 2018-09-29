@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Add support for screen capture (#289)
+- New gifshot plugin for improved animated GIF support (#291)
 - Add `msDisplayMax` option to control display of time format (#188)
 - Documentation: add Angular and Vue.js wiki pages (#274, #283)
 
@@ -15,6 +16,8 @@ videojs-record changelog
   is always a `Blob` across all recording types and browsers now (#269)
 - Upgraded to video.js/font 3.0.0: removed support for IE8, 9, 10, and
   Android < 4.4 by removing support for the `eot` font file (#279)
+- Support for animated GIF recording using RecordRTC was removed and replaced
+  with a new gifshot plugin (#291)
 
 
 2.4.1 - 2018/08/03
