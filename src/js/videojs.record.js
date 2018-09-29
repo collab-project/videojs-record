@@ -243,6 +243,7 @@ class Record extends Plugin {
         // hide play control
         this.player.controlBar.playToggle.hide();
 
+        // trigger early warning if screen-only is not supported
         if (this.getRecordType() === SCREEN_ONLY &&
             'getDisplayMedia' in navigator === false) {
             // screen capture not supported in this browser
@@ -379,10 +380,11 @@ class Record extends Plugin {
             case SCREEN_ONLY:
                 // setup screen
                 this.mediaType = {
-                    // animated GIF
+                    // screen capture
                     audio: false,
                     video: false,
-                    screen: true
+                    screen: true,
+                    gif: false
                 };
                 navigator.getDisplayMedia({
                     video: true
