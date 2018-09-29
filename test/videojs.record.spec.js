@@ -278,10 +278,8 @@ describe('Record', () => {
         });
 
         player.one('finishRecord', () => {
-            if (isFirefox()) {
-                expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
-                expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
-            }
+            expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
+            expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)
