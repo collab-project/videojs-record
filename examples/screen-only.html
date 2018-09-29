@@ -33,8 +33,8 @@ if (adapter.browserDetails.browser == 'firefox') {
 
 var player = videojs("myScreen", {
     controls: true,
-    width: 320,
-    height: 240,
+    width: 800,
+    height: 450,
     fluid: false,
     controlBar: {
         volumePanel: false,
@@ -66,7 +66,7 @@ player.on('error', function(error) {
 player.on('finishRecord', function() {
     // the blob object contains the image data that
     // can be downloaded by the user, stored on server etc.
-    console.log('snapshot ready: ', player.recordedData);
+    console.log('screen capture ready: ', player.recordedData);
 });
 </script>
 

@@ -127,6 +127,7 @@ class Record extends Plugin {
         this.recordAudio = recordOptions.audio;
         this.recordVideo = recordOptions.video;
         this.recordAnimation = recordOptions.animation;
+        this.recordScreen = recordOptions.screen;
         this.maxLength = recordOptions.maxLength;
         this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
         this.debug = recordOptions.debug;
@@ -190,6 +191,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 // customize controls
                 this.player.bigPlayButton.hide();
 
@@ -360,6 +362,23 @@ class Record extends Plugin {
                 navigator.mediaDevices.getUserMedia({
                     audio: false,
                     video: this.recordAnimation
+                }).then(
+                    this.onDeviceReady.bind(this)
+                ).catch(
+                    this.onDeviceError.bind(this)
+                );
+                break;
+
+            case SCREEN_ONLY:
+                // setup screen
+                this.mediaType = {
+                    // animated GIF
+                    audio: false,
+                    video: false,
+                    screen: true
+                };
+                navigator.getDisplayMedia({
+                    video: true
                 }).then(
                     this.onDeviceReady.bind(this)
                 ).catch(
@@ -592,6 +611,7 @@ class Record extends Plugin {
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
+                case SCREEN_ONLY:
                     // preview video stream in video element
                     this.startVideoPreview();
                     break;
@@ -634,6 +654,7 @@ class Record extends Plugin {
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
                 case ANIMATION:
+                case SCREEN_ONLY:
                     // wait for media stream on video element to actually load
                     this.player.one('loadedmetadata', () => {
                         // start actually recording process
@@ -807,6 +828,7 @@ class Record extends Plugin {
 
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
+            case SCREEN_ONLY:
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
@@ -936,6 +958,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 this.streamCurrentTime = Math.min(currentTime, duration);
 
                 // update current time display component
@@ -974,6 +997,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 // update duration display component
                 this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
@@ -999,6 +1023,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
                     // assign blob using createObjectURL
                     setSrcObject(url, this.mediaElement, false);
