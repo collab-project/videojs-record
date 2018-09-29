@@ -64,12 +64,12 @@ Supported browsers
 
 | Browser        | Support           | Features |
 | ------------- |-------------|-------------|
-| Firefox | Stable / Aurora / Nightly | Audio + Video + Image |
-| Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image |
-| Opera | Stable / NEXT | Audio + Video + Image |
+| Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen |
+| Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + screen |
+| Opera | Stable / NEXT | Audio + Video + Image + Screen |
 | Android | Chrome / Firefox / Opera | Audio + Video + Image |
-| Microsoft Edge | Normal Build | Audio + Image but **no video** |
-| Safari 11 | Stable / Preview/beta (OSX/iOS11) | Audio + Image but **no video** |
+| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
+| Safari 11 | Stable / Preview/beta (OSX/iOS11) | Audio + Image but **no video or screen** |
 
 Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
 more information.
@@ -170,6 +170,7 @@ Examples
 - audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html))
 - image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
+- screen capture ([demo](https://collab-project.github.io/videojs-record/examples/screen-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html))
 
 To try out the examples locally, download the [zipfile](https://github.com/collab-project/videojs-record/archive/master.zip)
 and unpack it, or checkout the repository using Git:
@@ -236,6 +237,7 @@ The available options for this plugin are:
 | `audio` | boolean or object | `false` | Include audio in the recorded clip. |
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
+| `screen` | boolean or object | `false` | Screen capture without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
@@ -269,7 +271,7 @@ player.record().destroy();
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
-| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
+| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `screen_only`, `audio_only`, `video_only` or `audio_video`. |
 | `saveAs` | Show save as dialog in browser so the user can [store the recorded media locally](#save-data). |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `reset` | Not as destructive as `destroy`: use this if you want to reset the player interface and recorder state. |
@@ -315,7 +317,7 @@ Media constraints
 allow you to specify the types of media to request, along with any requirements
 for each type.
 
-The following example shows how to change the camera resolution to 1280 by 720
+The following example shows how to change the camera or screen resolution to 1280 by 720
 pixels:
 
 ```javascript

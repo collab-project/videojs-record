@@ -4,7 +4,7 @@
 
 import TestHelpers from './test-helpers.js';
 
-import { isFirefox } from '../src/js/utils/detect-browser.js';
+import { isFirefox, detectBrowser } from '../src/js/utils/detect-browser.js';
 
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
@@ -223,6 +223,44 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record} */
+    it('runs as screen-only plugin', (done) => {
+        // create screen-only plugin
+        player = TestHelpers.makeScreenOnlyPlayer();
+        // correct device button icon
+        expect(player.deviceButton.buildCSSClass().endsWith(
+            'screen-perm')).toBeTrue();
+
+        let browser = detectBrowser();
+        if (isFirefox() || (browser.browser == 'chrome' && browser.version >= 70)) {
+            player.one('finishRecord', () => {
+                // received a blob file
+                expect(player.recordedData instanceof Blob).toBeTruthy();
+
+                // wait till it's loaded before destroying
+                // (XXX: create new event for this)
+                setTimeout(done, 1000);
+            });
+
+            player.one('deviceReady', () => {
+                // start recording for few seconds
+                player.record().start();
+
+                setTimeout(() => {
+                    // stop recording
+                    player.record().stop();
+                }, 2000);
+            });
+
+            player.one('ready', () => {
+                // start device
+                player.record().getDevice();
+            });
+        } else {
+            player.one('error', done);
+        }
+    });
+
     /** @test {Record#destroy} */
     it('destroys', (done) => {
         // create new player
@@ -278,11 +316,11 @@ describe('Record', () => {
         });
 
         player.one('finishRecord', () => {
-            if (isFirefox()) {
+            let browser = detectBrowser();
+            if (isFirefox() || (browser.browser == 'chrome' && browser.version >= 70)) {
                 expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
                 expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
             }
-
             // wait till it's loaded before destroying
             // (XXX: create new event for this)
             setTimeout(done, 1000);

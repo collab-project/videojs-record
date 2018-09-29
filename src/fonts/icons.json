@@ -14,6 +14,10 @@
     "svg": "av/svg/production/ic_mic_48px.svg"
   },
   {
+    "name": "screen-perm",
+    "svg": "communication/svg/production/ic_screen_share_48px.svg"
+  },
+  {
     "name": "record-start",
     "svg": "image/svg/production/ic_lens_48px.svg"
   },

@@ -19,6 +19,7 @@ describe('pluginDefaultOptions', () => {
             audio: false,
             video: false,
             animation: false,
+            screen: false,
             maxLength: 10,
             msDisplayMax: 3,
             frameWidth: 320,

@@ -13,6 +13,8 @@ const pluginDefaultOptions = {
     video: false,
     // Animated GIF.
     animation: false,
+    // Screen capture.
+    screen: false,
     // Maximum length of the recorded clip.
     maxLength: 10,
     // msDisplayMax indicates the number of seconds that is

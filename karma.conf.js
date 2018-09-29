@@ -30,7 +30,8 @@ var chromeFlags = [
     '--disable-extensions',
     '--disable-infobars',
     '--ignore-certificate-errors',
-    '--allow-insecure-localhost'
+    '--allow-insecure-localhost',
+    '--enable-experimental-web-platform-features'
 ];
 var firefoxFlags = {
     'media.navigator.permission.disabled': true,
