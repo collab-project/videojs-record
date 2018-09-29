@@ -1,7 +1,7 @@
 sudo: false
 dist: trusty
 addons:
-  chrome: stable
+  chrome: beta
   firefox: latest
 language: node_js
 node_js:
@@ -10,9 +10,9 @@ install:
   - npm prune
   - npm install
 script:
-  - npm run lint
-  - npm run build
-  - npm run test
+  - npm run lint || travis_terminate 1
+  - npm run build || travis_terminate 1
+  - npm run test || travis_terminate 1
 cache:
   directories:
     - node_modules

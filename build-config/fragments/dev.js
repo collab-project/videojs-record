@@ -23,7 +23,7 @@ module.exports = {
             // =============================================
             // use proper mime-type for wasm files
             // =============================================
-            app.get('*.wasm', function(req, res, next) {
+            app.get('*.wasm', (req, res, next) => {
                 var options = {
                     root: contentBase,
                     dotfiles: 'deny',
@@ -31,12 +31,14 @@ module.exports = {
                         'Content-Type': 'application/wasm'
                     }
                 };
-                res.sendFile(req.url, options, function(err) {
+
+                res.sendFile(req.url, options, (err) => {
                     if (err) {
                         next(err);
                     }
                 });
             });
+
             console.log('');
             console.log(colors.green(' [examples] wasm mime-type handler ready'));
             console.log('');
@@ -44,7 +46,8 @@ module.exports = {
             // =============================================
             // file upload handler for simple upload example
             // =============================================
-            app.post('/upload', function(req, res) {
+            // file upload handler for examples
+            app.post('/upload', (req, res) => {
                 // save uploaded file
                 var form = new formidable.IncomingForm();
                 form.uploadDir = 'uploads';
@@ -52,18 +55,18 @@ module.exports = {
 
                 console.log('saving uploaded file...');
 
-                form.on('fileBegin', function(name, file) {
+                form.on('fileBegin', (name, file) => {
                     // use original filename in this example
                     file.path = form.uploadDir + '/' + file.name;
                     console.log(colors.yellow('filename:', file.name));
                 });
 
-                form.on('end', function() {
+                form.on('end', () => {
                     console.log(colors.green('saved file.'));
                     console.log('');
                 });
 
-                form.parse(req, function(err, fields, files) {
+                form.parse(req, (err, fields, files) => {
                     res.writeHead(200, {'content-type': 'text/plain'});
                     res.write('received upload:\n\n');
                     res.end(util.inspect({fields: fields, files: files}));

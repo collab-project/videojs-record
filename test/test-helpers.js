@@ -6,6 +6,8 @@ import document from 'global/document';
 
 import {Player, mergeOptions} from 'video.js';
 
+import {browserShim, browserDetails} from 'webrtc-adapter';
+
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
 
 
@@ -213,6 +215,34 @@ const TestHelpers = {
                 }
             }
         });
+    },
+
+    makeScreenOnlyPlayer(newOptions) {
+        // use polyfill in Firefox for now, see:
+        // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
+        if (browserDetails.browser == 'firefox') {
+            browserShim.shimGetDisplayMedia(window, 'screen');
+        }
+        let opts = {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 400,
+            height: 225,
+            plugins: {
+                record: {
+                    audio: false,
+                    video: false,
+                    screen: true,
+                    maxLength: 5,
+                    debug: true
+                }
+            }
+        };
+        opts = mergeOptions(opts, newOptions);
+        let tag = TestHelpers.makeTag('video', 'screenOnly');
+        return this.makePlayer(tag, opts);
     },
 
     makeAnimatedPlayer() {

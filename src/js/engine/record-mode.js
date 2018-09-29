@@ -9,14 +9,18 @@ const AUDIO_ONLY = 'audio_only';
 const VIDEO_ONLY = 'video_only';
 const AUDIO_VIDEO = 'audio_video';
 const ANIMATION = 'animation';
+const SCREEN_ONLY = 'screen_only';
 
 
-const getRecorderMode = function(image, audio, video, animation) {
+const getRecorderMode = function(image, audio, video, animation, screen) {
     if (isModeEnabled(image)) {
         return IMAGE_ONLY;
 
     } else if (isModeEnabled(animation)) {
         return ANIMATION;
+
+    } else if (isModeEnabled(screen)) {
+        return SCREEN_ONLY;
 
     } else if (isModeEnabled(audio) && !isModeEnabled(video)) {
         return AUDIO_ONLY;
@@ -40,5 +44,5 @@ const isModeEnabled = function(mode) {
 
 export {
     getRecorderMode,
-    IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION
+    IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY
 };
