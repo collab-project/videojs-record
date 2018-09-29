@@ -4,7 +4,7 @@
 
 import TestHelpers from './test-helpers.js';
 
-import { isFirefox } from '../src/js/utils/detect-browser.js';
+import { isFirefox, detectBrowser } from '../src/js/utils/detect-browser.js';
 
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
@@ -278,9 +278,11 @@ describe('Record', () => {
         });
 
         player.one('finishRecord', () => {
-            expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
-            expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
-
+            let browser = detectBrowser();
+            if (isFirefox() || (browser.browser == 'chrome' && browser.version >= 70)) {
+                expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
+                expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
+            }
             // wait till it's loaded before destroying
             // (XXX: create new event for this)
             setTimeout(done, 1000);
