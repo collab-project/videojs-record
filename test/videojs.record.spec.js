@@ -223,6 +223,44 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record} */
+    it('runs as screen-only plugin', (done) => {
+        // create screen-only plugin
+        player = TestHelpers.makeScreenOnlyPlayer();
+        // correct device button icon
+        expect(player.deviceButton.buildCSSClass().endsWith(
+            'screen-perm')).toBeTrue();
+
+        let browser = detectBrowser();
+        if (isFirefox() || (browser.browser == 'chrome' && browser.version >= 70)) {
+            player.one('finishRecord', () => {
+                // received a blob file
+                expect(player.recordedData instanceof Blob).toBeTruthy();
+
+                // wait till it's loaded before destroying
+                // (XXX: create new event for this)
+                setTimeout(done, 1000);
+            });
+
+            player.one('deviceReady', () => {
+                // start recording for few seconds
+                player.record().start();
+
+                setTimeout(() => {
+                    // stop recording
+                    player.record().stop();
+                }, 2000);
+            });
+
+            player.one('ready', () => {
+                // start device
+                player.record().getDevice();
+            });
+        } else {
+            player.one('error', done);
+        }
+    });
+
     /** @test {Record#destroy} */
     it('destroys', (done) => {
         // create new player
