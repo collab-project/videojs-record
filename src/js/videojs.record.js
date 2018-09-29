@@ -242,6 +242,13 @@ class Record extends Plugin {
 
         // hide play control
         this.player.controlBar.playToggle.hide();
+
+        if (this.getRecordType() === SCREEN_ONLY &&
+            'getDisplayMedia' in navigator === false) {
+            // screen capture not supported in this browser
+            let errorMessage = 'getDisplayMedia is not supported';
+            this.player.trigger('error', errorMessage);
+        }
     }
 
     /**
