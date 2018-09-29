@@ -4,6 +4,7 @@ videojs-record changelog
 3.0.0 - unreleased
 ------------------
 
+- Add support for screen capture (#289)
 - Add `msDisplayMax` option to control display of time format (#188)
 - Documentation: add Angular and Vue.js wiki pages (#274, #283)
 

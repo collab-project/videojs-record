@@ -19,7 +19,7 @@ import { detectBrowser } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from './engine/record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
 
@@ -75,8 +75,11 @@ class Record extends Plugin {
             case AUDIO_ONLY:
                 deviceIcon = 'audio-perm';
                 break;
+            case SCREEN_ONLY:
+                deviceIcon = 'screen-perm';
+                break;
         }
-        DeviceButton.prototype.buildCSSClass = function() {
+        DeviceButton.prototype.buildCSSClass = () => {
             // use dynamic icon class
             return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
         };
@@ -124,6 +127,7 @@ class Record extends Plugin {
         this.recordAudio = recordOptions.audio;
         this.recordVideo = recordOptions.video;
         this.recordAnimation = recordOptions.animation;
+        this.recordScreen = recordOptions.screen;
         this.maxLength = recordOptions.maxLength;
         this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
         this.debug = recordOptions.debug;
@@ -187,6 +191,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 // customize controls
                 this.player.bigPlayButton.hide();
 
@@ -237,6 +242,14 @@ class Record extends Plugin {
 
         // hide play control
         this.player.controlBar.playToggle.hide();
+
+        // trigger early warning if screen-only is not supported
+        if (this.getRecordType() === SCREEN_ONLY &&
+            'getDisplayMedia' in navigator === false) {
+            // screen capture not supported in this browser
+            let errorMessage = 'getDisplayMedia is not supported';
+            this.player.trigger('error', errorMessage);
+        }
     }
 
     /**
@@ -357,6 +370,24 @@ class Record extends Plugin {
                 navigator.mediaDevices.getUserMedia({
                     audio: false,
                     video: this.recordAnimation
+                }).then(
+                    this.onDeviceReady.bind(this)
+                ).catch(
+                    this.onDeviceError.bind(this)
+                );
+                break;
+
+            case SCREEN_ONLY:
+                // setup screen
+                this.mediaType = {
+                    // screen capture
+                    audio: false,
+                    video: false,
+                    screen: true,
+                    gif: false
+                };
+                navigator.getDisplayMedia({
+                    video: true
                 }).then(
                     this.onDeviceReady.bind(this)
                 ).catch(
@@ -589,6 +620,7 @@ class Record extends Plugin {
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
+                case SCREEN_ONLY:
                     // preview video stream in video element
                     this.startVideoPreview();
                     break;
@@ -631,6 +663,7 @@ class Record extends Plugin {
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
                 case ANIMATION:
+                case SCREEN_ONLY:
                     // wait for media stream on video element to actually load
                     this.player.one('loadedmetadata', () => {
                         // start actually recording process
@@ -804,6 +837,7 @@ class Record extends Plugin {
 
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
+            case SCREEN_ONLY:
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
@@ -933,6 +967,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 this.streamCurrentTime = Math.min(currentTime, duration);
 
                 // update current time display component
@@ -971,6 +1006,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 // update duration display component
                 this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
@@ -996,6 +1032,7 @@ class Record extends Plugin {
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
             case ANIMATION:
+            case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
                     // assign blob using createObjectURL
                     setSrcObject(url, this.mediaElement, false);
@@ -1160,7 +1197,7 @@ class Record extends Plugin {
      */
     getRecordType() {
         return getRecorderMode(this.recordImage, this.recordAudio,
-            this.recordVideo, this.recordAnimation);
+            this.recordVideo, this.recordAnimation, this.recordScreen);
     }
 
     /**
