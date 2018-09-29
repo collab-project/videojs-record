@@ -19,7 +19,7 @@ import { detectBrowser } from './utils/detect-browser';
 
 import RecordRTCEngine from './engine/record-rtc';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, getRecorderMode} from './engine/record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
 
@@ -75,8 +75,11 @@ class Record extends Plugin {
             case AUDIO_ONLY:
                 deviceIcon = 'audio-perm';
                 break;
+            case SCREEN_ONLY:
+                deviceIcon = 'screen-perm';
+                break;
         }
-        DeviceButton.prototype.buildCSSClass = function() {
+        DeviceButton.prototype.buildCSSClass = () => {
             // use dynamic icon class
             return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
         };
@@ -1160,7 +1163,7 @@ class Record extends Plugin {
      */
     getRecordType() {
         return getRecorderMode(this.recordImage, this.recordAudio,
-            this.recordVideo, this.recordAnimation);
+            this.recordVideo, this.recordAnimation, this.recordScreen);
     }
 
     /**
