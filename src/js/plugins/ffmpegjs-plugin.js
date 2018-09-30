@@ -1,6 +1,6 @@
 /**
  * @file ffmpegjs-plugin.js
- * @since 2.1.0
+ * @since x.x.x
  */
 
 const RecordEngine = videojs.getComponent('RecordEngine');
