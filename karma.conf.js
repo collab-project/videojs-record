@@ -69,7 +69,7 @@ module.exports = function(config) {
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
-            // optional library dependencies for audio plugins
+            // optional library dependencies for plugins
             // recorder.js
             'node_modules/recorderjs/dist/recorder.js',
             // libvorbis.js
@@ -81,9 +81,6 @@ module.exports = function(config) {
             {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false, served: true},
             {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
             'node_modules/opus-recorder/dist/recorder.min.js',
-
-            // only available on CDN
-            'http://cdn.webrtc-experiment.com/gif-recorder.js',
 
             // specs
             {pattern: 'test/**/*.spec.js', watched: false}
