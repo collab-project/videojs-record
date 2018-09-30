@@ -8,8 +8,7 @@
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
 
   <script src="../node_modules/video.js/dist/video.min.js"></script>
-  <script src="../node_modules/recordrtc/RecordRTC.js"></script>
-  <script src="//cdn.webrtc-experiment.com/gif-recorder.js"></script>
+  <script src="../node_modules/gifshot/dist/gifshot.js"></script>
   <script src="../node_modules/webrtc-adapter/out/adapter.js"></script>
 
   <script src="../dist/videojs.record.js"></script>
@@ -23,9 +22,70 @@
 </head>
 <body>
 
-<video id="myVideo" class="video-js vjs-default-skin"></video>
+<video id="myVideo" class="video-js vjs-default-skin" style="width: 200px; height: 200px;"></video>
+
+<button onclick="startCam(event)">Start Cam</button>
+
+<button id="recordBtn" onclick="record(event)" style="display: none;">Record</button>
 
 <script>
+
+var mainStream;
+
+function startCam(event) {
+  // hide btn
+  event.currentTarget.style.display = 'none';
+
+  // show record btn
+  document.getElementById('recordBtn').style.display = 'block';
+
+  navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: true
+  }).then(function(stream) {
+
+      mainStream = stream;
+
+      console.log('Camera ready. \nUsing gifshot ' + gifshot.VERSION);
+
+      console.log('isWebCamGIFSupported: ' + gifshot.isWebCamGIFSupported());
+
+  }).catch(function(err){
+      console.log(err);
+  });
+}
+
+function record() {
+    // By default, a user's webcam is used to create the animated GIF
+    gifshot.createGIF({
+      'text': new Date().toUTCString(),
+      'textBaseline': 'center',
+      'resizeFont': true,
+      // You can pass an existing video element to use for the webcam GIF creation process,
+      // and this video element will not be hidden (useful when used with the keepCameraOn option)
+      // Pro tip: Set the height and width of the video element to the same values as your future GIF
+      // Another Pro Tip: If you use this option, the video will not be paused, the object url not revoked, and
+      // the video will not be removed from the DOM.  You will need to handle this yourself.
+      'webcamVideoElement': null,
+      // Whether or not you would like the user's camera to stay on after the GIF is created
+      // Note: The cameraStream Media object is passed back to you in the createGIF() callback function
+      'keepCameraOn': true,
+      // Expects a cameraStream Media object
+      // Note: Passing an existing camera stream will allow you to create another GIF and/or snapshot without
+      //  asking for the user's permission to access the camera again if you are not using SSL
+      'cameraStream': mainStream
+
+    }, function(obj) {
+      if (!obj.error) {
+        var image = obj.image,
+        animatedImage = document.createElement('img');
+        animatedImage.src = image;
+        document.body.appendChild(animatedImage);
+      }
+    });
+}
+
+/*
 var player = videojs('myVideo', {
     controls: true,
     width: 320,
@@ -48,7 +108,7 @@ var player = videojs('myVideo', {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
-        ' and recordrtc ' + RecordRTC.version;
+        ' and recordrtc ' + RecordRTC.version + ' with gifshot ' + gifshot.VERSION;
     videojs.log(msg);
 });
 
@@ -72,6 +132,7 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
 });
+*/
 </script>
 
 </body>
