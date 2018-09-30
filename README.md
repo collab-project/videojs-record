@@ -15,6 +15,7 @@ Table of Contents
 -----------------
 
 - [Installation](#installation)
+- [Supported browsers](#supported-browsers)
 - [Dependencies](#dependencies)
 - [Usage](#usage)
   - [Audio/video/image](#audiovideoimage)
@@ -35,6 +36,7 @@ Table of Contents
 - [Localization](#localization)
 - [Webpack](#webpack)
 - [Using with React](#using-with-react)
+- [Using with Angular](#using-with-angular)
 - [More features using other plugins](#more-features-using-other-plugins)
 - [Development](#development)
 - [Font](#font)
@@ -49,13 +51,28 @@ or [download](https://github.com/collab-project/videojs-record/releases) the lib
 and dependencies elsewhere. If you want to try the examples, check
 [these instructions below](#examples).
 
-Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer.js 2.0 or
+Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer 2.0 or
 newer. If you want to use this plugin with an older version, check the
 [archived releases](https://github.com/collab-project/videojs-record/releases?after=1.7.1)
 for a 1.7.x or older release.
 
 Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
 version of videojs-record.
+
+Supported browsers
+------------------
+
+| Browser        | Support           | Features |
+| ------------- |-------------|-------------|
+| Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen |
+| Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + screen |
+| Opera | Stable / NEXT | Audio + Video + Image + Screen |
+| Android | Chrome / Firefox / Opera | Audio + Video + Image |
+| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
+| Safari 11 | Stable / Preview/beta (OSX/iOS11) | Audio + Image but **no video or screen** |
+
+Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
+more information.
 
 Dependencies
 ------------
@@ -153,6 +170,7 @@ Examples
 - audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html))
 - image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
+- screen capture ([demo](https://collab-project.github.io/videojs-record/examples/screen-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html))
 
 To try out the examples locally, download the [zipfile](https://github.com/collab-project/videojs-record/archive/master.zip)
 and unpack it, or checkout the repository using Git:
@@ -219,8 +237,10 @@ The available options for this plugin are:
 | `audio` | boolean or object | `false` | Include audio in the recorded clip. |
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
+| `screen` | boolean or object | `false` | Screen capture without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
+| `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/mic devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
@@ -251,7 +271,7 @@ player.record().destroy();
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
-| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only` or `audio_video`. |
+| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `screen_only`, `audio_only`, `video_only` or `audio_video`. |
 | `saveAs` | Show save as dialog in browser so the user can [store the recorded media locally](#save-data). |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `reset` | Not as destructive as `destroy`: use this if you want to reset the player interface and recorder state. |
@@ -297,7 +317,7 @@ Media constraints
 allow you to specify the types of media to request, along with any requirements
 for each type.
 
-The following example shows how to change the camera resolution to 1280 by 720
+The following example shows how to change the camera or screen resolution to 1280 by 720
 pixels:
 
 ```javascript
@@ -404,11 +424,6 @@ player.on('finishRecord', function() {
     console.log('finished recording:', player.recordedData);
 
     var data = player.recordedData;
-    if (player.recordedData.video) {
-        // for chrome (when recording audio+video)
-        data = player.recordedData.video;
-    }
-
     var serverUrl = '/upload';
     var formData = new FormData();
     formData.append('file', data, data.name);
@@ -574,6 +589,11 @@ language file, eg. `fr.js`. Check the Video.js wiki for a
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
+Webpack
+-------
+
+The [Webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
+
 Using with React
 ----------------
 
@@ -585,10 +605,10 @@ Alternatively, the `react` example shows how to integrate this plugin in a [Reac
 ([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
 
-Webpack
--------
+Using with Angular
+------------------
 
-The [webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
+The [Angular](https://github.com/collab-project/videojs-record/wiki/Angular) wiki page shows how to setup Angular and videojs-record.
 
 More features using other plugins
 ---------------------------------

@@ -5,21 +5,23 @@
 import pluginDefaultOptions from '../src/js/defaults.js';
 
 /** @test {defaults} */
-describe('pluginDefaultOptions', function() {
+describe('pluginDefaultOptions', () => {
 
     /** @test {pluginDefaultOptions} */
-    it('returns a non-empty object', function() {
+    it('returns a non-empty object', () => {
         expect(pluginDefaultOptions).toBeNonEmptyObject();
     });
 
     /** @test {pluginDefaultOptions} */
-    it('returns the correct default values', function() {
+    it('returns the correct default values', () => {
         expect(pluginDefaultOptions).toEqual({
             image: false,
             audio: false,
             video: false,
             animation: false,
+            screen: false,
             maxLength: 10,
+            msDisplayMax: 3,
             frameWidth: 320,
             frameHeight: 240,
             debug: false,

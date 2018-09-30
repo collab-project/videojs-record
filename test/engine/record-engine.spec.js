@@ -8,19 +8,19 @@ import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RecordEngine} 
 
 
 /** @test {record-engine} */
-describe('engine.record-engine', function() {
+describe('engine.record-engine', () => {
     var player;
 
-    beforeEach(function() {
+    beforeEach(() => {
         // create new player
         player = TestHelpers.makePlayer();
     });
 
-    afterEach(function() {
+    afterEach(() => {
         player.dispose();
     });
 
-    it('create the correct component', function() {
+    it('create the correct component', () => {
         let engine = new RecordEngine(player, {});
 
         expect(engine.on).toBeFunction();
@@ -29,7 +29,7 @@ describe('engine.record-engine', function() {
         expect(engine.options_.evented).toBeTrue();
     });
 
-    it('contain supported recorder plugin engines', function() {
+    it('contain supported recorder plugin engines', () => {
         expect(RECORDRTC).toEqual('recordrtc');
         expect(LIBVORBISJS).toEqual('libvorbis.js');
         expect(RECORDERJS).toEqual('recorder.js');
@@ -37,9 +37,9 @@ describe('engine.record-engine', function() {
         expect(OPUSRECORDER).toEqual('opus-recorder');
     });
 
-    it('trigger recordComplete event', function(done) {
+    it('trigger recordComplete event', (done) => {
         let engine = new RecordEngine(player, {});
-        engine.on('recordComplete', function() {
+        engine.on('recordComplete', () => {
             done();
         });
 
@@ -47,9 +47,9 @@ describe('engine.record-engine', function() {
         engine.onStopRecording(data);
     });
 
-    it('add file info', function(done) {
+    it('add file info', (done) => {
         let engine = new RecordEngine(player, {});
-        engine.on('recordComplete', function() {
+        engine.on('recordComplete', () => {
             let fileName = engine.recordedData.lastModified + '.ogg';
             expect(engine.recordedData.name).toEqual(fileName);
 
@@ -57,16 +57,16 @@ describe('engine.record-engine', function() {
         });
 
         let req = new Request(TestHelpers.TEST_OGG);
-        fetch(req).then(function(response) {
+        fetch(req).then((response) => {
             return response.blob();
-        }).then(function(blob){
+        }).then((blob) => {
             engine.onStopRecording(blob);
         });
     });
 
-    it('save as', function(done) {
+    it('save as', (done) => {
         let engine = new RecordEngine(player, {});
-        engine.on('recordComplete', function() {
+        engine.on('recordComplete', () => {
             let fileName = 'foo';
             engine.saveAs({'audio': fileName});
 
@@ -76,9 +76,9 @@ describe('engine.record-engine', function() {
         });
 
         let req = new Request(TestHelpers.TEST_OGG);
-        fetch(req).then(function(response) {
+        fetch(req).then((response) => {
             return response.blob();
-        }).then(function(blob){
+        }).then((blob) => {
             engine.onStopRecording(blob);
         });
     });

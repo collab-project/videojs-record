@@ -8,19 +8,19 @@ import DeviceButton from '../../src/js/controls/device-button.js';
 
 
 /** @test {device-button} */
-describe('controls.DeviceButton', function() {
+describe('controls.DeviceButton', () => {
     var player;
 
-    beforeEach(function() {
+    beforeEach(() => {
         // create new player
         player = TestHelpers.makePlayer();
     });
 
-    afterEach(function() {
+    afterEach(() => {
         player.dispose();
     });
 
-    it('creates the correct DOM element', function() {
+    it('creates the correct DOM element', () => {
         let button = new DeviceButton(player);
 
         expect(button.el().nodeName).toEqual('BUTTON');
@@ -29,14 +29,14 @@ describe('controls.DeviceButton', function() {
         expect(button.controlText_).toEqual('Device');
     });
 
-    it('accepts interaction', function(done) {
+    it('accepts interaction', (done) => {
         let button = new DeviceButton(player);
 
-        player.one('deviceReady', function() {
+        player.one('deviceReady', () => {
             done();
         });
 
-        player.one('ready', function() {
+        player.one('ready', () => {
             button.trigger('click');
 
             expect(player.record().mediaType).toBeDefined();

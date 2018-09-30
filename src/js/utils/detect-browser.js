@@ -88,6 +88,10 @@ const isChrome = function() {
     return detectBrowser().browser === 'chrome';
 };
 
+const isFirefox = function() {
+    return detectBrowser().browser === 'firefox';
+};
+
 export {
-    detectBrowser, isEdge, isOpera, isChrome, isSafari
+    detectBrowser, isEdge, isOpera, isChrome, isSafari, isFirefox
 };

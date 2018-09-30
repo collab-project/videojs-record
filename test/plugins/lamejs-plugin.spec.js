@@ -10,19 +10,19 @@ import {LAMEJS} from '../../src/js/engine/record-engine.js';
 
 
 /** @test {LamejsEngine} */
-describe('plugins.lamejs-plugin', function() {
+describe('plugins.lamejs-plugin', () => {
     var player;
 
-    afterEach(function() {
+    afterEach(() => {
         player.dispose();
     });
 
     /** @test {LamejsEngine} */
-    it('can run as an audio-only plugin', function(done) {
+    it('can run as an audio-only plugin', (done) => {
         // create audio-only player with lamejs plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(LAMEJS);
 
-        player.one('finishRecord', function() {
+        player.one('finishRecord', () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -31,19 +31,19 @@ describe('plugins.lamejs-plugin', function() {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', function() {
+        player.one('startRecord', () => {
             // stop recording after few seconds
-            setTimeout(function() {
+            setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one('deviceReady', function() {
+        player.one('deviceReady', () => {
             // record some audio
             player.record().start();
         });
 
-        player.one('ready', function() {
+        player.one('ready', () => {
             // start device
             player.record().getDevice();
         });
