@@ -4,7 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RecordEngine} from '../../src/js/engine/record-engine.js';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, GIFSHOT, RecordEngine} from '../../src/js/engine/record-engine.js';
 
 
 /** @test {record-engine} */
@@ -35,6 +35,7 @@ describe('engine.record-engine', () => {
         expect(RECORDERJS).toEqual('recorder.js');
         expect(LAMEJS).toEqual('lamejs');
         expect(OPUSRECORDER).toEqual('opus-recorder');
+        expect(GIFSHOT).toEqual('gifshot');
     });
 
     it('trigger recordComplete event', (done) => {

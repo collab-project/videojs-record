@@ -437,36 +437,42 @@ class Record extends Plugin {
 
             // get recorder class
             var EngineClass;
-            switch (this.audioEngine) {
-                case RECORDRTC:
-                    // RecordRTC.js (default)
-                    EngineClass = RecordRTCEngine;
-                    break;
+            if (this.getRecordType() === ANIMATION) {
+                // Gifshot (default)
+                EngineClass = videojs.GifshotEngine;
+            } else {
+                switch (this.audioEngine) {
+                    case RECORDRTC:
+                        // RecordRTC.js (default)
+                        EngineClass = RecordRTCEngine;
+                        break;
 
-                case LIBVORBISJS:
-                    // libvorbis.js
-                    EngineClass = videojs.LibVorbisEngine;
-                    break;
+                    case LIBVORBISJS:
+                        // libvorbis.js
+                        EngineClass = videojs.LibVorbisEngine;
+                        break;
 
-                case RECORDERJS:
-                    // recorder.js
-                    EngineClass = videojs.RecorderjsEngine;
-                    break;
+                    case RECORDERJS:
+                        // recorder.js
+                        EngineClass = videojs.RecorderjsEngine;
+                        break;
 
-                case LAMEJS:
-                    // lamejs
-                    EngineClass = videojs.LamejsEngine;
-                    break;
+                    case LAMEJS:
+                        // lamejs
+                        EngineClass = videojs.LamejsEngine;
+                        break;
 
-                case OPUSRECORDER:
-                    // opus-recorder
-                    EngineClass = videojs.OpusRecorderEngine;
-                    break;
+                    case OPUSRECORDER:
+                        // opus-recorder
+                        EngineClass = videojs.OpusRecorderEngine;
+                        break;
 
-                default:
-                    // unknown engine
-                    throw new Error('Unknown audioEngine: ' + this.audioEngine);
+                    default:
+                        // unknown engine
+                        throw new Error('Unknown audioEngine: ' + this.audioEngine);
+                }
             }
+            
             try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);

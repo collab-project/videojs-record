@@ -81,6 +81,8 @@ module.exports = function(config) {
             {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false, served: true},
             {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
             'node_modules/opus-recorder/dist/recorder.min.js',
+            // gifshot
+            'node_modules/gifshot/dist/gifshot.min.js',
 
             // specs
             {pattern: 'test/**/*.spec.js', watched: false}

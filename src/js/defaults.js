@@ -11,7 +11,7 @@ const pluginDefaultOptions = {
     audio: false,
     // Include video in the recorded clip.
     video: false,
-    // Animated GIF.
+    // Animated GIF using the gifshot library.
     animation: false,
     // Screen capture.
     screen: false,
