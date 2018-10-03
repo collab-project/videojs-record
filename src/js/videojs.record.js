@@ -632,7 +632,7 @@ class Record extends Plugin {
 
                 case ANIMATION:
                     // hide the first frame
-                    this.player.recordCanvas.hide();
+                    //this.player.recordCanvas.hide();
 
                     // hide the animation
                     this.player.animationDisplay.hide();
@@ -885,10 +885,10 @@ class Record extends Plugin {
                 this.mediaElement.style.display = 'none';
 
                 // show the first frame
-                this.player.recordCanvas.show();
+                //this.player.recordCanvas.show();
 
                 // pause player so user can start playback
-                this.player.pause();
+                //this.player.pause();
 
                 // show animation on play
                 this.showAnimation();
@@ -1143,6 +1143,7 @@ class Record extends Plugin {
             case ANIMATION:
                 // reset UI
                 this.player.recordCanvas.hide();
+                this.player.animationDisplay.hide();
                 this.player.cameraButton.hide();
                 break;
         }
@@ -1320,14 +1321,14 @@ class Record extends Plugin {
      * @private
      */
     showAnimation() {
-        var animationDisplay = this.player.animationDisplay.el().firstChild;
+        let animationDisplay = this.player.animationDisplay.el().firstChild;
 
         // set the image size to the dimensions of the recorded animation
         animationDisplay.width = this.player.width();
         animationDisplay.height = this.player.height();
 
         // hide the first frame
-        this.player.recordCanvas.hide();
+        //this.player.recordCanvas.hide();
 
         // show the animation
         animationDisplay.src = this.player.recordedData;
@@ -1340,7 +1341,7 @@ class Record extends Plugin {
      */
     hideAnimation() {
         // show the first frame
-        this.player.recordCanvas.show();
+        //this.player.recordCanvas.show();
 
         // hide the animation
         this.player.animationDisplay.hide();

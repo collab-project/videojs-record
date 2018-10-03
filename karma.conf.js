@@ -113,7 +113,7 @@ module.exports = function(config) {
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-safari-launcher',
+            //'karma-safari-launcher',
             'karma-edge-launcher',
             'karma-coverage',
             'karma-coveralls',
