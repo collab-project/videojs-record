@@ -13,7 +13,9 @@ var support_dir = path.resolve(__dirname, 'test', 'support');
 var fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
 var fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 
+// -------------------------------------------
 // Chrome CLI options
+// -------------------------------------------
 // http://peter.sh/experiments/chromium-command-line-switches/
 var chromeFlags = [
     '--no-sandbox',
@@ -33,6 +35,10 @@ var chromeFlags = [
     '--allow-insecure-localhost',
     '--enable-experimental-web-platform-features'
 ];
+
+// -------------------------------------------
+// Firefox CLI options
+// -------------------------------------------
 var firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true
@@ -49,27 +55,41 @@ module.exports = function(config) {
         singleRun: true,  // enable for headless testing
         autoWatch: false,
         files: [
+            // -------------------------------------------
             // demo files
+            // -------------------------------------------
             {
                 pattern: 'test/support/*',
                 included: false,
                 watched: false,
                 served: true
             },
-             // style
-            'node_modules/video.js/dist/video-js.css',
-            'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
-            'dist/css/videojs.record.css',
-
-            // library dependencies
+            // -------------------------------------------
+            // third-party dependencies
+            // -------------------------------------------
             'node_modules/video.js/dist/video.js',
+            'node_modules/video.js/dist/video-js.css',
             'node_modules/webrtc-adapter/out/adapter.js',
             'node_modules/recordrtc/RecordRTC.js',
+
+            // -------------------------------------------
+            // third-party dependencies for audio-only
+            // -------------------------------------------
+            // wavesurfer.js
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
+            // videojs-wavesurfer
+            'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
-            // optional library dependencies for plugins
+            // -------------------------------------------
+            // plugin style
+            // -------------------------------------------
+            'dist/css/videojs.record.css',
+
+            // -----------------------------------------------
+            // third-party dependencies for (optional) plugins
+            // -----------------------------------------------
             // recorder.js
             'node_modules/recorderjs/dist/recorder.js',
             // libvorbis.js
@@ -84,13 +104,15 @@ module.exports = function(config) {
             // gifshot
             'node_modules/gifshot/dist/gifshot.min.js',
 
+            // -------------------------------------------
             // specs
+            // -------------------------------------------
             {pattern: 'test/**/*.spec.js', watched: false}
         ],
         // for CDN scripts
         crossOriginAttribute: false,
         proxies: {
-            // lame workaround for opus-recorder
+            // necessary workaround for opus-recorder
             '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
             '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
         },
@@ -104,6 +126,7 @@ module.exports = function(config) {
             // do not include tests or libraries
             'src/js/**/*.js': ['coverage']
         },
+        webpack: webpackConfig,
         webpackMiddleware: {
             stats: 'errors-only'
         },
@@ -158,12 +181,10 @@ module.exports = function(config) {
             // specify a common output directory
             dir: 'coverage',
             reporters: [
-                // reporters not supporting the `file` property
                 {type: 'html'},
                 {type: 'text-summary'}
             ]
         },
-        webpack: webpackConfig,
         customLaunchers: {
             Chrome_dev: {
                 base: 'ChromeHeadless',
