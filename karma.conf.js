@@ -113,7 +113,7 @@ module.exports = function(config) {
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            //'karma-safari-launcher',
+            'karma-safari-launcher',
             'karma-edge-launcher',
             'karma-coverage',
             'karma-coveralls',
@@ -155,9 +155,13 @@ module.exports = function(config) {
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
-            type: 'html',
             // specify a common output directory
-            dir: 'coverage'
+            dir: 'coverage',
+            reporters: [
+                // reporters not supporting the `file` property
+                {type: 'html'},
+                {type: 'text-summary'}
+            ]
         },
         webpack: webpackConfig,
         customLaunchers: {
