@@ -14,7 +14,7 @@ videojs-record changelog
 - In older versions a `player.recordedData.video` would be available in Chrome
   when recording audio and video. This is removed and `player.recordedData`
   is always a `Blob` across all recording types and browsers now (#269)
-- Upgraded to video.js/font 3.0.0: removed support for IE8, 9, 10, and
+- Upgraded to video.js/font 3.1.0: removed support for IE8, 9, 10, and
   Android < 4.4 by removing support for the `eot` font file (#279)
 - Support for animated GIF recording using RecordRTC was removed and replaced
   with a new plugin using the Gifshot library (#291)

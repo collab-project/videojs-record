@@ -7,8 +7,8 @@ The font provides extra icons used in the plugin.
 
 Continue reading if you want to customize or generate the font.
 
-Prepare
--------
+Setup
+-----
 
 To modify and update the generated fonts, checkout a copy of the video.js
 [font](https://github.com/videojs/font) repository:
@@ -32,27 +32,28 @@ Install the dependencies:
 npm install
 ```
 
-Customize
----------
+Build
+-----
 
-Copy [icons.json](icons.json) and replace it in the root of the `font` repository:
-
-```
-cp -v /path/to/videojs-record/src/fonts/icons.json /path/to/font/
-```
-
-Now run `grunt` to build the fonts and styles:
+Copy the videojs-record [icons.json](icons.json) to the root of the `font`
+repository using a different name, e.g. `videojs-record-icons.json`:
 
 ```
-grunt
+cp -v /path/to/videojs-record/src/fonts/icons.json /path/to/font/videojs-record-icons.json
 ```
 
-Open `index.html` in a browser to see the fonts in action.
+Build the fonts and styles:
+
+```
+grunt --exclude-default --custom-json=./videojs-record-icons.json
+```
+
+Open `index.html` in a browser to see the font and icons in action.
 
 Update
 ------
 
-Copy the generated `_icons.scss` and font files back to the `videojs-record`
+Copy the generated `_icons.scss` and various font files back to the `videojs-record`
 repository:
 
 ```
