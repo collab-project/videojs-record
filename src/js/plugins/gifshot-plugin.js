@@ -30,7 +30,7 @@ class GifshotEngine extends RecordEngine {
      */
     start() {
         console.log('started recording');
-
+        var videoDuration = 4;
         // By default, a user's webcam is used to create the animated GIF
         gifshot.createGIF({
             // Desired width of the image
@@ -42,7 +42,8 @@ class GifshotEngine extends RecordEngine {
             'interval': 0.1,
             // The number of frames to use to create the animated GIF
             // Note: Each frame is captured every 100 milliseconds of a video and every ms for existing images
-            'numFrames': 10,
+            //'numFrames': 10,
+            'numFrames': (videoDuration * 1000) / 100,
             // The amount of time (10 = 1s) to stay on each frame
             'frameDuration': 1,
 

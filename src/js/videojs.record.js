@@ -639,6 +639,7 @@ class Record extends Plugin {
 
                     // show preview video
                     this.mediaElement.style.display = 'block';
+
                     this.startVideoPreview();
                     break;
             }
