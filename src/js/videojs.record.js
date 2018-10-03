@@ -472,7 +472,6 @@ class Record extends Plugin {
                         throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
             }
-            
             try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);
@@ -640,14 +639,7 @@ class Record extends Plugin {
 
                     // show preview video
                     this.mediaElement.style.display = 'block';
-
-                    // for animations, capture the first frame
-                    // that can be displayed as soon as recording
-                    // is complete
-                    this.captureFrame().then((result) => {
-                        // start video preview **after** capturing first frame
-                        this.startVideoPreview();
-                    });
+                    this.startVideoPreview();
                     break;
             }
 
@@ -899,10 +891,11 @@ class Record extends Plugin {
                 this.player.pause();
 
                 // show animation on play
-                this.on(this.player, 'play', this.showAnimation);
+                this.showAnimation();
+                //this.on(this.player, 'play', this.showAnimation);
 
                 // hide animation on pause
-                this.on(this.player, 'pause', this.hideAnimation);
+                //this.on(this.player, 'pause', this.hideAnimation);
                 break;
         }
     }
@@ -1337,7 +1330,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        setSrcObject(this.player.recordedData, animationDisplay, false);
+        animationDisplay.src = this.player.recordedData;
         this.player.animationDisplay.show();
     }
 

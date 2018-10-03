@@ -39,7 +39,8 @@ module.exports = {
     externals: [
         {'video.js': 'videojs'},
         {'wavesurfer.js': 'WaveSurfer'},
-        {'recordrtc': 'RecordRTC'}
+        {'recordrtc': 'RecordRTC'},
+        {'gifshot': 'gifshot'}
     ],
     module: {
         rules: [

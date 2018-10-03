@@ -188,42 +188,6 @@ describe('Record', () => {
     });
 
     /** @test {Record} */
-    it('runs as animation-only plugin', (done) => {
-        // create animated GIF plugin
-        player = TestHelpers.makeAnimatedPlayer();
-
-        player.one('finishRecord', () => {
-            let data = player.recordedData;
-            expect(data instanceof Blob).toBeTruthy();
-
-            player.play();
-
-            // wait till it's loaded before destroying
-            // (XXX: create new event for this)
-            setTimeout(done, 1000);
-        });
-
-        player.one('deviceReady', () => {
-            // create animated GIF
-            player.record().start();
-
-            // stop recording after few seconds
-            setTimeout(() => {
-                player.record().stop();
-            }, 2000);
-        });
-
-        player.one('ready', () => {
-            // correct device button icon
-            expect(player.deviceButton.buildCSSClass().endsWith(
-                'video-perm')).toBeTrue();
-
-            // start device
-            player.record().getDevice();
-        });
-    });
-
-    /** @test {Record} */
     it('runs as screen-only plugin', (done) => {
         // create screen-only plugin
         player = TestHelpers.makeScreenOnlyPlayer();

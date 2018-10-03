@@ -88,7 +88,7 @@
     "file-loader": "^2.0.0",
     "fine-uploader": ">=5.16",
     "formidable": "^1.2.1",
-    "gifshot": "^0.4.5",
+    "gifshot": ">=0.4.5",
     "htmlhint": "^0.10.1",
     "in-publish": "^2.0.0",
     "jasmine-core": "^3.2.1",
