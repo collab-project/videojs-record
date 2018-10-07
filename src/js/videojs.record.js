@@ -437,10 +437,7 @@ class Record extends Plugin {
 
             // get recorder class
             var EngineClass;
-            if (this.getRecordType() === ANIMATION) {
-                // Gifshot (default)
-                EngineClass = videojs.GifshotEngine;
-            } else {
+            if (this.getRecordType() !== ANIMATION) {
                 switch (this.audioEngine) {
                     case RECORDRTC:
                         // RecordRTC.js (default)
@@ -471,7 +468,11 @@ class Record extends Plugin {
                         // unknown engine
                         throw new Error('Unknown audioEngine: ' + this.audioEngine);
                 }
+            } else {
+                // gifshot
+                EngineClass = videojs.GifshotEngine;
             }
+
             try {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);
@@ -632,7 +633,7 @@ class Record extends Plugin {
 
                 case ANIMATION:
                     // hide the first frame
-                    //this.player.recordCanvas.hide();
+                    this.player.recordCanvas.hide();
 
                     // hide the animation
                     this.player.animationDisplay.hide();
@@ -640,6 +641,7 @@ class Record extends Plugin {
                     // show preview video
                     this.mediaElement.style.display = 'block';
 
+                    // preview video stream in video element
                     this.startVideoPreview();
                     break;
             }
