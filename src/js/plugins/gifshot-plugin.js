@@ -74,7 +74,11 @@ class GifshotEngine extends RecordEngine {
             // Expects a cameraStream Media object
             // Note: Passing an existing camera stream will allow you to create another GIF and/or snapshot without
             //  asking for the user's permission to access the camera again if you are not using SSL
-            'cameraStream': this.inputStream
+            'cameraStream': this.inputStream,
+             // Whether or not you would like to save all of the canvas image binary data from your created GIF
+             // Note: This is particularly useful for when you want to re-use a GIF to add text to later
+             'saveRenderingContexts': true
+
         }, this.onRecordingAvailable.bind(this));
     }
 
@@ -92,7 +96,11 @@ class GifshotEngine extends RecordEngine {
         if (!obj.error) {
             console.log('recording:', obj);
 
+            // save image data
             this.recordedData = obj.image;
+
+            // save first frame
+            this.recordedFrames = obj.savedRenderingContexts;
 
             // remove reference to recorded stream
             this.dispose();

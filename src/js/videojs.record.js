@@ -886,17 +886,23 @@ class Record extends Plugin {
                 this.mediaElement.style.display = 'none';
 
                 // show the first frame
-                //this.player.recordCanvas.show();
+                let recordCanvas = this.player.recordCanvas.el().firstChild;
+                let imgData = this.engine.recordedFrames[0];
+                // set the image size to the dimensions of the recorded animation
+                recordCanvas.width = this.player.width();
+                recordCanvas.height = this.player.height();
+                recordCanvas.getContext('2d').putImageData(
+                    imgData, 0, 0, 0, 0, imgData.width, imgData.height);
+                this.player.recordCanvas.show();
 
                 // pause player so user can start playback
-                //this.player.pause();
+                this.player.pause();
 
                 // show animation on play
-                this.showAnimation();
-                //this.on(this.player, 'play', this.showAnimation);
+                this.on(this.player, 'play', this.showAnimation);
 
                 // hide animation on pause
-                //this.on(this.player, 'pause', this.hideAnimation);
+                this.on(this.player, 'pause', this.hideAnimation);
                 break;
         }
     }
@@ -971,9 +977,12 @@ class Record extends Plugin {
                 this.streamCurrentTime = Math.min(currentTime, duration);
 
                 // update current time display component
-                this.player.controlBar.currentTimeDisplay.formattedTime_ =
-                   this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                       formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                if (this.player.controlBar.currentTimeDisplay &&
+                    this.player.controlBar.currentTimeDisplay.contentEl()) {
+                    this.player.controlBar.currentTimeDisplay.formattedTime_ =
+                       this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
+                           formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
@@ -1008,9 +1017,12 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 // update duration display component
-                this.player.controlBar.durationDisplay.formattedTime_ =
-                    this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                        formatTime(duration, duration, this.msDisplayMax);
+                if (this.player.controlBar.durationDisplay &&
+                    this.player.controlBar.durationDisplay.contentEl()) {
+                    this.player.controlBar.durationDisplay.formattedTime_ =
+                        this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
+                            formatTime(duration, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
@@ -1329,7 +1341,7 @@ class Record extends Plugin {
         animationDisplay.height = this.player.height();
 
         // hide the first frame
-        //this.player.recordCanvas.hide();
+        this.player.recordCanvas.hide();
 
         // show the animation
         animationDisplay.src = this.player.recordedData;
@@ -1342,7 +1354,7 @@ class Record extends Plugin {
      */
     hideAnimation() {
         // show the first frame
-        //this.player.recordCanvas.show();
+        this.player.recordCanvas.show();
 
         // hide the animation
         this.player.animationDisplay.hide();
