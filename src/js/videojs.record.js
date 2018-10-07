@@ -151,8 +151,7 @@ class Record extends Plugin {
         this.audioMimeType = recordOptions.audioMimeType;
 
         // animation settings
-        this.animationFrameRate = recordOptions.animationFrameRate;
-        this.animationQuality = recordOptions.animationQuality;
+        this.animationOptions = recordOptions.animationOptions;
     }
 
     /**
@@ -513,8 +512,7 @@ class Record extends Plugin {
             };
 
             // animated GIF settings
-            this.engine.quality = this.animationQuality;
-            this.engine.frameRate = this.animationFrameRate;
+            this.engine.animationOptions = this.animationOptions;
 
             // timeSlice
             if (this.recordTimeSlice && this.recordTimeSlice > 0) {

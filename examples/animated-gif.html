@@ -26,10 +26,12 @@
 <video id="myAnimation" class="video-js vjs-default-skin"></video>
 
 <script>
+var clipDuration = 5;
+
 var player = videojs('myAnimation', {
     controls: true,
-    width: 320,
-    height: 240,
+    width: 240,
+    height: 180,
     fluid: false,
     controlBar: {
         volumePanel: false,
@@ -38,9 +40,20 @@ var player = videojs('myAnimation', {
     plugins: {
         record: {
             animation: true,
-            animationQuality: 20,
-            animationFrameRate: 200,
-            maxLength: 5,
+            // options for gifshot library
+            animationOptions: {
+             // The amount of time (in seconds) to wait between each frame capture
+                interval: 0.1,
+                // The number of frames to use to create the animated GIF
+                // Note: Each frame is captured every 100 milliseconds of a video and every ms for existing images
+                //'numFrames': 10,
+                numFrames: (clipDuration * 1000) / 100,
+                // The amount of time (10 = 1s) to stay on each frame
+                frameDuration: 1,
+                // CSS filter that will be applied to the image, e.g. 'grayscale(100%)'
+                filter: ''
+            },
+            maxLength: clipDuration,
             debug: true
         }
     }

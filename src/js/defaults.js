@@ -78,16 +78,8 @@ const pluginDefaultOptions = {
     audioChannels: 2,
     // URL for the audio worker.
     audioWorkerURL: '',
-    // Frame rate in frames per second.
-    animationFrameRate: 200,
-    // Sets quality of color quantization (conversion of images to the
-    // maximum 256 colors allowed by the GIF specification).
-    // Lower values (minimum = 1) produce better colors,
-    // but slow processing significantly. 10 is the default,
-    // and produces good color mapping at reasonable speeds.
-    // Values greater than 20 do not yield significant improvements
-    // in speed.
-    animationQuality: 10,
+    // Options for animated GIFs using the gifshot library.
+    animationOptions: {},
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
     timeSlice: 0
 };
