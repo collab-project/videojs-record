@@ -4,9 +4,10 @@
  */
 
 const path = require('path');
-const moment = require('moment');
 const webpack = require('webpack');
-const time = moment().format('YYYY');
+const datefns = require('date-fns');
+
+const year = datefns.format(new Date(), 'YYYY');
 const rootDir = path.resolve(__dirname, '..', '..');
 const pckg = require(path.join(rootDir, 'package.json'));
 
@@ -14,7 +15,7 @@ const pckg = require(path.join(rootDir, 'package.json'));
 var jsBanner = `[name] plugin for ${pckg.name}
 @version ${pckg.version}
 @see ${pckg.homepage}
-@copyright 2014-${time} ${pckg.author}
+@copyright 2014-${year} ${pckg.author}
 @license ${pckg.license}`;
 var jsBannerPlugin = new webpack.BannerPlugin({
     banner: jsBanner,
