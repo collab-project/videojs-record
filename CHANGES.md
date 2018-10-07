@@ -7,7 +7,7 @@ videojs-record changelog
 - Add support for screen capture (#289)
 - Add `msDisplayMax` option to control display of time format (#188)
 - Documentation: add Angular and Vue.js wiki pages (#274, #283)
-- Bump required videojs-wavesurfer version to 2.6.0 for microphone support
+- Bump required videojs-wavesurfer version to 2.6.1 for microphone support
   in the MS Edge browser (#294)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
