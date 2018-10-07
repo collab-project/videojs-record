@@ -632,7 +632,8 @@ class Record extends Plugin {
                     break;
 
                 case ANIMATION:
-                    // hide the first frame
+                    // clear and hide the first frame
+                    this.player.recordCanvas.clear();
                     this.player.recordCanvas.hide();
 
                     // hide the animation
@@ -888,13 +889,7 @@ class Record extends Plugin {
                 this.mediaElement.style.display = 'none';
 
                 // show the first frame
-                let recordCanvas = this.player.recordCanvas.el().firstChild;
-                let imgData = this.engine.recordedFrames[0];
-                // set the image size to the dimensions of the recorded animation
-                recordCanvas.width = this.player.width();
-                recordCanvas.height = this.player.height();
-                recordCanvas.getContext('2d').putImageData(
-                    imgData, 0, 0, 0, 0, imgData.width, imgData.height);
+                this.player.recordCanvas.drawFrame(this.engine.recordedFrames[0]);
                 this.player.recordCanvas.show();
 
                 // pause player so user can start playback

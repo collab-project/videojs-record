@@ -25,6 +25,29 @@ class RecordCanvas extends Component {
             innerHTML: '<canvas></canvas>'
         });
     }
+
+    /**
+     * Clear the `RecordCanvas`s `canvas` element.
+     */
+    clear() {
+        let canvas = this.el().firstChild;
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    /**
+     * Draw frame onto `canvas` element.
+     *
+     * @param {ImageData} [imgData] - ImageData to draw onto canvas.
+     */
+    drawFrame(imgData) {
+        let canvas = this.el().firstChild;
+
+        // set the image size to the dimensions of the recorded animation
+        canvas.width = imgData.width;
+        canvas.height = imgData.height;
+        canvas.getContext('2d').putImageData(
+            imgData, 0, 0, 0, 0, imgData.width, imgData.height);
+    }
 }
 
 Component.registerComponent('RecordCanvas', RecordCanvas);
