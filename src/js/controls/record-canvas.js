@@ -6,7 +6,7 @@
 const Component = videojs.getComponent('Component');
 
 /**
- * Canvas for displaying snapshot image.
+ * Component for displaying images on a `canvas` element.
  *
  * @class
  * @augments videojs.Component
@@ -31,11 +31,12 @@ class RecordCanvas extends Component {
      */
     clear() {
         let canvas = this.el().firstChild;
+
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     }
 
     /**
-     * Draw frame onto `canvas` element.
+     * Draw `ImageData` frame onto `canvas` element.
      *
      * @param {ImageData} [imgData] - ImageData to draw onto canvas.
      */
@@ -45,8 +46,27 @@ class RecordCanvas extends Component {
         // set the image size to the dimensions of the recorded animation
         canvas.width = imgData.width;
         canvas.height = imgData.height;
+
         canvas.getContext('2d').putImageData(
-            imgData, 0, 0, 0, 0, imgData.width, imgData.height);
+            imgData, 0, 0, 0, 0,
+            imgData.width,
+            imgData.height
+        );
+    }
+
+    /**
+     * Draw image onto `canvas` element.
+     *
+     * @param {HTMLElement} [element] - HTML element to draw onto canvas.
+     */
+    drawImage(element) {
+        let canvas = this.el().firstChild;
+
+        canvas.getContext('2d').drawImage(
+            element, 0, 0,
+            canvas.width,
+            canvas.height
+        );
     }
 }
 

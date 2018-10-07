@@ -6,7 +6,7 @@
 const Component = videojs.getComponent('Component');
 
 /**
- * Image for displaying animated GIF image.
+ * Component for displaying animated GIF images.
  *
  * @class
  * @augments videojs.Component
@@ -24,6 +24,15 @@ class AnimationDisplay extends Component {
             className: 'vjs-animation-display',
             innerHTML: '<img />'
         });
+    }
+
+    /**
+     * Set `src` of image element.
+     */
+    load(data) {
+        let img = this.el().firstChild;
+
+        img.src = data;
     }
 }
 

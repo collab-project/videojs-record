@@ -1247,8 +1247,8 @@ class Record extends Plugin {
      * @private
      */
     captureFrame() {
-        var detected = detectBrowser();
-        var recordCanvas = this.player.recordCanvas.el().firstChild;
+        let detected = detectBrowser();
+        let recordCanvas = this.player.recordCanvas.el().firstChild;
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
@@ -1271,7 +1271,7 @@ class Record extends Plugin {
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
-                        this.drawCanvas(recordCanvas, imageBitmap);
+                        this.player.recordCanvas.drawImage(imageBitmap);
 
                         // notify others
                         resolve(recordCanvas);
@@ -1283,23 +1283,11 @@ class Record extends Plugin {
             // no ImageCapture available: do it the oldskool way
 
             // get a frame and copy it onto the canvas
-            this.drawCanvas(recordCanvas, this.mediaElement);
+            this.player.recordCanvas.drawImage(this.mediaElement);
 
             // notify others
             resolve(recordCanvas);
         });
-    }
-
-    /**
-     * Draw image frame on canvas element.
-     * @private
-     */
-    drawCanvas(canvas, element) {
-        canvas.getContext('2d').drawImage(
-            element, 0, 0,
-            canvas.width,
-            canvas.height
-        );
     }
 
     /**
@@ -1339,7 +1327,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        animationDisplay.src = this.player.recordedData;
+        this.player.animationDisplay.load(this.player.recordedData);
         this.player.animationDisplay.show();
     }
 

@@ -5,8 +5,6 @@
 
 import gifshot from 'gifshot';
 
-import videojs from 'video.js';
-
 const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
