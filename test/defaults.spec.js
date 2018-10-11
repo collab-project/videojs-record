@@ -21,6 +21,7 @@ describe('pluginDefaultOptions', () => {
             animation: false,
             screen: false,
             maxLength: 10,
+            maxFileSize: 0,
             msDisplayMax: 3,
             frameWidth: 320,
             frameHeight: 240,
