@@ -1,11 +1,13 @@
 sudo: false
 dist: trusty
-addons:
-  chrome: beta
-  firefox: latest
 language: node_js
 node_js:
   - node
+addons:
+  chrome: beta
+  firefox: latest
+before_install:
+  - sudo apt-get install -y dbus-x11
 install:
   - npm prune
   - npm install
