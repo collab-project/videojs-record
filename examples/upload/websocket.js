@@ -3,10 +3,8 @@
  */
 
 const http = require('http');
-const uuid = require('uuid/v5');
 const sockjs = require('sockjs');
 const colors = require('colors/safe');
-const node_opus = require('node-opus');
 const node_static = require('node-static');
 
 // create websocket
@@ -32,17 +30,7 @@ sockjs_upload.on('connection', function(conn) {
             //
             index++;
 
-            console.log(colors.blue(' received audio buffer [' + colors.cyan(index) + ']...'), data);
-
-            // XXX: AudioBuffer to eventual file
-
-            /*
-            var fileName = uuid() + '.ogg';
-            writeToDisk(data, fileName);
-
-            console.log(colors.green('saved file.'));
-            console.log('');
-            */
+            console.log(colors.blue(' received data [' + colors.cyan(index) + ']...'), data);
         }
     });
 });

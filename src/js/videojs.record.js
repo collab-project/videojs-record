@@ -149,6 +149,7 @@ class Record extends Plugin {
         this.audioBitRate = recordOptions.audioBitRate;
         this.audioChannels = recordOptions.audioChannels;
         this.audioMimeType = recordOptions.audioMimeType;
+        this.audioBufferUpdate = recordOptions.audioBufferUpdate;
 
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
@@ -322,16 +323,21 @@ class Record extends Plugin {
                 this.surfer.liveMode = true;
                 this.surfer.surfer.microphone.paused = false;
 
-                // assign custom reloadBufferFunction for microphone plugin
-                this.surfer.surfer.microphone.reloadBufferFunction = (event) => {
-                    if (!this.surfer.surfer.microphone.paused) {
-                        this.surfer.surfer.empty();
-                        this.surfer.surfer.loadDecodedBuffer(event.inputBuffer);
+                // assign custom reloadBufferFunction for microphone plugin to
+                // obtain AudioBuffer chunks
+                if (this.audioBufferUpdate === true) {
+                    this.surfer.surfer.microphone.reloadBufferFunction = (event) => {
+                        if (!this.surfer.surfer.microphone.paused) {
+                            // redraw
+                            this.surfer.surfer.empty();
+                            this.surfer.surfer.loadDecodedBuffer(event.inputBuffer);
 
-                        this.player.recordedData = event.inputBuffer;
-                        this.player.trigger('audioBufferUpdate');
-                    }
-                };
+                            // store data and notify others
+                            this.player.recordedData = event.inputBuffer;
+                            this.player.trigger('audioBufferUpdate');
+                        }
+                    };
+                }
                 // open browser device selection dialog
                 this.surfer.surfer.microphone.start();
                 break;
