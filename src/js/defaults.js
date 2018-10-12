@@ -81,6 +81,9 @@ const pluginDefaultOptions = {
     audioChannels: 2,
     // URL for the audio worker.
     audioWorkerURL: '',
+    // Enables the audioBufferUpdate event that provides realtime AudioBuffer
+    // instances from the input audio device.
+    audioBufferUpdate: false,
     // Options for animated GIFs using the gifshot library.
     animationOptions: {},
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
