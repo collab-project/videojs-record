@@ -25,7 +25,7 @@
 <video id="myVideo" class="video-js vjs-default-skin"></video>
 
 <script>
-var player = videojs("myVideo", {
+var player = videojs('myVideo', {
     controls: true,
     width: 320,
     height: 240,
@@ -75,13 +75,14 @@ function upload(blob) {
     var formData = new FormData();
     formData.append('file', blob, blob.name);
 
-    console.log('uploading recording:', blob.name);
+    console.log('upload recording ' + blob.name + ' to ' + serverUrl);
 
+    // start upload
     fetch(serverUrl, {
         method: 'POST',
         body: formData
     }).then(
-        success => console.log('recording upload complete.')
+        success => console.log('upload recording complete.')
     ).catch(
         error => console.error('an upload error occurred!')
     );

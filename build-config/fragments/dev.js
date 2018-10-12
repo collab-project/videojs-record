@@ -4,10 +4,9 @@
  */
 
 const path = require('path');
-const fs = require('fs');
 const util = require('util');
-const formidable = require('formidable');
 const colors = require('colors/safe');
+const formidable = require('formidable');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const contentBase = path.resolve(__dirname, '..', '..');
@@ -21,7 +20,9 @@ module.exports = {
         watchContentBase: true,
         // webpack-dev-server middleware
         before(app) {
+            // =============================================
             // use proper mime-type for wasm files
+            // =============================================
             app.get('*.wasm', (req, res, next) => {
                 var options = {
                     root: contentBase,
@@ -30,12 +31,21 @@ module.exports = {
                         'Content-Type': 'application/wasm'
                     }
                 };
+
                 res.sendFile(req.url, options, (err) => {
                     if (err) {
                         next(err);
                     }
                 });
             });
+
+            console.log('');
+            console.log(colors.green(' [examples] wasm mime-type handler ready'));
+            console.log('');
+
+            // =============================================
+            // file upload handler for simple upload example
+            // =============================================
             // file upload handler for examples
             app.post('/upload', (req, res) => {
                 // save uploaded file
@@ -64,6 +74,9 @@ module.exports = {
 
                 return;
             });
+            console.log('');
+            console.log(colors.green(' [examples] /upload handler ready'));
+            console.log('');
         }
     },
     plugins: [

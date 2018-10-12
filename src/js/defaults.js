@@ -81,6 +81,9 @@ const pluginDefaultOptions = {
     audioChannels: 2,
     // URL for the audio worker.
     audioWorkerURL: '',
+    // Enables the audioBufferUpdate event that provides realtime AudioBuffer
+    // instances from the input audio device.
+    audioBufferUpdate: false,
     // Frame rate in frames per second.
     animationFrameRate: 200,
     // Sets quality of color quantization (conversion of images to the

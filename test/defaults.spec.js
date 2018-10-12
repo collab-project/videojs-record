@@ -37,6 +37,7 @@ describe('pluginDefaultOptions', () => {
             audioBitRate: 128,
             audioChannels: 2,
             audioWorkerURL: '',
+            audioBufferUpdate: false,
             animationFrameRate: 200,
             animationQuality: 10,
             timeSlice: 0
