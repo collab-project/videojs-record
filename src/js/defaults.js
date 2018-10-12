@@ -17,6 +17,9 @@ const pluginDefaultOptions = {
     screen: false,
     // Maximum length of the recorded clip.
     maxLength: 10,
+    // Maximum file size of the recorded clip. Works only when the timeSlice
+    // option is also enabled.
+    maxFileSize: 0,
     // msDisplayMax indicates the number of seconds that is
     // considered the boundary value for displaying milliseconds
     // in the time controls. An audio clip with a total length of
@@ -74,7 +77,7 @@ const pluginDefaultOptions = {
     // The audio bitrate in kbps (only used in lamejs plugin).
     audioBitRate: 128,
     // Allows you to record single-channel audio, which can reduce the
-    // filesize.
+    // file size.
     audioChannels: 2,
     // URL for the audio worker.
     audioWorkerURL: '',

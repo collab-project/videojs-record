@@ -240,6 +240,7 @@ The available options for this plugin are:
 | `screen` | boolean or object | `false` | Screen capture without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
+| `maxFileSize` | float | `0` | Maximum file size of a recorded clip (in bytes). Recording will stop when the limit is reached. Default is 0 (no file size limit). Can only be used when `timeSlice` option is also enabled. |
 | `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/mic devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
