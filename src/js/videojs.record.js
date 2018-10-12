@@ -129,6 +129,7 @@ class Record extends Plugin {
         this.recordAnimation = recordOptions.animation;
         this.recordScreen = recordOptions.screen;
         this.maxLength = recordOptions.maxLength;
+        this.maxFileSize = recordOptions.maxFileSize;
         this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
         this.debug = recordOptions.debug;
         this.recordTimeSlice = recordOptions.timeSlice;
@@ -1365,7 +1366,7 @@ class Record extends Plugin {
         this.player.allTimestamps = all;
 
         // get blob (only for MediaStreamRecorder)
-        var internal;
+        let internal;
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 internal = this.engine.engine.audioRecorder;
@@ -1378,17 +1379,33 @@ class Record extends Plugin {
             default:
                 internal = this.engine.engine.videoRecorder;
         }
+
+        let maxFileSizeReached = false;
         internal = internal.getInternalRecorder();
+
         if ((internal instanceof MediaStreamRecorder) === true) {
             this.player.recordedData = internal.getArrayOfBlobs();
 
             // inject file info for newest blob
             this.engine.addFileInfo(
                 this.player.recordedData[this.player.recordedData.length - 1]);
+
+            // check max file size
+            if (this.maxFileSize > 0) {
+                let currentSize = new Blob(this.player.recordedData).size;
+                if (currentSize >= this.maxFileSize) {
+                    maxFileSizeReached = true;
+                }
+            }
         }
 
         // notify others
         this.player.trigger('timestamp');
+
+        // automatically stop when max file size was reached
+        if (maxFileSizeReached) {
+            this.stop();
+        }
     }
 
     /**
