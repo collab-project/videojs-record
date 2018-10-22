@@ -21,6 +21,7 @@ describe('pluginDefaultOptions', () => {
             animation: false,
             screen: false,
             maxLength: 10,
+            maxFileSize: 0,
             msDisplayMax: 3,
             frameWidth: 320,
             frameHeight: 240,
@@ -36,6 +37,7 @@ describe('pluginDefaultOptions', () => {
             audioBitRate: 128,
             audioChannels: 2,
             audioWorkerURL: '',
+            audioBufferUpdate: false,
             animationFrameRate: 200,
             animationQuality: 10,
             timeSlice: 0

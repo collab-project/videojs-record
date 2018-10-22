@@ -1,18 +1,27 @@
 sudo: false
 dist: trusty
-addons:
-  chrome: beta
-  firefox: latest
+
 language: node_js
 node_js:
   - node
+
+addons:
+  chrome: beta
+  firefox: latest
+
+# headless firefox dependencies (see https://bugzilla.mozilla.org/show_bug.cgi?id=1372998)
+before_install:
+  - sudo apt-get install -y x11-xserver-utils xserver-xorg-core xvfb dbus-x11
+
 install:
   - npm prune
   - npm install
+
 script:
   - npm run lint || travis_terminate 1
   - npm run build || travis_terminate 1
   - npm run test || travis_terminate 1
+
 cache:
   directories:
     - node_modules
