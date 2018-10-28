@@ -11,6 +11,7 @@ videojs-record changelog
 - Documentation: add Angular and Vue.js wiki pages (#274, #283)
 - Bump required videojs-wavesurfer version to 2.6.1 for microphone support
   in the MS Edge browser (#294)
+- Fix issue with `timeSlice` option when resetting the player (#300 by @GDIBass)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
