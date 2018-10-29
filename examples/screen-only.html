@@ -13,6 +13,8 @@
 
   <script src="../dist/videojs.record.js"></script>
 
+  <script src="browser-workarounds.js"></script>
+
   <style>
   /* change player background color */
   #myScreen {
@@ -25,13 +27,7 @@
 <video id="myScreen" playsinline class="video-js vjs-default-skin"></video>
 
 <script>
-// Polyfill in Firefox.
-// See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-if (adapter.browserDetails.browser == 'firefox') {
-  adapter.browserShim.shimGetDisplayMedia(window, 'screen');
-}
-
-var player = videojs("myScreen", {
+var options = {
     controls: true,
     width: 800,
     height: 450,
@@ -45,7 +41,12 @@ var player = videojs("myScreen", {
             screen: true
         }
     }
-}, function() {
+};
+
+// apply some workarounds for certain browsers
+applyScreenWorkaround();
+
+var player = videojs('myScreen', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +

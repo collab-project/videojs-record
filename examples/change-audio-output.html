@@ -16,6 +16,8 @@
 
   <script src="../dist/videojs.record.js"></script>
 
+  <script src="browser-workarounds.js"></script>
+
   <style>
   body {
       font-weight: 300;
@@ -50,11 +52,11 @@
 <hr>
 
 <div>
-    <p>This demo must be run in Chrome 49 or later, Firefox is not supported yet.</p>
+    <p>This demo must be run in Chrome 49 or later, other browsers are not supported yet.</p>
 </div>
 
 <script>
-var player = videojs("myAudio", {
+var options = {
     controls: true,
     width: 600,
     height: 300,
@@ -76,7 +78,12 @@ var player = videojs("myAudio", {
             debug: true
         }
     }
-}, function() {
+};
+
+// apply some workarounds for certain browsers
+applyAudioWorkaround();
+
+var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
