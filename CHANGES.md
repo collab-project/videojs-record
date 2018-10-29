@@ -12,7 +12,7 @@ videojs-record changelog
 - Bump required videojs-wavesurfer version to 2.6.1 for microphone support
   in the MS Edge browser (#294)
 - Fix issue with `timeSlice` option when resetting the player (#300 by @GDIBass)
-- Examples: add Safari/Edge browser workarounds (#295)
+- Examples: add Safari/Edge browser workarounds for audio-only recording (#295)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
