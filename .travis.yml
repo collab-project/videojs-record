@@ -11,7 +11,7 @@ addons:
 
 # headless firefox dependencies (see https://bugzilla.mozilla.org/show_bug.cgi?id=1372998)
 before_install:
-  - sudo apt-get install -y x11-xserver-utils xserver-xorg-core xvfb dbus-x11
+  - sudo apt-get install -y x11-xserver-utils xserver-xorg-core xvfb dbus-x11 libgtk-3-0 libdbus-glib-1-2
 
 install:
   - npm prune
