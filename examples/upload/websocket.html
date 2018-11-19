@@ -18,6 +18,8 @@
 
   <script src="../../node_modules/sockjs-client/dist/sockjs.min.js"></script>
 
+  <script src="../browser-workarounds.js"></script>
+
   <style>
   /* change player background color */
   #myAudio {
@@ -32,8 +34,7 @@
 <script>
 var sock;
 var startedRecord = false;
-
-var player = videojs('myAudio', {
+var options = {
     controls: true,
     width: 320,
     height: 240,
@@ -56,7 +57,12 @@ var player = videojs('myAudio', {
             debug: true
         }
     }
-}, function() {
+};
+
+// apply some workarounds for certain browsers
+applyAudioWorkaround();
+
+var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
