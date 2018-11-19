@@ -24,7 +24,7 @@
 <video id="myImage" class="video-js vjs-default-skin"></video>
 
 <script>
-var player = videojs("myImage", {
+var options = {
     controls: true,
     width: 320,
     height: 240,
@@ -39,7 +39,9 @@ var player = videojs("myImage", {
             debug: true
         }
     }
-}, function(){
+};
+
+var player = videojs('myImage', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record');

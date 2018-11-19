@@ -28,6 +28,8 @@
 
         <script src="../../node_modules/fine-uploader/fine-uploader/fine-uploader.js"></script>
 
+        <script src="../browser-workarounds.js"></script>
+
         <script>
             // initialize Fine Uploader
             var uploader = new qq.FineUploaderBasic({
@@ -40,7 +42,7 @@
                 }
             });
             // setup videojs-record
-            var player = videojs('myAudio', {
+            var options = {
                 controls: true,
                 width: 600,
                 height: 300,
@@ -61,7 +63,12 @@
                         debug: true
                     }
                 }
-            }, function() {
+            };
+
+            // apply some workarounds for certain browsers
+            applyAudioWorkaround();
+
+            var player = videojs('myAudio', options, function() {
                 // print version information at startup
                 var msg = 'Using video.js ' + videojs.VERSION +
                     ' with videojs-record ' + videojs.getPluginVersion('record') +

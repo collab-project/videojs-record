@@ -1393,7 +1393,9 @@ class Record extends Plugin {
         }
 
         let maxFileSizeReached = false;
-        internal = internal.getInternalRecorder();
+        if (internal) {
+            internal = internal.getInternalRecorder();
+        }
 
         if ((internal instanceof MediaStreamRecorder) === true) {
             this.player.recordedData = internal.getArrayOfBlobs();
