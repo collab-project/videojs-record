@@ -9,9 +9,10 @@ videojs-record changelog
   clip, and stop recording when that limit is reached (#234)
 - Add `msDisplayMax` option to control display of time format (#188)
 - Documentation: add Angular and Vue.js wiki pages (#274, #283)
-- Bump required videojs-wavesurfer version to 2.6.1 for microphone support
-  in the MS Edge browser (#294)
+- Bump required videojs-wavesurfer version to 2.6.2 for microphone support
+  in the MS Edge and Safari browsers (#294)
 - Fix issue with `timeSlice` option when resetting the player (#300 by @GDIBass)
+- Examples: add Safari/Edge browser workarounds for audio-only recording (#295)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 

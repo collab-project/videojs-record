@@ -17,6 +17,8 @@
   <script src="../../dist/videojs.record.js"></script>
   <script src="../../dist/plugins/videojs.record.libvorbis.js"></script>
 
+  <script src="../browser-workarounds.js"></script>
+
   <style>
   /* change player background color */
   #myAudio {
@@ -29,16 +31,16 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
-var player = videojs("myAudio", {
+var options = {
     controls: true,
     width: 600,
     height: 300,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: "live",
-            waveColor: "#16425b",
-            progressColor: "#3a7ca5",
+            src: 'live',
+            waveColor: '#16425b',
+            progressColor: '#3a7ca5',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
@@ -49,11 +51,18 @@ var player = videojs("myAudio", {
             video: false,
             maxLength: 20,
             debug: true,
-            audioEngine: "libvorbis.js",
+            audioEngine: 'libvorbis.js',
             audioSampleRate: 32000
         }
     }
-}, function() {
+};
+
+// safari workaround for libvorbis.js
+if (isSafari) {
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+}
+
+var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +

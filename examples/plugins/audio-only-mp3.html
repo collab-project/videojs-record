@@ -28,16 +28,16 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
-var player = videojs("myAudio", {
+var options = {
     controls: true,
     width: 600,
     height: 300,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: "live",
-            waveColor: "#fffa00",
-            progressColor: "#FAFCD2",
+            src:'live',
+            waveColor: '#fffa00',
+            progressColor: '#FAFCD2',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
@@ -48,13 +48,15 @@ var player = videojs("myAudio", {
             video: false,
             maxLength: 20,
             debug: true,
-            audioEngine: "lamejs",
-            audioWorkerURL: "../../node_modules/lamejs/worker-example/worker-realtime.js",
+            audioEngine: 'lamejs',
+            audioWorkerURL: '../../node_modules/lamejs/worker-example/worker-realtime.js',
             audioSampleRate: 44100,
             audioBitRate: 128
         }
     }
-}, function() {
+};
+
+var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
