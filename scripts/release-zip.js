@@ -58,7 +58,7 @@ del([targetDirUnpacked, targetDirRenamed], {force: true, dryRun: false}).then(pa
         console.log();
         const exe = path.join('node_modules', '.bin', 'jsdoc');
         const jsdoc = spawn(exe, [
-            libDir + '/src/js/',
+            path.join(libDir, 'src', 'js'),
             '-c', '.jsdoc-release.json',
             '-d', docPath
         ]);

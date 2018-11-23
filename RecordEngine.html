@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>videojs-record</title>
+    <title>Class: RecordEngine | videojs-record</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -43,143 +43,668 @@
 
 
 
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>RecordEngine<span class="signature">(player, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Base class for recorder backends.</p></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="RecordEngine">
+            
+                new <span class="type-signature"></span>RecordEngine<span class="signature">(player, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="engine_record-engine.js.html">engine/record-engine.js</a></code>,
+                <code><a href="engine_record-engine.js.html#line20">line 20</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Creates an instance of this class.</p>
+    </div>
     
 
-
-
-
-
-
-
-
+    
 
     
 
+    
 
-    <section>
-        <article class="readme">  <body>
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-    <div class="container">
-      <div class="header clearfix">
-        <h3 class="text-muted">Examples</h3>
-        <hr>
-      </div>
+        <th>Type</th>
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <div class="example-block">
-              <h4>Audio + Video</h4>
-            <p>Record both audio and video from a microphone and/or webcam.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/audio-video.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        
+        <th>Attributes</th>
+        
 
-          <div class="example-block">
-              <h4>Video Only</h4>
-            <p>Record video using a webcam.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/video-only.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        
 
-          <div class="example-block">
-              <h4>Animated GIF</h4>
-            <p>Record video using a webcam.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/animated-gif.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
 
-          <div class="example-block">
-            <h4>Single Image</h4>
-            <p>Create a snapshot image using a webcam.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/image-only.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+    <tbody>
+    
 
-          <div class="example-block">
-            <h4>React</h4>
-            <p>How to integrate this plugin in a <a href="https://reactjs.org" target="_blank">React</a> component</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/react/index.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        <tr>
+            
+                <td class="name"><code>player</code></td>
+            
 
-          <div class="example-block">
-            <h4>Enumerate devices</h4>
-            <p>Use <code>enumerateDevices</code> to get a list of the available input and output devices
-on the user's system.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/enumerate-devices.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+            <td class="type">
+            
+                
+<span class="param-type">Player</span>
 
-        </div>
 
-        <div class="col-lg-6">
-          <div class="example-block">
-              <h4>Audio Only</h4>
-            <p>Record audio using a microphone with realtime waveform visualization.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/audio-only.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+            
+            </td>
 
-          <div class="example-block">
-            <h4>Audio Only (Ogg Vorbis)</h4>
-            <p>Record audio using a microphone and output Ogg Vorbis files.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-ogg.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+            
+                <td class="attributes">
+                
 
-          <div class="example-block">
-            <h4>Audio Only (Opus)</h4>
-            <p>Record audio using a microphone and output Opus Ogg files using the opus-recorder library.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-opus.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-opus.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+                
 
-          <div class="example-block">
-            <h4>Audio Only (MP3)</h4>
-            <p>Record audio using a microphone and output MP3 files using the lamejs library.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-mp3.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-mp3.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+                
+                </td>
+            
 
-          <div class="example-block">
-            <h4>Audio Only (recorder.js)</h4>
-            <p>Record audio using a microphone and output WAV files using the recorder.js library.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-recorderjs.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-recorderjs.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+            
 
-        </div>
-      </div>
+            <td class="description last"><p>The <code>Player</code> that this class should be attached to.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The key/value store of player options.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
     </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
 
-  </body></article>
-    </section>
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
 
 
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>videojs.Component</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="addFileInfo">
+            
+                <span class="type-signature"></span>addFileInfo<span class="signature">(fileObj)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="engine_record-engine.js.html">engine/record-engine.js</a></code>,
+                <code><a href="engine_record-engine.js.html#line54">line 54</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Add filename and timestamp to recorded file object.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fileObj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">blob</span>
+|
+
+<span class="param-type">file</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Blob or File object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="onStopRecording">
+            
+                <span class="type-signature"></span>onStopRecording<span class="signature">(data)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="engine_record-engine.js.html">engine/record-engine.js</a></code>,
+                <code><a href="engine_record-engine.js.html#line96">line 96</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Invoked when recording is stopped and resulting stream is available.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">blob</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Reference to the recorded Blob.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="saveAs">
+            
+                <span class="type-signature"></span>saveAs<span class="signature">(name)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="engine_record-engine.js.html">engine/record-engine.js</a></code>,
+                <code><a href="engine_record-engine.js.html#line118">line 118</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Show save as dialog in browser so the user can store the recorded media
+locally.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Object with names for the particular blob(s)
+    you want to save. File extensions are added automatically. For
+    example: {'video': 'name-of-video-file'}. Supported keys are
+    'audio', 'video' and 'gif'.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -192,7 +717,7 @@ on the user's system.</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:videojs-record_sub'.replace(/"/g, '_');
+        var id = 'RecordEngine_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

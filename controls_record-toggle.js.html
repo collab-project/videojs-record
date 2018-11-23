@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>videojs-record</title>
+    <title>Source: controls/record-toggle.js | videojs-record</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -44,142 +46,121 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme">  <body>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file record-toggle.js
+ * @since 2.0.0
+ */
 
-    <div class="container">
-      <div class="header clearfix">
-        <h3 class="text-muted">Examples</h3>
-        <hr>
-      </div>
+const Button = videojs.getComponent('Button');
+const Component = videojs.getComponent('Component');
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <div class="example-block">
-              <h4>Audio + Video</h4>
-            <p>Record both audio and video from a microphone and/or webcam.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/audio-video.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+/**
+ * Button to toggle between start and stop recording.
+ *
+ * @class
+ * @augments videojs.Button
+*/
+class RecordToggle extends Button {
+    /**
+     * Builds the default DOM `className`.
+     *
+     * @return {string}
+     *         The DOM `className` for this object.
+     */
+    buildCSSClass() {
+        return 'vjs-record-button vjs-control vjs-button vjs-icon-record-start';
+    }
 
-          <div class="example-block">
-              <h4>Video Only</h4>
-            <p>Record video using a webcam.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/video-only.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+    /**
+     * Enable the `RecordToggle` element so that it can be activated or clicked.
+     */
+    enable() {
+        super.enable();
 
-          <div class="example-block">
-              <h4>Animated GIF</h4>
-            <p>Record video using a webcam.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/animated-gif.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        this.on(this.player_, 'startRecord', this.onStart);
+        this.on(this.player_, 'stopRecord', this.onStop);
+    }
 
-          <div class="example-block">
-            <h4>Single Image</h4>
-            <p>Create a snapshot image using a webcam.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/image-only.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+    /**
+     * Disable the `RecordToggle` element so that it cannot be activated or clicked.
+     */
+    disable() {
+        super.disable();
 
-          <div class="example-block">
-            <h4>React</h4>
-            <p>How to integrate this plugin in a <a href="https://reactjs.org" target="_blank">React</a> component</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/react/index.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        this.off(this.player_, 'startRecord', this.onStart);
+        this.off(this.player_, 'stopRecord', this.onStop);
+    }
 
-          <div class="example-block">
-            <h4>Enumerate devices</h4>
-            <p>Use <code>enumerateDevices</code> to get a list of the available input and output devices
-on the user's system.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/enumerate-devices.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+    /**
+     * This gets called when the button is clicked.
+     *
+     * @param {EventTarget~Event} event
+     *        The `tap` or `click` event that caused this function to be
+     *        called.
+     *
+     * @listens tap
+     * @listens click
+     */
+    handleClick(event) {
+        let recorder = this.player_.record();
+        if (!recorder.isRecording()) {
+            recorder.start();
+        } else {
+            recorder.stop();
+        }
+    }
 
-        </div>
+    /**
+     * Add the vjs-icon-record-stop class to the element so it can change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#startRecord
+     */
+    onStart(event) {
+        // replace element class so it can change appearance
+        this.removeClass('vjs-icon-record-start');
+        this.addClass('vjs-icon-record-stop');
 
-        <div class="col-lg-6">
-          <div class="example-block">
-              <h4>Audio Only</h4>
-            <p>Record audio using a microphone with realtime waveform visualization.</p>
-            <p>
-                <a class="btn btn-default btn-xs" type="button" href="examples/audio-only.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-                <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        // change the button text
+        this.controlText('Stop');
+    }
 
-          <div class="example-block">
-            <h4>Audio Only (Ogg Vorbis)</h4>
-            <p>Record audio using a microphone and output Ogg Vorbis files.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-ogg.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-ogg.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+    /**
+     * Add the vjs-icon-record-start class to the element so it can change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#stopRecord
+     */
+    onStop(event) {
+        // replace element class so it can change appearance
+        this.removeClass('vjs-icon-record-stop');
+        this.addClass('vjs-icon-record-start');
 
-          <div class="example-block">
-            <h4>Audio Only (Opus)</h4>
-            <p>Record audio using a microphone and output Opus Ogg files using the opus-recorder library.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-opus.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-opus.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+        // change the button text
+        this.controlText('Record');
+    }
+}
 
-          <div class="example-block">
-            <h4>Audio Only (MP3)</h4>
-            <p>Record audio using a microphone and output MP3 files using the lamejs library.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-mp3.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-mp3.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+/**
+ * The text that should display over the `RecordToggle`s controls. Added for localization.
+ *
+ * @type {string}
+ * @private
+ */
+RecordToggle.prototype.controlText_ = 'Record';
 
-          <div class="example-block">
-            <h4>Audio Only (recorder.js)</h4>
-            <p>Record audio using a microphone and output WAV files using the recorder.js library.</p>
-            <p>
-              <a class="btn btn-default btn-xs" type="button" href="examples/audio-only-recorderjs.html"><span aria-hidden="true" class="glyphicon glyphicon-share-alt"></span> Demo</a>
-              <a class="btn btn-default btn-xs" type="button" href="https://github.com/collab-project/videojs-record/blob/master/examples/audio-only-recorderjs.html"><span aria-hidden="true" class="glyphicon glyphicon-th-large"></span> Source</a>
-            </p>
-          </div>
+Component.registerComponent('RecordToggle', RecordToggle);
 
-        </div>
-      </div>
-
-    </div>
-
-
-  </body></article>
+export default RecordToggle;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -192,7 +173,7 @@ on the user's system.</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:videojs-record_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 
