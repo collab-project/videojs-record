@@ -9,8 +9,8 @@ import CameraButton from '../../src/js/controls/camera-button.js';
 
 /** @test {camera-button} */
 describe('controls.CameraButton', () => {
-    var player;
-    var originalTimeout;
+    let player;
+    let originalTimeout;
 
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;

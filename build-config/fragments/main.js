@@ -13,18 +13,18 @@ const pckg = require(path.join(rootDir, 'package.json'));
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // library banner with copyright and version info
-var jsBanner = `${pckg.name}
+let jsBanner = `${pckg.name}
 @version ${pckg.version}
 @see ${pckg.homepage}
 @copyright 2014-${year} ${pckg.author}
 @license ${pckg.license}`;
-var jsBannerPlugin = new webpack.BannerPlugin({
+let jsBannerPlugin = new webpack.BannerPlugin({
     banner: jsBanner,
     test: /\.js$/
 });
 
 // copy fonts to dist
-var copyFontsPlugin = new CopyWebpackPlugin([
+let copyFontsPlugin = new CopyWebpackPlugin([
     {
         from: 'src/fonts/*',
         to: 'fonts',

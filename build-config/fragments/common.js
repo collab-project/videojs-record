@@ -10,15 +10,15 @@ const pckg = require(path.join(rootDir, 'package.json'));
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // inject JS version number
-var jsVersionPlugin = new webpack.DefinePlugin({
+let jsVersionPlugin = new webpack.DefinePlugin({
     '__VERSION__': JSON.stringify(pckg.version)
 });
 
 // add CSS banner with version info
-var cssBanner = `/*!
+let cssBanner = `/*!
 Default styles for ${pckg.name} ${pckg.version}
 */`;
-var cssBannerPlugin = new webpack.BannerPlugin({
+let cssBannerPlugin = new webpack.BannerPlugin({
     banner: cssBanner,
     raw: true,
     test: /\.css$/

@@ -8,7 +8,11 @@ import setSrcObject from '../../src/js/utils/browser-shim.js';
 describe('utils.setSrcObject', () => {
 
     /** @test {setSrcObject} */
-    it('works', () => {
-        let obj = setSrcObject({}, {}, false);
+    it('throws error when no valid srcObject is found', () => {
+        expect(() => {
+            setSrcObject({}, {}, false);
+        }).toThrow(
+            new Error('createObjectURL/srcObject both are not supported.')
+        );
     });
 });

@@ -96,13 +96,13 @@ const TestHelpers = {
             }
         };
         opts = mergeOptions(opts, newOptions);
-        var tag = TestHelpers.makeTag('audio', 'audioOnly');
+        let tag = TestHelpers.makeTag('audio', 'audioOnly');
         return this.makePlayer(tag, opts);
     },
 
     makeAudioOnlyPluginPlayer(pluginName) {
-        var tag = TestHelpers.makeTag('audio', 'audioOnly');
-        var recordPluginOptions = {
+        let tag = TestHelpers.makeTag('audio', 'audioOnly');
+        let recordPluginOptions = {
             audio: true,
             video: false,
             maxLength: 5,
@@ -169,7 +169,7 @@ const TestHelpers = {
             }
         };
         opts = mergeOptions(opts, newOptions);
-        var tag = TestHelpers.makeTag('video', 'audioVideo');
+        let tag = TestHelpers.makeTag('video', 'audioVideo');
         return this.makePlayer(tag, opts);
     },
 
@@ -196,7 +196,7 @@ const TestHelpers = {
     },
 
     makeImageOnlyPlayer() {
-        var tag = TestHelpers.makeTag('video', 'imageOnly');
+        let tag = TestHelpers.makeTag('video', 'imageOnly');
         return this.makePlayer(tag, {
             controls: true,
             autoplay: false,
@@ -220,7 +220,7 @@ const TestHelpers = {
     makeScreenOnlyPlayer(newOptions) {
         // use polyfill in Firefox for now, see:
         // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-        if (browserDetails.browser == 'firefox') {
+        if (browserDetails.browser === 'firefox') {
             browserShim.shimGetDisplayMedia(window, 'screen');
         }
         let opts = {
@@ -246,7 +246,7 @@ const TestHelpers = {
     },
 
     makeAnimatedPlayer() {
-        var tag = TestHelpers.makeTag('video', 'animationOnly');
+        let tag = TestHelpers.makeTag('video', 'animationOnly');
         return this.makePlayer(tag, {
             controls: true,
             autoplay: false,

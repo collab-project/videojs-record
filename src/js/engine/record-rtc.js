@@ -19,6 +19,12 @@ class RecordRTCEngine extends RecordEngine {
 
     /**
      * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;
@@ -104,6 +110,9 @@ class RecordRTCEngine extends RecordEngine {
      *     you want to save. File extensions are added automatically. For
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
+     * @example
+     * // save video file as 'foo.webm'
+     * player.record().saveAs({'video': 'foo'});
      */
     saveAs(name) {
         if (this.engine && name !== undefined) {

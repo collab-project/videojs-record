@@ -16,7 +16,7 @@ const setSrcObject = function (stream, element, ignoreCreateObjectURL) {
     } else if ('mozSrcObject' in element) {
         element.mozSrcObject = stream;
     } else {
-        console.log('createObjectURL/srcObject both are not supported.');
+        throw new Error('createObjectURL/srcObject both are not supported.');
     }
 };
 

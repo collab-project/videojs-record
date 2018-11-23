@@ -9,7 +9,7 @@ import RecordToggle from '../../src/js/controls/record-toggle.js';
 
 /** @test {record-toggle} */
 describe('controls.RecordToggle', () => {
-    var player;
+    let player;
 
     beforeEach(() => {
         // create new player

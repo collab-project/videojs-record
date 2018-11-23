@@ -12,12 +12,12 @@ const rootDir = path.resolve(__dirname, '..', '..');
 const pckg = require(path.join(rootDir, 'package.json'));
 
 // plugin banner with copyright and version info
-var jsBanner = `[name] plugin for ${pckg.name}
+let jsBanner = `[name] plugin for ${pckg.name}
 @version ${pckg.version}
 @see ${pckg.homepage}
 @copyright 2014-${year} ${pckg.author}
 @license ${pckg.license}`;
-var jsBannerPlugin = new webpack.BannerPlugin({
+let jsBannerPlugin = new webpack.BannerPlugin({
     banner: jsBanner,
     test: /\.js$/
 });
