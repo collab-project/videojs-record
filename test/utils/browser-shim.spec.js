@@ -9,7 +9,7 @@ describe('utils.setSrcObject', () => {
 
     /** @test {setSrcObject} */
     it('throws error when no valid srcObject is found', () => {
-        expect(function() {
+        expect(() => {
             setSrcObject({}, {}, false);
         }).toThrow(
             new Error('createObjectURL/srcObject both are not supported.')
