@@ -49,7 +49,7 @@ class RecordEngine extends Component {
     /**
      * Add filename and timestamp to recorded file object.
      *
-     * @param {(blob|file)} fileObj - Blob or File object.
+     * @param {(Blob|File)} fileObj - Blob or File object to modify.
      */
     addFileInfo(fileObj) {
         if (fileObj instanceof Blob || fileObj instanceof File) {
@@ -92,6 +92,7 @@ class RecordEngine extends Component {
      * Invoked when recording is stopped and resulting stream is available.
      *
      * @param {blob} data - Reference to the recorded Blob.
+     * @private
      */
     onStopRecording(data) {
         this.recordedData = data;
@@ -110,10 +111,14 @@ class RecordEngine extends Component {
      * Show save as dialog in browser so the user can store the recorded media
      * locally.
      *
-     * @param {object} name - Object with names for the particular blob(s)
+     * @param {Object} name - Object with names for the particular blob(s)
      *     you want to save. File extensions are added automatically. For
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
+     * @example
+     * // save video file as 'foo.webm'
+     * player.record().saveAs({'video': 'foo'});
+     * @returns {void}
      */
     saveAs(name) {
         let fileName = name[Object.keys(name)[0]];

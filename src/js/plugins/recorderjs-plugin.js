@@ -14,6 +14,12 @@ const RecordEngine = videojs.getComponent('RecordEngine');
 class RecorderjsEngine extends RecordEngine {
     /**
      * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;

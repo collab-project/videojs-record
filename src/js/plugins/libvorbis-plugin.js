@@ -14,6 +14,12 @@ const RecordEngine = videojs.getComponent('RecordEngine');
 class LibVorbisEngine extends RecordEngine {
     /**
      * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;
@@ -52,6 +58,7 @@ class LibVorbisEngine extends RecordEngine {
 
     /**
      * @private
+     * @param {Object} event - ondataavailable responded with data object.
      */
     onData(event) {
         this.chunks.push(event.data);

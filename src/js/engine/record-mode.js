@@ -34,8 +34,10 @@ const getRecorderMode = function(image, audio, video, animation, screen) {
 };
 
 /**
- * Return boolean indicating whether mode is enabled or not.
+ * Check whether mode is enabled or not.
  *
+ * @param {(Object|Boolean)} mode - Mode.
+ * @returns {Boolean} Return boolean indicating whether mode is enabled or not.
  * @private
  */
 const isModeEnabled = function(mode) {
