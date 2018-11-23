@@ -33,6 +33,20 @@
     ],
     "keyword-spacing": ["error", { "before": true }],
     "space-infix-ops": 2,
-    "prefer-arrow-callback": 2
-  }
+    "prefer-arrow-callback": 2,
+    "valid-jsdoc": [2, {
+      "requireReturn": false,
+      "requireReturnType": false
+    }],
+    "require-jsdoc": 2
+  },
+  "overrides": [
+    {
+      "files": ["test-*.js", "*.spec.js", "test-helpers.js"],
+      "rules": {
+        "valid-jsdoc": 0,
+        "require-jsdoc": 0
+      }
+    }
+  ]
 }
