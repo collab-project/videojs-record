@@ -5,7 +5,7 @@
         "destination": ".",
         "recurse": true,
         "package": "node_modules/videojs-record/package.json",
-        "readme": "./index2.html"
+        "readme": "./index-content.html"
     },
     "templates": {
         "name": "videojs-record",
