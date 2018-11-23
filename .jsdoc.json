@@ -12,6 +12,7 @@
         "default": {
             "layoutFile": "./examples/layout.tmpl"
         }
-    }
+    },
+    "plugins": ["plugins/markdown"]
 }
 
