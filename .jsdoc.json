@@ -1,0 +1,18 @@
+{
+    "opts": {
+        "template": "node_modules/tui-jsdoc-template",
+        "encoding": "utf8",
+        "destination": ".",
+        "recurse": true,
+        "package": "node_modules/videojs-record/package.json",
+        "readme": "node_modules/videojs-record/README.md"
+    },
+    "templates": {
+        "name": "videojs-record",
+        "default": {
+            "layoutFile": "./examples/layout.tmpl"
+        }
+    },
+    "plugins": ["plugins/markdown"]
+}
+

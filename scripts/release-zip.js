@@ -1,36 +1,41 @@
 /**
- * Release zip file for github including dist directory.
+ * Release zip file for github including dist and docs directories.
  *
  * @file release-zip.js
  * @since 2.0.0
  */
 
-var fs = require('fs');
-var mv = require('mv');
-var del = require('del');
-var path = require('path');
-var zipdir = require('zip-dir');
-var copydir = require('copy-dir');
-var download = require('download-tarball');
-var pjson = JSON.parse(fs.readFileSync(path.resolve('node_modules', 'videojs-record', 'package.json'), 'utf8'));
+const fs = require('fs');
+const mv = require('mv');
+const del = require('del');
+const path = require('path');
+const zipdir = require('zip-dir');
+const copydir = require('copy-dir');
+const {spawn} = require('child_process');
+const download = require('download-tarball');
 
-var version = pjson.version;
-var url = 'https://github.com/collab-project/videojs-record/archive/' + version + '.tar.gz';
-var targetDir = '/tmp';
-var dirName = 'videojs-record';
-var dirNameWithVersion = dirName + '-' + version;
-var targetDirRenamed = path.join(targetDir, dirName);
-var targetDirUnpacked = path.join(targetDir, dirNameWithVersion);
-var zipName = dirNameWithVersion + '.zip';
+const dirName = 'videojs-record';
+const libDir = path.join('node_modules', dirName);
+const pjson = JSON.parse(fs.readFileSync(path.resolve(libDir, 'package.json'), 'utf8'));
+const version = pjson.version;
+const url = 'https://github.com/collab-project/videojs-record/archive/' + version + '.tar.gz';
+const targetDir = '/tmp';
+const dirNameWithVersion = dirName + '-' + version;
+const targetDirRenamed = path.join(targetDir, dirName);
+const targetDirUnpacked = path.join(targetDir, dirNameWithVersion);
+const zipName = dirNameWithVersion + '.zip';
 
-console.log('Version:', version);
+console.log('-------------------------------------------');
+console.log('Generating release for', pjson.name, version);
+console.log('-------------------------------------------');
+
 
 // clean old dir
 del([targetDirUnpacked, targetDirRenamed], {force: true, dryRun: false}).then(paths => {
     console.log();
 
     if (paths.length > 0) {
-        paths.forEach(function(path) {
+        paths.forEach((path) => {
             console.log('Deleted', path);
         });
         console.log();
@@ -47,30 +52,44 @@ del([targetDirUnpacked, targetDirRenamed], {force: true, dryRun: false}).then(pa
         console.log('File downloaded and extracted at', targetDirUnpacked);
         console.log();
 
-        // copy dist
-        copydir('node_modules/videojs-record/dist', path.join(targetDirUnpacked, 'dist'), function(err) {
-            if (err){
-                console.log(err);
-            } else {
-                console.log('Copied dist to release target directory.');
-                console.log();
+        // docs
+        let docPath = path.join(targetDirUnpacked, 'docs');
+        console.log('Generated documentation at', docPath);
+        console.log();
+        const exe = path.join('node_modules', '.bin', 'jsdoc');
+        const jsdoc = spawn(exe, [
+            libDir + '/src/js/',
+            '-c', '.jsdoc-release.json',
+            '-d', docPath
+        ]);
 
-                // remove version nr from dir
-                mv(targetDirUnpacked, targetDirRenamed, function(err) {
-                    // done. it tried fs.rename first, and then falls back to
-                    // piping the source file to the dest file and then unlinking
-                    // the source file.
-                    console.log('Renamed directory to', targetDirRenamed);
+        // docs ready
+        jsdoc.on('close', code => {
+            // copy dist
+            copydir(path.join(libDir, 'dist'), path.join(targetDirUnpacked, 'dist'), (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Copied dist to release target directory.');
                     console.log();
 
-                    zipdir(targetDirRenamed, { saveTo: zipName }, function (err, buffer) {
-                        console.log('Zipped directory to', zipName);
+                    // remove version nr from dir
+                    mv(targetDirUnpacked, targetDirRenamed, function(err) {
+                        // done. it tried fs.rename first, and then falls back to
+                        // piping the source file to the dest file and then unlinking
+                        // the source file.
+                        console.log('Renamed directory to', targetDirRenamed);
                         console.log();
 
-                        console.log('Done!');
+                        zipdir(targetDirRenamed, {saveTo: zipName}, (err, buffer) => {
+                            console.log('Zipped directory to', zipName);
+                            console.log();
+
+                            console.log('Done!');
+                        });
                     });
-                });
-            }
+                }
+            });
         });
     }).catch(err => {
         console.log('File could not be downloaded properly!');

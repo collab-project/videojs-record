@@ -15,15 +15,16 @@
   },
   "scripts": {
     "lint": "npm-run-all lint:*",
-    "lint:html": "htmlhint examples index.html",
+    "lint:html": "htmlhint --config .htmlhint.conf examples index.html",
     "start": "npm-run-all -p start:* watch",
     "start:serve": "babel-node --presets=env scripts/server.js",
-    "update": "npm-run-all -s update:*",
+    "update": "npm-run-all -s update:* && npm-run-all docs:*",
     "update:videojs-record": "cpx -v 'node_modules/videojs-record/dist/**/*' dist/",
     "update:libvorbis": "cpx -v 'node_modules/libvorbis.js/js/libvorbis.min.js' examples/lib/libvorbis.js/",
     "update:lamejs": "cpx -v 'node_modules/lamejs/lame.*.js' examples/lib/lamejs/",
     "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' examples/lib/lamejs/worker-example/",
     "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' examples/lib/opus-recorder/",
+    "docs": "jsdoc node_modules/videojs-record/src/js -c ./.jsdoc.json",
     "test": "echo No tests yet!",
     "watch": "npm-run-all -p watch:lint",
     "watch:lint": "nodemon --watch examples --exec npm run lint",
@@ -53,11 +54,14 @@
     "download-tarball": "^2.0.0",
     "htmlhint": "^0.10.1",
     "in-publish": "^2.0.0",
+    "jsdoc": "^3.5.5",
+    "jsdoc-api": "^4.0.3",
     "mv": "^2.1.1",
     "nodemon": "^1.18.6",
     "npm-run-all": "^4.1.3",
     "portscanner": "^2.2.0",
     "serve-static": "^1.13.2",
+    "tui-jsdoc-template": "^1.2.2",
     "zip-dir": "^1.0.2"
   }
 }
