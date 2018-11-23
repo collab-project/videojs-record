@@ -11,7 +11,7 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  * Audio is encoded using libopus.
  *
  * @class
- * @augments videojs.RecordEngine
+ * @augments RecordEngine
  */
 class OpusRecorderEngine extends RecordEngine {
     /**

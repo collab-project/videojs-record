@@ -9,7 +9,7 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  * Audio-only engine for the recorder.js library.
  *
  * @class
- * @augments videojs.RecordEngine
+ * @augments RecordEngine
  */
 class RecorderjsEngine extends RecordEngine {
     /**
