@@ -4,26 +4,27 @@
  */
 
 const path = require('path');
-const moment = require('moment');
 const webpack = require('webpack');
-const time = moment().format('YYYY');
+const datefns = require('date-fns');
+
+const year = datefns.format(new Date(), 'YYYY');
 const rootDir = path.resolve(__dirname, '..', '..');
 const pckg = require(path.join(rootDir, 'package.json'));
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // library banner with copyright and version info
-var jsBanner = `${pckg.name}
+let jsBanner = `${pckg.name}
 @version ${pckg.version}
 @see ${pckg.homepage}
-@copyright 2014-${time} ${pckg.author}
+@copyright 2014-${year} ${pckg.author}
 @license ${pckg.license}`;
-var jsBannerPlugin = new webpack.BannerPlugin({
+let jsBannerPlugin = new webpack.BannerPlugin({
     banner: jsBanner,
     test: /\.js$/
 });
 
 // copy fonts to dist
-var copyFontsPlugin = new CopyWebpackPlugin([
+let copyFontsPlugin = new CopyWebpackPlugin([
     {
         from: 'src/fonts/*',
         to: 'fonts',

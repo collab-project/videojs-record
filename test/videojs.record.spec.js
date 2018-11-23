@@ -15,7 +15,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
 /** @test {Record} */
 describe('Record', () => {
-    var player;
+    let player;
 
     afterEach(() => {
         try {
@@ -188,42 +188,6 @@ describe('Record', () => {
     });
 
     /** @test {Record} */
-    it('runs as animation-only plugin', (done) => {
-        // create animated GIF plugin
-        player = TestHelpers.makeAnimatedPlayer();
-
-        player.one('finishRecord', () => {
-            let data = player.recordedData;
-            expect(data instanceof Blob).toBeTruthy();
-
-            player.play();
-
-            // wait till it's loaded before destroying
-            // (XXX: create new event for this)
-            setTimeout(done, 1000);
-        });
-
-        player.one('deviceReady', () => {
-            // create animated GIF
-            player.record().start();
-
-            // stop recording after few seconds
-            setTimeout(() => {
-                player.record().stop();
-            }, 2000);
-        });
-
-        player.one('ready', () => {
-            // correct device button icon
-            expect(player.deviceButton.buildCSSClass().endsWith(
-                'video-perm')).toBeTrue();
-
-            // start device
-            player.record().getDevice();
-        });
-    });
-
-    /** @test {Record} */
     it('runs as screen-only plugin', (done) => {
         // create screen-only plugin
         player = TestHelpers.makeScreenOnlyPlayer();
@@ -232,7 +196,7 @@ describe('Record', () => {
             'screen-perm')).toBeTrue();
 
         let browser = detectBrowser();
-        if (isFirefox() || (browser.browser == 'chrome' && browser.version >= 70)) {
+        if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 70)) {
             player.one('finishRecord', () => {
                 // received a blob file
                 expect(player.recordedData instanceof Blob).toBeTruthy();
@@ -317,7 +281,7 @@ describe('Record', () => {
 
         player.one('finishRecord', () => {
             let browser = detectBrowser();
-            if (isFirefox() || (browser.browser == 'chrome' && browser.version >= 70)) {
+            if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 70)) {
                 expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
                 expect(player.record().stream.getAudioTracks()[0].enabled).toBeFalse();
             }
@@ -532,7 +496,7 @@ describe('Record', () => {
             expect(player.currentTimestamp).toBeDefined();
             expect(player.allTimestamps.length).toEqual(total);
 
-            if (total == 6) {
+            if (total === 6) {
                 player.record().stop();
             }
         });
@@ -556,7 +520,7 @@ describe('Record', () => {
         player.one('ready', () => {
             expect(player.options_.plugins.record.video).toBeFalse();
 
-            var newOptions = {
+            let newOptions = {
                 video: {
                     facingMode: 'environment'
                 }

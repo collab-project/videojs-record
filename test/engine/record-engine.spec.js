@@ -9,7 +9,7 @@ import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RecordEngine} 
 
 /** @test {record-engine} */
 describe('engine.record-engine', () => {
-    var player;
+    let player;
 
     beforeEach(() => {
         // create new player

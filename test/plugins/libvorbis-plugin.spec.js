@@ -11,7 +11,7 @@ import {LIBVORBISJS} from '../../src/js/engine/record-engine.js';
 
 /** @test {LibVorbisEngine} */
 describe('plugins.libvorbis-plugin', () => {
-    var player;
+    let player;
 
     afterEach(() => {
         player.dispose();

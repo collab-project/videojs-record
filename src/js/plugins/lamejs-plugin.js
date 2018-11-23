@@ -9,11 +9,17 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  * Audio-only engine for the lamejs library.
  *
  * @class
- * @augments videojs.RecordEngine
+ * @augments RecordEngine
  */
 class LamejsEngine extends RecordEngine {
     /**
      * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;
@@ -69,6 +75,9 @@ class LamejsEngine extends RecordEngine {
 
     /**
      * Received a message from the worker.
+     *
+     * @private
+     * @param {Object} ev - Worker responded with event object.
      */
     onWorkerMessage(ev) {
         switch (ev.data.cmd) {
@@ -90,7 +99,9 @@ class LamejsEngine extends RecordEngine {
 
     /**
      * Continuous encoding of audio data.
+     *
      * @private
+     * @param {Object} ev - onaudioprocess responded with data object.
      */
     onAudioProcess(ev) {
         // send microphone data to LAME for MP3 encoding while recording
