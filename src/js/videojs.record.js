@@ -1451,7 +1451,7 @@ class Record extends Plugin {
      * Collects information about the media input and output devices
      * available on the system.
      *
-     * Returns an array.
+     * @returns {array} List of input and output devices.
      */
     enumerateDevices() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
