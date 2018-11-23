@@ -9,7 +9,7 @@ import RecordIndicator from '../../src/js/controls/record-indicator.js';
 
 /** @test {record-indicator} */
 describe('controls.RecordIndicator', () => {
-    var player;
+    let player;
 
     beforeEach(() => {
         // create new player

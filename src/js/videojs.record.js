@@ -454,7 +454,7 @@ class Record extends Plugin {
             }
 
             // get recorder class
-            var EngineClass;
+            let EngineClass;
             switch (this.audioEngine) {
                 case RECORDRTC:
                     // RecordRTC.js (default)
@@ -926,9 +926,9 @@ class Record extends Plugin {
      */
     onCountDown() {
         if (!this.paused) {
-            var now = new Date().getTime();
-            var duration = this.maxLength;
-            var currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
+            let now = new Date().getTime();
+            let duration = this.maxLength;
+            let currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
 
             this.streamDuration = currentTime;
 
@@ -1111,7 +1111,7 @@ class Record extends Plugin {
         this.player.clearInterval(this.countDown);
 
         // dispose wavesurfer.js
-        if (this.getRecordType() == AUDIO_ONLY) {
+        if (this.getRecordType() === AUDIO_ONLY) {
             if (this.surfer) {
                 // also disposes player
                 this.surfer.destroy();
@@ -1273,8 +1273,8 @@ class Record extends Plugin {
      * @returns {void}
      */
     captureFrame() {
-        var detected = detectBrowser();
-        var recordCanvas = this.player.recordCanvas.el().firstChild;
+        let detected = detectBrowser();
+        let recordCanvas = this.player.recordCanvas.el().firstChild;
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
@@ -1292,8 +1292,8 @@ class Record extends Plugin {
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                (typeof ImageCapture === typeof Function)) {
                 try {
-                    var track = this.stream.getVideoTracks()[0];
-                    var imageCapture = new ImageCapture(track);
+                    let track = this.stream.getVideoTracks()[0];
+                    let imageCapture = new ImageCapture(track);
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
@@ -1357,7 +1357,7 @@ class Record extends Plugin {
      * @private
      */
     showAnimation() {
-        var animationDisplay = this.player.animationDisplay.el().firstChild;
+        let animationDisplay = this.player.animationDisplay.el().firstChild;
 
         // set the image size to the dimensions of the recorded animation
         animationDisplay.width = this.player.width();

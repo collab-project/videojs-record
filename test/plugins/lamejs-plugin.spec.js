@@ -11,7 +11,7 @@ import {LAMEJS} from '../../src/js/engine/record-engine.js';
 
 /** @test {LamejsEngine} */
 describe('plugins.lamejs-plugin', () => {
-    var player;
+    let player;
 
     afterEach(() => {
         player.dispose();

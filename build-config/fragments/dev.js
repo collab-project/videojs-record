@@ -24,7 +24,7 @@ module.exports = {
             // use proper mime-type for wasm files
             // =============================================
             app.get('*.wasm', (req, res, next) => {
-                var options = {
+                let options = {
                     root: contentBase,
                     dotfiles: 'deny',
                     headers: {
@@ -49,7 +49,7 @@ module.exports = {
             // file upload handler for examples
             app.post('/upload', (req, res) => {
                 // save uploaded file
-                var form = new formidable.IncomingForm();
+                let form = new formidable.IncomingForm();
                 form.uploadDir = 'uploads';
                 form.keepExtensions = true;
 
