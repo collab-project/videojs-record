@@ -9,7 +9,7 @@ import DeviceButton from '../../src/js/controls/device-button.js';
 
 /** @test {device-button} */
 describe('controls.DeviceButton', () => {
-    var player;
+    let player;
 
     beforeEach(() => {
         // create new player

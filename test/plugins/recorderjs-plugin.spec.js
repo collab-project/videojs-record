@@ -11,8 +11,8 @@ import {RECORDERJS} from '../../src/js/engine/record-engine.js';
 
 /** @test {RecorderjsEngine} */
 describe('plugins.recorderjs-plugin', () => {
-    var player;
-    var originalTimeout;
+    let player;
+    let originalTimeout;
 
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;

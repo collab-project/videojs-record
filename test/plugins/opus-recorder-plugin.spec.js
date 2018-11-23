@@ -11,7 +11,7 @@ import {OPUSRECORDER} from '../../src/js/engine/record-engine.js';
 
 /** @test {OpusRecorderEngine} */
 describe('plugins.opus-recorder-plugin', () => {
-    var player;
+    let player;
 
     afterEach(() => {
         player.dispose();
