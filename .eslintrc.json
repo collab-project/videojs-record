@@ -38,7 +38,8 @@
       "requireReturn": false,
       "requireReturnType": false
     }],
-    "require-jsdoc": 2
+    "require-jsdoc": 2,
+    "no-console": 2
   },
   "overrides": [
     {
@@ -46,6 +47,12 @@
       "rules": {
         "valid-jsdoc": 0,
         "require-jsdoc": 0
+      }
+    },
+    {
+      "files": ["build-config/**/*.js"],
+      "rules": {
+        "no-console": 0
       }
     }
   ]
