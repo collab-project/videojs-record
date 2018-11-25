@@ -1,3 +1,8 @@
+/* Navigation - LNB */
+.lnb {
+    bottom: 0px;
+}
+
 .lnb h3 {
     color: #008aff;
 }
@@ -8,4 +13,12 @@
 
 code {
     color: #008aff;
+}
+
+.main {
+    margin-bottom: 0px;
+}
+
+.main section header {
+    padding-top: 0;
 }
