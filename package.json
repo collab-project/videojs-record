@@ -26,8 +26,9 @@
     "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' examples/lib/opus-recorder/",
     "docs": "jsdoc node_modules/videojs-record/src/js -c ./.jsdoc.json",
     "test": "echo No tests yet!",
-    "watch": "npm-run-all -p watch:lint",
+    "watch": "npm-run-all -p watch:*",
     "watch:lint": "nodemon --watch examples --exec npm run lint",
+    "watch:docs": "nodemon --watch index-content.html --exec npm run docs",
     "release:zip": "node scripts/release-zip.js"
   },
   "repository": {
