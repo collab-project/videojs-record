@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.0.0 - unreleased
+3.0.0 - 2018/11/29
 ------------------
 
 - Add support for screen capture (#289)
