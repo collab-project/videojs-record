@@ -1,6 +1,6 @@
 /*!
  * libvorbis plugin for videojs-record
- * @version 2.4.1
+ * @version 3.0.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -114,119 +114,130 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports.default = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * @file libvorbis-plugin.js
  * @since 1.1.0
  */
-
 var RecordEngine = videojs.getComponent('RecordEngine');
-
 /**
  * Audio-only engine for the libvorbis.js library.
  *
  * @class
- * @augments videojs.RecordPlugin
+ * @augments RecordEngine
  */
 
-var LibVorbisEngine = function (_RecordEngine) {
-    _inherits(LibVorbisEngine, _RecordEngine);
+var LibVorbisEngine =
+/*#__PURE__*/
+function (_RecordEngine) {
+  _inherits(LibVorbisEngine, _RecordEngine);
 
-    function LibVorbisEngine() {
-        _classCallCheck(this, LibVorbisEngine);
+  function LibVorbisEngine() {
+    _classCallCheck(this, LibVorbisEngine);
 
-        return _possibleConstructorReturn(this, (LibVorbisEngine.__proto__ || Object.getPrototypeOf(LibVorbisEngine)).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(LibVorbisEngine).apply(this, arguments));
+  }
+
+  _createClass(LibVorbisEngine, [{
+    key: "setup",
+
+    /**
+     * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
+     */
+    value: function setup(stream, mediaType, debug) {
+      this.inputStream = stream;
+      this.mediaType = mediaType;
+      this.debug = debug; // setup libvorbis.js
+
+      this.options = {
+        audioBitsPerSecond: this.sampleRate
+      };
     }
+    /**
+     * Start recording.
+     */
 
-    _createClass(LibVorbisEngine, [{
-        key: 'setup',
+  }, {
+    key: "start",
+    value: function start() {
+      this.chunks = [];
+      this.engine = new VorbisMediaRecorder(this.inputStream, this.options);
+      this.engine.ondataavailable = this.onData.bind(this);
+      this.engine.onstop = this.onRecordingAvailable.bind(this);
+      this.engine.start();
+    }
+    /**
+     * Stop recording.
+     */
 
-        /**
-         * Setup recording engine.
-         */
-        value: function setup(stream, mediaType, debug) {
-            this.inputStream = stream;
-            this.mediaType = mediaType;
-            this.debug = debug;
+  }, {
+    key: "stop",
+    value: function stop() {
+      try {
+        this.engine.stop();
+      } catch (err) {// ignore errors about invalid state
+      }
+    }
+    /**
+     * @private
+     * @param {Object} event - ondataavailable responded with data object.
+     */
 
-            // setup libvorbis.js
-            this.options = {
-                audioBitsPerSecond: this.sampleRate
-            };
-        }
+  }, {
+    key: "onData",
+    value: function onData(event) {
+      this.chunks.push(event.data);
+    }
+    /**
+     * @private
+     */
 
-        /**
-         * Start recording.
-         */
+  }, {
+    key: "onRecordingAvailable",
+    value: function onRecordingAvailable() {
+      var blob = new Blob(this.chunks, {
+        type: this.chunks[0].type
+      });
+      this.chunks = [];
+      this.onStopRecording(blob);
+    }
+  }]);
 
-    }, {
-        key: 'start',
-        value: function start() {
-            this.chunks = [];
-            this.engine = new VorbisMediaRecorder(this.inputStream, this.options);
-            this.engine.ondataavailable = this.onData.bind(this);
-            this.engine.onstop = this.onRecordingAvailable.bind(this);
-
-            this.engine.start();
-        }
-
-        /**
-         * Stop recording.
-         */
-
-    }, {
-        key: 'stop',
-        value: function stop() {
-            try {
-                this.engine.stop();
-            } catch (err) {
-                // ignore errors about invalid state
-            }
-        }
-
-        /**
-         * @private
-         */
-
-    }, {
-        key: 'onData',
-        value: function onData(event) {
-            this.chunks.push(event.data);
-        }
-
-        /**
-         * @private
-         */
-
-    }, {
-        key: 'onRecordingAvailable',
-        value: function onRecordingAvailable() {
-            var blob = new Blob(this.chunks, { type: this.chunks[0].type });
-            this.chunks = [];
-            this.onStopRecording(blob);
-        }
-    }]);
-
-    return LibVorbisEngine;
-}(RecordEngine);
-
-// expose plugin
+  return LibVorbisEngine;
+}(RecordEngine); // expose plugin
 
 
 videojs.LibVorbisEngine = LibVorbisEngine;
-
-exports.default = LibVorbisEngine;
-module.exports = exports['default'];
+var _default = LibVorbisEngine;
+exports.default = _default;
+module.exports = exports.default;
 
 /***/ })
 
