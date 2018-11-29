@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<video id="myVideo" class="video-js vjs-default-skin">
+<video id="myAnimation" class="video-js vjs-default-skin">
   <p class="vjs-no-js">
     To view this video please enable JavaScript, or consider upgrading to a
     web browser that
@@ -34,7 +34,7 @@
 </video>
 
 <script>
-var player = videojs('myVideo', {
+var options = {
     controls: true,
     width: 320,
     height: 240,
@@ -51,7 +51,8 @@ var player = videojs('myVideo', {
             debug: true
         }
     }
-}, function(){
+};
+var player = videojs('myAnimation', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
