@@ -13,6 +13,8 @@
 
   <script src="../dist/videojs.record.min.js"></script>
 
+  <script src="browser-workarounds.js"></script>
+
   <style>
   /* change player background color */
   #myVideo {
@@ -51,12 +53,10 @@ var options = {
     }
 };
 
-// use correct video mimetype for opera
-if (!!window.opera || navigator.userAgent.indexOf('OPR/') !== -1) {
-    options.plugins.record.videoMimeType = 'video/webm\;codecs=vp8'; // or vp9
-}
+// apply some workarounds for certain browsers
+applyVideoWorkaround();
 
-var player = videojs("myVideo", options, function(){
+var player = videojs('myVideo', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
