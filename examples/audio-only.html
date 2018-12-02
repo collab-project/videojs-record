@@ -31,6 +31,7 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
+var player;
 var options = {
     controls: true,
     width: 600,
@@ -57,32 +58,50 @@ var options = {
 // apply some workarounds for certain browsers
 applyAudioWorkaround();
 
-var player = videojs('myAudio', options, function() {
-    // print version information at startup
-    var msg = 'Using video.js ' + videojs.VERSION +
-        ' with videojs-record ' + videojs.getPluginVersion('record') +
-        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
-        RecordRTC.version;
-    videojs.log(msg);
-});
+if (isSafari) {
+    // add start button for safari
+    addStartButton();
+} else {
+    // other browsers
+    createPlayer();
+}
 
-// error handling
-player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
-});
+function createPlayer(event) {
+    if (isSafari) {
+        if (event) {
+            // hide button on safari
+            event.target.style.display = 'none';
+        }
+        updateContext(options);
+    }
+    // create player
+    player = videojs('myAudio', options, function() {
+        // print version information at startup
+        var msg = 'Using video.js ' + videojs.VERSION +
+            ' with videojs-record ' + videojs.getPluginVersion('record') +
+            ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+            ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+            RecordRTC.version;
+        videojs.log(msg);
+    });
 
-// user clicked the record button and started recording
-player.on('startRecord', function() {
-    console.log('started recording!');
-});
+    // error handling
+    player.on('deviceError', function() {
+        console.log('device error:', player.deviceErrorCode);
+    });
 
-// user completed recording and stream is available
-player.on('finishRecord', function() {
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
-});
+    // user clicked the record button and started recording
+    player.on('startRecord', function() {
+        console.log('started recording!');
+    });
+
+    // user completed recording and stream is available
+    player.on('finishRecord', function() {
+        // the blob object contains the recorded data that
+        // can be downloaded by the user, stored on server etc.
+        console.log('finished recording: ', player.recordedData);
+    });
+}
 </script>
 </body>
 </html>
