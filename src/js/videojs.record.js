@@ -999,12 +999,15 @@ class Record extends Plugin {
             case AUDIO_VIDEO:
             case ANIMATION:
             case SCREEN_ONLY:
-                this.streamCurrentTime = Math.min(currentTime, duration);
+                if (this.player.controlBar.currentTimeDisplay &&
+                    this.player.controlBar.currentTimeDisplay.contentEl()) {
+                    this.streamCurrentTime = Math.min(currentTime, duration);
 
-                // update current time display component
-                this.player.controlBar.currentTimeDisplay.formattedTime_ =
-                   this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                       formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                    // update current time display component
+                    this.player.controlBar.currentTimeDisplay.formattedTime_ =
+                        this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
+                            formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
@@ -1041,9 +1044,12 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 // update duration display component
-                this.player.controlBar.durationDisplay.formattedTime_ =
+                if (this.player.controlBar.durationDisplay &&
+                    this.player.controlBar.durationDisplay.contentEl()) {
+                    this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
