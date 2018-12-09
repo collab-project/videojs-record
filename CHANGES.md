@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.0.1 - unreleased
+------------------
+
+- Improve `destroy` method (#310)
+
+
 3.0.0 - 2018/11/29
 ------------------
 

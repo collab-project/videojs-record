@@ -279,7 +279,11 @@ class Record extends Plugin {
      * @return {boolean} Plugin destroyed or not.
      */
     isDestroyed() {
-        return this.player && (this.player.children() === null);
+        let destroyed = (this.player === null);
+        if (destroyed === false) {
+            destroyed = (this.player.children() === null);
+        }
+        return destroyed;
     }
 
     /**
@@ -833,6 +837,12 @@ class Record extends Plugin {
         // notify listeners that data is available
         this.player.trigger('finishRecord');
 
+        // skip loading when player is destroyed after finishRecord event
+        if (this.isDestroyed()) {
+            return;
+        }
+
+        // load and display recorded data
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // pause player so user can start playback
