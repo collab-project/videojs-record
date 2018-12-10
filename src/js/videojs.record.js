@@ -608,11 +608,13 @@ class Record extends Plugin {
     onDeviceError(code) {
         this._deviceActive = false;
 
-        // store code
-        this.player.deviceErrorCode = code;
+        if (!this.isDestroyed()) {
+            // store code
+            this.player.deviceErrorCode = code;
 
-        // forward error to player
-        this.player.trigger('deviceError');
+            // forward error to player
+            this.player.trigger('deviceError');
+        }
     }
 
     /**

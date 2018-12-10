@@ -4,7 +4,7 @@ videojs-record changelog
 3.0.1 - unreleased
 ------------------
 
-- Fix hiding time controls
+- Allow hiding time controls
 - Improve `destroy` method (#310)
 
 
