@@ -279,7 +279,11 @@ class Record extends Plugin {
      * @return {boolean} Plugin destroyed or not.
      */
     isDestroyed() {
-        return this.player && (this.player.children() === null);
+        let destroyed = (this.player === null);
+        if (destroyed === false) {
+            destroyed = (this.player.children() === null);
+        }
+        return destroyed;
     }
 
     /**
@@ -604,11 +608,13 @@ class Record extends Plugin {
     onDeviceError(code) {
         this._deviceActive = false;
 
-        // store code
-        this.player.deviceErrorCode = code;
+        if (!this.isDestroyed()) {
+            // store code
+            this.player.deviceErrorCode = code;
 
-        // forward error to player
-        this.player.trigger('deviceError');
+            // forward error to player
+            this.player.trigger('deviceError');
+        }
     }
 
     /**
@@ -833,6 +839,12 @@ class Record extends Plugin {
         // notify listeners that data is available
         this.player.trigger('finishRecord');
 
+        // skip loading when player is destroyed after finishRecord event
+        if (this.isDestroyed()) {
+            return;
+        }
+
+        // load and display recorded data
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // pause player so user can start playback
@@ -989,12 +1001,15 @@ class Record extends Plugin {
             case AUDIO_VIDEO:
             case ANIMATION:
             case SCREEN_ONLY:
-                this.streamCurrentTime = Math.min(currentTime, duration);
+                if (this.player.controlBar.currentTimeDisplay &&
+                    this.player.controlBar.currentTimeDisplay.contentEl()) {
+                    this.streamCurrentTime = Math.min(currentTime, duration);
 
-                // update current time display component
-                this.player.controlBar.currentTimeDisplay.formattedTime_ =
-                   this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                       formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                    // update current time display component
+                    this.player.controlBar.currentTimeDisplay.formattedTime_ =
+                        this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
+                            formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
@@ -1031,9 +1046,12 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 // update duration display component
-                this.player.controlBar.durationDisplay.formattedTime_ =
+                if (this.player.controlBar.durationDisplay &&
+                    this.player.controlBar.durationDisplay.contentEl()) {
+                    this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.msDisplayMax);
+                }
                 break;
         }
     }

@@ -18,6 +18,9 @@ module.exports = {
         contentBase: [contentBase],
         publicPath: '/',
         watchContentBase: true,
+        watchOptions: {
+            ignored: ['coverage', 'node_modules', 'docs']
+        },
         // webpack-dev-server middleware
         before(app) {
             // =============================================
