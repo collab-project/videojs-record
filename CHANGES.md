@@ -1,11 +1,12 @@
 videojs-record changelog
 ========================
 
-3.0.1 - unreleased
+3.1.0 - unreleased
 ------------------
 
 - Allow hiding time controls
 - Improve `destroy` method (#310)
+- Bump required version for recordrtc to 5.4.9 for bug fixes
 
 
 3.0.0 - 2018/11/29
