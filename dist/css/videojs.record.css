@@ -1,5 +1,5 @@
 /*!
-Default styles for videojs-record 3.0.0
+Default styles for videojs-record 3.1.0
 */
 @font-face {
   font-family: videojs-record;
@@ -12,49 +12,49 @@ Default styles for videojs-record 3.0.0
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-av-perm:before {
-    content: "\F101"; }
+    content: "\f101"; }
 
 .vjs-icon-video-perm {
   font-family: videojs-record;
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-video-perm:before {
-    content: "\F102"; }
+    content: "\f102"; }
 
 .vjs-icon-audio-perm {
   font-family: videojs-record;
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-audio-perm:before {
-    content: "\F103"; }
+    content: "\f103"; }
 
 .vjs-icon-screen-perm {
   font-family: videojs-record;
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-screen-perm:before {
-    content: "\F104"; }
+    content: "\f104"; }
 
 .vjs-icon-record-start {
   font-family: videojs-record;
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-record-start:before {
-    content: "\F105"; }
+    content: "\f105"; }
 
 .vjs-icon-record-stop {
   font-family: videojs-record;
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-record-stop:before {
-    content: "\F106"; }
+    content: "\f106"; }
 
 .vjs-icon-photo-camera {
   font-family: videojs-record;
   font-weight: normal;
   font-style: normal; }
   .vjs-icon-photo-camera:before {
-    content: "\F107"; }
+    content: "\f107"; }
 
 /* General plugin style.
 --------------------------------------------------------------------------------

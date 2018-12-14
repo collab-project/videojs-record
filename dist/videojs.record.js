@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 3.0.0
+ * @version 3.1.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2018 Collab
  * @license MIT
@@ -2127,7 +2127,13 @@ function (_Plugin) {
   }, {
     key: "isDestroyed",
     value: function isDestroyed() {
-      return this.player && this.player.children() === null;
+      var destroyed = this.player === null;
+
+      if (destroyed === false) {
+        destroyed = this.player.children() === null;
+      }
+
+      return destroyed;
     }
     /**
      * Open the browser's recording device selection dialog.
@@ -2416,11 +2422,14 @@ function (_Plugin) {
   }, {
     key: "onDeviceError",
     value: function onDeviceError(code) {
-      this._deviceActive = false; // store code
+      this._deviceActive = false;
 
-      this.player.deviceErrorCode = code; // forward error to player
+      if (!this.isDestroyed()) {
+        // store code
+        this.player.deviceErrorCode = code; // forward error to player
 
-      this.player.trigger('deviceError');
+        this.player.trigger('deviceError');
+      }
     }
     /**
      * Start recording.
@@ -2645,7 +2654,12 @@ function (_Plugin) {
       this.player.controlBar.playToggle.removeClass('vjs-ended');
       this.player.controlBar.playToggle.show(); // notify listeners that data is available
 
-      this.player.trigger('finishRecord');
+      this.player.trigger('finishRecord'); // skip loading when player is destroyed after finishRecord event
+
+      if (this.isDestroyed()) {
+        return;
+      } // load and display recorded data
+
 
       switch (this.getRecordType()) {
         case _recordMode.AUDIO_ONLY:
@@ -2790,9 +2804,12 @@ function (_Plugin) {
         case _recordMode.AUDIO_VIDEO:
         case _recordMode.ANIMATION:
         case _recordMode.SCREEN_ONLY:
-          this.streamCurrentTime = Math.min(currentTime, duration); // update current time display component
+          if (this.player.controlBar.currentTimeDisplay && this.player.controlBar.currentTimeDisplay.contentEl()) {
+            this.streamCurrentTime = Math.min(currentTime, duration); // update current time display component
 
-          this.player.controlBar.currentTimeDisplay.formattedTime_ = this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent = (0, _formatTime.default)(this.streamCurrentTime, duration, this.msDisplayMax);
+            this.player.controlBar.currentTimeDisplay.formattedTime_ = this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent = (0, _formatTime.default)(this.streamCurrentTime, duration, this.msDisplayMax);
+          }
+
           break;
       }
     }
@@ -2832,7 +2849,10 @@ function (_Plugin) {
         case _recordMode.ANIMATION:
         case _recordMode.SCREEN_ONLY:
           // update duration display component
-          this.player.controlBar.durationDisplay.formattedTime_ = this.player.controlBar.durationDisplay.contentEl().lastChild.textContent = (0, _formatTime.default)(duration, duration, this.msDisplayMax);
+          if (this.player.controlBar.durationDisplay && this.player.controlBar.durationDisplay.contentEl()) {
+            this.player.controlBar.durationDisplay.formattedTime_ = this.player.controlBar.durationDisplay.contentEl().lastChild.textContent = (0, _formatTime.default)(duration, duration, this.msDisplayMax);
+          }
+
           break;
       }
     }
@@ -3360,7 +3380,7 @@ function (_Plugin) {
 }(Plugin); // version nr is injected during build
 
 
-Record.VERSION = "3.0.0"; // register plugin
+Record.VERSION = "3.1.0"; // register plugin
 
 _video.default.Record = Record;
 
