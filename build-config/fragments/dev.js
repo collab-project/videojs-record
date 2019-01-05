@@ -58,6 +58,11 @@ module.exports = {
 
                 console.log('saving uploaded file...');
 
+                form.on('error', function(err) {
+                    console.log(colors.red('upload error:'));
+                    console.log(err);
+                });
+
                 form.on('fileBegin', (name, file) => {
                     // use original filename in this example
                     file.path = form.uploadDir + '/' + file.name;
