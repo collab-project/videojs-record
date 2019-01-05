@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.2.0 - unreleased
+------------------
+
+- Bump required version for recordrtc to 5.5.0 for URL.createObjectURL fixes
+
+
 3.1.0 - 2018/12/13
 ------------------
 
