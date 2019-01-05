@@ -63,7 +63,7 @@ module.exports = {
 
                 console.log('saving uploaded file...');
 
-                form.on('error', function(err) {
+                form.on('error', (err) => {
                     console.log(colors.red('upload error:'));
                     console.log(err);
                 });
