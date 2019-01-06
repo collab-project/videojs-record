@@ -117,6 +117,7 @@ class RecordEngine extends Component {
      *     you want to save. File extensions are added automatically. For
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
+     * @param {Object} data - TODO
      * @example
      * // save video file as 'foo.webm'
      * player.record().saveAs({'video': 'foo'});

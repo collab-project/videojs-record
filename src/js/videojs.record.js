@@ -511,14 +511,14 @@ class Record extends Plugin {
             }
 
             // create converter engine
-            if (this.convertEngine == FFMPEGJS) {
+            if (this.convertEngine === FFMPEGJS) {
                 try {
                     //
                     this.converter = new videojs.FFmpegjsEngine(this.player,
                         this.player.options_);
                 }
                 catch (err) {
-                    console.error(err);
+                    // console.error(err);
                     throw new Error('Could not load ' + this.convertEngine +
                         ' plugin');
                 }

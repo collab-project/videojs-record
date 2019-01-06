@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @file ffmpegjs-plugin.js
  * @since x.x.x
@@ -15,6 +16,11 @@ class FFmpegjsEngine extends RecordEngine {
 
     /**
      * Setup recording engine.
+     *
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(mediaType, debug) {
         console.log('FFmpegjsEngine.setup');
@@ -36,9 +42,9 @@ class FFmpegjsEngine extends RecordEngine {
         console.log('FFmpegjsEngine.recordComplete - input:', data);
 
         // convert blob to array buffer
-        var fileReader = new FileReader();
+        let fileReader = new FileReader();
         fileReader.onload = (event) => {
-            var opts = ['-i', data.name].concat(this.convertOptions);
+            let opts = ['-i', data.name].concat(this.convertOptions);
             // XXX: ability to specify name
             opts.push('output.mp3');
             console.log(opts);
@@ -58,9 +64,12 @@ class FFmpegjsEngine extends RecordEngine {
 
     /**
      * Received a message from the worker.
+     *
+     * @param {Object} event - TODO
+     * @private
      */
     onWorkerMessage(event) {
-        var msg = event.data;
+        let msg = event.data;
         switch (msg.type) {
             // worker loaded and ready to accept commands
             case 'ready':
@@ -81,7 +90,7 @@ class FFmpegjsEngine extends RecordEngine {
                 let buf = msg.data.MEMFS[0].data;
 
                 // XXX: ability to specify type
-                var result = new Blob(buf, {type: 'audio/mp3'});
+                let result = new Blob(buf, {type: 'audio/mp3'});
 
                 // inject date and name into blob
                 this.addFileInfo(result);
