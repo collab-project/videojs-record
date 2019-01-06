@@ -46,9 +46,9 @@
     "url": "https://github.com/collab-project/videojs-record.git"
   },
   "dependencies": {
-    "recordrtc": ">=5.4.7",
+    "recordrtc": ">=5.5.0",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.6.2",
+    "videojs-wavesurfer": ">=2.6.3",
     "webrtc-adapter": ">=6.2.1"
   },
   "devDependencies": {

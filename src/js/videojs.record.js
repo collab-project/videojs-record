@@ -1076,10 +1076,10 @@ class Record extends Plugin {
             case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
                     // assign blob using createObjectURL
-                    setSrcObject(url, this.mediaElement, false);
+                    this.mediaElement.src = URL.createObjectURL(url);
                 } else {
                     // assign stream without createObjectURL
-                    setSrcObject(url, this.mediaElement, true);
+                    setSrcObject(url, this.mediaElement);
                 }
                 break;
         }
@@ -1385,7 +1385,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        setSrcObject(this.player.recordedData, animationDisplay, false);
+        setSrcObject(this.player.recordedData, animationDisplay);
         this.player.animationDisplay.show();
     }
 

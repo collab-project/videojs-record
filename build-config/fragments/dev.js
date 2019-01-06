@@ -5,6 +5,7 @@
 
 const path = require('path');
 const util = require('util');
+const fs = require('fs-extra');
 const colors = require('colors/safe');
 const formidable = require('formidable');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -49,14 +50,23 @@ module.exports = {
             // =============================================
             // file upload handler for simple upload example
             // =============================================
+            // make sure upload directory exists
+            const targetDir = 'uploads';
+            fs.ensureDirSync(targetDir);
+
             // file upload handler for examples
             app.post('/upload', (req, res) => {
                 // save uploaded file
                 let form = new formidable.IncomingForm();
-                form.uploadDir = 'uploads';
+                form.uploadDir = targetDir;
                 form.keepExtensions = true;
 
                 console.log('saving uploaded file...');
+
+                form.on('error', (err) => {
+                    console.log(colors.red('upload error:'));
+                    console.log(err);
+                });
 
                 form.on('fileBegin', (name, file) => {
                     // use original filename in this example
