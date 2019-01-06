@@ -17,6 +17,7 @@ before_install:
 install:
   - npm prune
   - npm install
+  - npm install opencollective-postinstall
 
 script:
   - npm run lint || travis_terminate 1
