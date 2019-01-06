@@ -197,9 +197,13 @@ class Record extends Plugin {
                 // customize controls
                 this.player.bigPlayButton.hide();
 
-                // loadedmetadata resets the durationDisplay for the
-                // first time
+                // 'loadedmetadata' and 'loadstart' events reset the
+                // durationDisplay for the first time: prevent this
                 this.player.one('loadedmetadata', () => {
+                    // display max record time
+                    this.setDuration(this.maxLength);
+                });
+                this.player.one('loadstart', () => {
                     // display max record time
                     this.setDuration(this.maxLength);
                 });
@@ -238,6 +242,7 @@ class Record extends Plugin {
         this.player.off('timeupdate');
         this.player.off('durationchange');
         this.player.off('loadedmetadata');
+        this.player.off('loadstart');
 
         // display max record time
         this.setDuration(this.maxLength);

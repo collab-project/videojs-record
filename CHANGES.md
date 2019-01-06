@@ -4,6 +4,7 @@ videojs-record changelog
 3.2.0 - unreleased
 ------------------
 
+- Fix duration display for video.js 7.4.x (#316)
 - Bump required version for recordrtc to 5.5.0 for URL.createObjectURL fixes
   (#315)
 - Simple upload example: make sure upload directory exists (#314)
