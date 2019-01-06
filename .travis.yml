@@ -15,6 +15,7 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 
 install:
+  - npm install opencollective-postinstall
   - npm prune
   - npm install
 

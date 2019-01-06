@@ -8,6 +8,23 @@ x.x.x - unreleased
   audio/video file formats in the browser
 
 
+3.2.0 - unreleased
+------------------
+
+- Fix duration display for video.js 7.4.x (#316)
+- Bump required version for recordrtc to 5.5.0 for URL.createObjectURL fixes
+  (#315)
+- Simple upload example: make sure upload directory exists (#314)
+
+
+3.1.0 - 2018/12/13
+------------------
+
+- Allow hiding time controls
+- Improve `destroy` method (#310)
+- Bump required version for recordrtc to 5.4.9 for bug fixes
+
+
 3.0.0 - 2018/11/29
 ------------------
 
