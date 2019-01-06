@@ -5,6 +5,8 @@ videojs-record changelog
 ------------------
 
 - Bump required version for recordrtc to 5.5.0 for URL.createObjectURL fixes
+  (#315)
+- Simple upload example: make sure upload directory exists (#314)
 
 
 3.1.0 - 2018/12/13
