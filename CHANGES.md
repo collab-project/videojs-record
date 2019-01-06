@@ -1,7 +1,21 @@
 videojs-record changelog
 ========================
 
-3.0.0 - unreleased
+3.2.0 - unreleased
+------------------
+
+- Bump required version for recordrtc to 5.5.0 for URL.createObjectURL fixes
+
+
+3.1.0 - 2018/12/13
+------------------
+
+- Allow hiding time controls
+- Improve `destroy` method (#310)
+- Bump required version for recordrtc to 5.4.9 for bug fixes
+
+
+3.0.0 - 2018/11/29
 ------------------
 
 - Add support for screen capture (#289)
