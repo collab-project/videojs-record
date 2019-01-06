@@ -147,6 +147,11 @@ module.exports = function(config) {
                     if (ch > -1) {
                         availableBrowsers[ch] = 'Chromium_dev';
                     }
+                    // ignore IE
+                    let ie = availableBrowsers.indexOf('IE');
+                    if (ie > -1) {
+                        availableBrowsers.splice(ie, 1);
+                    }
                     return result;
                 }
             }
