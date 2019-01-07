@@ -6,7 +6,7 @@ import document from 'global/document';
 
 import {Player, mergeOptions} from 'video.js';
 
-import {browserShim, browserDetails} from 'webrtc-adapter';
+import adapter from 'webrtc-adapter';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from '../src/js/engine/record-engine.js';
 
@@ -220,8 +220,8 @@ const TestHelpers = {
     makeScreenOnlyPlayer(newOptions) {
         // use polyfill in Firefox for now, see:
         // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-        if (browserDetails.browser === 'firefox') {
-            browserShim.shimGetDisplayMedia(window, 'screen');
+        if (adapter.browserDetails.browser === 'firefox') {
+            adapter.browserShim.shimGetDisplayMedia(window, 'screen');
         }
         let opts = {
             controls: true,
