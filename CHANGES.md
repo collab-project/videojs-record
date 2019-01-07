@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.2.0 - unreleased
+3.2.0 - 2019/01/07
 ------------------
 
 - Fix duration display for video.js 7.4.x (#316)
