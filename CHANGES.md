@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Fix issue with `srcObject` (#312)
+- Fix shim for screen capture (#318)
 
 
 3.2.0 - 2019/01/07
