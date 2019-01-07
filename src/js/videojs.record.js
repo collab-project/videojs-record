@@ -249,14 +249,6 @@ class Record extends Plugin {
 
         // hide play control
         this.player.controlBar.playToggle.hide();
-
-        // trigger early warning if screen-only is not supported
-        if (this.getRecordType() === SCREEN_ONLY &&
-            'getDisplayMedia' in navigator === false) {
-            // screen capture not supported in this browser
-            let errorMessage = 'getDisplayMedia is not supported';
-            this.player.trigger('error', errorMessage);
-        }
     }
 
     /**
@@ -412,7 +404,7 @@ class Record extends Plugin {
                     screen: true,
                     gif: false
                 };
-                navigator.getDisplayMedia({
+                navigator.mediaDevices.getDisplayMedia({
                     video: true
                 }).then(
                     this.onDeviceReady.bind(this)
@@ -1080,10 +1072,12 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
+                    // make sure to reset it (#312)
+                    this.mediaElement.srcObject = null;
                     // assign blob using createObjectURL
                     this.mediaElement.src = URL.createObjectURL(url);
                 } else {
-                    // assign stream without createObjectURL
+                    // assign stream with srcObject
                     setSrcObject(url, this.mediaElement);
                 }
                 break;

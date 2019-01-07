@@ -169,7 +169,8 @@ module.exports = function(config) {
         customLaunchers: {
             Chrome_dev: {
                 base: 'Chrome',
-                flags: chromeFlags
+                flags: chromeFlags,
+                chromeDataDir: path.resolve(__dirname, '.chrome')
             },
             Chromium_dev: {
                 base: 'ChromiumHeadless',
