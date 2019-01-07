@@ -71,8 +71,11 @@ describe('engine.record-engine', () => {
             let fileName = 'foo';
             engine.saveAs({'audio': fileName});
 
-            let element = document.getElementsByTagName('a')[0];
-            expect(element.download).toEqual(fileName);
+            // ignore edge browser
+            if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
+                let element = document.getElementsByTagName('a')[0];
+                expect(element.download).toEqual(fileName);
+            }
             done();
         });
 

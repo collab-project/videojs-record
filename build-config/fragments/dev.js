@@ -20,7 +20,8 @@ module.exports = {
         publicPath: '/',
         watchContentBase: true,
         watchOptions: {
-            ignored: ['coverage', 'node_modules', 'docs']
+            ignored: ['.chrome', 'node_modules', 'bower_components',
+                'coverage', 'docs', 'vendor']
         },
         // webpack-dev-server middleware
         before(app) {

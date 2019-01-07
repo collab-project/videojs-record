@@ -52,7 +52,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: true,  // enable for headless testing
+        singleRun: true, // enable for headless testing
         autoWatch: false,
         files: [
             // -------------------------------------------
@@ -64,9 +64,12 @@ module.exports = function(config) {
                 watched: false,
                 served: true
             },
-            // -------------------------------------------
-            // third-party dependencies
-            // -------------------------------------------
+            // style
+            'node_modules/video.js/dist/video-js.css',
+            'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
+            'dist/css/videojs.record.css',
+
+            // library dependencies
             'node_modules/video.js/dist/video.js',
             'node_modules/video.js/dist/video-js.css',
             'node_modules/webrtc-adapter/out/adapter.js',
@@ -168,6 +171,11 @@ module.exports = function(config) {
                     let ch = availableBrowsers.indexOf('ChromiumHeadless');
                     if (ch > -1) {
                         availableBrowsers[ch] = 'Chromium_dev';
+                    }
+                    // ignore IE
+                    let ie = availableBrowsers.indexOf('IE');
+                    if (ie > -1) {
+                        availableBrowsers.splice(ie, 1);
                     }
                     return result;
                 }
