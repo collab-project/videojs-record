@@ -1080,10 +1080,12 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
+                    // make sure to reset it (#312)
+                    this.mediaElement.srcObject = null;
                     // assign blob using createObjectURL
                     this.mediaElement.src = URL.createObjectURL(url);
                 } else {
-                    // assign stream without createObjectURL
+                    // assign stream with srcObject
                     setSrcObject(url, this.mediaElement);
                 }
                 break;
