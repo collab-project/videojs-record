@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 3.2.0
+ * @version 3.2.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
@@ -2085,13 +2085,7 @@ function (_Plugin) {
 
       this.setDuration(this.maxLength); // hide play control
 
-      this.player.controlBar.playToggle.hide(); // trigger early warning if screen-only is not supported
-
-      if (this.getRecordType() === _recordMode.SCREEN_ONLY && 'getDisplayMedia' in navigator === false) {
-        // screen capture not supported in this browser
-        var errorMessage = 'getDisplayMedia is not supported';
-        this.player.trigger('error', errorMessage);
-      }
+      this.player.controlBar.playToggle.hide();
     }
     /**
      * Indicates whether the plugin is currently recording or not.
@@ -2245,7 +2239,7 @@ function (_Plugin) {
             screen: true,
             gif: false
           };
-          navigator.getDisplayMedia({
+          navigator.mediaDevices.getDisplayMedia({
             video: true
           }).then(this.onDeviceReady.bind(this)).catch(this.onDeviceError.bind(this));
           break;
@@ -2876,10 +2870,12 @@ function (_Plugin) {
         case _recordMode.ANIMATION:
         case _recordMode.SCREEN_ONLY:
           if (url instanceof Blob || url instanceof File) {
-            // assign blob using createObjectURL
+            // make sure to reset it (#312)
+            this.mediaElement.srcObject = null; // assign blob using createObjectURL
+
             this.mediaElement.src = URL.createObjectURL(url);
           } else {
-            // assign stream without createObjectURL
+            // assign stream with srcObject
             (0, _browserShim.default)(url, this.mediaElement);
           }
 
@@ -3378,7 +3374,7 @@ function (_Plugin) {
 }(Plugin); // version nr is injected during build
 
 
-Record.VERSION = "3.2.0"; // register plugin
+Record.VERSION = "3.2.1"; // register plugin
 
 _video.default.Record = Record;
 
