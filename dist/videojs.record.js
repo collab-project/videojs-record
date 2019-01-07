@@ -1,8 +1,8 @@
 /*!
  * videojs-record
- * @version 3.1.0
+ * @version 3.2.0
  * @see https://github.com/collab-project/videojs-record
- * @copyright 2014-2018 Collab
+ * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1572,20 +1572,13 @@ exports.default = void 0;
  * @file browser-shim.js
  * @since 2.0.0
  */
-var setSrcObject = function setSrcObject(stream, element, ignoreCreateObjectURL) {
-  if ('createObjectURL' in URL && !ignoreCreateObjectURL) {
-    try {
-      element.src = URL.createObjectURL(stream);
-    } catch (e) {
-      setSrcObject(stream, element, true);
-      return;
-    }
-  } else if ('srcObject' in element) {
+var setSrcObject = function setSrcObject(stream, element) {
+  if ('srcObject' in element) {
     element.srcObject = stream;
   } else if ('mozSrcObject' in element) {
     element.mozSrcObject = stream;
   } else {
-    throw new Error('createObjectURL/srcObject both are not supported.');
+    element.srcObject = stream;
   }
 };
 
@@ -2044,10 +2037,14 @@ function (_Plugin) {
         case _recordMode.ANIMATION:
         case _recordMode.SCREEN_ONLY:
           // customize controls
-          this.player.bigPlayButton.hide(); // loadedmetadata resets the durationDisplay for the
-          // first time
+          this.player.bigPlayButton.hide(); // 'loadedmetadata' and 'loadstart' events reset the
+          // durationDisplay for the first time: prevent this
 
           this.player.one('loadedmetadata', function () {
+            // display max record time
+            _this2.setDuration(_this2.maxLength);
+          });
+          this.player.one('loadstart', function () {
             // display max record time
             _this2.setDuration(_this2.maxLength);
           }); // the native controls don't work for this UI so disable
@@ -2083,7 +2080,8 @@ function (_Plugin) {
 
       this.player.off('timeupdate');
       this.player.off('durationchange');
-      this.player.off('loadedmetadata'); // display max record time
+      this.player.off('loadedmetadata');
+      this.player.off('loadstart'); // display max record time
 
       this.setDuration(this.maxLength); // hide play control
 
@@ -2879,10 +2877,10 @@ function (_Plugin) {
         case _recordMode.SCREEN_ONLY:
           if (url instanceof Blob || url instanceof File) {
             // assign blob using createObjectURL
-            (0, _browserShim.default)(url, this.mediaElement, false);
+            this.mediaElement.src = URL.createObjectURL(url);
           } else {
             // assign stream without createObjectURL
-            (0, _browserShim.default)(url, this.mediaElement, true);
+            (0, _browserShim.default)(url, this.mediaElement);
           }
 
           break;
@@ -3191,7 +3189,7 @@ function (_Plugin) {
 
       this.player.recordCanvas.hide(); // show the animation
 
-      (0, _browserShim.default)(this.player.recordedData, animationDisplay, false);
+      (0, _browserShim.default)(this.player.recordedData, animationDisplay);
       this.player.animationDisplay.show();
     }
     /**
@@ -3380,7 +3378,7 @@ function (_Plugin) {
 }(Plugin); // version nr is injected during build
 
 
-Record.VERSION = "3.1.0"; // register plugin
+Record.VERSION = "3.2.0"; // register plugin
 
 _video.default.Record = Record;
 

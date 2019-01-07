@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.1.0</span>
+            <span class="version">v3.2.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -247,9 +247,13 @@ class Record extends Plugin {
                 // customize controls
                 this.player.bigPlayButton.hide();
 
-                // loadedmetadata resets the durationDisplay for the
-                // first time
+                // 'loadedmetadata' and 'loadstart' events reset the
+                // durationDisplay for the first time: prevent this
                 this.player.one('loadedmetadata', () => {
+                    // display max record time
+                    this.setDuration(this.maxLength);
+                });
+                this.player.one('loadstart', () => {
                     // display max record time
                     this.setDuration(this.maxLength);
                 });
@@ -288,6 +292,7 @@ class Record extends Plugin {
         this.player.off('timeupdate');
         this.player.off('durationchange');
         this.player.off('loadedmetadata');
+        this.player.off('loadstart');
 
         // display max record time
         this.setDuration(this.maxLength);
@@ -1126,10 +1131,10 @@ class Record extends Plugin {
             case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
                     // assign blob using createObjectURL
-                    setSrcObject(url, this.mediaElement, false);
+                    this.mediaElement.src = URL.createObjectURL(url);
                 } else {
                     // assign stream without createObjectURL
-                    setSrcObject(url, this.mediaElement, true);
+                    setSrcObject(url, this.mediaElement);
                 }
                 break;
         }
@@ -1435,7 +1440,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        setSrcObject(this.player.recordedData, animationDisplay, false);
+        setSrcObject(this.player.recordedData, animationDisplay);
         this.player.animationDisplay.show();
     }
 

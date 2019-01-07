@@ -1,8 +1,8 @@
 /*!
  * recorderjs plugin for videojs-record
- * @version 3.1.0
+ * @version 3.2.0
  * @see https://github.com/collab-project/videojs-record
- * @copyright 2014-2018 Collab
+ * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {

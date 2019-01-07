@@ -41,7 +41,7 @@
     "opus-recorder": "^6.1.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "video.js": "^7.4.1",
-    "videojs-record": "^3.1.0",
+    "videojs-record": "^3.2.0",
     "videojs-wavesurfer": "^2.6.3",
     "webrtc-adapter": "^7.1.1"
   },

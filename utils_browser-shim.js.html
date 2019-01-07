@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.1.0</span>
+            <span class="version">v3.2.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -53,20 +53,13 @@
  * @since 2.0.0
  */
 
-const setSrcObject = function (stream, element, ignoreCreateObjectURL) {
-    if ('createObjectURL' in URL &amp;&amp; !ignoreCreateObjectURL) {
-        try {
-            element.src = URL.createObjectURL(stream);
-        } catch (e) {
-            setSrcObject(stream, element, true);
-            return;
-        }
-    } else if ('srcObject' in element) {
+const setSrcObject = function (stream, element) {
+    if ('srcObject' in element) {
         element.srcObject = stream;
     } else if ('mozSrcObject' in element) {
         element.mozSrcObject = stream;
     } else {
-        throw new Error('createObjectURL/srcObject both are not supported.');
+        element.srcObject = stream;
     }
 };
 
