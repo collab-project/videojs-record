@@ -49,7 +49,7 @@ class Record extends Plugin {
     /**
      * The constructor function for the class.
      *
-     * @param {(videojs.Player|Object)} player
+     * @param {(videojs.Player|Object)} player - video.js Player object.
      * @param {Object} options - Player options.
      */
     constructor(player, options) {
@@ -116,7 +116,7 @@ class Record extends Plugin {
     /**
      * Setup plugin options.
      *
-     * @param {Object} options - Optional new player options.
+     * @param {Object} newOptions - Optional new player options.
      */
     loadOptions(newOptions = {}) {
         let recordOptions = videojs.mergeOptions(pluginDefaultOptions,
@@ -197,9 +197,13 @@ class Record extends Plugin {
                 // customize controls
                 this.player.bigPlayButton.hide();
 
-                // loadedmetadata resets the durationDisplay for the
-                // first time
+                // 'loadedmetadata' and 'loadstart' events reset the
+                // durationDisplay for the first time: prevent this
                 this.player.one('loadedmetadata', () => {
+                    // display max record time
+                    this.setDuration(this.maxLength);
+                });
+                this.player.one('loadstart', () => {
                     // display max record time
                     this.setDuration(this.maxLength);
                 });
@@ -238,6 +242,7 @@ class Record extends Plugin {
         this.player.off('timeupdate');
         this.player.off('durationchange');
         this.player.off('loadedmetadata');
+        this.player.off('loadstart');
 
         // display max record time
         this.setDuration(this.maxLength);
@@ -279,7 +284,11 @@ class Record extends Plugin {
      * @return {boolean} Plugin destroyed or not.
      */
     isDestroyed() {
-        return this.player && (this.player.children() === null);
+        let destroyed = (this.player === null);
+        if (destroyed === false) {
+            destroyed = (this.player.children() === null);
+        }
+        return destroyed;
     }
 
     /**
@@ -416,8 +425,9 @@ class Record extends Plugin {
 
     /**
      * Invoked when the device is ready.
+     *
      * @private
-     * @param stream: LocalMediaStream instance.
+     * @param {LocalMediaStream} stream - Local media stream from device.
      */
     onDeviceReady(stream) {
         this._deviceActive = true;
@@ -454,7 +464,7 @@ class Record extends Plugin {
             }
 
             // get recorder class
-            var EngineClass;
+            let EngineClass;
             switch (this.audioEngine) {
                 case RECORDRTC:
                     // RecordRTC.js (default)
@@ -494,7 +504,6 @@ class Record extends Plugin {
                 // connect stream to recording engine
                 this.engine = new EngineClass(this.player, this.player.options_);
             } catch (err) {
-                console.error(err);
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
             }
@@ -603,16 +612,20 @@ class Record extends Plugin {
 
     /**
      * Invoked when an device error occurred.
+     *
      * @private
+     * @param {(string|number)} code - Error code/description.
      */
     onDeviceError(code) {
         this._deviceActive = false;
 
-        // store code
-        this.player.deviceErrorCode = code;
+        if (!this.isDestroyed()) {
+            // store code
+            this.player.deviceErrorCode = code;
 
-        // forward error to player
-        this.player.trigger('deviceError');
+            // forward error to player
+            this.player.trigger('deviceError');
+        }
     }
 
     /**
@@ -837,6 +850,12 @@ class Record extends Plugin {
         // notify listeners that data is available
         this.player.trigger('finishRecord');
 
+        // skip loading when player is destroyed after finishRecord event
+        if (this.isDestroyed()) {
+            return;
+        }
+
+        // load and display recorded data
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // pause player so user can start playback
@@ -930,9 +949,9 @@ class Record extends Plugin {
      */
     onCountDown() {
         if (!this.paused) {
-            var now = new Date().getTime();
-            var duration = this.maxLength;
-            var currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
+            let now = new Date().getTime();
+            let duration = this.maxLength;
+            let currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
 
             this.streamDuration = currentTime;
 
@@ -959,6 +978,8 @@ class Record extends Plugin {
      * Get the current time of the recorded stream during playback.
      *
      * Returns 0 if no recording is available (yet).
+     *
+     * @returns {float} Current time of the recorded stream.
      */
     getCurrentTime() {
         let currentTime = isNaN(this.streamCurrentTime) ? 0 : this.streamCurrentTime;
@@ -991,12 +1012,15 @@ class Record extends Plugin {
             case AUDIO_VIDEO:
             case ANIMATION:
             case SCREEN_ONLY:
-                this.streamCurrentTime = Math.min(currentTime, duration);
+                if (this.player.controlBar.currentTimeDisplay &&
+                    this.player.controlBar.currentTimeDisplay.contentEl()) {
+                    this.streamCurrentTime = Math.min(currentTime, duration);
 
-                // update current time display component
-                this.player.controlBar.currentTimeDisplay.formattedTime_ =
-                   this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                       formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                    // update current time display component
+                    this.player.controlBar.currentTimeDisplay.formattedTime_ =
+                        this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
+                            formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
@@ -1005,6 +1029,8 @@ class Record extends Plugin {
      * Get the length of the recorded stream in seconds.
      *
      * Returns 0 if no recording is available (yet).
+     *
+     * @returns {float} Duration of the recorded stream.
      */
     getDuration() {
         let duration = isNaN(this.streamDuration) ? 0 : this.streamDuration;
@@ -1031,9 +1057,12 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 // update duration display component
-                this.player.controlBar.durationDisplay.formattedTime_ =
+                if (this.player.controlBar.durationDisplay &&
+                    this.player.controlBar.durationDisplay.contentEl()) {
+                    this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.msDisplayMax);
+                }
                 break;
         }
     }
@@ -1058,10 +1087,10 @@ class Record extends Plugin {
             case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
                     // assign blob using createObjectURL
-                    setSrcObject(url, this.mediaElement, false);
+                    this.mediaElement.src = URL.createObjectURL(url);
                 } else {
                     // assign stream without createObjectURL
-                    setSrcObject(url, this.mediaElement, true);
+                    setSrcObject(url, this.mediaElement);
                 }
                 break;
         }
@@ -1075,6 +1104,9 @@ class Record extends Plugin {
      *     blob(s) you want to save. File extensions are added automatically.
      *     For example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
+     * @example
+     * // save video file as 'foo.webm'
+     * player.record().saveAs({'video': 'foo'});
      */
     saveAs(name) {
         if (this.engine && name !== undefined) {
@@ -1085,7 +1117,8 @@ class Record extends Plugin {
     /**
      * Destroy plugin only.
      *
-     * Use `destroy` to remove the plugin and the player.
+     * Use [destroy]{@link Record#destroy} to remove the plugin and the player
+     * as well.
      */
     dispose() {
         // disable common event listeners
@@ -1107,7 +1140,7 @@ class Record extends Plugin {
         this.player.clearInterval(this.countDown);
 
         // dispose wavesurfer.js
-        if (this.getRecordType() == AUDIO_ONLY) {
+        if (this.getRecordType() === AUDIO_ONLY) {
             if (this.surfer) {
                 // also disposes player
                 this.surfer.destroy();
@@ -1201,6 +1234,8 @@ class Record extends Plugin {
 
     /**
      * Mute LocalMediaStream audio and video tracks.
+     *
+     * @param {boolean} mute - Whether or not the mute the track(s).
      */
     muteTracks(mute) {
         if ((this.getRecordType() === AUDIO_ONLY ||
@@ -1217,6 +1252,10 @@ class Record extends Plugin {
 
     /**
      * Get recorder type.
+     *
+     * @returns {string} Recorder type constant.
+     * @example
+     * console.log(player.record().getRecordType()); // 'audio_video'
      */
     getRecordType() {
         return getRecorderMode(this.recordImage, this.recordAudio,
@@ -1260,10 +1299,11 @@ class Record extends Plugin {
     /**
      * Capture frame from camera and copy data to canvas.
      * @private
+     * @returns {void}
      */
     captureFrame() {
-        var detected = detectBrowser();
-        var recordCanvas = this.player.recordCanvas.el().firstChild;
+        let detected = detectBrowser();
+        let recordCanvas = this.player.recordCanvas.el().firstChild;
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
@@ -1281,8 +1321,8 @@ class Record extends Plugin {
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                (typeof ImageCapture === typeof Function)) {
                 try {
-                    var track = this.stream.getVideoTracks()[0];
-                    var imageCapture = new ImageCapture(track);
+                    let track = this.stream.getVideoTracks()[0];
+                    let imageCapture = new ImageCapture(track);
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
@@ -1308,6 +1348,8 @@ class Record extends Plugin {
     /**
      * Draw image frame on canvas element.
      * @private
+     * @param {HTMLCanvasElement} canvas - Canvas to draw on.
+     * @param {HTMLElement} element - Element to draw onto the canvas.
      */
     drawCanvas(canvas, element) {
         canvas.getContext('2d').drawImage(
@@ -1344,7 +1386,7 @@ class Record extends Plugin {
      * @private
      */
     showAnimation() {
-        var animationDisplay = this.player.animationDisplay.el().firstChild;
+        let animationDisplay = this.player.animationDisplay.el().firstChild;
 
         // set the image size to the dimensions of the recorded animation
         animationDisplay.width = this.player.width();
@@ -1354,7 +1396,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        setSrcObject(this.player.recordedData, animationDisplay, false);
+        setSrcObject(this.player.recordedData, animationDisplay);
         this.player.animationDisplay.show();
     }
 
@@ -1382,6 +1424,8 @@ class Record extends Plugin {
     /**
      * Received new timestamp (when timeSlice option is enabled).
      * @private
+     * @param {float} current - Current timestamp.
+     * @param {array} all - List of timestamps so far.
      */
     onTimeStamp(current, all) {
         this.player.currentTimestamp = current;
@@ -1435,8 +1479,6 @@ class Record extends Plugin {
     /**
      * Collects information about the media input and output devices
      * available on the system.
-     *
-     * Returns an array.
      */
     enumerateDevices() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {

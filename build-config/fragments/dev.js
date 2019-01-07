@@ -5,6 +5,7 @@
 
 const path = require('path');
 const util = require('util');
+const fs = require('fs-extra');
 const colors = require('colors/safe');
 const formidable = require('formidable');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -20,7 +21,7 @@ module.exports = {
         watchContentBase: true,
         watchOptions: {
             ignored: ['.chrome', 'node_modules', 'bower_components',
-                'coverage', 'vendor']
+                'coverage', 'docs', 'vendor']
         },
         // webpack-dev-server middleware
         before(app) {
@@ -28,7 +29,7 @@ module.exports = {
             // use proper mime-type for wasm files
             // =============================================
             app.get('*.wasm', (req, res, next) => {
-                var options = {
+                let options = {
                     root: contentBase,
                     dotfiles: 'deny',
                     headers: {
@@ -50,14 +51,23 @@ module.exports = {
             // =============================================
             // file upload handler for simple upload example
             // =============================================
+            // make sure upload directory exists
+            const targetDir = 'uploads';
+            fs.ensureDirSync(targetDir);
+
             // file upload handler for examples
             app.post('/upload', (req, res) => {
                 // save uploaded file
-                var form = new formidable.IncomingForm();
-                form.uploadDir = 'uploads';
+                let form = new formidable.IncomingForm();
+                form.uploadDir = targetDir;
                 form.keepExtensions = true;
 
                 console.log('saving uploaded file...');
+
+                form.on('error', (err) => {
+                    console.log(colors.red('upload error:'));
+                    console.log(err);
+                });
 
                 form.on('fileBegin', (name, file) => {
                     // use original filename in this example

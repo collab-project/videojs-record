@@ -55,7 +55,7 @@ describe('utils.detect-browser', () => {
 
     /** @test {detectBrowser} */
     it('detects unknown browser', () => {
-        var originalNav = window.navigator;
+        let originalNav = window.navigator;
         window['__defineGetter__']('navigator', () => {
             return false;
         });
