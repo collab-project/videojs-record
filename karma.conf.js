@@ -168,7 +168,7 @@ module.exports = function(config) {
         webpack: webpackConfig,
         customLaunchers: {
             Chrome_dev: {
-                base: 'Chrome',
+                base: 'ChromeHeadless',
                 flags: chromeFlags,
                 chromeDataDir: path.resolve(__dirname, '.chrome')
             },
