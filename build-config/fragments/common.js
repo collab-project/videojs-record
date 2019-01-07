@@ -53,7 +53,7 @@ module.exports = {
                 }
             },
             {
-                // scss
+                // scss -> css
                 test: /\.scss$/,
                 include: path.resolve(rootDir, 'src', 'css'),
                 exclude: /(node_modules|bower_components|test)/,
