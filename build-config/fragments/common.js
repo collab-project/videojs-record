@@ -44,6 +44,7 @@ module.exports = {
     module: {
         rules: [
             {
+                // javascript
                 test: /\.js$/,
                 include: path.resolve(rootDir, 'src', 'js'),
                 exclude: /(node_modules|bower_components|test)/,
@@ -52,6 +53,7 @@ module.exports = {
                 }
             },
             {
+                // scss -> css
                 test: /\.scss$/,
                 exclude: /(node_modules|bower_components|test)/,
                 use: [
@@ -61,6 +63,7 @@ module.exports = {
                 ]
             },
             {
+                // fonts
                 test: /\.woff2?$|\.ttf$|\.svg$/,
                 exclude: /(node_modules|bower_components|test)/,
                 use: [{
