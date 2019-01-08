@@ -508,22 +508,24 @@ class Record extends Plugin {
             this.engine.setup(this.stream, this.mediaType, this.debug);
 
             // create converter engine
-            let ConvertEngineClass = getConvertEngine(this.convertEngine);
-            try {
-                this.converter = new ConvertEngineClass(this.player,
-                    this.player.options_);
-            }
-            catch (err) {
-                throw new Error('Could not load ' + this.convertEngine +
-                    ' plugin');
-            }
+            if (this.convertEngine !== '') {
+                let ConvertEngineClass = getConvertEngine(this.convertEngine);
+                try {
+                    this.converter = new ConvertEngineClass(this.player,
+                        this.player.options_);
+                }
+                catch (err) {
+                    throw new Error('Could not load ' + this.convertEngine +
+                        ' plugin');
+                }
 
-            // convert settings
-            this.converter.convertWorkerURL = this.convertWorkerURL;
-            this.converter.convertOptions = this.convertOptions;
+                // convert settings
+                this.converter.convertWorkerURL = this.convertWorkerURL;
+                this.converter.convertOptions = this.convertOptions;
 
-            // initialize converter
-            this.converter.setup(this.mediaType, this.debug);
+                // initialize converter
+                this.converter.setup(this.mediaType, this.debug);
+            }
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
