@@ -8,11 +8,18 @@ x.x.x - unreleased
   audio/video file formats in the browser
 
 
-3.2.0 - unreleased
+3.2.1 - 2019/01/08
+------------------
+
+- Fix issue with `srcObject` (#312)
+- Fix shim for screen capture (#318)
+
+
+3.2.0 - 2019/01/07
 ------------------
 
 - Fix duration display for video.js 7.4.x (#316)
-- Bump required version for recordrtc to 5.5.0 for URL.createObjectURL fixes
+- Bump required version for recordrtc to 5.5.0 for `URL.createObjectURL` fixes
   (#315)
 - Simple upload example: make sure upload directory exists (#314)
 

@@ -46,7 +46,7 @@ module.exports = function(config) {
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
-        singleRun: true,  // enable for headless testing
+        singleRun: true, // enable for headless testing
         autoWatch: false,
         files: [
             // demo files
@@ -56,7 +56,7 @@ module.exports = function(config) {
                 watched: false,
                 served: true
             },
-             // style
+            // style
             'node_modules/video.js/dist/video-js.css',
             'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
             'dist/css/videojs.record.css',
@@ -169,7 +169,8 @@ module.exports = function(config) {
         customLaunchers: {
             Chrome_dev: {
                 base: 'Chrome',
-                flags: chromeFlags
+                flags: chromeFlags,
+                chromeDataDir: path.resolve(__dirname, '.chrome')
             },
             Chromium_dev: {
                 base: 'ChromiumHeadless',
