@@ -17,7 +17,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import {detectBrowser} from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive} from './engine/loader';
+import {getAudioEngine, isAudioPluginActive} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
@@ -448,10 +448,10 @@ class Record extends Plugin {
                     ' is only supported in audio-only mode.');
             }
             // get audio plugin engine class
-            let EngineClass = getAudioEngine(this.audioEngine);
+            let AudioEngineClass = getAudioEngine(this.audioEngine);
             try {
                 // connect stream to recording engine
-                this.engine = new EngineClass(this.player, this.player.options_);
+                this.engine = new AudioEngineClass(this.player, this.player.options_);
             } catch (err) {
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
@@ -1181,39 +1181,6 @@ class Record extends Plugin {
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
-    }
-
-    readAsArrayBuffer(blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsArrayBuffer(blob);
-            reader.onloadend = () => { resolve(reader.result); };
-            reader.onerror = (ev) => { reject(ev.error); };
-        });
-    }
-
-    injectMetadata() {
-        const decoder = new Decoder();
-        const reader = new Reader();
-
-        reader.logging = false;
-        reader.drop_default_duration = false;
-
-        this.readAsArrayBuffer(this.player.recordedData).then((buffer) => {
-            const elms = decoder.decode(buffer);
-            elms.forEach((elm) => { reader.read(elm); });
-            reader.stop();
-
-            let refinedMetadataBuf = tools.makeMetadataSeekable(
-                reader.metadatas, reader.duration, reader.cues);
-            let body = buffer.slice(reader.metadataSize);
-            let result = new Blob([refinedMetadataBuf, body],
-                {type: this.player.recordedData.type});
-
-            // console.log('ready', result);
-
-            this.player.recordedData = result;
-        });
     }
 
     /**

@@ -1,10 +1,12 @@
 /**
- * @file loader.js
+ * @file engine-loader.js
  * @since 3.3.0
  */
 
 import RecordRTCEngine from './record-rtc';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RECORD_PLUGINS} from './record-engine';
+
+import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
 
 /**
  * Get audio plugin engine class.
@@ -58,6 +60,31 @@ const isAudioPluginActive = function(audioEngine) {
     return audioEngine in RECORD_PLUGINS;
 };
 
+/**
+ * Get converter plugin engine class.
+ *
+ * @private
+ * @param {String} convertEngine - Name of the convert engine.
+ */
+const getConvertEngine = function(convertEngine) {
+    let ConvertEngineClass;
+    switch (convertEngine) {
+        case '':
+            // disabled (default)
+            break;
+
+        case TSEBML:
+            // ts-ebml
+            ConvertEngineClass = videojs.TsEBMLEngine;
+            break;
+
+        default:
+            // unknown engine
+            throw new Error('Unknown convertEngine: ' + convertEngine);
+    }
+    return ConvertEngineClass;
+};
+
 export {
-    getAudioEngine, isAudioPluginActive
+    getAudioEngine, isAudioPluginActive, getConvertEngine
 };
