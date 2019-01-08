@@ -49,7 +49,8 @@ class ConvertEngine extends Component {
     /**
      * Load `Blob` and return `Promise`.
      *
-     * @param {Blob} data - Blob to load.
+     * @param {Blob} data - `Blob` to load.
+     * @returns {Promise} - Promise with `ArrayBuffer` data.
      */
     loadBlob(data) {
         return blobToArrayBuffer(data);
@@ -58,7 +59,7 @@ class ConvertEngine extends Component {
     /**
      * Add filename and timestamp to converted file object.
      *
-     * @param {(Blob|File)} fileObj - Blob or File object to modify.
+     * @param {(Blob|File)} fileObj - `Blob` or `File` object to modify.
      * @param {date} [now] - Optional date information, default is
      *    current timestamp.
      */
