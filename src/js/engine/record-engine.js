@@ -6,11 +6,16 @@
 const Component = videojs.getComponent('Component');
 
 // supported recorder plugin engines
+// default
 const RECORDRTC = 'recordrtc';
+// audio
 const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
+// all
+const RECORD_PLUGINS = [RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS,
+    OPUSRECORDER];
 
 /**
  * Base class for recorder backends.
@@ -156,6 +161,6 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine,
+    RecordEngine, RECORD_PLUGINS,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER
 };
