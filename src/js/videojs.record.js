@@ -17,7 +17,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import {detectBrowser} from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive} from './engine/engine-loader';
+import {getAudioEngine, isAudioPluginActive, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
@@ -139,6 +139,11 @@ class Record extends Plugin {
         this.videoFrameHeight = recordOptions.frameHeight;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
+
+        // convert settings
+        this.convertEngine = recordOptions.convertEngine;
+        this.convertWorkerURL = recordOptions.convertWorkerURL;
+        this.convertOptions = recordOptions.convertOptions;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -449,6 +454,8 @@ class Record extends Plugin {
             }
             // get audio plugin engine class
             let AudioEngineClass = getAudioEngine(this.audioEngine);
+
+            // create recording engine
             try {
                 // connect stream to recording engine
                 this.engine = new AudioEngineClass(this.player, this.player.options_);
@@ -499,6 +506,24 @@ class Record extends Plugin {
 
             // initialize recorder
             this.engine.setup(this.stream, this.mediaType, this.debug);
+
+            // create converter engine
+            let ConvertEngineClass = getConvertEngine(this.convertEngine);
+            try {
+                this.converter = new ConvertEngineClass(this.player,
+                    this.player.options_);
+            }
+            catch (err) {
+                throw new Error('Could not load ' + this.convertEngine +
+                    ' plugin');
+            }
+
+            // convert settings
+            this.converter.convertWorkerURL = this.convertWorkerURL;
+            this.converter.convertOptions = this.convertOptions;
+
+            // initialize converter
+            this.converter.setup(this.mediaType, this.debug);
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus

@@ -13,6 +13,7 @@ import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
  *
  * @private
  * @param {String} audioEngine - Name of the audio engine.
+ * @returns {Object} Audio engine class.
  */
 const getAudioEngine = function(audioEngine) {
     let AudioEngineClass;
@@ -53,7 +54,7 @@ const getAudioEngine = function(audioEngine) {
  * Check whether any audio record plugins are enabled.
  *
  * @private
- * @param {String} audioEngine - 
+ * @param {String} audioEngine - Name of the audio engine.
  * @returns {Boolean} Whether any audio plugins are enabled or not.
  */
 const isAudioPluginActive = function(audioEngine) {
@@ -65,6 +66,7 @@ const isAudioPluginActive = function(audioEngine) {
  *
  * @private
  * @param {String} convertEngine - Name of the convert engine.
+ * @returns {Object} Convert engine class.
  */
 const getConvertEngine = function(convertEngine) {
     let ConvertEngineClass;

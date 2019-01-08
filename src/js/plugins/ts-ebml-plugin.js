@@ -4,6 +4,7 @@
  */
 
 //import {Decoder, Encoder, tools, Reader} from 'ts-ebml';
+import {readAsArrayBuffer} from '../utils/file-util';
 
 const ConvertEngine = videojs.getComponent('ConvertEngine');
 
@@ -14,23 +15,15 @@ const ConvertEngine = videojs.getComponent('ConvertEngine');
  * @augments videojs.ConvertEngine
  */
 class TsEBMLEngine extends ConvertEngine {
-	readAsArrayBuffer(blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsArrayBuffer(blob);
-            reader.onloadend = () => { resolve(reader.result); };
-            reader.onerror = (ev) => { reject(ev.error); };
-        });
-    }
 
-    injectMetadata() {
+    injectMetadata(data) {
         const decoder = new Decoder();
         const reader = new Reader();
 
         reader.logging = false;
         reader.drop_default_duration = false;
 
-        this.readAsArrayBuffer(this.player.recordedData).then((buffer) => {
+        readAsArrayBuffer(data).then((buffer) => {
             const elms = decoder.decode(buffer);
             elms.forEach((elm) => { reader.read(elm); });
             reader.stop();
@@ -39,11 +32,11 @@ class TsEBMLEngine extends ConvertEngine {
                 reader.metadatas, reader.duration, reader.cues);
             let body = buffer.slice(reader.metadataSize);
             let result = new Blob([refinedMetadataBuf, body],
-                {type: this.player.recordedData.type});
+                {type: data.type});
 
             // console.log('ready', result);
 
-            this.player.recordedData = result;
+            data = result;
         });
     }
 }
