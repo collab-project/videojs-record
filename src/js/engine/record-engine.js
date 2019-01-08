@@ -8,7 +8,7 @@ import {downloadBlob, addFileInfo} from '../utils/file-util';
 const Component = videojs.getComponent('Component');
 
 // supported recorder plugin engines
-// default
+// builtin
 const RECORDRTC = 'recordrtc';
 // audio
 const LIBVORBISJS = 'libvorbis.js';
@@ -16,8 +16,7 @@ const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 // all record plugins
-const RECORD_PLUGINS = [RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS,
-    OPUSRECORDER];
+const RECORD_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER];
 
 /**
  * Base class for recorder backends.

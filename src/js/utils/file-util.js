@@ -61,11 +61,15 @@ const blobToArrayBuffer = function(fileObj) {
  * Add filename and timestamp to recorded file object.
  *
  * @param {(Blob|File)} fileObj - Blob or File object to modify.
+ * @param {date} [now] - Optional date information, default is
+ *    current timestamp.
  */
-const addFileInfo = function(fileObj) {
+const addFileInfo = function(fileObj, now) {
     if (fileObj instanceof Blob || fileObj instanceof File) {
         // set modification date
-        let now = new Date();
+        if (now === undefined) {
+            now = new Date();
+        }
         try {
             fileObj.lastModified = now.getTime();
             fileObj.lastModifiedDate = now;

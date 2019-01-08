@@ -98,11 +98,7 @@ const pluginDefaultOptions = {
     timeSlice: 0,
     // Media converter library to use. Legal values are 'ts-ebml' or an empty
     // string '' to disable (default).
-    convertEngine: '',
-    // URL for the converter worker.
-    convertWorkerURL: '',
-    // List of string options to pass to the convert engine.
-    convertOptions: []
+    convertEngine: ''
 };
 
 export default pluginDefaultOptions;

@@ -58,7 +58,7 @@ const getAudioEngine = function(audioEngine) {
  * @returns {Boolean} Whether any audio plugins are enabled or not.
  */
 const isAudioPluginActive = function(audioEngine) {
-    return audioEngine in RECORD_PLUGINS;
+    return RECORD_PLUGINS.indexOf(audioEngine) > -1;
 };
 
 /**

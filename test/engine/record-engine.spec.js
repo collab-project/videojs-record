@@ -35,7 +35,7 @@ describe('engine.record-engine', () => {
         expect(RECORDERJS).toEqual('recorder.js');
         expect(LAMEJS).toEqual('lamejs');
         expect(OPUSRECORDER).toEqual('opus-recorder');
-        expect(RECORD_PLUGINS.length).toEqual(5);
+        expect(RECORD_PLUGINS.length).toEqual(4);
     });
 
     it('trigger recordComplete event', (done) => {

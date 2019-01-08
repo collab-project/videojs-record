@@ -142,8 +142,6 @@ class Record extends Plugin {
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
-        this.convertWorkerURL = recordOptions.convertWorkerURL;
-        this.convertOptions = recordOptions.convertOptions;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -519,10 +517,6 @@ class Record extends Plugin {
                         ' plugin');
                 }
 
-                // convert settings
-                this.converter.convertWorkerURL = this.convertWorkerURL;
-                this.converter.convertOptions = this.convertOptions;
-
                 // initialize converter
                 this.converter.setup(this.mediaType, this.debug);
             }
@@ -822,6 +816,11 @@ class Record extends Plugin {
         // change the replay button back to a play button
         this.player.controlBar.playToggle.removeClass('vjs-ended');
         this.player.controlBar.playToggle.show();
+
+        // notify converter
+        if (this.converter !== undefined) {
+            this.converter.convert(this.player.recordedData);
+        }
 
         // notify listeners that data is available
         this.player.trigger('finishRecord');
