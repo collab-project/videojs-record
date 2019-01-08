@@ -68,7 +68,7 @@ player.on('finishRecord', function() {
 
 // converter completed and stream is available
 player.on('finishConvert', function() {
-    // the blob object contains the recorded data that
+    // the convertedData object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished converting: ', player.convertedData);
 });
