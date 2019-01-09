@@ -27,6 +27,7 @@ Table of Contents
 - [Media constraints](#media-constraints)
 - [Get recorded data](#get-recorded-data)
   - [Save data](#save-data)
+  - [Convert data](#convert-data)
   - [Timestamps](#timestamps)
   - [Upload data](#upload-data)
 - [Controlling the input and output devices](#controlling-the-input-and-output-devices)
@@ -259,6 +260,7 @@ The available options for this plugin are:
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides realtime `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
+| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` or an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
 
 Methods
 -------
@@ -308,10 +310,12 @@ player.on('startRecord', function() {
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `timestamp` | Fires continuously during recording [whenever a new timestamp is available](#timestamps). Only fires if the `timeSlice` option is set. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
+| `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
 | `audioBufferUpdate` | Get realtime `AudioBuffer` instances from microphone. Fires continuously during audio-only recording (until recording is stopped or paused) when the `audioBufferUpdate` option is enabled. |
+
 
 Media constraints
 -----------------
@@ -378,6 +382,40 @@ player.on('finishRecord', function() {
     player.record().saveAs({'video': 'my-video-file-name.webm'});
 });
 ```
+
+### Convert data
+
+It's possible to process and convert the recorded data in the browser. For example,
+adding metadata like duration to recorded webm files, or using FFmpeg to convert the
+data with a different codec.
+
+Enable the plugin with the `convertEngine` option:
+
+```javascript
+record: {
+    audio: false,
+    video: true,
+    maxLength: 5,
+    debug: true,
+    // use the ts-ebml convert plugin to inject metadata in webm files
+    convertEngine: 'ts-ebml'
+}
+```
+
+And listen for the `finishConvert` event. For example:
+
+```javascript
+// converter ready and stream is available
+player.on('finishConvert', function() {
+    // the convertedData object contains the converted data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished converting: ', player.convertedData);
+});
+```
+
+Check the
+[plugins](https://github.com/collab-project/videojs-record/wiki/Plugins) wiki
+page for more information.
 
 ### Timestamps
 

@@ -3,15 +3,23 @@
  * @since 2.0.0
  */
 
+import {downloadBlob, addFileInfo} from '../utils/file-util';
+
 const Component = videojs.getComponent('Component');
 
 // supported recorder plugin engines
+// builtin
 const RECORDRTC = 'recordrtc';
+// audio
 const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 const VMSG = 'vmsg';
+
+// all record plugins
+const RECORD_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
+
 
 /**
  * Base class for recorder backends.
@@ -29,7 +37,6 @@ class RecordEngine extends Component {
      *         The key/value store of player options.
      */
     constructor(player, options) {
-
         // auto mixin the evented mixin (required since video.js v6.6.0)
         options.evented = true;
 
@@ -53,46 +60,13 @@ class RecordEngine extends Component {
      * @param {(Blob|File)} fileObj - Blob or File object to modify.
      */
     addFileInfo(fileObj) {
-        if (fileObj instanceof Blob || fileObj instanceof File) {
-            // set modification date
-            let now = new Date();
-            try {
-                fileObj.lastModified = now.getTime();
-                fileObj.lastModifiedDate = now;
-            } catch (e) {
-                if (e instanceof TypeError) {
-                    // ignore: setting getter-only property "lastModifiedDate"
-                } else {
-                    // re-raise error
-                    throw e;
-                }
-            }
-            // guess extension name from mime type, e.g. audio/ogg, but
-            // any extension is valid here. Chrome also accepts extended
-            // mime types like video/webm;codecs=h264,vp9,opus
-            let fileExtension = '.' + fileObj.type.split('/')[1];
-            if (fileExtension.indexOf(';') > -1) {
-                fileExtension = fileExtension.split(';')[0];
-            }
-
-            // use timestamp in filename, e.g. 1451180941326.ogg
-            try {
-                fileObj.name = now.getTime() + fileExtension;
-            } catch (e) {
-                if (e instanceof TypeError) {
-                    // ignore: setting getter-only property "name"
-                } else {
-                    // re-raise error
-                    throw e;
-                }
-            }
-        }
+        addFileInfo(fileObj);
     }
 
     /**
      * Invoked when recording is stopped and resulting stream is available.
      *
-     * @param {blob} data - Reference to the recorded Blob.
+     * @param {blob} data - Reference to the recorded `Blob`.
      * @private
      */
     onStopRecording(data) {
@@ -124,31 +98,8 @@ class RecordEngine extends Component {
     saveAs(name) {
         let fileName = name[Object.keys(name)[0]];
 
-        if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
-            return navigator.msSaveOrOpenBlob(this.recordedData, fileName);
-        } else if (typeof navigator.msSaveBlob !== 'undefined') {
-            return navigator.msSaveBlob(this.recordedData, fileName);
-        }
-
-        let hyperlink = document.createElement('a');
-        hyperlink.href = URL.createObjectURL(this.recordedData);
-        hyperlink.download = fileName;
-
-        hyperlink.style = 'display:none;opacity:0;color:transparent;';
-        (document.body || document.documentElement).appendChild(hyperlink);
-
-        if (typeof hyperlink.click === 'function') {
-            hyperlink.click();
-        } else {
-            hyperlink.target = '_blank';
-            hyperlink.dispatchEvent(new MouseEvent('click', {
-                view: window,
-                bubbles: true,
-                cancelable: true
-            }));
-        }
-
-        URL.revokeObjectURL(hyperlink.href);
+        // download recorded file
+        downloadBlob(fileName, this.recordedData);
     }
 }
 
@@ -157,6 +108,6 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine,
+    RecordEngine, RECORD_PLUGINS,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
 };

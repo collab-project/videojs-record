@@ -6,10 +6,10 @@ import document from 'global/document';
 
 import {Player, mergeOptions} from 'video.js';
 
-import {browserShim, browserDetails} from 'webrtc-adapter';
+import adapter from 'webrtc-adapter';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG} from '../src/js/engine/record-engine.js';
-
+import {TSEBML} from '../src/js/engine/convert-engine.js';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
@@ -156,6 +156,37 @@ const TestHelpers = {
         });
     },
 
+    makeConvertPluginPlayer(pluginName) {
+        let tag = TestHelpers.makeTag('video', 'videoOnly');
+        let recordPluginOptions = {
+            audio: false,
+            video: true,
+            maxLength: 5,
+            debug: true
+        };
+        // setup audio plugin
+        switch (pluginName) {
+            case TSEBML:
+                recordPluginOptions.convertEngine = TSEBML;
+                break;
+
+            default:
+                recordPluginOptions.convertEngine = pluginName;
+                break;
+        }
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 320,
+            height: 240,
+            plugins: {
+                record: recordPluginOptions
+            }
+        });
+    },
+
     makeAudioVideoPlayer(newOptions) {
         let opts = {
             controls: true,
@@ -225,8 +256,8 @@ const TestHelpers = {
     makeScreenOnlyPlayer(newOptions) {
         // use polyfill in Firefox for now, see:
         // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-        if (browserDetails.browser === 'firefox') {
-            browserShim.shimGetDisplayMedia(window, 'screen');
+        if (adapter.browserDetails.browser === 'firefox') {
+            adapter.browserShim.shimGetDisplayMedia(window, 'screen');
         }
         let opts = {
             controls: true,
