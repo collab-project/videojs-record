@@ -4,9 +4,8 @@
  */
 
 import RecordRTCEngine from './record-rtc';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RECORD_PLUGINS} from './record-engine';
-
 import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, AUDIO_PLUGINS} from './record-engine';
 
 /**
  * Get audio plugin engine class.
@@ -43,6 +42,11 @@ const getAudioEngine = function(audioEngine) {
             AudioEngineClass = videojs.OpusRecorderEngine;
             break;
 
+        case VMSG:
+            // vmsg
+            AudioEngineClass = videojs.VmsgEngine;
+            break;
+
         default:
             // unknown engine
             throw new Error('Unknown audioEngine: ' + audioEngine);
@@ -58,7 +62,7 @@ const getAudioEngine = function(audioEngine) {
  * @returns {Boolean} Whether any audio plugins are enabled or not.
  */
 const isAudioPluginActive = function(audioEngine) {
-    return RECORD_PLUGINS.indexOf(audioEngine) > -1;
+    return AUDIO_PLUGINS.indexOf(audioEngine) > -1;
 };
 
 /**

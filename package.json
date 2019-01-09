@@ -59,10 +59,13 @@
     "screenshare",
     "recorder",
     "RecordRTC",
+    "MediaRecorder",
     "libvorbis.js",
     "vorbis",
     "ogg",
     "mp3",
+    "wav",
+    "webm",
     "opus"
   ],
   "dependencies": {
@@ -124,6 +127,7 @@
     "tui-jsdoc-template": "^1.2.2",
     "url-loader": "^1.1.2",
     "videojs-languages": "^2.0.0",
+    "vmsg": ">=0.3.5",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14",

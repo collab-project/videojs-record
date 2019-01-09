@@ -26,8 +26,8 @@ let jsBannerPlugin = new webpack.BannerPlugin({
 
 // find plugins
 const PLUGINS = [];
-fs.readdirSync(pluginSrcDir).forEach(file => {
-    PLUGINS.push(file);
+fs.readdirSync(pluginSrcDir).forEach(plugin => {
+    PLUGINS.push(plugin);
 });
 
 /**
@@ -42,9 +42,7 @@ function buildPluginEntry(plugins) {
     const result = {};
     plugins.forEach(
         plugin =>
-            (result[plugin.split('-plugin')[0]] = path.join(
-                rootDir, 'src', 'js', 'plugins', plugin
-            ))
+            (result[plugin.split('-plugin')[0]] = path.join(pluginSrcDir, plugin))
     );
     return result;
 }
