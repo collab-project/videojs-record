@@ -32,14 +32,7 @@ const pluginDefaultOptions = {
     // Height of the recorded video frames.
     frameHeight: 240,
     // Enables console logging for debugging purposes.
-    debug: false,
-    // Media converter library to use. Legal values are 'ffmpeg.js'
-    // or an empty string '' to disable (default).
-    convertEngine: '',
-    // URL for the converter worker.
-    convertWorkerURL: '',
-    // List of string options to pass to the convert engine.
-    convertOptions: [],
+    debug: false,   
     // Turn off the camera/mic (and light) when audio and/or video recording
     // stops, and turns them on again when you resume recording.
     autoMuteDevice: false,
@@ -105,7 +98,11 @@ const pluginDefaultOptions = {
     timeSlice: 0,
     // Media converter library to use. Legal values are 'ts-ebml' or an empty
     // string '' to disable (default).
-    convertEngine: ''
+    convertEngine: '',
+    // URL for the converter worker.
+    convertWorkerURL: '',
+    // List of string options to pass to the convert engine.
+    convertOptions: []
 };
 
 export default pluginDefaultOptions;
