@@ -8,6 +8,12 @@ videojs-record changelog
   metadata like duration (#317)
 - New vmsg audio plugin: produces MP3 using a WebAssembly version of the
   LAME library (#287)
+- New gifshot plugin: improved animated GIF support (#291)
+
+**Backwards-incompatible changes** (when upgrading from a previous version):
+
+- Support for animated GIF recording using RecordRTC was removed and replaced
+  with a new plugin using the Gifshot library (#291)
 
 
 3.2.1 - 2019/01/08
@@ -38,7 +44,6 @@ videojs-record changelog
 ------------------
 
 - Add support for screen capture (#289)
-- New gifshot plugin for improved animated GIF support (#291)
 - Add `maxFileSize` option to limit the maximum file size of a recorded
   clip, and stop recording when that limit is reached (#234)
 - Add `msDisplayMax` option to control display of time format (#188)
@@ -55,8 +60,6 @@ videojs-record changelog
   is always a `Blob` across all recording types and browsers now (#269)
 - Upgraded to video.js/font 3.1.0: removed support for IE8, 9, 10, and
   Android < 4.4 by removing support for the `eot` font file (#279)
-- Support for animated GIF recording using RecordRTC was removed and replaced
-  with a new plugin using the Gifshot library (#291)
 
 
 2.4.1 - 2018/08/03
