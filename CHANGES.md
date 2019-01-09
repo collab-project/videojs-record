@@ -6,6 +6,8 @@ videojs-record changelog
 
 - New ts-ebml convert plugin: creates seekable webm files by injecting
   metadata like duration (#317)
+- New vmsg audio plugin: produces MP3 using a WebAssembly version of the
+  LAME library (#287)
 
 
 3.2.1 - 2019/01/08

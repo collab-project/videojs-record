@@ -106,6 +106,8 @@ module.exports = function(config) {
             'node_modules/opus-recorder/dist/recorder.min.js',
             // gifshot
             'node_modules/gifshot/dist/gifshot.min.js',
+            // vmsg
+            {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
 
             // -------------------------------------------
             // specs
