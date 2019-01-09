@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Lamejs Audio-only Example - Record Plugin for Video.js</title>
+  <title>vmsg Audio-only Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
@@ -14,12 +14,12 @@
   <script src="../../node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="../../dist/videojs.record.js"></script>
-  <script src="../../dist/plugins/videojs.record.lamejs.js"></script>
+  <script src="../../dist/plugins/videojs.record.vmsg.js"></script>
 
   <style>
   /* change player background color */
   #myAudio {
-      background-color: #493657;
+      background-color: #f44265;
   }
   </style>
 </head>
@@ -35,8 +35,8 @@ var options = {
     fluid: false,
     plugins: {
         wavesurfer: {
-            src:'live',
-            waveColor: '#fffa00',
+            src: 'live',
+            waveColor: '#eeefda',
             progressColor: '#FAFCD2',
             debug: true,
             cursorWidth: 1,
@@ -48,10 +48,8 @@ var options = {
             video: false,
             maxLength: 20,
             debug: true,
-            audioEngine: 'lamejs',
-            audioWorkerURL: '../../node_modules/lamejs/worker-example/worker-realtime.js',
-            audioSampleRate: 44100,
-            audioBitRate: 128
+            audioEngine: 'vmsg',
+            audioWorkerURL: '../../node_modules/vmsg/vmsg.wasm'
         }
     }
 };
@@ -60,8 +58,7 @@ var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
-        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ' and wavesurfer.js ' + WaveSurfer.VERSION;
+        ' and videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer');
     videojs.log(msg);
 });
 
