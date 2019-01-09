@@ -39,7 +39,8 @@ describe('pluginDefaultOptions', () => {
             audioWorkerURL: '',
             audioBufferUpdate: false,
             animationOptions: {},
-            timeSlice: 0
+            timeSlice: 0,
+            convertEngine: ''
         });
     });
 });

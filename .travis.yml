@@ -10,12 +10,13 @@ addons:
 
 # headless firefox dependencies (see https://bugzilla.mozilla.org/show_bug.cgi?id=1372998)
 before_install:
+  - sudo update-alternatives --set google-chrome /usr/bin/google-chrome-beta
   - sudo apt-get install -y x11-xserver-utils xserver-xorg-core xvfb dbus-x11
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 
 install:
-  - npm install opencollective-postinstall
+  - npm install lightercollective
   - npm prune
   - npm install
 
