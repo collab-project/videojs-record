@@ -17,7 +17,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import {detectBrowser} from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive, getConvertEngine} from './engine/engine-loader';
+import {getAudioEngine, isAudioPluginActive, getConvertEngine, getAnimationEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
@@ -445,20 +445,32 @@ class Record extends Plugin {
         // setup recording engine
         if (this.getRecordType() !== IMAGE_ONLY) {
             // currently record plugins are only supported in audio-only mode
-            if (this.getRecordType() !== AUDIO_ONLY && isAudioPluginActive(this.audioEngine)) {
+            if (this.getRecordType() !== AUDIO_ONLY &&
+                isAudioPluginActive(this.audioEngine)
+            ) {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
             }
-            // get audio plugin engine class
-            let AudioEngineClass = getAudioEngine(this.audioEngine);
+
+            // load plugins, if any
+            let EngineClass, engineType;
+            if (this.getRecordType() === ANIMATION) {
+                // get animation plugin engine class
+                EngineClass = getAnimationEngine();
+                engineType = ANIMATION;
+            } else if (this.getRecordType() === AUDIO_ONLY) {
+                // get audio plugin engine class
+                EngineClass = getAudioEngine(this.audioEngine);
+                engineType = this.audioEngine;
+            }
 
             // create recording engine
             try {
                 // connect stream to recording engine
-                this.engine = new AudioEngineClass(this.player, this.player.options_);
+                this.engine = new EngineClass(this.player,
+                    this.player.options_);
             } catch (err) {
-                throw new Error('Could not load ' + this.audioEngine +
-                    ' plugin');
+                throw new Error('Could not load ' + engineType + ' plugin');
             }
 
             // listen for events

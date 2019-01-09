@@ -37,9 +37,12 @@ module.exports = {
     // but become dependencies of the output: they are imported from the
     // environment during runtime.
     externals: [
+        // mandatory
         {'video.js': 'videojs'},
+        // optional
         {'wavesurfer.js': 'WaveSurfer'},
         {'recordrtc': 'RecordRTC'},
+        // plugins
         {'gifshot': 'gifshot'}
     ],
     module: {
