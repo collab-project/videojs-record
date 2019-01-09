@@ -1,9 +1,9 @@
 /**
  * @file vmsg-plugin.js
- * @since 3.0.0
+ * @since 3.3.0
  */
 
-import { Recorder } from 'vmsg';
+import {Recorder} from 'vmsg';
 
 const RecordEngine = videojs.getComponent('RecordEngine');
 
@@ -16,6 +16,12 @@ const RecordEngine = videojs.getComponent('RecordEngine');
 class VmsgEngine extends RecordEngine {
     /**
      * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;
@@ -57,7 +63,10 @@ class VmsgEngine extends RecordEngine {
         }
         this.engine.blobURL = null;
 
-        this.engine.worker.postMessage({type: 'start', data: this.audioContext.sampleRate});
+        this.engine.worker.postMessage({
+            type: 'start',
+            data: this.audioContext.sampleRate
+        });
         this.processor.onaudioprocess = this.onAudioProcess.bind(this);
         this.processor.connect(this.audioContext.destination);
     }
@@ -78,9 +87,10 @@ class VmsgEngine extends RecordEngine {
     /**
      * Continuous encoding of audio data.
      * @private
+     * @param {object} event - Audio buffer.
      */
-    onAudioProcess(ev) {
-        const samples = ev.inputBuffer.getChannelData(0);
+    onAudioProcess(event) {
+        const samples = event.inputBuffer.getChannelData(0);
         this.engine.worker.postMessage({type: 'data', data: samples});
     }
 

@@ -1,5 +1,5 @@
 /**
- * @since 3.0.0
+ * @since 3.3.0
  */
 
 import TestHelpers from '../test-helpers.js';
@@ -11,7 +11,7 @@ import {VMSG} from '../../src/js/engine/record-engine.js';
 
 /** @test {VmsgEngine} */
 describe('plugins.vmsg-plugin', () => {
-    var player;
+    let player;
 
     afterEach(() => {
         player.dispose();
