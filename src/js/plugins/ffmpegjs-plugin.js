@@ -1,19 +1,18 @@
 /* eslint-disable no-console */
 /**
  * @file ffmpegjs-plugin.js
- * @since x.x.x
+ * @since 3.3.0
  */
 
-const RecordEngine = videojs.getComponent('RecordEngine');
+const ConvertEngine = videojs.getComponent('ConvertEngine');
 
 /**
  * Converter engine using the ffmpeg.js library.
  *
  * @class
- * @augments videojs.RecordEngine
+ * @augments videojs.ConvertEngine
  */
-class FFmpegjsEngine extends RecordEngine {
-
+class FFmpegjsEngine extends ConvertEngine {
     /**
      * Setup recording engine.
      *
@@ -23,8 +22,6 @@ class FFmpegjsEngine extends RecordEngine {
      *     be printed in the console.
      */
     setup(mediaType, debug) {
-        console.log('FFmpegjsEngine.setup');
-
         this.mediaType = mediaType;
         this.debug = debug;
 
@@ -38,7 +35,7 @@ class FFmpegjsEngine extends RecordEngine {
      *
      * @param {blob} data - Reference to the recorded Blob.
      */
-    recordComplete(data) {
+    convert(data) {
         console.log('FFmpegjsEngine.recordComplete - input:', data);
 
         // convert blob to array buffer

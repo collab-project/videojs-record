@@ -4,7 +4,7 @@
  */
 
 import RecordRTCEngine from './record-rtc';
-import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
+import {CONVERT_PLUGINS, TSEBML, FFMPEGJS} from './convert-engine';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, AUDIO_PLUGINS} from './record-engine';
 
 /**
@@ -82,6 +82,11 @@ const getConvertEngine = function(convertEngine) {
         case TSEBML:
             // ts-ebml
             ConvertEngineClass = videojs.TsEBMLEngine;
+            break;
+
+        case FFMPEGJS:
+            // ffmpeg.js
+            ConvertEngineClass = videojs.FFmpegjsEngine;
             break;
 
         default:
