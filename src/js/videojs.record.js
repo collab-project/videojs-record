@@ -458,8 +458,8 @@ class Record extends Plugin {
                 // get animation plugin engine class
                 EngineClass = getAnimationEngine();
                 engineType = ANIMATION;
-            } else if (this.getRecordType() === AUDIO_ONLY) {
-                // get audio plugin engine class
+            } else {
+                // get audio plugin engine class (or default recordrtc engine)
                 EngineClass = getAudioEngine(this.audioEngine);
                 engineType = this.audioEngine;
             }
