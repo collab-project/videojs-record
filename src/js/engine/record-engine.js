@@ -17,8 +17,11 @@ const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 const VMSG = 'vmsg';
 
+// all audio plugins
+const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
+
 // all record plugins
-const RECORD_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
+const RECORD_PLUGINS = AUDIO_PLUGINS;
 
 
 /**
@@ -108,6 +111,6 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine, RECORD_PLUGINS,
+    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
 };

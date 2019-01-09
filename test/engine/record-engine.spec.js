@@ -4,7 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, RECORD_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, RECORD_PLUGINS, AUDIO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
 
 
 /** @test {record-engine} */
@@ -38,6 +38,7 @@ describe('engine.record-engine', () => {
         expect(OPUSRECORDER).toEqual('opus-recorder');
         expect(VMSG).toEqual('vmsg');
 
+        expect(AUDIO_PLUGINS.length).toEqual(5);
         expect(RECORD_PLUGINS.length).toEqual(5);
     });
 
