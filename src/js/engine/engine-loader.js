@@ -5,7 +5,7 @@
 
 import RecordRTCEngine from './record-rtc';
 import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT, RECORD_PLUGINS} from './record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT, AUDIO_PLUGINS} from './record-engine';
 
 /**
  * Get audio plugin engine class.
@@ -73,7 +73,7 @@ const getAnimationEngine = function() {
  * @returns {Boolean} Whether any audio plugins are enabled or not.
  */
 const isAudioPluginActive = function(audioEngine) {
-    return RECORD_PLUGINS.indexOf(audioEngine) > -1;
+    return AUDIO_PLUGINS.indexOf(audioEngine) > -1;
 };
 
 /**

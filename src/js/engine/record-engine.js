@@ -20,7 +20,8 @@ const VMSG = 'vmsg';
 const GIFSHOT = 'gifshot';
 
 // all record plugins
-const RECORD_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT];
+const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
+const RECORD_PLUGINS = AUDIO_PLUGINS.concat([GIFSHOT]);
 
 /**
  * Base class for recorder backends.
@@ -109,6 +110,6 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine, RECORD_PLUGINS,
+    RecordEngine, AUDIO_PLUGINS, RECORD_PLUGINS,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT
 };
