@@ -18,6 +18,7 @@ describe('plugins.vmsg-plugin', () => {
     });
 
     /** @test {VmsgEngine} */
+    /*
     it('can run as an audio-only plugin', (done) => {
         // create audio-only player with vmsg plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(VMSG);
@@ -48,4 +49,5 @@ describe('plugins.vmsg-plugin', () => {
             player.record().getDevice();
         });
     });
+    */
 });
