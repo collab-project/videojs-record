@@ -21,7 +21,8 @@ const GIFSHOT = 'gifshot';
 
 // all record plugins
 const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
-const RECORD_PLUGINS = AUDIO_PLUGINS.concat([GIFSHOT]);
+const ANIMATION_PLUGINS = [GIFSHOT];
+const RECORD_PLUGINS = AUDIO_PLUGINS.concat(ANIMATION_PLUGINS);
 
 /**
  * Base class for recorder backends.
