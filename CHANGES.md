@@ -1,6 +1,13 @@
 videojs-record changelog
 ========================
 
+3.3.0 - unreleased
+------------------
+
+- New ts-ebml convert plugin: creates seekable webm files by injecting
+  metadata like duration (#317)
+
+
 3.2.1 - 2019/01/08
 ------------------
 

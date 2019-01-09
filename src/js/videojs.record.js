@@ -15,10 +15,9 @@ import RecordIndicator from './controls/record-indicator';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
-import { detectBrowser } from './utils/detect-browser';
+import {detectBrowser} from './utils/detect-browser';
 
-import RecordRTCEngine from './engine/record-rtc';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER} from './engine/record-engine';
+import {getAudioEngine, isAudioPluginActive, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
@@ -140,6 +139,9 @@ class Record extends Plugin {
         this.videoFrameHeight = recordOptions.frameHeight;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
+
+        // convert settings
+        this.convertEngine = recordOptions.convertEngine;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -443,52 +445,18 @@ class Record extends Plugin {
 
         // setup recording engine
         if (this.getRecordType() !== IMAGE_ONLY) {
-            // currently libvorbis.js, recorder.js, opus-recorder and lamejs
-            // are only supported in audio-only mode
-            if (this.getRecordType() !== AUDIO_ONLY &&
-                (this.audioEngine === LIBVORBISJS ||
-                 this.audioEngine === RECORDERJS ||
-                 this.audioEngine === LAMEJS ||
-                 this.audioEngine === OPUSRECORDER)) {
+            // currently record plugins are only supported in audio-only mode
+            if (this.getRecordType() !== AUDIO_ONLY && isAudioPluginActive(this.audioEngine)) {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
             }
+            // get audio plugin engine class
+            let AudioEngineClass = getAudioEngine(this.audioEngine);
 
-            // get recorder class
-            let EngineClass;
-            switch (this.audioEngine) {
-                case RECORDRTC:
-                    // RecordRTC.js (default)
-                    EngineClass = RecordRTCEngine;
-                    break;
-
-                case LIBVORBISJS:
-                    // libvorbis.js
-                    EngineClass = videojs.LibVorbisEngine;
-                    break;
-
-                case RECORDERJS:
-                    // recorder.js
-                    EngineClass = videojs.RecorderjsEngine;
-                    break;
-
-                case LAMEJS:
-                    // lamejs
-                    EngineClass = videojs.LamejsEngine;
-                    break;
-
-                case OPUSRECORDER:
-                    // opus-recorder
-                    EngineClass = videojs.OpusRecorderEngine;
-                    break;
-
-                default:
-                    // unknown engine
-                    throw new Error('Unknown audioEngine: ' + this.audioEngine);
-            }
+            // create recording engine
             try {
                 // connect stream to recording engine
-                this.engine = new EngineClass(this.player, this.player.options_);
+                this.engine = new AudioEngineClass(this.player, this.player.options_);
             } catch (err) {
                 throw new Error('Could not load ' + this.audioEngine +
                     ' plugin');
@@ -536,6 +504,22 @@ class Record extends Plugin {
 
             // initialize recorder
             this.engine.setup(this.stream, this.mediaType, this.debug);
+
+            // create converter engine
+            if (this.convertEngine !== '') {
+                let ConvertEngineClass = getConvertEngine(this.convertEngine);
+                try {
+                    this.converter = new ConvertEngineClass(this.player,
+                        this.player.options_);
+                }
+                catch (err) {
+                    throw new Error('Could not load ' + this.convertEngine +
+                        ' plugin');
+                }
+
+                // initialize converter
+                this.converter.setup(this.mediaType, this.debug);
+            }
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
@@ -832,6 +816,11 @@ class Record extends Plugin {
         // change the replay button back to a play button
         this.player.controlBar.playToggle.removeClass('vjs-ended');
         this.player.controlBar.playToggle.show();
+
+        // notify converter
+        if (this.converter !== undefined) {
+            this.converter.convert(this.player.recordedData);
+        }
 
         // notify listeners that data is available
         this.player.trigger('finishRecord');
