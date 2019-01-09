@@ -32,7 +32,7 @@ describe('plugins.ts-ebml-plugin', () => {
                 player.one('finishConvert', () => {
                     expect(player.convertedData instanceof Blob).toBeTruthy();
                     done();
-                })
+                });
                 player.record().converter.convert(blob);
             });
         });
