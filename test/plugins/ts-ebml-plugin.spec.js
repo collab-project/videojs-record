@@ -23,11 +23,18 @@ describe('plugins.ts-ebml-plugin', () => {
     });
 
     /** @test {TsEBMLEngine} */
-    it('can run', (done) => {
+    it('converts', (done) => {
         player.one('deviceReady', () => {
-            setTimeout(() => {
-                done();
-            }, 2000);
+            let req = new Request(TestHelpers.TEST_WEBM);
+            fetch(req).then((response) => {
+                return response.blob();
+            }).then((blob) => {
+                player.one('finishConvert', () => {
+                    expect(player.convertedData instanceof Blob).toBeTruthy();
+                    done();
+                })
+                player.record().converter.convert(blob);
+            });
         });
 
         player.one('ready', () => {
