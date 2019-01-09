@@ -836,11 +836,6 @@ class Record extends Plugin {
             return;
         }
 
-        // listen for recorder events
-        if (this.converter !== undefined) {
-            this.converter.recordComplete(this.player.recordedData);
-        }
-
         // load and display recorded data
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
