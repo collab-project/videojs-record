@@ -464,27 +464,6 @@ class Record extends Plugin {
                     ' plugin');
             }
 
-            // create converter engine
-            if (this.convertEngine === FFMPEGJS) {
-                try {
-                    //
-                    this.converter = new videojs.FFmpegjsEngine(this.player,
-                        this.player.options_);
-                }
-                catch (err) {
-                    // console.error(err);
-                    throw new Error('Could not load ' + this.convertEngine +
-                        ' plugin');
-                }
-
-                // convert settings
-                this.converter.convertWorkerURL = this.convertWorkerURL;
-                this.converter.convertOptions = this.convertOptions;
-
-                // initialize converter
-                this.converter.setup(this.mediaType, this.debug);
-            }
-
             // listen for events
             this.engine.on('recordComplete', this.engineStopCallback);
 
@@ -539,6 +518,10 @@ class Record extends Plugin {
                     throw new Error('Could not load ' + this.convertEngine +
                         ' plugin');
                 }
+
+                // convert settings
+                this.converter.convertWorkerURL = this.convertWorkerURL;
+                this.converter.convertOptions = this.convertOptions;
 
                 // initialize converter
                 this.converter.setup(this.mediaType, this.debug);
