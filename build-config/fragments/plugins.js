@@ -3,12 +3,14 @@
  * @since 2.2.0
  */
 
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const datefns = require('date-fns');
 
 const year = datefns.format(new Date(), 'YYYY');
 const rootDir = path.resolve(__dirname, '..', '..');
+const pluginSrcDir = path.join(rootDir, 'src', 'js', 'plugins');
 const pckg = require(path.join(rootDir, 'package.json'));
 
 // plugin banner with copyright and version info
@@ -20,6 +22,12 @@ let jsBanner = `[name] plugin for ${pckg.name}
 let jsBannerPlugin = new webpack.BannerPlugin({
     banner: jsBanner,
     test: /\.js$/
+});
+
+// find plugins
+const PLUGINS = [];
+fs.readdirSync(pluginSrcDir).forEach(file => {
+    PLUGINS.push(file);
 });
 
 /**
@@ -42,12 +50,7 @@ function buildPluginEntry(plugins) {
 }
 
 module.exports = {
-    entry: buildPluginEntry([
-        'lamejs-plugin',
-        'libvorbis-plugin',
-        'opus-recorder-plugin',
-        'recorderjs-plugin'
-    ]),
+    entry: buildPluginEntry(PLUGINS),
     output: {
         path: path.join(rootDir, 'dist', 'plugins'),
         filename: 'videojs.record.[name].js',

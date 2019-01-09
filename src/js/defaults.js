@@ -3,7 +3,7 @@
  * @since 2.0.0
  */
 
-//plugin defaults
+// plugin defaults
 const pluginDefaultOptions = {
     // Single snapshot image.
     image: false,
@@ -102,7 +102,10 @@ const pluginDefaultOptions = {
     // in speed.
     animationQuality: 10,
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
-    timeSlice: 0
+    timeSlice: 0,
+    // Media converter library to use. Legal values are 'ts-ebml' or an empty
+    // string '' to disable (default).
+    convertEngine: ''
 };
 
 export default pluginDefaultOptions;
