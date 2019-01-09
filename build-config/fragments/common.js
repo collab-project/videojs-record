@@ -55,6 +55,7 @@ module.exports = {
             {
                 // scss -> css
                 test: /\.scss$/,
+                include: path.resolve(rootDir, 'src', 'css'),
                 exclude: /(node_modules|bower_components|test)/,
                 use: [
                     MiniCssExtractPlugin.loader,

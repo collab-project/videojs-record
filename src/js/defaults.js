@@ -45,7 +45,7 @@ const pluginDefaultOptions = {
     // recordrtc specify the best available recorder type.
     videoRecorderType: 'auto',
     // Audio recording library to use. Legal values are 'recordrtc',
-    // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
+    // 'libvorbis.js', 'opus-recorder', 'lamejs', 'vmsg' and 'recorder.js'.
     audioEngine: 'recordrtc',
     // Audio recorder type to use. This allows you to specify an alternative
     // recorder class, e.g. StereoAudioRecorder. Defaults to 'auto' which let's

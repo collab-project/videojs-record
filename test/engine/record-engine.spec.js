@@ -4,7 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, RECORD_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, RECORD_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
 
 
 /** @test {record-engine} */
@@ -30,12 +30,15 @@ describe('engine.record-engine', () => {
     });
 
     it('contain supported recorder plugin engines', () => {
+        // builtin
         expect(RECORDRTC).toEqual('recordrtc');
         expect(LIBVORBISJS).toEqual('libvorbis.js');
         expect(RECORDERJS).toEqual('recorder.js');
         expect(LAMEJS).toEqual('lamejs');
         expect(OPUSRECORDER).toEqual('opus-recorder');
-        expect(RECORD_PLUGINS.length).toEqual(4);
+        expect(VMSG).toEqual('vmsg');
+
+        expect(RECORD_PLUGINS.length).toEqual(5);
     });
 
     it('trigger recordComplete event', (done) => {
