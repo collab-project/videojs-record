@@ -1,6 +1,6 @@
 /**
  * @file gifshot-plugin.js
- * @since 3.0.0
+ * @since 3.3.0
  */
 
 import gifshot from 'gifshot';
@@ -16,6 +16,12 @@ const RecordEngine = videojs.getComponent('RecordEngine');
 class GifshotEngine extends RecordEngine {
     /**
      * Setup recording engine.
+     *
+     * @param {LocalMediaStream} stream - Media stream to record.
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
         this.inputStream = stream;
@@ -28,15 +34,20 @@ class GifshotEngine extends RecordEngine {
             // Desired height of the image
             gifHeight: this.options_.height,
 
-            // Whether or not you would like the user's camera to stay on after the GIF is created
-            // Note: The cameraStream Media object is passed back to you in the createGIF() callback function
+            // Whether or not you would like the user's camera to stay on
+            // after the GIF is created.
+            // Note: The cameraStream Media object is passed back to you in
+            // the createGIF() callback function
             keepCameraOn: true,
             // Expects a cameraStream Media object
-            // Note: Passing an existing camera stream will allow you to create another GIF and/or snapshot without
-            //  asking for the user's permission to access the camera again if you are not using SSL
+            // Note: Passing an existing camera stream will allow you to
+            // create another GIF and/or snapshot without asking for the user's
+            // permission to access the camera again if you are not using SSL
             cameraStream: this.inputStream,
-            // Whether or not you would like to save all of the canvas image binary data from your created GIF
-            // Note: This is particularly useful for when you want to re-use a GIF to add text to later
+            // Whether or not you would like to save all of the canvas image
+            // binary data from your created GIF
+            // Note: This is particularly useful for when you want to re-use a
+            // GIF to add text to later
             saveRenderingContexts: true
         };
     }
@@ -45,7 +56,7 @@ class GifshotEngine extends RecordEngine {
      * Start recording.
      */
     start() {
-        console.log('started recording');
+        //console.log('started recording');
 
         let opts = videojs.mergeOptions(this.defaultOptions,
             this.animationOptions);
@@ -57,11 +68,12 @@ class GifshotEngine extends RecordEngine {
      * Stop recording.
      */
     stop() {
-        console.log('stopped recording');
+        //console.log('stopped recording');
     }
 
     /**
      * @private
+     * @param {object} obj - TODO
      */
     onRecordingAvailable(obj) {
         if (!obj.error) {

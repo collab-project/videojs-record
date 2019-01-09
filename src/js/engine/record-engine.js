@@ -16,7 +16,7 @@ const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 const VMSG = 'vmsg';
-// image
+// animation
 const GIFSHOT = 'gifshot';
 
 // all record plugins

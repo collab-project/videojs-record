@@ -28,6 +28,8 @@ class AnimationDisplay extends Component {
 
     /**
      * Set `src` of image element.
+     *
+     * @param {object} data - TODO
      */
     load(data) {
         let img = this.el().firstChild;
