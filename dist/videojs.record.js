@@ -1,6 +1,6 @@
 /*!
  * videojs-record
- * @version 3.2.1
+ * @version 3.3.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
@@ -934,7 +934,7 @@ exports.default = void 0;
  * @file defaults.js
  * @since 2.0.0
  */
-//plugin defaults
+// plugin defaults
 var pluginDefaultOptions = {
   // Single snapshot image.
   image: false,
@@ -976,7 +976,7 @@ var pluginDefaultOptions = {
   // recordrtc specify the best available recorder type.
   videoRecorderType: 'auto',
   // Audio recording library to use. Legal values are 'recordrtc',
-  // 'libvorbis.js', 'opus-recorder', 'lamejs' and 'recorder.js'.
+  // 'libvorbis.js', 'opus-recorder', 'lamejs', 'vmsg' and 'recorder.js'.
   audioEngine: 'recordrtc',
   // Audio recorder type to use. This allows you to specify an alternative
   // recorder class, e.g. StereoAudioRecorder. Defaults to 'auto' which let's
@@ -1026,7 +1026,10 @@ var pluginDefaultOptions = {
   // in speed.
   animationQuality: 10,
   // Accepts numbers in milliseconds; use this to force intervals-based blobs.
-  timeSlice: 0
+  timeSlice: 0,
+  // Media converter library to use. Legal values are 'ts-ebml' or an empty
+  // string '' to disable (default).
+  convertEngine: ''
 };
 var _default = pluginDefaultOptions;
 exports.default = _default;
@@ -1034,10 +1037,10 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ "./src/js/engine/record-engine.js":
-/*!****************************************!*\
-  !*** ./src/js/engine/record-engine.js ***!
-  \****************************************/
+/***/ "./src/js/engine/convert-engine.js":
+/*!*****************************************!*\
+  !*** ./src/js/engine/convert-engine.js ***!
+  \*****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1047,7 +1050,9 @@ module.exports = exports.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.OPUSRECORDER = exports.LAMEJS = exports.RECORDERJS = exports.LIBVORBISJS = exports.RECORDRTC = exports.RecordEngine = void 0;
+exports.TSEBML = exports.CONVERT_PLUGINS = exports.ConvertEngine = void 0;
+
+var _fileUtil = __webpack_require__(/*! ../utils/file-util */ "./src/js/utils/file-util.js");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -1067,13 +1072,258 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/**
- * @file record-engine.js
- * @since 2.0.0
- */
-var Component = videojs.getComponent('Component'); // supported recorder plugin engines
+var Component = videojs.getComponent('Component'); // supported convert plugin engines
 
-var RECORDRTC = 'recordrtc';
+var TSEBML = 'ts-ebml'; // all convert plugins
+
+exports.TSEBML = TSEBML;
+var CONVERT_PLUGINS = [TSEBML];
+/**
+ * Base class for converter backends.
+ * @class
+ * @augments videojs.Component
+ */
+
+exports.CONVERT_PLUGINS = CONVERT_PLUGINS;
+
+var ConvertEngine =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ConvertEngine, _Component);
+
+  /**
+   * Creates an instance of this class.
+   *
+   * @param  {Player} player - The `Player` that this class should be
+   *     attached to.
+   * @param  {Object} [options] - The key/value store of player options.
+   */
+  function ConvertEngine(player, options) {
+    _classCallCheck(this, ConvertEngine);
+
+    // auto mixin the evented mixin (required since video.js v6.6.0)
+    options.evented = true;
+    return _possibleConstructorReturn(this, _getPrototypeOf(ConvertEngine).call(this, player, options));
+  }
+  /**
+   * Setup recording engine.
+   *
+   * @param {Object} mediaType - Object describing the media type of this
+   *     engine.
+   * @param {Boolean} debug - Indicating whether or not debug messages should
+   *     be printed in the console.
+   */
+
+
+  _createClass(ConvertEngine, [{
+    key: "setup",
+    value: function setup(mediaType, debug) {
+      this.mediaType = mediaType;
+      this.debug = debug;
+    }
+    /**
+     * Load `Blob` and return `Promise`.
+     *
+     * @param {Blob} data - `Blob` to load.
+     * @returns {Promise} - Promise with `ArrayBuffer` data.
+     */
+
+  }, {
+    key: "loadBlob",
+    value: function loadBlob(data) {
+      return (0, _fileUtil.blobToArrayBuffer)(data);
+    }
+    /**
+     * Add filename and timestamp to converted file object.
+     *
+     * @param {(Blob|File)} fileObj - `Blob` or `File` object to modify.
+     * @param {date} [now] - Optional date information, default is
+     *    current timestamp.
+     */
+
+  }, {
+    key: "addFileInfo",
+    value: function addFileInfo(fileObj, now) {
+      (0, _fileUtil.addFileInfo)(fileObj, now);
+    }
+  }]);
+
+  return ConvertEngine;
+}(Component); // expose component for external plugins
+
+
+exports.ConvertEngine = ConvertEngine;
+videojs.ConvertEngine = ConvertEngine;
+Component.registerComponent('ConvertEngine', ConvertEngine);
+
+/***/ }),
+
+/***/ "./src/js/engine/engine-loader.js":
+/*!****************************************!*\
+  !*** ./src/js/engine/engine-loader.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getConvertEngine = exports.isAudioPluginActive = exports.getAudioEngine = void 0;
+
+var _recordRtc = _interopRequireDefault(__webpack_require__(/*! ./record-rtc */ "./src/js/engine/record-rtc.js"));
+
+var _convertEngine = __webpack_require__(/*! ./convert-engine */ "./src/js/engine/convert-engine.js");
+
+var _recordEngine = __webpack_require__(/*! ./record-engine */ "./src/js/engine/record-engine.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @file engine-loader.js
+ * @since 3.3.0
+ */
+
+/**
+ * Get audio plugin engine class.
+ *
+ * @private
+ * @param {String} audioEngine - Name of the audio engine.
+ * @returns {Object} Audio engine class.
+ */
+var getAudioEngine = function getAudioEngine(audioEngine) {
+  var AudioEngineClass;
+
+  switch (audioEngine) {
+    case _recordEngine.RECORDRTC:
+      // RecordRTC.js (default)
+      AudioEngineClass = _recordRtc.default;
+      break;
+
+    case _recordEngine.LIBVORBISJS:
+      // libvorbis.js
+      AudioEngineClass = videojs.LibVorbisEngine;
+      break;
+
+    case _recordEngine.RECORDERJS:
+      // recorder.js
+      AudioEngineClass = videojs.RecorderjsEngine;
+      break;
+
+    case _recordEngine.LAMEJS:
+      // lamejs
+      AudioEngineClass = videojs.LamejsEngine;
+      break;
+
+    case _recordEngine.OPUSRECORDER:
+      // opus-recorder
+      AudioEngineClass = videojs.OpusRecorderEngine;
+      break;
+
+    case _recordEngine.VMSG:
+      // vmsg
+      AudioEngineClass = videojs.VmsgEngine;
+      break;
+
+    default:
+      // unknown engine
+      throw new Error('Unknown audioEngine: ' + audioEngine);
+  }
+
+  return AudioEngineClass;
+};
+/**
+ * Check whether any audio record plugins are enabled.
+ *
+ * @private
+ * @param {String} audioEngine - Name of the audio engine.
+ * @returns {Boolean} Whether any audio plugins are enabled or not.
+ */
+
+
+exports.getAudioEngine = getAudioEngine;
+
+var isAudioPluginActive = function isAudioPluginActive(audioEngine) {
+  return _recordEngine.AUDIO_PLUGINS.indexOf(audioEngine) > -1;
+};
+/**
+ * Get converter plugin engine class.
+ *
+ * @private
+ * @param {String} convertEngine - Name of the convert engine.
+ * @returns {Object} Convert engine class.
+ */
+
+
+exports.isAudioPluginActive = isAudioPluginActive;
+
+var getConvertEngine = function getConvertEngine(convertEngine) {
+  var ConvertEngineClass;
+
+  switch (convertEngine) {
+    case '':
+      // disabled (default)
+      break;
+
+    case _convertEngine.TSEBML:
+      // ts-ebml
+      ConvertEngineClass = videojs.TsEBMLEngine;
+      break;
+
+    default:
+      // unknown engine
+      throw new Error('Unknown convertEngine: ' + convertEngine);
+  }
+
+  return ConvertEngineClass;
+};
+
+exports.getConvertEngine = getConvertEngine;
+
+/***/ }),
+
+/***/ "./src/js/engine/record-engine.js":
+/*!****************************************!*\
+  !*** ./src/js/engine/record-engine.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.VMSG = exports.OPUSRECORDER = exports.LAMEJS = exports.RECORDERJS = exports.LIBVORBISJS = exports.RECORDRTC = exports.AUDIO_PLUGINS = exports.RECORD_PLUGINS = exports.RecordEngine = void 0;
+
+var _fileUtil = __webpack_require__(/*! ../utils/file-util */ "./src/js/utils/file-util.js");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Component = videojs.getComponent('Component'); // supported recorder plugin engines
+// builtin
+
+var RECORDRTC = 'recordrtc'; // audio
+
 exports.RECORDRTC = RECORDRTC;
 var LIBVORBISJS = 'libvorbis.js';
 exports.LIBVORBISJS = LIBVORBISJS;
@@ -1082,13 +1332,21 @@ exports.RECORDERJS = RECORDERJS;
 var LAMEJS = 'lamejs';
 exports.LAMEJS = LAMEJS;
 var OPUSRECORDER = 'opus-recorder';
+exports.OPUSRECORDER = OPUSRECORDER;
+var VMSG = 'vmsg'; // all audio plugins
+
+exports.VMSG = VMSG;
+var AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG]; // all record plugins
+
+exports.AUDIO_PLUGINS = AUDIO_PLUGINS;
+var RECORD_PLUGINS = AUDIO_PLUGINS;
 /**
  * Base class for recorder backends.
  * @class
  * @augments videojs.Component
  */
 
-exports.OPUSRECORDER = OPUSRECORDER;
+exports.RECORD_PLUGINS = RECORD_PLUGINS;
 
 var RecordEngine =
 /*#__PURE__*/
@@ -1134,46 +1392,12 @@ function (_Component) {
   }, {
     key: "addFileInfo",
     value: function addFileInfo(fileObj) {
-      if (fileObj instanceof Blob || fileObj instanceof File) {
-        // set modification date
-        var now = new Date();
-
-        try {
-          fileObj.lastModified = now.getTime();
-          fileObj.lastModifiedDate = now;
-        } catch (e) {
-          if (e instanceof TypeError) {// ignore: setting getter-only property "lastModifiedDate"
-          } else {
-            // re-raise error
-            throw e;
-          }
-        } // guess extension name from mime type, e.g. audio/ogg, but
-        // any extension is valid here. Chrome also accepts extended
-        // mime types like video/webm;codecs=h264,vp9,opus
-
-
-        var fileExtension = '.' + fileObj.type.split('/')[1];
-
-        if (fileExtension.indexOf(';') > -1) {
-          fileExtension = fileExtension.split(';')[0];
-        } // use timestamp in filename, e.g. 1451180941326.ogg
-
-
-        try {
-          fileObj.name = now.getTime() + fileExtension;
-        } catch (e) {
-          if (e instanceof TypeError) {// ignore: setting getter-only property "name"
-          } else {
-            // re-raise error
-            throw e;
-          }
-        }
-      }
+      (0, _fileUtil.addFileInfo)(fileObj);
     }
     /**
      * Invoked when recording is stopped and resulting stream is available.
      *
-     * @param {blob} data - Reference to the recorded Blob.
+     * @param {blob} data - Reference to the recorded `Blob`.
      * @private
      */
 
@@ -1205,32 +1429,9 @@ function (_Component) {
   }, {
     key: "saveAs",
     value: function saveAs(name) {
-      var fileName = name[Object.keys(name)[0]];
+      var fileName = name[Object.keys(name)[0]]; // download recorded file
 
-      if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
-        return navigator.msSaveOrOpenBlob(this.recordedData, fileName);
-      } else if (typeof navigator.msSaveBlob !== 'undefined') {
-        return navigator.msSaveBlob(this.recordedData, fileName);
-      }
-
-      var hyperlink = document.createElement('a');
-      hyperlink.href = URL.createObjectURL(this.recordedData);
-      hyperlink.download = fileName;
-      hyperlink.style = 'display:none;opacity:0;color:transparent;';
-      (document.body || document.documentElement).appendChild(hyperlink);
-
-      if (typeof hyperlink.click === 'function') {
-        hyperlink.click();
-      } else {
-        hyperlink.target = '_blank';
-        hyperlink.dispatchEvent(new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true
-        }));
-      }
-
-      URL.revokeObjectURL(hyperlink.href);
+      (0, _fileUtil.downloadBlob)(fileName, this.recordedData);
     }
   }]);
 
@@ -1710,6 +1911,139 @@ exports.isFirefox = isFirefox;
 
 /***/ }),
 
+/***/ "./src/js/utils/file-util.js":
+/*!***********************************!*\
+  !*** ./src/js/utils/file-util.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addFileInfo = exports.blobToArrayBuffer = exports.downloadBlob = void 0;
+
+/**
+ * @file file-util.js
+ * @since 3.3.0
+ */
+
+/**
+ * Download `Blob` object in browser.
+ *
+ * @param {string} fileName - Name for the file to download.
+ * @param {blob} data - File data.
+ * @returns {void}
+ */
+var downloadBlob = function downloadBlob(fileName, data) {
+  if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+    return navigator.msSaveOrOpenBlob(data, fileName);
+  } else if (typeof navigator.msSaveBlob !== 'undefined') {
+    return navigator.msSaveBlob(data, fileName);
+  }
+
+  var hyperlink = document.createElement('a');
+  hyperlink.href = URL.createObjectURL(data);
+  hyperlink.download = fileName;
+  hyperlink.style = 'display:none;opacity:0;color:transparent;';
+  (document.body || document.documentElement).appendChild(hyperlink);
+
+  if (typeof hyperlink.click === 'function') {
+    hyperlink.click();
+  } else {
+    hyperlink.target = '_blank';
+    hyperlink.dispatchEvent(new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true
+    }));
+  }
+
+  URL.revokeObjectURL(hyperlink.href);
+};
+/**
+ * Read `Blob` as `ArrayBuffer`.
+ *
+ * @param {(Blob|File)} fileObj - Blob or File object to read.
+ * @returns {void}
+ */
+
+
+exports.downloadBlob = downloadBlob;
+
+var blobToArrayBuffer = function blobToArrayBuffer(fileObj) {
+  return new Promise(function (resolve, reject) {
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+      resolve(reader.result);
+    };
+
+    reader.onerror = function (ev) {
+      reject(ev.error);
+    };
+
+    reader.readAsArrayBuffer(fileObj);
+  });
+};
+/**
+ * Add filename and timestamp to recorded file object.
+ *
+ * @param {(Blob|File)} fileObj - Blob or File object to modify.
+ * @param {date} [now] - Optional date information, default is
+ *    current timestamp.
+ */
+
+
+exports.blobToArrayBuffer = blobToArrayBuffer;
+
+var addFileInfo = function addFileInfo(fileObj, now) {
+  if (fileObj instanceof Blob || fileObj instanceof File) {
+    // set modification date
+    if (now === undefined) {
+      now = new Date();
+    }
+
+    try {
+      fileObj.lastModified = now.getTime();
+      fileObj.lastModifiedDate = now;
+    } catch (e) {
+      if (e instanceof TypeError) {// ignore: setting getter-only property "lastModifiedDate"
+      } else {
+        // re-raise error
+        throw e;
+      }
+    } // guess extension name from mime type, e.g. audio/ogg, but
+    // any extension is valid here. Chrome also accepts extended
+    // mime types like video/webm;codecs=h264,vp9,opus
+
+
+    var fileExtension = '.' + fileObj.type.split('/')[1];
+
+    if (fileExtension.indexOf(';') > -1) {
+      fileExtension = fileExtension.split(';')[0];
+    } // use timestamp in filename, e.g. 1451180941326.ogg
+
+
+    try {
+      fileObj.name = now.getTime() + fileExtension;
+    } catch (e) {
+      if (e instanceof TypeError) {// ignore: setting getter-only property "name"
+      } else {
+        // re-raise error
+        throw e;
+      }
+    }
+  }
+};
+
+exports.addFileInfo = addFileInfo;
+
+/***/ }),
+
 /***/ "./src/js/utils/format-time.js":
 /*!*************************************!*\
   !*** ./src/js/utils/format-time.js ***!
@@ -1825,9 +2159,7 @@ var _browserShim = _interopRequireDefault(__webpack_require__(/*! ./utils/browse
 
 var _detectBrowser = __webpack_require__(/*! ./utils/detect-browser */ "./src/js/utils/detect-browser.js");
 
-var _recordRtc = _interopRequireDefault(__webpack_require__(/*! ./engine/record-rtc */ "./src/js/engine/record-rtc.js"));
-
-var _recordEngine = __webpack_require__(/*! ./engine/record-engine */ "./src/js/engine/record-engine.js");
+var _engineLoader = __webpack_require__(/*! ./engine/engine-loader */ "./src/js/engine/engine-loader.js");
 
 var _recordMode = __webpack_require__(/*! ./engine/record-mode */ "./src/js/engine/record-mode.js");
 
@@ -1984,7 +2316,9 @@ function (_Plugin) {
       this.videoFrameWidth = recordOptions.frameWidth;
       this.videoFrameHeight = recordOptions.frameHeight;
       this.videoRecorderType = recordOptions.videoRecorderType;
-      this.videoMimeType = recordOptions.videoMimeType; // audio settings
+      this.videoMimeType = recordOptions.videoMimeType; // convert settings
+
+      this.convertEngine = recordOptions.convertEngine; // audio settings
 
       this.audioEngine = recordOptions.audioEngine;
       this.audioRecorderType = recordOptions.audioRecorderType;
@@ -2272,49 +2606,17 @@ function (_Plugin) {
       this.off(this.player, 'ended', this.playbackTimeUpdate); // setup recording engine
 
       if (this.getRecordType() !== _recordMode.IMAGE_ONLY) {
-        // currently libvorbis.js, recorder.js, opus-recorder and lamejs
-        // are only supported in audio-only mode
-        if (this.getRecordType() !== _recordMode.AUDIO_ONLY && (this.audioEngine === _recordEngine.LIBVORBISJS || this.audioEngine === _recordEngine.RECORDERJS || this.audioEngine === _recordEngine.LAMEJS || this.audioEngine === _recordEngine.OPUSRECORDER)) {
+        // currently record plugins are only supported in audio-only mode
+        if (this.getRecordType() !== _recordMode.AUDIO_ONLY && (0, _engineLoader.isAudioPluginActive)(this.audioEngine)) {
           throw new Error('Currently ' + this.audioEngine + ' is only supported in audio-only mode.');
-        } // get recorder class
+        } // get audio plugin engine class
 
 
-        var EngineClass;
-
-        switch (this.audioEngine) {
-          case _recordEngine.RECORDRTC:
-            // RecordRTC.js (default)
-            EngineClass = _recordRtc.default;
-            break;
-
-          case _recordEngine.LIBVORBISJS:
-            // libvorbis.js
-            EngineClass = _video.default.LibVorbisEngine;
-            break;
-
-          case _recordEngine.RECORDERJS:
-            // recorder.js
-            EngineClass = _video.default.RecorderjsEngine;
-            break;
-
-          case _recordEngine.LAMEJS:
-            // lamejs
-            EngineClass = _video.default.LamejsEngine;
-            break;
-
-          case _recordEngine.OPUSRECORDER:
-            // opus-recorder
-            EngineClass = _video.default.OpusRecorderEngine;
-            break;
-
-          default:
-            // unknown engine
-            throw new Error('Unknown audioEngine: ' + this.audioEngine);
-        }
+        var AudioEngineClass = (0, _engineLoader.getAudioEngine)(this.audioEngine); // create recording engine
 
         try {
           // connect stream to recording engine
-          this.engine = new EngineClass(this.player, this.player.options_);
+          this.engine = new AudioEngineClass(this.player, this.player.options_);
         } catch (err) {
           throw new Error('Could not load ' + this.audioEngine + ' plugin');
         } // listen for events
@@ -2356,8 +2658,22 @@ function (_Plugin) {
         } // initialize recorder
 
 
-        this.engine.setup(this.stream, this.mediaType, this.debug); // show elements that should never be hidden in animation,
+        this.engine.setup(this.stream, this.mediaType, this.debug); // create converter engine
+
+        if (this.convertEngine !== '') {
+          var ConvertEngineClass = (0, _engineLoader.getConvertEngine)(this.convertEngine);
+
+          try {
+            this.converter = new ConvertEngineClass(this.player, this.player.options_);
+          } catch (err) {
+            throw new Error('Could not load ' + this.convertEngine + ' plugin');
+          } // initialize converter
+
+
+          this.converter.setup(this.mediaType, this.debug);
+        } // show elements that should never be hidden in animation,
         // audio and/or video modus
+
 
         var uiElements = [this.player.controlBar.currentTimeDisplay, this.player.controlBar.timeDivider, this.player.controlBar.durationDisplay];
         uiElements.forEach(function (element) {
@@ -2644,7 +2960,12 @@ function (_Plugin) {
       this.player.recordedData = this.engine.recordedData; // change the replay button back to a play button
 
       this.player.controlBar.playToggle.removeClass('vjs-ended');
-      this.player.controlBar.playToggle.show(); // notify listeners that data is available
+      this.player.controlBar.playToggle.show(); // notify converter
+
+      if (this.converter !== undefined) {
+        this.converter.convert(this.player.recordedData);
+      } // notify listeners that data is available
+
 
       this.player.trigger('finishRecord'); // skip loading when player is destroyed after finishRecord event
 
@@ -3374,7 +3695,7 @@ function (_Plugin) {
 }(Plugin); // version nr is injected during build
 
 
-Record.VERSION = "3.2.1"; // register plugin
+Record.VERSION = "3.3.0"; // register plugin
 
 _video.default.Record = Record;
 

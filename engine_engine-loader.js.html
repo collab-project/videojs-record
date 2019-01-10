@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: engine/record-engine.js | videojs-record</title>
+    <title>Source: engine/engine-loader.js | videojs-record</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -49,120 +49,100 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file record-engine.js
- * @since 2.0.0
+ * @file engine-loader.js
+ * @since 3.3.0
  */
 
-import {downloadBlob, addFileInfo} from '../utils/file-util';
-
-const Component = videojs.getComponent('Component');
-
-// supported recorder plugin engines
-// builtin
-const RECORDRTC = 'recordrtc';
-// audio
-const LIBVORBISJS = 'libvorbis.js';
-const RECORDERJS = 'recorder.js';
-const LAMEJS = 'lamejs';
-const OPUSRECORDER = 'opus-recorder';
-const VMSG = 'vmsg';
-
-// all audio plugins
-const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
-
-// all record plugins
-const RECORD_PLUGINS = AUDIO_PLUGINS;
-
+import RecordRTCEngine from './record-rtc';
+import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, AUDIO_PLUGINS} from './record-engine';
 
 /**
- * Base class for recorder backends.
- * @class
- * @augments videojs.Component
+ * Get audio plugin engine class.
+ *
+ * @private
+ * @param {String} audioEngine - Name of the audio engine.
+ * @returns {Object} Audio engine class.
  */
-class RecordEngine extends Component {
-    /**
-     * Creates an instance of this class.
-     *
-     * @param  {Player} player
-     *         The `Player` that this class should be attached to.
-     *
-     * @param  {Object} [options]
-     *         The key/value store of player options.
-     */
-    constructor(player, options) {
-        // auto mixin the evented mixin (required since video.js v6.6.0)
-        options.evented = true;
+const getAudioEngine = function(audioEngine) {
+    let AudioEngineClass;
+    switch (audioEngine) {
+        case RECORDRTC:
+            // RecordRTC.js (default)
+            AudioEngineClass = RecordRTCEngine;
+            break;
 
-        super(player, options);
+        case LIBVORBISJS:
+            // libvorbis.js
+            AudioEngineClass = videojs.LibVorbisEngine;
+            break;
+
+        case RECORDERJS:
+            // recorder.js
+            AudioEngineClass = videojs.RecorderjsEngine;
+            break;
+
+        case LAMEJS:
+            // lamejs
+            AudioEngineClass = videojs.LamejsEngine;
+            break;
+
+        case OPUSRECORDER:
+            // opus-recorder
+            AudioEngineClass = videojs.OpusRecorderEngine;
+            break;
+
+        case VMSG:
+            // vmsg
+            AudioEngineClass = videojs.VmsgEngine;
+            break;
+
+        default:
+            // unknown engine
+            throw new Error('Unknown audioEngine: ' + audioEngine);
     }
+    return AudioEngineClass;
+};
 
-    /**
-     * Remove any temporary data and references to streams.
-     * @private
-     */
-    dispose() {
-        // dispose previous recording
-        if (this.recordedData !== undefined) {
-            URL.revokeObjectURL(this.recordedData);
-        }
+/**
+ * Check whether any audio record plugins are enabled.
+ *
+ * @private
+ * @param {String} audioEngine - Name of the audio engine.
+ * @returns {Boolean} Whether any audio plugins are enabled or not.
+ */
+const isAudioPluginActive = function(audioEngine) {
+    return AUDIO_PLUGINS.indexOf(audioEngine) > -1;
+};
+
+/**
+ * Get converter plugin engine class.
+ *
+ * @private
+ * @param {String} convertEngine - Name of the convert engine.
+ * @returns {Object} Convert engine class.
+ */
+const getConvertEngine = function(convertEngine) {
+    let ConvertEngineClass;
+    switch (convertEngine) {
+        case '':
+            // disabled (default)
+            break;
+
+        case TSEBML:
+            // ts-ebml
+            ConvertEngineClass = videojs.TsEBMLEngine;
+            break;
+
+        default:
+            // unknown engine
+            throw new Error('Unknown convertEngine: ' + convertEngine);
     }
-
-    /**
-     * Add filename and timestamp to recorded file object.
-     *
-     * @param {(Blob|File)} fileObj - Blob or File object to modify.
-     */
-    addFileInfo(fileObj) {
-        addFileInfo(fileObj);
-    }
-
-    /**
-     * Invoked when recording is stopped and resulting stream is available.
-     *
-     * @param {blob} data - Reference to the recorded `Blob`.
-     * @private
-     */
-    onStopRecording(data) {
-        this.recordedData = data;
-
-        // add filename and timestamp to recorded file object
-        this.addFileInfo(this.recordedData);
-
-        // remove reference to recorded stream
-        this.dispose();
-
-        // notify listeners
-        this.trigger('recordComplete');
-    }
-
-    /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
-     *
-     * @param {Object} name - Object with names for the particular blob(s)
-     *     you want to save. File extensions are added automatically. For
-     *     example: {'video': 'name-of-video-file'}. Supported keys are
-     *     'audio', 'video' and 'gif'.
-     * @example
-     * // save video file as 'foo.webm'
-     * player.record().saveAs({'video': 'foo'});
-     * @returns {void}
-     */
-    saveAs(name) {
-        let fileName = name[Object.keys(name)[0]];
-
-        // download recorded file
-        downloadBlob(fileName, this.recordedData);
-    }
-}
-
-// expose component for external plugins
-videojs.RecordEngine = RecordEngine;
-Component.registerComponent('RecordEngine', RecordEngine);
+    return ConvertEngineClass;
+};
 
 export {
-    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
+    getAudioEngine, isAudioPluginActive, getConvertEngine
 };
 </code></pre>
         </article>

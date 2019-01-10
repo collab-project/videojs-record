@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: engine/record-engine.js | videojs-record</title>
+    <title>Source: engine/convert-engine.js | videojs-record</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -49,45 +49,32 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file record-engine.js
- * @since 2.0.0
+ * @file convert-engine.js
+ * @since 3.3.0
  */
 
-import {downloadBlob, addFileInfo} from '../utils/file-util';
+import {blobToArrayBuffer, addFileInfo} from '../utils/file-util';
 
 const Component = videojs.getComponent('Component');
 
-// supported recorder plugin engines
-// builtin
-const RECORDRTC = 'recordrtc';
-// audio
-const LIBVORBISJS = 'libvorbis.js';
-const RECORDERJS = 'recorder.js';
-const LAMEJS = 'lamejs';
-const OPUSRECORDER = 'opus-recorder';
-const VMSG = 'vmsg';
+// supported convert plugin engines
+const TSEBML = 'ts-ebml';
 
-// all audio plugins
-const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
-
-// all record plugins
-const RECORD_PLUGINS = AUDIO_PLUGINS;
-
+// all convert plugins
+const CONVERT_PLUGINS = [TSEBML];
 
 /**
- * Base class for recorder backends.
+ * Base class for converter backends.
  * @class
  * @augments videojs.Component
  */
-class RecordEngine extends Component {
+class ConvertEngine extends Component {
     /**
      * Creates an instance of this class.
      *
-     * @param  {Player} player
-     *         The `Player` that this class should be attached to.
-     *
-     * @param  {Object} [options]
-     *         The key/value store of player options.
+     * @param  {Player} player - The `Player` that this class should be
+     *     attached to.
+     * @param  {Object} [options] - The key/value store of player options.
      */
     constructor(player, options) {
         // auto mixin the evented mixin (required since video.js v6.6.0)
@@ -97,72 +84,46 @@ class RecordEngine extends Component {
     }
 
     /**
-     * Remove any temporary data and references to streams.
-     * @private
+     * Setup recording engine.
+     *
+     * @param {Object} mediaType - Object describing the media type of this
+     *     engine.
+     * @param {Boolean} debug - Indicating whether or not debug messages should
+     *     be printed in the console.
      */
-    dispose() {
-        // dispose previous recording
-        if (this.recordedData !== undefined) {
-            URL.revokeObjectURL(this.recordedData);
-        }
+    setup(mediaType, debug) {
+        this.mediaType = mediaType;
+        this.debug = debug;
     }
 
     /**
-     * Add filename and timestamp to recorded file object.
+     * Load `Blob` and return `Promise`.
      *
-     * @param {(Blob|File)} fileObj - Blob or File object to modify.
+     * @param {Blob} data - `Blob` to load.
+     * @returns {Promise} - Promise with `ArrayBuffer` data.
      */
-    addFileInfo(fileObj) {
-        addFileInfo(fileObj);
+    loadBlob(data) {
+        return blobToArrayBuffer(data);
     }
 
     /**
-     * Invoked when recording is stopped and resulting stream is available.
+     * Add filename and timestamp to converted file object.
      *
-     * @param {blob} data - Reference to the recorded `Blob`.
-     * @private
+     * @param {(Blob|File)} fileObj - `Blob` or `File` object to modify.
+     * @param {date} [now] - Optional date information, default is
+     *    current timestamp.
      */
-    onStopRecording(data) {
-        this.recordedData = data;
-
-        // add filename and timestamp to recorded file object
-        this.addFileInfo(this.recordedData);
-
-        // remove reference to recorded stream
-        this.dispose();
-
-        // notify listeners
-        this.trigger('recordComplete');
-    }
-
-    /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
-     *
-     * @param {Object} name - Object with names for the particular blob(s)
-     *     you want to save. File extensions are added automatically. For
-     *     example: {'video': 'name-of-video-file'}. Supported keys are
-     *     'audio', 'video' and 'gif'.
-     * @example
-     * // save video file as 'foo.webm'
-     * player.record().saveAs({'video': 'foo'});
-     * @returns {void}
-     */
-    saveAs(name) {
-        let fileName = name[Object.keys(name)[0]];
-
-        // download recorded file
-        downloadBlob(fileName, this.recordedData);
+    addFileInfo(fileObj, now) {
+        addFileInfo(fileObj, now);
     }
 }
 
 // expose component for external plugins
-videojs.RecordEngine = RecordEngine;
-Component.registerComponent('RecordEngine', RecordEngine);
+videojs.ConvertEngine = ConvertEngine;
+Component.registerComponent('ConvertEngine', ConvertEngine);
 
 export {
-    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
+    ConvertEngine, CONVERT_PLUGINS, TSEBML
 };
 </code></pre>
         </article>

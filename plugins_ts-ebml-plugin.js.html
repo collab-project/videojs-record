@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: engine/record-engine.js | videojs-record</title>
+    <title>Source: plugins/ts-ebml-plugin.js | videojs-record</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -49,121 +49,72 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file record-engine.js
- * @since 2.0.0
+ * @file ts-ebml-plugin.js
+ * @since 3.3.0
  */
 
-import {downloadBlob, addFileInfo} from '../utils/file-util';
+import {Decoder, Encoder, tools, Reader} from 'ts-ebml';
 
-const Component = videojs.getComponent('Component');
-
-// supported recorder plugin engines
-// builtin
-const RECORDRTC = 'recordrtc';
-// audio
-const LIBVORBISJS = 'libvorbis.js';
-const RECORDERJS = 'recorder.js';
-const LAMEJS = 'lamejs';
-const OPUSRECORDER = 'opus-recorder';
-const VMSG = 'vmsg';
-
-// all audio plugins
-const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
-
-// all record plugins
-const RECORD_PLUGINS = AUDIO_PLUGINS;
-
+const ConvertEngine = videojs.getComponent('ConvertEngine');
 
 /**
- * Base class for recorder backends.
+ * Converter engine using the ts-ebml library.
+ *
+ * Used to inject metadata, like duration, into webm files.
+ *
  * @class
- * @augments videojs.Component
+ * @augments videojs.ConvertEngine
  */
-class RecordEngine extends Component {
+class TsEBMLEngine extends ConvertEngine {
     /**
-     * Creates an instance of this class.
+     * Inject metadata.
      *
-     * @param  {Player} player
-     *         The `Player` that this class should be attached to.
-     *
-     * @param  {Object} [options]
-     *         The key/value store of player options.
+     * @param {Blob} data - Recorded data.
      */
-    constructor(player, options) {
-        // auto mixin the evented mixin (required since video.js v6.6.0)
-        options.evented = true;
+    convert(data) {
+        const decoder = new Decoder();
+        const reader = new Reader();
+        reader.logging = false;
+        reader.drop_default_duration = false;
 
-        super(player, options);
-    }
+        // save timestamp
+        const timestamp = new Date();
+        timestamp.setTime(data.lastModified);
 
-    /**
-     * Remove any temporary data and references to streams.
-     * @private
-     */
-    dispose() {
-        // dispose previous recording
-        if (this.recordedData !== undefined) {
-            URL.revokeObjectURL(this.recordedData);
-        }
-    }
+        // load and convert blob
+        this.loadBlob(data).then((buffer) => {
+            // decode
+            const elms = decoder.decode(buffer);
+            elms.forEach((elm) => {
+                reader.read(elm);
+            });
+            reader.stop();
 
-    /**
-     * Add filename and timestamp to recorded file object.
-     *
-     * @param {(Blob|File)} fileObj - Blob or File object to modify.
-     */
-    addFileInfo(fileObj) {
-        addFileInfo(fileObj);
-    }
+            // generate metadata
+            let refinedMetadataBuf = tools.makeMetadataSeekable(
+                reader.metadatas, reader.duration, reader.cues);
+            let body = buffer.slice(reader.metadataSize);
 
-    /**
-     * Invoked when recording is stopped and resulting stream is available.
-     *
-     * @param {blob} data - Reference to the recorded `Blob`.
-     * @private
-     */
-    onStopRecording(data) {
-        this.recordedData = data;
+            // create new blob
+            let result = new Blob([refinedMetadataBuf, body],
+                {type: data.type});
 
-        // add filename and timestamp to recorded file object
-        this.addFileInfo(this.recordedData);
+            // add existing file info
+            this.addFileInfo(result, timestamp);
 
-        // remove reference to recorded stream
-        this.dispose();
+            // store result
+            this.player().convertedData = result;
 
-        // notify listeners
-        this.trigger('recordComplete');
-    }
-
-    /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
-     *
-     * @param {Object} name - Object with names for the particular blob(s)
-     *     you want to save. File extensions are added automatically. For
-     *     example: {'video': 'name-of-video-file'}. Supported keys are
-     *     'audio', 'video' and 'gif'.
-     * @example
-     * // save video file as 'foo.webm'
-     * player.record().saveAs({'video': 'foo'});
-     * @returns {void}
-     */
-    saveAs(name) {
-        let fileName = name[Object.keys(name)[0]];
-
-        // download recorded file
-        downloadBlob(fileName, this.recordedData);
+            // notify listeners
+            this.player().trigger('finishConvert');
+        });
     }
 }
 
-// expose component for external plugins
-videojs.RecordEngine = RecordEngine;
-Component.registerComponent('RecordEngine', RecordEngine);
+// expose plugin
+videojs.TsEBMLEngine = TsEBMLEngine;
 
-export {
-    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
-};
+export default TsEBMLEngine;
 </code></pre>
         </article>
     </section>
