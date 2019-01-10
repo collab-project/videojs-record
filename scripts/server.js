@@ -6,18 +6,21 @@ import serveStatic from 'serve-static';
 // Configuration for the server.
 const PORT = 9999;
 const MAX_PORT = PORT + 100;
-const HOST = '127.0.0.1';
+const HOST = '127.0.0.1'
 
 const app = connect();
+
+// update mimetype
+serveStatic.mime.define({'application/wasm': ['wasm']});
 
 app.use(serveStatic(path.join(__dirname, '..')));
 
 portscanner.findAPortNotInUse(PORT, MAX_PORT, HOST, (error, port) => {
-  if (error) {
-    throw error;
-  }
+    if (error) {
+        throw error;
+    }
 
-  process.stdout.write(`Serving on http://${HOST}:${port}` + '\n\n');
+    process.stdout.write(`Serving on http://${HOST}:${port}` + '\n\n');
 
-  app.listen(port);
+    app.listen(port);
 });
