@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Video Input Example - Record Plugin for Video.js</title>
+
+  <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+  <link href="../dist/css/videojs.record.css" rel="stylesheet">
+
+  <script src="../node_modules/video.js/dist/video.min.js"></script>
+  <script src="../node_modules/recordrtc/RecordRTC.js"></script>
+  <script src="../node_modules/webrtc-adapter/out/adapter.js"></script>
+
+  <script src="../dist/videojs.record.js"></script>
+
+  <script src="browser-workarounds.js"></script>
+
+  <style>
+  body {
+      font-weight: 300;
+  }
+
+  /* change player background color */
+  #myVideo {
+      background-color: #6AE838;
+  }
+
+  select {
+      margin: 0 0 0.5em 0;
+  }
+
+  .inputSelector {
+      margin-top: 30px;
+      display: none;
+  }
+  </style>
+
+</head>
+<body>
+
+<div>
+  <video id="myVideo" class="video-js vjs-default-skin"></video>
+
+  <div class="inputSelector">
+    <label>Select video input: </label>
+    <select id="selector"></select>
+  </div>
+</div>
+
+<script>
+var devices, deviceId;
+var options = {
+    controls: true,
+    width: 320,
+    height: 240,
+    fluid: false,
+    plugins: {
+        record: {
+            audio: false,
+            video: true,
+            maxLength: 20,
+            debug: true
+        }
+    }
+};
+var inputSection = document.getElementsByClassName('inputSelector')[0];
+
+// apply some workarounds for certain browsers
+applyVideoWorkaround();
+
+var player = videojs('myVideo', options, function() {
+    // print version information at startup
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ' and recordrtc ' + RecordRTC.version;
+    videojs.log(msg);
+});
+
+player.on('deviceReady', function() {
+    player.record().enumerateDevices();
+});
+
+player.on('enumerateReady', function() {
+    // show input selector section
+    inputSection.style.display = 'block';
+
+    devices = player.record().devices;
+
+    // handle selection changes
+    var inputSelector = document.getElementById('selector');
+    inputSelector.addEventListener('change', changeVideoInput);
+
+    // populate select options
+    var deviceInfo, option, i;
+    for (i = 0; i !== devices.length; ++i) {
+        deviceInfo = devices[i];
+        option = document.createElement('option');
+        option.value = deviceInfo.deviceId;
+        if (deviceInfo.kind === 'videoinput') {
+            console.info('Found video input device: ', deviceInfo.label);
+            option.text = deviceInfo.label || 'input device ' +
+                (inputSelector.length + 1);
+            inputSelector.appendChild(option);
+        }
+    }
+
+    if (inputSelector.length == 0) {
+        // no output devices found, disable select
+        option = document.createElement('option');
+        option.text = 'No video input devices found';
+        option.value = undefined;
+        inputSelector.appendChild(option);
+        inputSelector.disabled = true;
+        console.warn(option.text);
+    } else {
+        console.log('Total video input devices found:', inputSelector.length);
+    }
+});
+
+function changeVideoInput(event) {
+    var label = event.target.options[event.target.selectedIndex].text;
+    deviceId = event.target.value;
+
+    console.log("changed video input to '" + label + "' (deviceId: " +
+      deviceId + ")");
+}
+
+// error handling
+player.on('enumerateError', function() {
+    console.log('enumerate error:', player.enumerateErrorCode);
+});
+
+player.on('deviceError', function() {
+    console.log('device error:', player.deviceErrorCode);
+});
+
+player.on('error', function(error) {
+    console.log('error:', error);
+});
+
+// user clicked the record button and started recording
+player.on('startRecord', function() {
+    console.log('started recording!');
+});
+
+// user completed recording and stream is available
+player.on('finishRecord', function() {
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording: ', player.recordedData);
+});
+</script>
+
+</body>
+</html>

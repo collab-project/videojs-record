@@ -1464,7 +1464,7 @@ class Record extends Plugin {
             return;
         }
 
-        // List cameras and microphones.
+        // list video and audio devices
         navigator.mediaDevices.enumerateDevices(this).then((devices) => {
             this.devices = [];
             devices.forEach((device) => {
