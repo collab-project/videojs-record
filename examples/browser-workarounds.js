@@ -2,10 +2,10 @@
 
 var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 var isEdge = /Edge/.test(navigator.userAgent);
+var isOpera = !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
 
 function applyAudioWorkaround() {
     if (isSafari || isEdge) {
-
         if (isSafari && window.MediaRecorder !== undefined) {
             // this version of Safari has MediaRecorder
             return;
@@ -23,7 +23,7 @@ function applyAudioWorkaround() {
 
 function applyVideoWorkaround() {
     // use correct video mimetype for opera
-    if (!!window.opera || navigator.userAgent.indexOf('OPR/') !== -1) {
+    if (isOpera) {
         options.plugins.record.videoMimeType = 'video/webm\;codecs=vp8'; // or vp9
     }
 }

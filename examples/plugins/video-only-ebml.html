@@ -14,6 +14,8 @@
   <script src="../../dist/videojs.record.js"></script>
   <script src="../../dist/plugins/videojs.record.ts-ebml.js"></script>
 
+  <script src="../browser-workarounds.js"></script>
+
   <style>
   /* change player background color */
   #myVideo {
@@ -41,6 +43,9 @@ var options = {
         }
     }
 };
+
+// apply some workarounds for opera browser
+applyVideoWorkaround();
 
 var player = videojs('myVideo', options, function() {
     // print version information at startup
