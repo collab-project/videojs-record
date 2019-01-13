@@ -70,7 +70,7 @@ Supported browsers
 | Opera | Stable / NEXT | Audio + Video + Image + Screen |
 | Android | Chrome / Firefox / Opera | Audio + Video + Image |
 | Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
-| Safari 11 | Stable / Preview/beta (OSX/iOS11) | Audio + Image but **no video or screen** |
+| Safari | Stable / Beta/ Preview (OSX/iOS) | Audio + Video + Image + Screen |
 
 Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
 more information.
