@@ -8,6 +8,9 @@ videojs-record changelog
 - Bump required version for recordrtc to 5.5.2 for Safari video recording
   support (#320)
 - Added example for changing video source (#223)
+- Added example demonstrating the [webm-wasm](https://github.com/GoogleChromeLabs/webm-wasm/)
+  library (compiled using WebAssembly) that creates webm files using libwebm in
+  the browser (#321)
 
 
 3.3.0 - 2019/01/10
