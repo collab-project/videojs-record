@@ -5,6 +5,7 @@
   <title>Audio Output Example - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+  <link href="../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
 
   <script src="../node_modules/video.js/dist/video.min.js"></script>
@@ -34,6 +35,7 @@
 
   .outputSelector {
       margin-top: 30px;
+      display: none;
   }
   </style>
 
@@ -49,13 +51,8 @@
   </div>
 </div>
 
-<hr>
-
-<div>
-    <p>This demo must be run in Chrome 49 or later, other browsers are not supported yet.</p>
-</div>
-
 <script>
+var player, devices, deviceId;
 var options = {
     controls: true,
     width: 600,
@@ -63,9 +60,9 @@ var options = {
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: "live",
-            waveColor: "black",
-            progressColor: "#2E732D",
+            src: 'live',
+            waveColor: 'black',
+            progressColor: '#2E732D',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
@@ -79,101 +76,121 @@ var options = {
         }
     }
 };
+var outputSection = document.getElementsByClassName('outputSelector')[0];
 
 // apply some workarounds for certain browsers
 applyAudioWorkaround();
 
-var player = videojs('myAudio', options, function() {
-    // print version information at startup
-    var msg = 'Using video.js ' + videojs.VERSION +
-        ' with videojs-record ' + videojs.getPluginVersion('record') +
-        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
-        RecordRTC.version;
-    videojs.log(msg);
+if (isSafari) {
+    // add start button for safari
+    addStartButton();
+} else {
+    // other browsers
+    createPlayer();
+}
 
-    // enumerate devices at startup
-    player.record().enumerateDevices();
-});
+function createPlayer(event) {
+    if (isSafari) {
+        if (event) {
+            // hide start button on safari
+            event.target.style.display = 'none';
+        }
+        updateContext(options);
+    }
 
-var devices;
-player.on('enumerateReady', function() {
-     devices = player.record().devices;
+    player = videojs('myAudio', options, function() {
+        // print version information at startup
+        var msg = 'Using video.js ' + videojs.VERSION +
+            ' with videojs-record ' + videojs.getPluginVersion('record') +
+            ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+            ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+            RecordRTC.version;
+        videojs.log(msg);
 
-    // handle selection changes
-    var outputSelector = document.getElementById('selector');
-    outputSelector.addEventListener('change', changeAudioOutput);
+        // enumerate devices at startup
+        player.record().enumerateDevices();
+    });
 
-    // populate select options
-    var deviceInfo, option, i;
-    for (i = 0; i !== devices.length; ++i) {
-        deviceInfo = devices[i];
-        option = document.createElement('option');
-        option.value = deviceInfo.deviceId;
-        if (deviceInfo.kind === 'audiooutput') {
-            console.info('Found audio output device: ', deviceInfo.label);
-            option.text = deviceInfo.label || 'speaker ' +
-                (outputSelector.length + 1);
+    player.on('enumerateReady', function() {
+        // show output selector section
+        outputSection.style.display = 'block';
+
+        devices = player.record().devices;
+
+        // handle selection changes
+        var outputSelector = document.getElementById('selector');
+        outputSelector.addEventListener('change', changeAudioOutput);
+
+        // populate select options
+        var deviceInfo, option, i;
+        for (i = 0; i !== devices.length; ++i) {
+            deviceInfo = devices[i];
+            option = document.createElement('option');
+            option.value = deviceInfo.deviceId;
+            if (deviceInfo.kind === 'audiooutput') {
+                console.info('Found audio output device: ', deviceInfo.label);
+                option.text = deviceInfo.label || 'speaker ' +
+                    (outputSelector.length + 1);
+                outputSelector.appendChild(option);
+            }
+        }
+
+        if (outputSelector.length == 0) {
+            // no output devices found, disable select
+            option = document.createElement('option');
+            option.text = 'No audio output devices found';
+            option.value = undefined;
             outputSelector.appendChild(option);
+            outputSelector.disabled = true;
+            console.warn(option.text);
+        } else {
+            console.log('Total output devices found:', outputSelector.length);
+        }
+    });
+
+    function changeAudioOutput(event) {
+        deviceId = event.target.value;
+
+        try {
+            // change audio output device
+            player.record().setAudioOutput(deviceId);
+        } catch (error) {
+            console.warn(error);
+
+            // jump back to first output device in the list as it's the default
+            event.target.selectedIndex = 0;
         }
     }
 
-    if (outputSelector.length == 0) {
-        // no output devices found, disable select
-        option = document.createElement('option');
-        option.text = 'No audio output devices found';
-        option.value = undefined;
-        outputSelector.appendChild(option);
-        outputSelector.disabled = true;
-        console.warn(option.text);
-    } else {
-        console.log('Total output devices found:', outputSelector.length);
-    }
-});
+    player.on('audioOutputReady', function() {
+        console.log('Changed audio output to deviceId:', deviceId);
+    });
 
-var deviceId;
-function changeAudioOutput(event) {
-    deviceId = event.target.value;
+    // error handling
+    player.on('enumerateError', function() {
+        console.log('enumerate error:', player.enumerateErrorCode);
+    });
 
-    try {
-        // change audio output device
-        player.record().setAudioOutput(deviceId);
-    } catch (error) {
-        console.warn(error);
+    player.on('deviceError', function() {
+        console.log('device error:', player.deviceErrorCode);
+    });
 
-        // jump back to first output device in the list as it's the default
-        event.target.selectedIndex = 0;
-    }
+    player.on('error', function(error) {
+        console.log('error:', error);
+    });
+
+    // user clicked the record button and started recording
+    player.on('startRecord', function() {
+        console.log('started recording!');
+    });
+
+    // user completed recording and stream is available
+    player.on('finishRecord', function() {
+        // the blob object contains the recorded data that
+        // can be downloaded by the user, stored on server etc.
+        console.log('finished recording: ', player.recordedData);
+    });
 }
-
-player.on('audioOutputReady', function() {
-    console.log('Changed audio output to deviceId:', deviceId);
-});
-
-// error handling
-player.on('enumerateError', function() {
-    console.log('enumerate error:', player.enumerateErrorCode);
-});
-
-player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
-});
-
-player.on('error', function(error) {
-    console.log('error:', error);
-});
-
-// user clicked the record button and started recording
-player.on('startRecord', function() {
-    console.log('started recording!');
-});
-
-// user completed recording and stream is available
-player.on('finishRecord', function() {
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
-});
 </script>
 
 </body>

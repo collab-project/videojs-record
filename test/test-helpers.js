@@ -13,6 +13,7 @@ import {TSEBML} from '../src/js/engine/convert-engine.js';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
+    TEST_WEBM: '/base/test/support/no_metadata.webm',
 
     DEFAULT_WAVESURFER_OPTIONS: {
         src: 'live',

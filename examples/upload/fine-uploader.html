@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>Fine Uploader Example - Record Plugin for Video.js</title>
         <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+        <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
         <link href="../../dist/css/videojs.record.css" rel="stylesheet">
 
         <style>
@@ -38,10 +39,16 @@
                     endpoint: '/vendor/fineuploader/php-traditional-server/endpoint.php'
                 },
                 validation: {
-                    allowedExtensions: ['mp3', 'ogg', 'oga', 'ogg']
+                    allowedExtensions: ['mp3', 'ogg', 'oga', 'ogg', 'wav']
+                },
+                callbacks: {
+                    onError: function(id, name, errorReason, xhrOrXdr) {
+                        console.error('upload error:', errorReason);
+                    }
                 }
             });
             // setup videojs-record
+            var player;
             var options = {
                 controls: true,
                 width: 600,
@@ -68,36 +75,54 @@
             // apply some workarounds for certain browsers
             applyAudioWorkaround();
 
-            var player = videojs('myAudio', options, function() {
-                // print version information at startup
-                var msg = 'Using video.js ' + videojs.VERSION +
-                    ' with videojs-record ' + videojs.getPluginVersion('record') +
-                    ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-                    ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
-                    RecordRTC.version;
-                videojs.log(msg);
-            });
+            if (isSafari) {
+                // add start button for safari
+                addStartButton();
+            } else {
+                // other browsers
+                createPlayer();
+            }
 
-            // player error handling
-            player.on('deviceError', function() {
-                console.warn('device error:', player.deviceErrorCode);
-            });
+            function createPlayer(event) {
+                if (isSafari) {
+                    if (event) {
+                        // hide start button on safari
+                        event.target.style.display = 'none';
+                    }
+                    updateContext(options);
+                }
 
-            player.on('error', function(error) {
-                console.log('error:', error);
-            });
+                player = videojs('myAudio', options, function() {
+                    // print version information at startup
+                    var msg = 'Using video.js ' + videojs.VERSION +
+                        ' with videojs-record ' + videojs.getPluginVersion('record') +
+                        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+                        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+                        RecordRTC.version;
+                    videojs.log(msg);
+                });
 
-            // data is available
-            player.on('finishRecord', function() {
-                // the blob object contains the audio data
-                var audioFile = player.recordedData;
+                // player error handling
+                player.on('deviceError', function() {
+                    console.warn('device error:', player.deviceErrorCode);
+                });
 
-                console.log('finished recording: ', audioFile);
+                player.on('error', function(error) {
+                    console.log('error:', error);
+                });
 
-                // upload data to server
-                var filesList = [audioFile];
-                uploader.addFiles(filesList);
-            });
+                // data is available
+                player.on('finishRecord', function() {
+                    // the blob object contains the audio data
+                    var audioFile = player.recordedData;
+
+                    console.log('finished recording: ', audioFile);
+
+                    // upload data to server
+                    var filesList = [audioFile];
+                    uploader.addFiles(filesList);
+                });
+            }
         </script>
 
     </body>

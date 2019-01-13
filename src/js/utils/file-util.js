@@ -47,13 +47,13 @@ const downloadBlob = function(fileName, data) {
 const blobToArrayBuffer = function(fileObj) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsArrayBuffer(fileObj);
         reader.onloadend = () => {
             resolve(reader.result);
         };
         reader.onerror = (ev) => {
             reject(ev.error);
         };
+        reader.readAsArrayBuffer(fileObj);
     });
 };
 
