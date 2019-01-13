@@ -7,6 +7,7 @@ videojs-record changelog
 - Support video recording in Safari (Technology Preview 73 or newer) (#181)
 - Bump required version for recordrtc to 5.5.2 for Safari video recording
   support (#320)
+- Added example for changing video source (#223)
 
 
 3.3.0 - 2019/01/10

@@ -90,7 +90,7 @@ When recording audio and/or video you also need:
 And when recording audio-only, the following dependencies are also required (
 to visualize the audio waveform):
 
-- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for realtime visualization of the microphone audio signal.
+- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
@@ -174,7 +174,7 @@ Examples
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
 - screen capture ([demo](https://collab-project.github.io/videojs-record/examples/screen-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html))
 
-To try out the examples locally, download the [zipfile](https://github.com/collab-project/videojs-record/archive/master.zip)
+To try out the examples locally, download the [zip-file](https://github.com/collab-project/videojs-record/archive/master.zip)
 and unpack it, or checkout the repository using Git:
 
 ```
@@ -245,7 +245,7 @@ The available options for this plugin are:
 | `maxFileSize` | float | `0` | Maximum file size of a recorded clip (in bytes). Recording will stop when the limit is reached. Default is 0 (no file size limit). Can only be used when `timeSlice` option is also enabled. |
 | `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
-| `autoMuteDevice` | boolean | `false` | Turns off the camera/mic devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
+| `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
@@ -256,9 +256,9 @@ The available options for this plugin are:
 | `audioBufferSize` | float | `4096` | The size of the audio buffer (in sample-frames per second). Legal values: 0, 256, 512, 1024, 2048, 4096, 8192 and 16384. |
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioBitRate` | float | `128` | The audio bitrate in kbps (only used in the lamejs plugin). |
-| `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller filesize. |
+| `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller file size. |
 | `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/build/encoderWorker.min.js`. Currently only used for opus-recorder and lamejs plugins. |
-| `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides realtime `AudioBuffer` instances from the input audio device. |
+| `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 | `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` or an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
@@ -313,9 +313,9 @@ player.on('startRecord', function() {
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
 | `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
-| `enumerateError` | An error occured after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
+| `enumerateError` | An error occurred after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
-| `audioBufferUpdate` | Get realtime `AudioBuffer` instances from microphone. Fires continuously during audio-only recording (until recording is stopped or paused) when the `audioBufferUpdate` option is enabled. |
+| `audioBufferUpdate` | Get real-time `AudioBuffer` instances from microphone. Fires continuously during audio-only recording (until recording is stopped or paused) when the `audioBufferUpdate` option is enabled. |
 
 
 Media constraints
@@ -422,7 +422,7 @@ page for more information.
 
 It's also possible to get data during recording with specific time-intervals. This could
 be useful in scenarios where you're recording a long clip and planning to upload
-recorded blobs to a server periodically, where the clip is stiched it together.
+recorded blobs to a server periodically, where the clip is stitched together.
 
 Enable the event with the `timeSlice` option:
 
@@ -531,7 +531,7 @@ etc.
 Check out the `enumerateDevices` example
 ([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
 
-After you aquired the device id (called `deviceId` in the example below) specify it in the player configuration
+After you acquired the device id (called `deviceId` in the example below) specify it in the player configuration
 using [constraints](#media-constraints):
 
 ```javascript
@@ -546,7 +546,7 @@ record: {
 }
 ```
 
-If your device has multiple audio output devices, use `setAudioOutput(deviceId)` to change
+If your system has multiple audio output devices, use `setAudioOutput(deviceId)` to change
 the active audio output device, and listen for the `audioOutputReady` event to be notified
 when the new output device is active.
 
@@ -563,11 +563,15 @@ See the full `change-audio-output` example
 ([demo](https://collab-project.github.io/videojs-record/examples/change-audio-output.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html)).
 
-If your device has multiple audio input devices and you want to display
+If your system has multiple audio input devices and you want to display
 these devices and allow the user to choose one, check out the the full `change-audio-input` example
 ([demo](https://collab-project.github.io/videojs-record/examples/change-audio-input.html) or
 [source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-input.html)).
 
+Similarly, if your system has multiple video input devices and you want the
+user to choose one, check out the `change-video-input` example
+([demo](https://collab-project.github.io/videojs-record/examples/change-video-input.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-video-input.html)).
 
 Responsive layout
 -----------------
@@ -624,10 +628,10 @@ language: "nl"
 ```
 
 Adding support for an additional language is done by adding a new file with
-a filename that consists of the countrycode and the `.json` extension, eg.
+a filename that consists of the country code and the `.json` extension, eg.
 `fr.json`. The [build script](#development) compiles the JSON into a usable
 language file, eg. `fr.js`. Check the Video.js wiki for a
-[list of supported countrycodes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
+[list of supported country codes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
