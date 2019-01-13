@@ -5,6 +5,7 @@
   <title>Websocket Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+  <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
@@ -62,67 +63,86 @@ var options = {
 // apply some workarounds for certain browsers
 applyAudioWorkaround();
 
-var player = videojs('myAudio', options, function() {
-    // print version information at startup
-    var msg = 'Using video.js ' + videojs.VERSION +
-        ' with videojs-record ' + videojs.getPluginVersion('record') +
-        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' + RecordRTC.version;
-    videojs.log(msg);
+if (isSafari) {
+    // add start button for safari
+    addStartButton();
+} else {
+    // other browsers
+    createPlayer();
+}
 
-    // connect to websocket server
-    var sockjs_url = 'http://0.0.0.0:9999/upload-socket';
-    sock = new SockJS(sockjs_url);
+function createPlayer(event) {
+    if (isSafari) {
+        if (event) {
+            // hide start button on safari
+            event.target.style.display = 'none';
+        }
+        updateContext(options);
+    }
 
-    // websocket event handlers
-    sock.onopen = function() {
-        console.log('connected to websocket: ' + sockjs_url);
-    };
-    sock.onmessage = function(e) {
-        console.log('message received: ', e.data);
-    };
-    sock.onclose = function() {
-        console.log('websocket connection closed.');
-    };
-});
+    player = videojs('myAudio', options, function() {
+        // print version information at startup
+        var msg = 'Using video.js ' + videojs.VERSION +
+            ' with videojs-record ' + videojs.getPluginVersion('record') +
+            ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+            ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' + RecordRTC.version;
+        videojs.log(msg);
 
-// error handling
-player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
-});
+        // connect to websocket server
+        var sockjs_url = 'http://0.0.0.0:9999/upload-socket';
+        console.log('connecting to ' + sockjs_url);
+        sock = new SockJS(sockjs_url);
 
-player.on('error', function(error) {
-    console.log('error:', error);
-});
-
-// user clicked the record button and started recording
-player.on('startRecord', function() {
-    startedRecord = true;
-    sock.send('start');
-    console.log('started recording!');
-
-    player.on('audioBufferUpdate', function() {
-        // upload recorded data
-        upload(player.recordedData);
+        // websocket event handlers
+        sock.onopen = function() {
+            console.log('connected to websocket: ' + sockjs_url);
+        };
+        sock.onmessage = function(e) {
+            console.log('message received: ', e.data);
+        };
+        sock.onclose = function() {
+            console.log('websocket connection closed.');
+        };
     });
-});
 
-// user completed recording and stream is available
-player.on('finishRecord', function() {
-    startedRecord = false;
+    // error handling
+    player.on('deviceError', function() {
+        console.log('device error:', player.deviceErrorCode);
+    });
 
-    // stop uploading
-    player.off('audioBufferUpdate');
+    player.on('error', function(error) {
+        console.log('error:', error);
+    });
 
-    sock.send('stop');
+    // user clicked the record button and started recording
+    player.on('startRecord', function() {
+        startedRecord = true;
+        sock.send('start');
+        console.log('started recording!');
 
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording:', player.recordedData);
-});
+        player.on('audioBufferUpdate', function() {
+            // upload recorded data
+            upload(player.recordedData);
+        });
+    });
 
-function upload(data) {
-    sock.send(data);
+    // user completed recording and stream is available
+    player.on('finishRecord', function() {
+        startedRecord = false;
+
+        // stop uploading
+        player.off('audioBufferUpdate');
+
+        sock.send('stop');
+
+        // the blob object contains the recorded data that
+        // can be downloaded by the user, stored on server etc.
+        console.log('finished recording:', player.recordedData);
+    });
+
+    function upload(data) {
+        sock.send(data);
+    }
 }
 </script>
 

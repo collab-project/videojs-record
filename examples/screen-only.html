@@ -44,6 +44,7 @@ var options = {
 };
 
 // apply some workarounds for certain browsers
+applyVideoWorkaround();
 applyScreenWorkaround();
 
 var player = videojs('myScreen', options, function() {

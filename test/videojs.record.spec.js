@@ -196,7 +196,8 @@ describe('Record', () => {
             'screen-perm')).toBeTrue();
 
         let browser = detectBrowser();
-        if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 70)) {
+        if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 72) ||
+            browser.browser === 'edge') {
             player.one('finishRecord', () => {
                 // received a blob file
                 expect(player.recordedData instanceof Blob).toBeTruthy();
@@ -221,7 +222,7 @@ describe('Record', () => {
                 player.record().getDevice();
             });
         } else {
-            player.one('error', done);
+            done();
         }
     });
 

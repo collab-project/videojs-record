@@ -5,6 +5,7 @@
   <title>Lamejs Audio-only Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+  <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
@@ -15,6 +16,8 @@
 
   <script src="../../dist/videojs.record.js"></script>
   <script src="../../dist/plugins/videojs.record.lamejs.js"></script>
+
+  <script src="../browser-workarounds.js"></script>
 
   <style>
   /* change player background color */
@@ -28,6 +31,7 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
+var player;
 var options = {
     controls: true,
     width: 600,
@@ -56,35 +60,53 @@ var options = {
     }
 };
 
-var player = videojs('myAudio', options, function() {
-    // print version information at startup
-    var msg = 'Using video.js ' + videojs.VERSION +
-        ' with videojs-record ' + videojs.getPluginVersion('record') +
-        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ' and wavesurfer.js ' + WaveSurfer.VERSION;
-    videojs.log(msg);
-});
+if (isSafari) {
+    // add start button for safari
+    addStartButton();
+} else {
+    // other browsers
+    createPlayer();
+}
 
-// error handling
-player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
-});
+function createPlayer(event) {
+    if (isSafari) {
+        if (event) {
+            // hide start button on safari
+            event.target.style.display = 'none';
+        }
+        updateContext(options);
+    }
 
-player.on('error', function(error) {
-    console.log('error:', error);
-});
+    player = videojs('myAudio', options, function() {
+        // print version information at startup
+        var msg = 'Using video.js ' + videojs.VERSION +
+            ' with videojs-record ' + videojs.getPluginVersion('record') +
+            ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+            ' and wavesurfer.js ' + WaveSurfer.VERSION;
+        videojs.log(msg);
+    });
 
-// user clicked the record button and started recording
-player.on('startRecord', function() {
-    console.log('started recording!');
-});
+    // error handling
+    player.on('deviceError', function() {
+        console.log('device error:', player.deviceErrorCode);
+    });
 
-// user completed recording and stream is available
-player.on('finishRecord', function() {
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
-});
+    player.on('error', function(error) {
+        console.log('error:', error);
+    });
+
+    // user clicked the record button and started recording
+    player.on('startRecord', function() {
+        console.log('started recording!');
+    });
+
+    // user completed recording and stream is available
+    player.on('finishRecord', function() {
+        // the blob object contains the recorded data that
+        // can be downloaded by the user, stored on server etc.
+        console.log('finished recording: ', player.recordedData);
+    });
+}
 </script>
 </body>
 </html>
