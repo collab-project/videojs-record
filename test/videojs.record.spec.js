@@ -222,7 +222,7 @@ describe('Record', () => {
                 player.record().getDevice();
             });
         } else {
-            player.one('error', done);
+            done();
         }
     });
 
