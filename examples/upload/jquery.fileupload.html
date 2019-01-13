@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>jQuery File Upload Example - Record Plugin for Video.js</title>
         <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+        <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
         <link href="../../dist/css/videojs.record.css" rel="stylesheet">
 
         <script src="../../node_modules/video.js/dist/video.min.js"></script>
@@ -40,48 +41,40 @@
         <input id="fileupload" type="file" name="files[]" multiple>
 
         <script>
-        $(function () {
-            // Initialize the jQuery File Upload widget
-            $('#fileupload').fileupload({
-                url: '//localhost/jQuery-File-Upload/server/php/',
-                done: function (e, data) {
-                    $.each(data.files, function (index, file) {
-                        var message = 'Upload complete: ' + file.name + ' (' +
-                            file.size + ' bytes)';
-                        $('<p/>').text(message).appendTo(document.body);
-                        console.log(message);
-                    });
+        var player;
+        var options = {
+            controls: true,
+            width: 600,
+            height: 300,
+            plugins: {
+                wavesurfer: {
+                    src: 'live',
+                    waveColor: '#f7fff7',
+                    progressColor: '#ffe66d',
+                    debug: true,
+                    cursorWidth: 1,
+                    msDisplayMax: 20,
+                    hideScrollbar: true
+                },
+                record: {
+                    audio: true,
+                    video: false,
+                    maxLength: 20,
+                    debug: true
                 }
-            });
+            }
+        };
 
-            // setup videojs-record
-            var options = {
-                controls: true,
-                width: 600,
-                height: 300,
-                plugins: {
-                    wavesurfer: {
-                        src: 'live',
-                        waveColor: '#f7fff7',
-                        progressColor: '#ffe66d',
-                        debug: true,
-                        cursorWidth: 1,
-                        msDisplayMax: 20,
-                        hideScrollbar: true
-                    },
-                    record: {
-                        audio: true,
-                        video: false,
-                        maxLength: 20,
-                        debug: true
-                    }
+        function createPlayer(event) {
+            if (isSafari) {
+                if (event) {
+                    // hide start button on safari
+                    event.target.style.display = 'none';
                 }
-            };
+                updateContext(options);
+            }
 
-            // apply some workarounds for certain browsers
-            applyAudioWorkaround();
-
-            var player = videojs('myAudio', options, function() {
+            player = videojs('myAudio', options, function() {
                 // print version information at startup
                 var msg = 'Using video.js ' + videojs.VERSION +
                     ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -111,6 +104,35 @@
                 var filesList = [audioFile];
                 $('#fileupload').fileupload('add', {files: filesList});
             });
+        }
+
+        $(function() {
+            // Initialize the jQuery File Upload widget
+            $('#fileupload').fileupload({
+                url: '//localhost/jQuery-File-Upload/server/php/',
+                done: function (e, data) {
+                    $.each(data.files, function (index, file) {
+                        var message = 'Upload complete: ' + file.name + ' (' +
+                            file.size + ' bytes)';
+                        $('<p/>').text(message).appendTo(document.body);
+                        console.log(message);
+                    });
+                },
+                fail: function (e, data) {
+                    console.error('upload error:', e.type, data);
+                }
+            });
+
+            // apply some workarounds for certain browsers
+            applyAudioWorkaround();
+
+            if (isSafari) {
+                // add start button for safari
+                addStartButton();
+            } else {
+                // other browsers
+                createPlayer();
+            }
         });
         </script>
 

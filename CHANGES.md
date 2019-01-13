@@ -1,7 +1,15 @@
 videojs-record changelog
 ========================
 
-3.3.0 - unreleased
+3.3.1 - unreleased
+------------------
+
+- Support video recording in Safari (Technology Preview 73 or newer) (#181)
+- Bump required version for recordrtc to 5.5.2 for Safari video recording
+  support (#320)
+
+
+3.3.0 - 2019/01/10
 ------------------
 
 - New ts-ebml convert plugin: creates seekable webm files by injecting

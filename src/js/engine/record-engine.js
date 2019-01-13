@@ -19,9 +19,10 @@ const VMSG = 'vmsg';
 // animation
 const GIFSHOT = 'gifshot';
 
-// all record plugins
+// all audio plugins
 const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
 const ANIMATION_PLUGINS = [GIFSHOT];
+// all record plugins
 const RECORD_PLUGINS = AUDIO_PLUGINS.concat(ANIMATION_PLUGINS);
 
 /**
@@ -111,6 +112,6 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine, AUDIO_PLUGINS, RECORD_PLUGINS,
+    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS, ANIMATION_PLUGINS,
     RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT
 };

@@ -70,4 +70,9 @@ const videoJsOptions = {
     }
 };
 
+// use correct video mimetype for opera
+if (!!window.opera || navigator.userAgent.indexOf('OPR/') !== -1) {
+    videoJsOptions.plugins.record.videoMimeType = 'video/webm\;codecs=vp8'; // or vp9
+}
+
 ReactDOM.render(<VideojsRecordPlayer { ...videoJsOptions } />, document.getElementById('root'));
