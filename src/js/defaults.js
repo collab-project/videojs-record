@@ -49,6 +49,9 @@ const pluginDefaultOptions = {
     videoRecorderType: 'auto',
     // URL for the video worker. Use an empty string '' to disable (default).
     videoWorkerURL: '',
+    // URL for the video worker WebAssembly file. Use an empty string '' to
+    // disable (default).
+    videoWebAssemblyURL: '',
     // Audio recording library to use. Legal values are 'recordrtc' (default),
     // 'libvorbis.js', 'opus-recorder', 'lamejs', 'vmsg' and 'recorder.js'.
     audioEngine: 'recordrtc',
@@ -86,6 +89,9 @@ const pluginDefaultOptions = {
     audioChannels: 2,
     // URL for the audio worker. Use an empty string '' to disable (default).
     audioWorkerURL: '',
+    // URL for the audio worker WebAssembly file. Use an empty string '' to
+    // disable (default).
+    audioWebAssemblyURL: '',
     // Enables the audioBufferUpdate event that provides realtime AudioBuffer
     // instances from the input audio device.
     audioBufferUpdate: false,

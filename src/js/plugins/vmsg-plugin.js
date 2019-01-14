@@ -29,7 +29,7 @@ class VmsgEngine extends RecordEngine {
         this.debug = debug;
 
         this.config = {
-            wasmURL: this.audioWorkerURL
+            wasmURL: this.audioWebAssemblyURL
             // XXX: support shimURL?
         };
 

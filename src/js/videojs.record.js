@@ -141,6 +141,7 @@ class Record extends Plugin {
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
         this.videoWorkerURL = recordOptions.videoWorkerURL;
+        this.videoWebAssemblyURL = recordOptions.videoWebAssemblyURL;
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
@@ -149,6 +150,7 @@ class Record extends Plugin {
         this.audioEngine = recordOptions.audioEngine;
         this.audioRecorderType = recordOptions.audioRecorderType;
         this.audioWorkerURL = recordOptions.audioWorkerURL;
+        this.audioWebAssemblyURL = recordOptions.audioWebAssemblyURL;
         this.audioBufferSize = recordOptions.audioBufferSize;
         this.audioSampleRate = recordOptions.audioSampleRate;
         this.audioBitRate = recordOptions.audioBitRate;
@@ -485,6 +487,7 @@ class Record extends Plugin {
             this.engine.bitRate = this.audioBitRate;
             this.engine.audioChannels = this.audioChannels;
             this.engine.audioWorkerURL = this.audioWorkerURL;
+            this.engine.audioWebAssemblyURL = this.audioWebAssemblyURL;
 
             // mime type
             this.engine.mimeType = {
@@ -498,6 +501,7 @@ class Record extends Plugin {
 
             // video/canvas settings
             this.engine.videoWorkerURL = this.videoWorkerURL;
+            this.engine.videoWebAssemblyURL = this.videoWebAssemblyURL;
             this.engine.video = {
                 width: this.videoFrameWidth,
                 height: this.videoFrameHeight

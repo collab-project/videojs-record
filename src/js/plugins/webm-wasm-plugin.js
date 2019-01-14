@@ -22,23 +22,11 @@ class WebmWasmEngine extends RecordRTCEngine {
      *     be printed in the console.
      */
     setup(stream, mediaType, debug) {
+        // set options
+        this.recorderType = RecordRTC.WebAssemblyRecorder;
+        this.workerPath = this.videoWorkerURL;
+
         super.setup(stream, mediaType, debug);
-
-        this.engine.recorderType = WebAssemblyRecorder;
-        // workerPath: '../libs/webm-worker.js',
-        // webAssemblyPath: '../libs/webm-wasm.wasm',
-    }
-
-    /**
-     * Start recording.
-     */
-    start() {
-    }
-
-    /**
-     * Stop recording.
-     */
-    stop() {
     }
 }
 
