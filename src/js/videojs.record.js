@@ -137,8 +137,10 @@ class Record extends Plugin {
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
         this.videoFrameHeight = recordOptions.frameHeight;
+        this.videoEngine = recordOptions.videoEngine;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
+        this.videoWorkerURL = recordOptions.videoWorkerURL;
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
@@ -450,16 +452,28 @@ class Record extends Plugin {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
             }
-            // get audio plugin engine class
-            let AudioEngineClass = getAudioEngine(this.audioEngine);
+
+            // load plugins, if any
+            let EngineClass, engineType;
+            switch (this.getRecordType()) {
+                case AUDIO_ONLY:
+                    // get audio plugin engine class (or default recordrtc engine)
+                    EngineClass = getAudioEngine(this.audioEngine);
+                    engineType = this.audioEngine;
+                    break;
+
+                default:
+                    // get video plugin engine class (or default recordrtc engine)
+                    EngineClass = getVideoEngine(this.videoEngine);
+                    engineType = this.videoEngine;
+            }
 
             // create recording engine
             try {
                 // connect stream to recording engine
-                this.engine = new AudioEngineClass(this.player, this.player.options_);
+                this.engine = new EngineClass(this.player, this.player.options_);
             } catch (err) {
-                throw new Error('Could not load ' + this.audioEngine +
-                    ' plugin');
+                throw new Error('Could not load ' + engineType + ' plugin');
             }
 
             // listen for events
@@ -483,6 +497,7 @@ class Record extends Plugin {
             }
 
             // video/canvas settings
+            this.engine.videoWorkerURL = this.videoWorkerURL;
             this.engine.video = {
                 width: this.videoFrameWidth,
                 height: this.videoFrameHeight
