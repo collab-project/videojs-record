@@ -5,7 +5,7 @@
 
 import RecordRTCEngine from './record-rtc';
 import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBWASM, AUDIO_PLUGINS} from './record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, AUDIO_PLUGINS} from './record-engine';
 
 /**
  * Get audio plugin engine class.
@@ -70,9 +70,9 @@ const getVideoEngine = function(videoEngine) {
             VideoEngineClass = RecordRTCEngine;
             break;
 
-        case WEBWASM:
+        case WEBMWASM:
             // webm-wasm
-            VideoEngineClass = videojs.VmsgEngine;
+            VideoEngineClass = videojs.WebmWasmEngine;
             break;
 
         default:

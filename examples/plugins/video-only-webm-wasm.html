@@ -15,6 +15,7 @@
   <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
 
   <script src="../../dist/videojs.record.js"></script>
+  <script src="../../dist/plugins/videojs.record.webm-wasm.js"></script>
 
   <script src="../browser-workarounds.js"></script>
 
@@ -43,7 +44,6 @@ var options = {
             debug: true,
             videoEngine: 'webm-wasm',
             videoWorkerURL: '../../node_modules/webm-wasm/dist/webm-worker.js'
-            // workerPath: '../../node_modules/webm-wasm/dist/webm-worker.js',
             // webAssemblyPath: '../../node_modules/webm-wasm/dist/webm-wasm.wasm'
         }
     }
@@ -76,13 +76,6 @@ player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
-});
-
-// converter completed and stream is available
-player.on('finishConvert', function() {
-    // the convertedData object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished converting: ', player.convertedData);
 });
 </script>
 </body>

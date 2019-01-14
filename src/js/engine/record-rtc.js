@@ -68,7 +68,7 @@ class RecordRTCEngine extends RecordEngine {
     dispose() {
         super.dispose();
 
-        if (typeof this.engine.destroy === 'function') {
+        if (this.engine && typeof this.engine.destroy === 'function') {
             this.engine.destroy();
         }
     }

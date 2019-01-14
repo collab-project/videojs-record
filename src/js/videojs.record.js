@@ -17,7 +17,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import {detectBrowser} from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive, getConvertEngine} from './engine/engine-loader';
+import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 import videojs from 'video.js';
