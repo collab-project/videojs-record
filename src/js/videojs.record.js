@@ -715,8 +715,9 @@ class Record extends Plugin {
         this.startTime = new Date().getTime();
 
         // start countdown
+        const COUNTDOWN_SPEED = 100; // ms
         this.countDown = this.player.setInterval(
-            this.onCountDown.bind(this), 100);
+            this.onCountDown.bind(this), COUNTDOWN_SPEED);
 
         // cleanup previous recording
         if (this.engine !== undefined) {
@@ -945,7 +946,8 @@ class Record extends Plugin {
         if (!this.paused) {
             let now = new Date().getTime();
             let duration = this.maxLength;
-            let currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
+            let currentTime = (now - (this.startTime +
+                this.pausedTime)) / 1000; // buddy ignore:line
 
             this.streamDuration = currentTime;
 

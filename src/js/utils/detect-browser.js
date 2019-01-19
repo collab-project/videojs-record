@@ -35,13 +35,13 @@ const detectBrowser = function() {
         // Version matches Chrome/WebRTC version.
         result.browser = 'chrome';
         result.version = extractVersion(navigator.userAgent,
-            /Chrom(e|ium)\/(\d+)\./, 2);
+            /Chrom(e|ium)\/(\d+)\./, 2); // buddy ignore:line
         result.minVersion = 38;
     } else if (navigator.mediaDevices &&
                navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) { // Edge.
         result.browser = 'edge';
         result.version = extractVersion(navigator.userAgent,
-            /Edge\/(\d+).(\d+)$/, 2);
+            /Edge\/(\d+).(\d+)$/, 2); // buddy ignore:line
         result.minVersion = 10547;
     } else if (window.RTCPeerConnection &&
         navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) { // Safari.
@@ -69,7 +69,7 @@ const detectBrowser = function() {
  */
 const extractVersion = function(uastring, expr, pos) {
     let match = uastring.match(expr);
-    return match && match.length >= pos && parseInt(match[pos], 10);
+    return match && match.length >= pos && parseInt(match[pos], 10); // buddy ignore:line
 };
 
 const isEdge = function() {
