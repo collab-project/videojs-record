@@ -630,8 +630,8 @@ language: "nl"
 Adding support for an additional language is done by adding a new file with
 a filename that consists of the country code and the `.json` extension, eg.
 `fr.json`. The [build script](#development) compiles the JSON into a usable
-language file, eg. `fr.js`. Check the Video.js wiki for a
-[list of supported country codes](https://github.com/videojs/video.js/blob/master/docs/guides/languages.md#language-codes).
+language file, eg. `fr.js`. Check the Video.js `lang` directory for a
+[list of supported languages](https://github.com/videojs/video.js/tree/master/lang).
 Pull requests to add more languages to this plugin are always welcome!
 You can also help out using the Transifex [online translation tool](https://www.transifex.com/collab/videojs-record/).
 
