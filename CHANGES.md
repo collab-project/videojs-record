@@ -10,6 +10,7 @@ videojs-record changelog
 - Bump required version for recordrtc to 5.5.3 for Safari video recording
   and webm-wasm support (#320)
 - Added example for changing video source (#223)
+- Bump required version for webrtc-adapter to 7.2.0 or newer
 
 
 3.3.0 - 2019/01/10
