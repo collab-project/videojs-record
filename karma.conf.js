@@ -83,6 +83,9 @@ module.exports = function(config) {
             'node_modules/opus-recorder/dist/recorder.min.js',
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
+            // webm-wasm
+            {pattern: 'node_modules/webm-wasm/dist/webm-worker.js', included: false, served: true},
+            {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
 
             // only available on CDN
             'http://cdn.webrtc-experiment.com/gif-recorder.js',

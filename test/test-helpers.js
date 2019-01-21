@@ -8,7 +8,7 @@ import {Player, mergeOptions} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG} from '../src/js/engine/record-engine.js';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
 import {TSEBML} from '../src/js/engine/convert-engine.js';
 
 const TestHelpers = {
@@ -136,7 +136,7 @@ const TestHelpers = {
 
             case VMSG:
                 recordPluginOptions.audioEngine = VMSG;
-                recordPluginOptions.audioWorkerURL = '/base/node_modules/vmsg/vmsg.wasm';
+                recordPluginOptions.audioWebAssemblyURL = '/base/node_modules/vmsg/vmsg.wasm';
                 break;
 
             default:
@@ -152,6 +152,35 @@ const TestHelpers = {
             height: 350,
             plugins: {
                 wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
+                record: recordPluginOptions
+            }
+        });
+    },
+
+    makeVideoOnlyPluginPlayer(engineName) {
+        let tag = TestHelpers.makeTag('video', 'videoOnly');
+        let recordPluginOptions = {
+            audio: false,
+            video: true,
+            maxLength: 5,
+            debug: true
+        };
+        // setup video engine
+        switch (engineName) {
+            case WEBMWASM:
+                recordPluginOptions.videoEngine = WEBMWASM;
+                recordPluginOptions.videoWorkerURL = '/base/node_modules/webm-wasm/dist/webm-worker.js';
+                recordPluginOptions.videoWebAssemblyURL = 'webm-wasm.wasm';
+                break;
+        }
+        return this.makePlayer(tag, {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 320,
+            height: 240,
+            plugins: {
                 record: recordPluginOptions
             }
         });
