@@ -69,7 +69,7 @@
     "opus"
   ],
   "dependencies": {
-    "recordrtc": ">=5.5.2",
+    "recordrtc": ">=5.5.3",
     "video.js": ">=6.2.7",
     "videojs-wavesurfer": ">=2.6.3",
     "webrtc-adapter": ">=6.2.1"
@@ -108,7 +108,7 @@
     "karma-firefox-launcher": "^1.1.0",
     "karma-host-environment": "^1.1.7",
     "karma-jasmine": "^2.0.1",
-    "karma-jasmine-matchers": "^3.8.4",
+    "karma-jasmine-matchers": "^4.0.1",
     "karma-safari-launcher": "^1.0.0",
     "karma-verbose-reporter": "0.0.6",
     "karma-webpack": "^4.0.0-beta.0",
