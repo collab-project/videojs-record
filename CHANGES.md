@@ -7,8 +7,8 @@ videojs-record changelog
 - New webm-wasm plugin: create webm files using libwebm (compiled with
   WebAssembly) in the browser (#321)
 - Support video recording in Safari (Technology Preview 73 or newer) (#181)
-- Bump required version for recordrtc to 5.5.2 for Safari video recording
-  support (#320)
+- Bump required version for recordrtc to 5.5.3 for Safari video recording
+  and webm-wasm support (#320)
 - Added example for changing video source (#223)
 
 
