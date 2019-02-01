@@ -10,6 +10,8 @@ Video.js plugin for recording audio/video/image files.
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 [![Coverage Status](https://coveralls.io/repos/github/collab-project/videojs-record/badge.svg?branch=master)](https://coveralls.io/github/collab-project/videojs-record?branch=master)
+![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
+![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
 
 Table of Contents
 -----------------
