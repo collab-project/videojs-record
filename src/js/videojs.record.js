@@ -78,6 +78,8 @@ class Record extends Plugin {
                 deviceIcon = 'screen-perm';
                 break;
         }
+
+        // add custom interface elements
         DeviceButton.prototype.buildCSSClass = () => {
             // use dynamic icon class
             return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
@@ -104,9 +106,21 @@ class Record extends Plugin {
         player.cameraButton = new CameraButton(player, options);
         player.cameraButton.hide();
 
-        // add record toggle
+        // add record toggle button
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
+
+        // exclude custom UI elements
+        if (this.player.options_.controlBar) {
+            let customUIElements = ['deviceButton', 'recordIndicator',
+                'cameraButton', 'recordToggle'];
+            customUIElements.forEach((element) => {
+                if (this.player.options_.controlBar[element] !== undefined) {
+                    this.player[element].layoutExclude = true;
+                    this.player[element].hide();
+                }
+            });
+        }
 
         // wait until player ui is ready
         this.player.one('ready', this.setupUI.bind(this));

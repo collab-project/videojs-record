@@ -69,7 +69,7 @@
     "opus"
   ],
   "dependencies": {
-    "recordrtc": ">=5.5.2",
+    "recordrtc": ">=5.5.3",
     "video.js": ">=6.2.7",
     "videojs-wavesurfer": ">=2.6.3",
     "webrtc-adapter": ">=6.2.1"
@@ -87,7 +87,7 @@
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",
     "date-fns": "^1.30.1",
-    "eslint": "^5.12.1",
+    "eslint": "^5.13.0",
     "file-loader": "^3.0.1",
     "fine-uploader": ">=5.16",
     "formidable": "^1.2.1",
@@ -122,13 +122,13 @@
     "rimraf": "^2.6.3",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "terser-webpack-plugin": "^1.2.1",
+    "terser-webpack-plugin": "^1.2.2",
     "ts-ebml": "^2.0.2",
     "tui-jsdoc-template": "^1.2.2",
     "url-loader": "^1.1.2",
     "videojs-languages": "^2.0.0",
     "vmsg": ">=0.3.5",
-    "webpack": "^4.29.0",
+    "webpack": "^4.29.1",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.2.1"
