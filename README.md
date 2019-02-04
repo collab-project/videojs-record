@@ -85,13 +85,14 @@ The plugin has the following mandatory dependencies:
 
 When recording audio and/or video you also need:
 
-- [RecordRTC.js](https://github.com/muaz-khan/RecordRTC) - Adds support for audio/video/GIF recording.
+- [RecordRTC](https://github.com/muaz-khan/RecordRTC) - Adds support for audio/video/GIF recording.
 
 And when recording audio-only, the following dependencies are also required (
 to visualize the audio waveform):
 
-- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
-- [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
+- [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms video.js into an audio-player using wavesurfer.js.
+- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a
+  [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
@@ -100,6 +101,10 @@ Optional dependencies when using [other audio libraries](#other-audio-libraries)
 - [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [lamejs](https://github.com/collab-project/videojs-record/wiki/Plugins#lamejs) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
 - [recorder.js](https://github.com/collab-project/videojs-record/wiki/Plugins#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
+
+Optional dependencies when using [other video libraries](#other-video-libraries):
+
+- [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - TODO
 
 Usage
 -----
