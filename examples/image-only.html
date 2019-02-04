@@ -59,6 +59,10 @@ player.on('deviceError', function() {
     console.warn('device error:', player.deviceErrorCode);
 });
 
+player.on('error', function(element, error) {
+    console.error(error);
+});
+
 // snapshot is available
 player.on('finishRecord', function() {
     // the blob object contains the image data that
