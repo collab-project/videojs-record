@@ -60,8 +60,8 @@ player.on('deviceError', function() {
     console.warn('device error:', player.deviceErrorCode);
 });
 
-player.on('error', function(error) {
-    console.log('error:', error);
+player.on('error', function(element, error) {
+    console.error(error);
 });
 
 // snapshot is available

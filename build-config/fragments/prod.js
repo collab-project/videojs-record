@@ -9,11 +9,12 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     mode: 'production',
-    devtool: 'source-map',
     optimization: {
         minimizer: [
             new TerserPlugin({
-                sourceMap: true
+                sourceMap: false,
+                parallel: true,
+                cache: './.build_cache/terser'
             }),
             new OptimizeCSSAssetsPlugin({})
         ]

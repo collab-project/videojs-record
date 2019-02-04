@@ -53,6 +53,18 @@ class RecordIndicator extends Component {
         this.off(this.player_, 'startRecord', this.show);
         this.off(this.player_, 'stopRecord', this.hide);
     }
+
+    /**
+     * Show the `RecordIndicator` element if it is hidden by removing the
+     * 'vjs-hidden' class name from it.
+     */
+    show() {
+        if (this.layoutExclude && this.layoutExclude === true) {
+            // ignore
+            return;
+        }
+        super.show();
+    }
 }
 
 Component.registerComponent('RecordIndicator', RecordIndicator);

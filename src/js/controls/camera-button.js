@@ -44,6 +44,18 @@ class CameraButton extends Button {
     }
 
     /**
+     * Show the `CameraButton` element if it is hidden by removing the
+     * 'vjs-hidden' class name from it.
+     */
+    show() {
+        if (this.layoutExclude && this.layoutExclude === true) {
+            // ignore
+            return;
+        }
+        super.show();
+    }
+
+    /**
      * This gets called when the button is clicked.
      *
      * @param {EventTarget~Event} event
