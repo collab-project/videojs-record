@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.4.0 - unreleased
+3.4.0 - 2019/02/04
 ------------------
 
 - Support video recording in Safari (Technology Preview 73 or newer) (#181)
