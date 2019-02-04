@@ -43,10 +43,10 @@
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "ts-ebml": "^2.0.2",
     "video.js": "^7.4.1",
-    "videojs-record": "^3.3.0",
-    "videojs-wavesurfer": "^2.6.3",
+    "videojs-record": "^3.4.0",
+    "videojs-wavesurfer": "^2.6.4",
     "vmsg": "^0.3.5",
-    "webrtc-adapter": "^7.1.1"
+    "webrtc-adapter": "^7.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

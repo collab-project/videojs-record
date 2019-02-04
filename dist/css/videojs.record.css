@@ -1,5 +1,5 @@
 /*!
-Default styles for videojs-record 3.3.0
+Default styles for videojs-record 3.4.0
 */
 @font-face {
   font-family: videojs-record;
@@ -246,5 +246,3 @@ Default styles for videojs-record 3.3.0
     opacity: 0;
     transform: scale(3.5); } }
 
-
-/*# sourceMappingURL=videojs.record.css.map*/

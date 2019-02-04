@@ -1,6 +1,6 @@
 /*!
  * recorderjs plugin for videojs-record
- * @version 3.3.0
+ * @version 3.4.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
@@ -111,118 +111,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * @file recorderjs-plugin.js
- * @since 1.1.0
- */
-var RecordEngine = videojs.getComponent('RecordEngine');
-/**
- * Audio-only engine for the recorder.js library.
- *
- * @class
- * @augments RecordEngine
- */
-
-var RecorderjsEngine =
-/*#__PURE__*/
-function (_RecordEngine) {
-  _inherits(RecorderjsEngine, _RecordEngine);
-
-  function RecorderjsEngine() {
-    _classCallCheck(this, RecorderjsEngine);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(RecorderjsEngine).apply(this, arguments));
-  }
-
-  _createClass(RecorderjsEngine, [{
-    key: "setup",
-
-    /**
-     * Setup recording engine.
-     *
-     * @param {LocalMediaStream} stream - Media stream to record.
-     * @param {Object} mediaType - Object describing the media type of this
-     *     engine.
-     * @param {Boolean} debug - Indicating whether or not debug messages should
-     *     be printed in the console.
-     */
-    value: function setup(stream, mediaType, debug) {
-      this.inputStream = stream;
-      this.mediaType = mediaType;
-      this.debug = debug;
-      var AudioContext = window.AudioContext || window.webkitAudioContext;
-      this.audioContext = new AudioContext();
-      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream); // setup recorder.js
-
-      this.engine = new Recorder(this.audioSourceNode, {
-        bufferLen: this.bufferSize,
-        numChannels: this.audioChannels
-      });
-    }
-    /**
-     * Start recording.
-     */
-
-  }, {
-    key: "start",
-    value: function start() {
-      this.engine.record();
-    }
-    /**
-     * Stop recording.
-     */
-
-  }, {
-    key: "stop",
-    value: function stop() {
-      this.engine.stop();
-
-      if (this.engine.exportWAV !== undefined) {
-        this.engine.exportWAV(this.onStopRecording.bind(this));
-      }
-
-      if (this.engine.clear !== undefined) {
-        this.engine.clear();
-      }
-    }
-  }]);
-
-  return RecorderjsEngine;
-}(RecordEngine); // expose plugin
-
-
-videojs.RecorderjsEngine = RecorderjsEngine;
-var _default = RecorderjsEngine;
-exports.default = _default;
-module.exports = exports.default;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n/**\n * @file recorderjs-plugin.js\n * @since 1.1.0\n */\nvar RecordEngine = videojs.getComponent('RecordEngine');\n/**\n * Audio-only engine for the recorder.js library.\n *\n * @class\n * @augments RecordEngine\n */\n\nvar RecorderjsEngine =\n/*#__PURE__*/\nfunction (_RecordEngine) {\n  _inherits(RecorderjsEngine, _RecordEngine);\n\n  function RecorderjsEngine() {\n    _classCallCheck(this, RecorderjsEngine);\n\n    return _possibleConstructorReturn(this, _getPrototypeOf(RecorderjsEngine).apply(this, arguments));\n  }\n\n  _createClass(RecorderjsEngine, [{\n    key: \"setup\",\n\n    /**\n     * Setup recording engine.\n     *\n     * @param {LocalMediaStream} stream - Media stream to record.\n     * @param {Object} mediaType - Object describing the media type of this\n     *     engine.\n     * @param {Boolean} debug - Indicating whether or not debug messages should\n     *     be printed in the console.\n     */\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream); // setup recorder.js\n\n      this.engine = new Recorder(this.audioSourceNode, {\n        bufferLen: this.bufferSize,\n        numChannels: this.audioChannels\n      });\n    }\n    /**\n     * Start recording.\n     */\n\n  }, {\n    key: \"start\",\n    value: function start() {\n      this.engine.record();\n    }\n    /**\n     * Stop recording.\n     */\n\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n\n      if (this.engine.exportWAV !== undefined) {\n        this.engine.exportWAV(this.onStopRecording.bind(this));\n      }\n\n      if (this.engine.clear !== undefined) {\n        this.engine.clear();\n      }\n    }\n  }]);\n\n  return RecorderjsEngine;\n}(RecordEngine); // expose plugin\n\n\nvideojs.RecorderjsEngine = RecorderjsEngine;\nvar _default = RecorderjsEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/recorderjs-plugin.js?");
 
 /***/ })
 
 /******/ });
 });
-//# sourceMappingURL=videojs.record.recorderjs.js.map

@@ -1,6 +1,6 @@
 /*!
  * opus-recorder plugin for videojs-record
- * @version 3.3.0
+ * @version 3.4.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
@@ -111,156 +111,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * @file opus-recorder-plugin.js
- * @since 1.1.0
- */
-var RecordEngine = videojs.getComponent('RecordEngine');
-/**
- * Audio-only engine for the opus-recorder library.
- *
- * Audio is encoded using libopus.
- *
- * @class
- * @augments RecordEngine
- */
-
-var OpusRecorderEngine =
-/*#__PURE__*/
-function (_RecordEngine) {
-  _inherits(OpusRecorderEngine, _RecordEngine);
-
-  function OpusRecorderEngine() {
-    _classCallCheck(this, OpusRecorderEngine);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(OpusRecorderEngine).apply(this, arguments));
-  }
-
-  _createClass(OpusRecorderEngine, [{
-    key: "setup",
-
-    /**
-     * Setup recording engine.
-     *
-     * @param {LocalMediaStream} stream - Media stream to record.
-     * @param {Object} mediaType - Object describing the media type of this
-     *     engine.
-     * @param {Boolean} debug - Indicating whether or not debug messages should
-     *     be printed in the console.
-     */
-    value: function setup(stream, mediaType, debug) {
-      this.inputStream = stream;
-      this.mediaType = mediaType;
-      this.debug = debug; // also supports 'audio/wav'; but make sure to use waveEncoder worker
-      // in that case
-
-      this.audioType = 'audio/ogg';
-      this.engine = new Recorder({
-        leaveStreamOpen: true,
-        numberOfChannels: this.audioChannels,
-        bufferLength: this.bufferSize,
-        encoderSampleRate: this.sampleRate,
-        encoderPath: this.audioWorkerURL
-      });
-      this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
-      var AudioContext = window.AudioContext || window.webkitAudioContext;
-      this.audioContext = new AudioContext();
-      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);
-    }
-    /**
-     * Start recording.
-     */
-
-  }, {
-    key: "start",
-    value: function start() {
-      var _this = this;
-
-      this.engine.start(this.audioSourceNode).then(function () {// recording started ok
-      }).catch(function (err) {
-        // can't start playback
-        _this.player().trigger('error', err);
-      });
-    }
-    /**
-     * Stop recording.
-     */
-
-  }, {
-    key: "stop",
-    value: function stop() {
-      this.engine.stop();
-    }
-    /**
-     * Pause recording.
-     */
-
-  }, {
-    key: "pause",
-    value: function pause() {
-      this.engine.pause();
-    }
-    /**
-     * Resume recording.
-     */
-
-  }, {
-    key: "resume",
-    value: function resume() {
-      this.engine.resume();
-    }
-    /**
-     * @private
-     * @param {Object} data - Audio data returned by opus-recorder.
-     */
-
-  }, {
-    key: "onRecordingAvailable",
-    value: function onRecordingAvailable(data) {
-      // Opus format stored in an Ogg container
-      var blob = new Blob([data], {
-        type: this.audioType
-      });
-      this.onStopRecording(blob);
-    }
-  }]);
-
-  return OpusRecorderEngine;
-}(RecordEngine); // expose plugin
-
-
-videojs.OpusRecorderEngine = OpusRecorderEngine;
-var _default = OpusRecorderEngine;
-exports.default = _default;
-module.exports = exports.default;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n/**\n * @file opus-recorder-plugin.js\n * @since 1.1.0\n */\nvar RecordEngine = videojs.getComponent('RecordEngine');\n/**\n * Audio-only engine for the opus-recorder library.\n *\n * Audio is encoded using libopus.\n *\n * @class\n * @augments RecordEngine\n */\n\nvar OpusRecorderEngine =\n/*#__PURE__*/\nfunction (_RecordEngine) {\n  _inherits(OpusRecorderEngine, _RecordEngine);\n\n  function OpusRecorderEngine() {\n    _classCallCheck(this, OpusRecorderEngine);\n\n    return _possibleConstructorReturn(this, _getPrototypeOf(OpusRecorderEngine).apply(this, arguments));\n  }\n\n  _createClass(OpusRecorderEngine, [{\n    key: \"setup\",\n\n    /**\n     * Setup recording engine.\n     *\n     * @param {LocalMediaStream} stream - Media stream to record.\n     * @param {Object} mediaType - Object describing the media type of this\n     *     engine.\n     * @param {Boolean} debug - Indicating whether or not debug messages should\n     *     be printed in the console.\n     */\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug; // also supports 'audio/wav'; but make sure to use waveEncoder worker\n      // in that case\n\n      this.audioType = 'audio/ogg';\n      this.engine = new Recorder({\n        leaveStreamOpen: true,\n        numberOfChannels: this.audioChannels,\n        bufferLength: this.bufferSize,\n        encoderSampleRate: this.sampleRate,\n        encoderPath: this.audioWorkerURL\n      });\n      this.engine.ondataavailable = this.onRecordingAvailable.bind(this);\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n    }\n    /**\n     * Start recording.\n     */\n\n  }, {\n    key: \"start\",\n    value: function start() {\n      var _this = this;\n\n      this.engine.start(this.audioSourceNode).then(function () {// recording started ok\n      }).catch(function (err) {\n        // can't start playback\n        _this.player().trigger('error', err);\n      });\n    }\n    /**\n     * Stop recording.\n     */\n\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n    }\n    /**\n     * Pause recording.\n     */\n\n  }, {\n    key: \"pause\",\n    value: function pause() {\n      this.engine.pause();\n    }\n    /**\n     * Resume recording.\n     */\n\n  }, {\n    key: \"resume\",\n    value: function resume() {\n      this.engine.resume();\n    }\n    /**\n     * @private\n     * @param {Object} data - Audio data returned by opus-recorder.\n     */\n\n  }, {\n    key: \"onRecordingAvailable\",\n    value: function onRecordingAvailable(data) {\n      // Opus format stored in an Ogg container\n      var blob = new Blob([data], {\n        type: this.audioType\n      });\n      this.onStopRecording(blob);\n    }\n  }]);\n\n  return OpusRecorderEngine;\n}(RecordEngine); // expose plugin\n\n\nvideojs.OpusRecorderEngine = OpusRecorderEngine;\nvar _default = OpusRecorderEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/opus-recorder-plugin.js?");
 
 /***/ })
 
 /******/ });
 });
-//# sourceMappingURL=videojs.record.opus-recorder.js.map
