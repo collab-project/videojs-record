@@ -92,6 +92,10 @@ function createPlayer(event) {
         console.log('device error:', player.deviceErrorCode);
     });
 
+    player.on('error', function(element, error) {
+        console.error(error);
+    });
+
     // user clicked the record button and started recording
     player.on('startRecord', function() {
         console.log('started recording!');
