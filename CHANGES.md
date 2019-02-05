@@ -9,7 +9,7 @@ videojs-record changelog
 - Bump required version for webrtc-adapter to 7.2.0 or newer
 
 
-3.4.0 - unreleased
+3.4.0 - 2019/02/04
 ------------------
 
 - Support video recording in Safari (Technology Preview 73 or newer) (#181)
