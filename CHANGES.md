@@ -1,6 +1,13 @@
 videojs-record changelog
 ========================
 
+3.4.1 - unreleased
+------------------
+
+- Fix ES export syntax for `Record` (#330 by @extronics)
+- Bump required version for videojs-wavesurfer to 2.7.0 for `playToggle` fixes
+
+
 3.4.0 - 2019/02/04
 ------------------
 
