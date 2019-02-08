@@ -1565,6 +1565,4 @@ if (videojs.getPlugin('record') === undefined) {
 }
 
 // export plugin
-module.exports = {
-    Record
-};
+export {Record};
