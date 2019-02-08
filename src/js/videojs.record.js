@@ -237,8 +237,10 @@ class Record extends Plugin {
                 this.player.removeTechControlsListeners_();
 
                 if (this.player.options_.controls) {
-                    // progress control isn't used by this plugin
-                    this.player.controlBar.progressControl.hide();
+                    // progress control isn't used by this plugin, hide if present
+                    if (this.player.controlBar.progressControl !== undefined) {
+                        this.player.controlBar.progressControl.hide();
+                    }
 
                     // prevent controlbar fadeout
                     this.player.on('userinactive', (event) => {
@@ -263,8 +265,10 @@ class Record extends Plugin {
         // display max record time
         this.setDuration(this.maxLength);
 
-        // hide play control
-        this.player.controlBar.playToggle.hide();
+        // hide play control (if present)
+        if (this.player.controlBar.playToggle !== undefined) {
+            this.player.controlBar.playToggle.hide();
+        }
     }
 
     /**
@@ -451,7 +455,9 @@ class Record extends Plugin {
         this.setCurrentTime(0);
 
         // hide play/pause control (e.g. when stopDevice was used)
-        this.player.controlBar.playToggle.hide();
+        if (this.player.controlBar.playToggle !== undefined) {
+            this.player.controlBar.playToggle.hide();
+        }
 
         // reset playback listeners
         this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
@@ -537,12 +543,9 @@ class Record extends Plugin {
 
             // show elements that should never be hidden in animation,
             // audio and/or video modus
-            let uiElements = [
-                this.player.controlBar.currentTimeDisplay,
-                this.player.controlBar.timeDivider,
-                this.player.controlBar.durationDisplay
-            ];
+            let uiElements = ['currentTimeDisplay', 'timeDivider', 'durationDisplay'];
             uiElements.forEach((element) => {
+                element = this.player.controlBar[element];
                 if (element !== undefined) {
                     element.el().style.display = 'block';
                     element.show();
@@ -620,7 +623,9 @@ class Record extends Plugin {
             this._recording = true;
 
             // hide play/pause control
-            this.player.controlBar.playToggle.hide();
+            if (this.player.controlBar.playToggle !== undefined) {
+                this.player.controlBar.playToggle.hide();
+            }
 
             // reset playback listeners
             this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
@@ -828,8 +833,10 @@ class Record extends Plugin {
         this.player.recordedData = this.engine.recordedData;
 
         // change the replay button back to a play button
-        this.player.controlBar.playToggle.removeClass('vjs-ended');
-        this.player.controlBar.playToggle.show();
+        if (this.player.controlBar.playToggle !== undefined) {
+            this.player.controlBar.playToggle.removeClass('vjs-ended');
+            this.player.controlBar.playToggle.show();
+        }
 
         // notify converter
         if (this.converter !== undefined) {
@@ -1196,7 +1203,9 @@ class Record extends Plugin {
         }
 
         // hide play control
-        this.player.controlBar.playToggle.hide();
+        if (this.player.controlBar.playToggle !== undefined) {
+            this.player.controlBar.playToggle.hide();
+        }
 
         // show device selection button
         this.player.deviceButton.show();
