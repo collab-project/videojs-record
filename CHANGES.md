@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.4.1 - unreleased
+3.4.1 - 2019/02/09
 ------------------
 
 - Fix ES export syntax for `Record` (#330 by @extronics)
