@@ -65,6 +65,11 @@ class RecordEngine extends Component {
     }
 
     /**
+     * Destroy engine.
+     */
+    destroy() {}
+
+    /**
      * Add filename and timestamp to recorded file object.
      *
      * @param {(Blob|File)} fileObj - Blob or File object to modify.

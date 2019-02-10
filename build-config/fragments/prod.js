@@ -14,14 +14,19 @@ module.exports = {
             new TerserPlugin({
                 sourceMap: false,
                 parallel: true,
-                cache: './.build_cache/terser'
+                cache: './.build_cache/terser',
+                terserOptions: {
+                    output: {
+                        comments: false
+                    }
+                }
             }),
             new OptimizeCSSAssetsPlugin({})
         ]
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "css/[name].min.css"
+            filename: 'css/[name].min.css'
         })
     ]
 };

@@ -85,6 +85,15 @@ class VmsgEngine extends RecordEngine {
     }
 
     /**
+     * Destroy engine.
+     */
+    destroy() {
+        if (this.engine && typeof this.engine.close === 'function') {
+            this.engine.close();
+        }
+    }
+
+    /**
      * Continuous encoding of audio data.
      * @private
      * @param {object} event - Audio buffer.

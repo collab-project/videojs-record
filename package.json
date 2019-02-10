@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "3.4.0",
+  "version": "3.4.2",
   "description": "A video.js plugin for recording audio/video/image files.",
   "author": "Collab",
   "license": "MIT",
@@ -70,9 +70,9 @@
     "opus"
   ],
   "dependencies": {
-    "recordrtc": ">=5.5.3",
+    "recordrtc": ">=5.5.4",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.6.4",
+    "videojs-wavesurfer": ">=2.7.0",
     "webrtc-adapter": ">=7.2.0"
   },
   "devDependencies": {
@@ -133,8 +133,8 @@
     "videojs-languages": "^2.0.0",
     "vmsg": ">=0.3.5",
     "webm-wasm": ">=0.4.1",
-    "webpack": "^4.29.1",
-    "webpack-cli": "^3.2.1",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.2.1"
   }

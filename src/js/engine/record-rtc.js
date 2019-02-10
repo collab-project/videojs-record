@@ -77,6 +77,13 @@ class RecordRTCEngine extends RecordEngine {
     dispose() {
         super.dispose();
 
+        this.destroy();
+    }
+
+    /**
+     * Destroy engine.
+     */
+    destroy() {
         if (this.engine && typeof this.engine.destroy === 'function') {
             this.engine.destroy();
         }
@@ -172,7 +179,6 @@ class RecordRTCEngine extends RecordEngine {
 
             // notify listeners
             this.trigger('recordComplete');
-
         });
     }
 }
