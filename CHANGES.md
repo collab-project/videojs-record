@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.4.2 - unreleased
+3.4.2 - 2019/02/10
 ------------------
 
 - vmsg plugin: add `destroy`
