@@ -1127,6 +1127,7 @@ class Record extends Plugin {
         // prevent callbacks if recording is in progress
         if (this.engine) {
             this.engine.dispose();
+            this.engine.destroy();
             this.engine.off('recordComplete', this.engineStopCallback);
         }
 

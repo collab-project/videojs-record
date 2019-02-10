@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.4.2 - unreleased
+------------------
+
+- vmsg plugin: add `destroy`
+
+
 3.4.1 - 2019/02/09
 ------------------
 
@@ -15,8 +21,8 @@ videojs-record changelog
 - Support video recording in Safari (Technology Preview 73 or newer) (#181)
 - Bump required version for recordrtc to 5.5.3 for Safari video recording
   support (#320)
-- Added example for changing video source (#223)
-- Added ability to permanently hide custom UI elements (e.g. `recordToggle`) 
+- Add example for changing video source (#223)
+- Add ability to permanently hide custom UI elements (e.g. `recordToggle`) 
 
 
 3.3.0 - 2019/01/10
