@@ -91,6 +91,7 @@
     "file-loader": "^3.0.1",
     "fine-uploader": ">=5.16",
     "formidable": "^1.2.1",
+    "host-environment": "^1.1.2",
     "htmlhint": "^0.10.1",
     "in-publish": "^2.0.0",
     "jasmine-core": "^3.3.0",

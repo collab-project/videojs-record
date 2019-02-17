@@ -6,9 +6,9 @@ import window from 'global/window';
 
 import TestHelpers from '../test-helpers.js';
 
-import * as detectBrowser from '../../src/js/utils/detect-browser.js';
+import host from 'host-environment';
 
-require('karma-host-environment');
+import * as detectBrowser from '../../src/js/utils/detect-browser.js';
 
 
 /** @test {detect-browser} */
