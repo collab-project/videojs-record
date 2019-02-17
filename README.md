@@ -94,7 +94,7 @@ to visualize the audio waveform):
 
 - [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms video.js into an audio-player using wavesurfer.js.
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a
-  [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
+  [microphone plugin](https://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
