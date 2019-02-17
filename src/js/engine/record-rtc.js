@@ -3,8 +3,9 @@
  * @since 2.0.0
  */
 
-import { RecordEngine } from './record-engine';
-import { isChrome } from '../utils/detect-browser';
+import videojs from 'video.js';
+import {RecordEngine} from './record-engine';
+import {isChrome} from '../utils/detect-browser';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY} from './record-mode';
 
 const Component = videojs.getComponent('Component');

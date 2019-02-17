@@ -5,6 +5,8 @@
  * MIT license: https://github.com/collab-project/videojs-record/blob/master/LICENSE
  */
 
+import videojs from 'video.js';
+
 import AnimationDisplay from './controls/animation-display';
 import RecordCanvas from './controls/record-canvas';
 import DeviceButton from './controls/device-button';
@@ -19,8 +21,6 @@ import {detectBrowser} from './utils/detect-browser';
 
 import {getAudioEngine, isAudioPluginActive, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
-
-import videojs from 'video.js';
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');

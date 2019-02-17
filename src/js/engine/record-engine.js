@@ -3,6 +3,8 @@
  * @since 2.0.0
  */
 
+import videojs from 'video.js';
+
 import {downloadBlob, addFileInfo} from '../utils/file-util';
 
 const Component = videojs.getComponent('Component');

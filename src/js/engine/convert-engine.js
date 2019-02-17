@@ -3,6 +3,8 @@
  * @since 3.3.0
  */
 
+import videojs from 'video.js';
+
 import {blobToArrayBuffer, addFileInfo} from '../utils/file-util';
 
 const Component = videojs.getComponent('Component');
