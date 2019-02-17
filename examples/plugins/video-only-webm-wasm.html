@@ -22,7 +22,7 @@
   <style>
   /* change player background color */
   #myVideo {
-      background-color: #206B85;
+      background-color: #4884ba;
   }
   </style>
 </head>
@@ -63,10 +63,10 @@ var player = videojs('myVideo', options, function() {
 });
 // error handling
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
-player.on('error', function(error) {
-    console.log('error:', error);
+player.on('error', function(element, error) {
+    console.warn(error);
 });
 
 // user clicked the record button and started recording
