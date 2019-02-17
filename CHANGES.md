@@ -4,7 +4,8 @@ videojs-record changelog
 3.4.3 - unreleased
 ------------------
 
-- add missing import, fixes 'videojs is not defined' error (#333)
+- Add missing import, fixes 'videojs is not defined' error (#333)
+- Bump required version for webrtc-adapter to 7.2.0 or newer
 
 
 3.4.2 - 2019/02/10
