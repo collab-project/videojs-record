@@ -36,6 +36,7 @@ Table of Contents
 - [Responsive layout](#responsive-layout)
 - [Customizing controls](#customizing-controls)
 - [Other audio libraries](#other-audio-libraries)
+- [Other video libraries](#other-video-libraries)
 - [Localization](#localization)
 - [Webpack](#webpack)
 - [Using with React](#using-with-react)
@@ -106,7 +107,7 @@ Optional dependencies when using [other audio libraries](#other-audio-libraries)
 
 Optional dependencies when using [other video libraries](#other-video-libraries):
 
-- [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - TODO
+- [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - Creates WebM recordings using libwebm (compiled with WebAssembly).
 
 Usage
 -----
@@ -614,8 +615,16 @@ Other audio libraries
 
 RecordRTC is the default recording library but there is also support
 for other audio libraries. Check the
-[plugins](https://github.com/collab-project/videojs-record/wiki/Plugins) wiki
-page for more information.
+[audio plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#audio)
+documentation for more information.
+
+Other video libraries
+---------------------
+
+RecordRTC is the default recording library but there is also support
+for other video libraries. Check the
+[video plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#video)
+documentation for more information.
 
 Localization
 ------------
