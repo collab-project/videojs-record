@@ -6,6 +6,12 @@ videojs-record changelog
 
 - New webm-wasm plugin: create webm files using libwebm (compiled with
   WebAssembly) in the browser (#321)
+
+
+3.4.3 - unreleased
+------------------
+
+- Add missing import, fixes 'videojs is not defined' error (#333)
 - Bump required version for webrtc-adapter to 7.2.0 or newer
 
 
