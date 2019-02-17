@@ -3,6 +3,8 @@
  * @since 2.0.0
  */
 
+import videojs from 'video.js';
+
 const Component = videojs.getComponent('Component');
 
 /**
@@ -52,6 +54,18 @@ class RecordIndicator extends Component {
     disable() {
         this.off(this.player_, 'startRecord', this.show);
         this.off(this.player_, 'stopRecord', this.hide);
+    }
+
+    /**
+     * Show the `RecordIndicator` element if it is hidden by removing the
+     * 'vjs-hidden' class name from it.
+     */
+    show() {
+        if (this.layoutExclude && this.layoutExclude === true) {
+            // ignore
+            return;
+        }
+        super.show();
     }
 }
 

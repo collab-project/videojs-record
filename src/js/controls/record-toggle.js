@@ -3,6 +3,8 @@
  * @since 2.0.0
  */
 
+import videojs from 'video.js';
+
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
 
@@ -41,6 +43,18 @@ class RecordToggle extends Button {
 
         this.off(this.player_, 'startRecord', this.onStart);
         this.off(this.player_, 'stopRecord', this.onStop);
+    }
+
+    /**
+     * Show the `RecordToggle` element if it is hidden by removing the
+     * 'vjs-hidden' class name from it.
+     */
+    show() {
+        if (this.layoutExclude && this.layoutExclude === true) {
+            // ignore
+            return;
+        }
+        super.show();
     }
 
     /**

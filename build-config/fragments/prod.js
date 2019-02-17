@@ -9,18 +9,24 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     mode: 'production',
-    devtool: 'source-map',
     optimization: {
         minimizer: [
             new TerserPlugin({
-                sourceMap: true
+                sourceMap: false,
+                parallel: true,
+                cache: './.build_cache/terser',
+                terserOptions: {
+                    output: {
+                        comments: false
+                    }
+                }
             }),
             new OptimizeCSSAssetsPlugin({})
         ]
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "css/[name].min.css"
+            filename: 'css/[name].min.css'
         })
     ]
 };

@@ -1,12 +1,35 @@
 videojs-record changelog
 ========================
 
-3.3.1 - unreleased
+3.4.3 - 2019/02/17
+------------------
+
+- Add missing import, fixes 'videojs is not defined' error (#333)
+- Bump required version for webrtc-adapter to 7.2.0 or newer
+
+
+3.4.2 - 2019/02/10
+------------------
+
+- vmsg plugin: add `destroy`
+
+
+3.4.1 - 2019/02/09
+------------------
+
+- Fix ES export syntax for `Record` (#330 by @extronics)
+- Bump required version for videojs-wavesurfer to 2.7.0 for `playToggle` fixes
+- Fix hiding `playToggle` control
+
+
+3.4.0 - 2019/02/04
 ------------------
 
 - Support video recording in Safari (Technology Preview 73 or newer) (#181)
-- Bump required version for recordrtc to 5.5.2 for Safari video recording
+- Bump required version for recordrtc to 5.5.3 for Safari video recording
   support (#320)
+- Add example for changing video source (#223)
+- Add ability to permanently hide custom UI elements (e.g. `recordToggle`) 
 
 
 3.3.0 - 2019/01/10
