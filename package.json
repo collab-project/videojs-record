@@ -43,7 +43,7 @@
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "ts-ebml": "^2.0.2",
     "video.js": "^7.4.1",
-    "videojs-record": "^3.4.2",
+    "videojs-record": "^3.4.3",
     "videojs-wavesurfer": "^2.7.0",
     "vmsg": "^0.3.5",
     "webrtc-adapter": "^7.2.0"
