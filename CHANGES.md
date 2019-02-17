@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.4.3 - unreleased
+3.4.3 - 2019/02/17
 ------------------
 
 - Add missing import, fixes 'videojs is not defined' error (#333)
