@@ -9,6 +9,7 @@
  * @param {string} fileName - Name for the file to download.
  * @param {blob} data - File data.
  * @returns {void}
+ * @private
  */
 const downloadBlob = function(fileName, data) {
     if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
@@ -43,6 +44,7 @@ const downloadBlob = function(fileName, data) {
  *
  * @param {(Blob|File)} fileObj - Blob or File object to read.
  * @returns {void}
+ * @private
  */
 const blobToArrayBuffer = function(fileObj) {
     return new Promise((resolve, reject) => {
@@ -63,6 +65,7 @@ const blobToArrayBuffer = function(fileObj) {
  * @param {(Blob|File)} fileObj - Blob or File object to modify.
  * @param {date} [now] - Optional date information, default is
  *    current timestamp.
+ * @private
  */
 const addFileInfo = function(fileObj, now) {
     if (fileObj instanceof Blob || fileObj instanceof File) {

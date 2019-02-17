@@ -19,7 +19,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import {detectBrowser} from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive, getConvertEngine} from './engine/engine-loader';
+import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 const Plugin = videojs.getPlugin('plugin');
@@ -151,8 +151,11 @@ class Record extends Plugin {
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
         this.videoFrameHeight = recordOptions.frameHeight;
+        this.videoEngine = recordOptions.videoEngine;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
+        this.videoWorkerURL = recordOptions.videoWorkerURL;
+        this.videoWebAssemblyURL = recordOptions.videoWebAssemblyURL;
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
@@ -161,6 +164,7 @@ class Record extends Plugin {
         this.audioEngine = recordOptions.audioEngine;
         this.audioRecorderType = recordOptions.audioRecorderType;
         this.audioWorkerURL = recordOptions.audioWorkerURL;
+        this.audioWebAssemblyURL = recordOptions.audioWebAssemblyURL;
         this.audioBufferSize = recordOptions.audioBufferSize;
         this.audioSampleRate = recordOptions.audioSampleRate;
         this.audioBitRate = recordOptions.audioBitRate;
@@ -470,16 +474,28 @@ class Record extends Plugin {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
             }
-            // get audio plugin engine class
-            let AudioEngineClass = getAudioEngine(this.audioEngine);
+
+            // load plugins, if any
+            let EngineClass, engineType;
+            switch (this.getRecordType()) {
+                case AUDIO_ONLY:
+                    // get audio plugin engine class (or default recordrtc engine)
+                    EngineClass = getAudioEngine(this.audioEngine);
+                    engineType = this.audioEngine;
+                    break;
+
+                default:
+                    // get video plugin engine class (or default recordrtc engine)
+                    EngineClass = getVideoEngine(this.videoEngine);
+                    engineType = this.videoEngine;
+            }
 
             // create recording engine
             try {
                 // connect stream to recording engine
-                this.engine = new AudioEngineClass(this.player, this.player.options_);
+                this.engine = new EngineClass(this.player, this.player.options_);
             } catch (err) {
-                throw new Error('Could not load ' + this.audioEngine +
-                    ' plugin');
+                throw new Error('Could not load ' + engineType + ' plugin');
             }
 
             // listen for events
@@ -491,6 +507,7 @@ class Record extends Plugin {
             this.engine.bitRate = this.audioBitRate;
             this.engine.audioChannels = this.audioChannels;
             this.engine.audioWorkerURL = this.audioWorkerURL;
+            this.engine.audioWebAssemblyURL = this.audioWebAssemblyURL;
 
             // mime type
             this.engine.mimeType = {
@@ -503,6 +520,8 @@ class Record extends Plugin {
             }
 
             // video/canvas settings
+            this.engine.videoWorkerURL = this.videoWorkerURL;
+            this.engine.videoWebAssemblyURL = this.videoWebAssemblyURL;
             this.engine.video = {
                 width: this.videoFrameWidth,
                 height: this.videoFrameHeight
@@ -715,8 +734,9 @@ class Record extends Plugin {
         this.startTime = new Date().getTime();
 
         // start countdown
+        const COUNTDOWN_SPEED = 100; // ms
         this.countDown = this.player.setInterval(
-            this.onCountDown.bind(this), 100);
+            this.onCountDown.bind(this), COUNTDOWN_SPEED);
 
         // cleanup previous recording
         if (this.engine !== undefined) {
@@ -947,7 +967,8 @@ class Record extends Plugin {
         if (!this.paused) {
             let now = new Date().getTime();
             let duration = this.maxLength;
-            let currentTime = (now - (this.startTime + this.pausedTime)) / 1000;
+            let currentTime = (now - (this.startTime +
+                this.pausedTime)) / 1000; // buddy ignore:line
 
             this.streamDuration = currentTime;
 
