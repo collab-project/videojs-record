@@ -1,6 +1,6 @@
 /**
  * @file webm-wasm-plugin.js
- * @since 3.4.0
+ * @since 3.5.0
  */
 
 const RecordRTCEngine = videojs.getComponent('RecordRTCEngine');

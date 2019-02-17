@@ -1,5 +1,5 @@
 /**
- * @since 3.4.0
+ * @since 3.5.0
  */
 
 import TestHelpers from '../test-helpers.js';
