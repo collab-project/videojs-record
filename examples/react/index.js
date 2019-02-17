@@ -14,8 +14,8 @@ class VideojsRecordPlayer extends React.Component {
         });
 
         // error handling
-        this.player.on('error', (error) => {
-            console.warn(error);
+        this.player.on('error', (element, error) => {
+            console.error(error);
         });
 
         // device is ready

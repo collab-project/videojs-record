@@ -33,6 +33,9 @@ module.exports = {
     performance: {
         hints: false
     },
+    node: {
+        fs: 'empty'
+    },
     // specify dependencies for the library that are not resolved by webpack,
     // but become dependencies of the output: they are imported from the
     // environment during runtime.
@@ -49,7 +52,10 @@ module.exports = {
                 include: path.resolve(rootDir, 'src', 'js'),
                 exclude: /(node_modules|bower_components|test)/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        comments: false
+                    }
                 }
             },
             {

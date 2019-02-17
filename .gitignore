@@ -23,6 +23,7 @@ dist/
 docs/
 tmp
 coverage/
+.build_cache/
 
 # Test
 .chrome/
