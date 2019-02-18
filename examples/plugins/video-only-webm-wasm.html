@@ -2,24 +2,27 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>ts-ebml video-only example - Record Plugin for Video.js</title>
+  <title>webm-wasm video-only example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
+
+  <!-- web streams API polyfill to support Firefox -->
+  <script src="../../node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js"></script>
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
   <script src="../../node_modules/recordrtc/RecordRTC.js"></script>
   <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
 
   <script src="../../dist/videojs.record.js"></script>
-  <script src="../../dist/plugins/videojs.record.ts-ebml.js"></script>
+  <script src="../../dist/plugins/videojs.record.webm-wasm.js"></script>
 
   <script src="../browser-workarounds.js"></script>
 
   <style>
   /* change player background color */
   #myVideo {
-      background-color: #F5BDAB;
+      background-color: #4884ba;
   }
   </style>
 </head>
@@ -42,7 +45,9 @@ var options = {
             video: true,
             maxLength: 20,
             debug: true,
-            convertEngine: 'ts-ebml'
+            videoEngine: 'webm-wasm',
+            videoWorkerURL: '../../node_modules/webm-wasm/dist/webm-worker.js',
+            videoWebAssemblyURL: 'webm-wasm.wasm'
         }
     }
 };
@@ -58,10 +63,10 @@ var player = videojs('myVideo', options, function() {
 });
 // error handling
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
 player.on('error', function(element, error) {
-    console.error(error);
+    console.warn(error);
 });
 
 // user clicked the record button and started recording
@@ -74,13 +79,6 @@ player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
-});
-
-// converter completed and stream is available
-player.on('finishConvert', function() {
-    // the convertedData object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished converting: ', player.convertedData);
 });
 </script>
 </body>

@@ -4,7 +4,8 @@
 
 import TestHelpers from '../test-helpers.js';
 
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT, RECORD_PLUGINS, AUDIO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, GIFSHOT, RECORD_PLUGINS, ANIMATION_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
+
 
 /** @test {record-engine} */
 describe('engine.record-engine', () => {
@@ -31,17 +32,24 @@ describe('engine.record-engine', () => {
     it('contain supported recorder plugin engines', () => {
         // builtin
         expect(RECORDRTC).toEqual('recordrtc');
-        // plugins
+
         // audio
         expect(LIBVORBISJS).toEqual('libvorbis.js');
         expect(RECORDERJS).toEqual('recorder.js');
         expect(LAMEJS).toEqual('lamejs');
         expect(OPUSRECORDER).toEqual('opus-recorder');
         expect(VMSG).toEqual('vmsg');
+        expect(AUDIO_PLUGINS.length).toEqual(5);
+
         // animation
         expect(GIFSHOT).toEqual('gifshot');
+        expect(ANIMATION_PLUGINS.length).toEqual(1);
 
-        expect(AUDIO_PLUGINS.length).toEqual(5);
+        // video
+        expect(WEBMWASM).toEqual('webm-wasm');
+        expect(VIDEO_PLUGINS.length).toEqual(1);
+
+        // all
         expect(RECORD_PLUGINS.length).toEqual(6);
     });
 

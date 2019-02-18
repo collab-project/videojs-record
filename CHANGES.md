@@ -1,6 +1,20 @@
 videojs-record changelog
 ========================
 
+3.5.0 - unreleased
+------------------
+
+- New webm-wasm plugin: create webm files using libwebm (compiled with
+  WebAssembly) in the browser (#321)
+
+**Backwards-incompatible change** (when upgrading from a previous version):
+
+- The `vmsg` plugin, introduced in 3.3.0, now requires a `audioWebAssemblyURL` option,
+  previously called `audioWorkerURL`. Use the new `audioWebAssemblyURL` option instead of
+  the previous `audioWorkerURL`. Note this only applies to the `vmsg` plugin, other plugin
+  options have not changed.
+
+
 3.4.3 - 2019/02/17
 ------------------
 

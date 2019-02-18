@@ -41,7 +41,8 @@ var chromeFlags = [
 // -------------------------------------------
 var firefoxFlags = {
     'media.navigator.permission.disabled': true,
-    'media.navigator.streams.fake': true
+    'media.navigator.streams.fake': true,
+    'javascript.options.streams': true
 };
 var ci = process.env.TRAVIS || process.env.APPVEYOR;
 
@@ -108,6 +109,11 @@ module.exports = function(config) {
             'node_modules/gifshot/dist/gifshot.min.js',
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
+            // webm-wasm
+            // web streams API polyfill to support Firefox (for webm-wasm)
+            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
+            {pattern: 'node_modules/webm-wasm/dist/webm-worker.js', included: false, served: true},
+            {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
 
             // -------------------------------------------
             // specs
@@ -173,6 +179,10 @@ module.exports = function(config) {
                     let ch = availableBrowsers.indexOf('ChromiumHeadless');
                     if (ch > -1) {
                         availableBrowsers[ch] = 'Chromium_dev';
+                    }
+                    let ce = availableBrowsers.indexOf('Chromium');
+                    if (ce > -1) {
+                        availableBrowsers[ce] = 'Chromium_dev';
                     }
                     // ignore IE
                     let ie = availableBrowsers.indexOf('IE');

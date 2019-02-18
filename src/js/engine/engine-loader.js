@@ -5,7 +5,7 @@
 
 import RecordRTCEngine from './record-rtc';
 import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, GIFSHOT, AUDIO_PLUGINS} from './record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, GIFSHOT, AUDIO_PLUGINS} from './record-engine';
 
 /**
  * Get audio plugin engine class.
@@ -52,6 +52,34 @@ const getAudioEngine = function(audioEngine) {
             throw new Error('Unknown audioEngine: ' + audioEngine);
     }
     return AudioEngineClass;
+};
+
+
+/**
+ * Get video plugin engine class.
+ *
+ * @private
+ * @param {String} videoEngine - Name of the video engine.
+ * @returns {Object} Video engine class.
+ */
+const getVideoEngine = function(videoEngine) {
+    let VideoEngineClass;
+    switch (videoEngine) {
+        case RECORDRTC:
+            // RecordRTC.js (default)
+            VideoEngineClass = RecordRTCEngine;
+            break;
+
+        case WEBMWASM:
+            // webm-wasm
+            VideoEngineClass = videojs.WebmWasmEngine;
+            break;
+
+        default:
+            // unknown engine
+            throw new Error('Unknown videoEngine: ' + videoEngine);
+    }
+    return VideoEngineClass;
 };
 
 /**
@@ -103,5 +131,5 @@ const getConvertEngine = function(convertEngine) {
 };
 
 export {
-    getAudioEngine, isAudioPluginActive, getConvertEngine, getAnimationEngine
+    getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine, getAnimationEngine
 };
