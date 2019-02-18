@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /**
  * @file ffmpegjs-plugin.js
- * @since 3.3.0
+ * @since x.x.x
  */
 
 const ConvertEngine = videojs.getComponent('ConvertEngine');
