@@ -1,6 +1,6 @@
 /**
  * @file gifshot-plugin.js
- * @since 3.3.0
+ * @since x.x.x
  */
 
 import gifshot from 'gifshot';
