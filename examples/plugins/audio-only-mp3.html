@@ -53,7 +53,7 @@ var options = {
             maxLength: 20,
             debug: true,
             audioEngine: 'vmsg',
-            audioWorkerURL: '../../node_modules/vmsg/vmsg.wasm'
+            audioWebAssemblyURL: '../../node_modules/vmsg/vmsg.wasm'
         }
     }
 };
@@ -79,7 +79,8 @@ function createPlayer(event) {
         // print version information at startup
         var msg = 'Using video.js ' + videojs.VERSION +
             ' with videojs-record ' + videojs.getPluginVersion('record') +
-            ' and videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer');
+            ' and videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+            ' and wavesurfer.js ' + WaveSurfer.VERSION;
         videojs.log(msg);
     });
 

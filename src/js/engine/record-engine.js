@@ -12,6 +12,7 @@ const Component = videojs.getComponent('Component');
 // supported recorder plugin engines
 // builtin
 const RECORDRTC = 'recordrtc';
+
 // audio
 const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
@@ -19,11 +20,17 @@ const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
 const VMSG = 'vmsg';
 
+// video
+const WEBMWASM = 'webm-wasm';
+
 // all audio plugins
 const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
 
+// all video plugins
+const VIDEO_PLUGINS = [WEBMWASM];
+
 // all record plugins
-const RECORD_PLUGINS = AUDIO_PLUGINS;
+const RECORD_PLUGINS = AUDIO_PLUGINS.concat(VIDEO_PLUGINS);
 
 
 /**
@@ -118,6 +125,6 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG
+    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS,
+    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM
 };

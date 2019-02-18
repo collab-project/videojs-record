@@ -36,15 +36,23 @@ const pluginDefaultOptions = {
     // Turn off the camera/mic (and light) when audio and/or video recording
     // stops, and turns them on again when you resume recording.
     autoMuteDevice: false,
+    // Video recording library to use. Legal values are 'recordrtc' (default)
+    // and 'webm-wasm'.
+    videoEngine: 'recordrtc',
     // The mime type for the video recorder. Default to 'video/webm'.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.
     videoMimeType: 'video/webm',
     // Video recorder type to use. This allows you to specify an alternative
-    // recorder class, e.g. WhammyRecorder. Defaults to 'auto' which let's
-    // recordrtc specify the best available recorder type.
+    // recorder class, e.g. WhammyRecorder from recordrtc. Defaults to 'auto'
+    // which let's recordrtc specify the best available recorder type.
     videoRecorderType: 'auto',
-    // Audio recording library to use. Legal values are 'recordrtc',
+    // URL for the video worker. Use an empty string '' to disable (default).
+    videoWorkerURL: '',
+    // URL for the video worker WebAssembly file. Use an empty string '' to
+    // disable (default).
+    videoWebAssemblyURL: '',
+    // Audio recording library to use. Legal values are 'recordrtc' (default),
     // 'libvorbis.js', 'opus-recorder', 'lamejs', 'vmsg' and 'recorder.js'.
     audioEngine: 'recordrtc',
     // Audio recorder type to use. This allows you to specify an alternative
@@ -79,8 +87,11 @@ const pluginDefaultOptions = {
     // Allows you to record single-channel audio, which can reduce the
     // file size.
     audioChannels: 2,
-    // URL for the audio worker.
+    // URL for the audio worker. Use an empty string '' to disable (default).
     audioWorkerURL: '',
+    // URL for the audio worker WebAssembly file. Use an empty string '' to
+    // disable (default).
+    audioWebAssemblyURL: '',
     // Enables the audioBufferUpdate event that provides realtime AudioBuffer
     // instances from the input audio device.
     audioBufferUpdate: false,

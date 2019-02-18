@@ -36,6 +36,7 @@ Table of Contents
 - [Responsive layout](#responsive-layout)
 - [Customizing controls](#customizing-controls)
 - [Other audio libraries](#other-audio-libraries)
+- [Other video libraries](#other-video-libraries)
 - [Localization](#localization)
 - [Webpack](#webpack)
 - [Using with React](#using-with-react)
@@ -87,13 +88,14 @@ The plugin has the following mandatory dependencies:
 
 When recording audio and/or video you also need:
 
-- [RecordRTC.js](https://github.com/muaz-khan/RecordRTC) - Adds support for audio/video/GIF recording.
+- [RecordRTC](https://github.com/muaz-khan/RecordRTC) - Adds support for audio/video/GIF recording.
 
 And when recording audio-only, the following dependencies are also required (
 to visualize the audio waveform):
 
-- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a [microphone plugin](http://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
-- [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms Video.js into an audio-player.
+- [videojs-wavesurfer](https://github.com/collab-project/videojs-wavesurfer) - Transforms video.js into an audio-player using wavesurfer.js.
+- [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a
+  [microphone plugin](https://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
@@ -102,6 +104,10 @@ Optional dependencies when using [other audio libraries](#other-audio-libraries)
 - [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [lamejs](https://github.com/collab-project/videojs-record/wiki/Plugins#lamejs) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
 - [recorder.js](https://github.com/collab-project/videojs-record/wiki/Plugins#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
+
+Optional dependencies when using [other video libraries](#other-video-libraries):
+
+- [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - Creates WebM recordings using libwebm (compiled with WebAssembly).
 
 Usage
 -----
@@ -250,8 +256,11 @@ The available options for this plugin are:
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
+| `videoEngine` | string | `'recordrtc'` | Video recording library/plugin to use. Legal values are `recordrtc` and `webm-wasm`. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
+| `videoWorkerURL` | string | `''` | URL for the video worker, for example: `../node_modules/webm-wasm/dist/webm-worker.js`. Currently only used for webm-wasm plugin. Use an empty string '' to disable (default). |
+| `videoWebAssemblyURL` | string | `''` | URL for the video worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the webm-wasm plugin. |
 | `audioEngine` | string | `'recordrtc'` | Audio recording library/plugin to use. Legal values are `recordrtc`, `libvorbis.js`, `vmsg`, `opus-recorder`,  `lamejs` and `recorder.js`. |
 | `audioRecorderType` | string or function | `'auto'` | Audio recorder type to use. This allows you to specify an alternative recorder class, e.g. `StereoAudioRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. Currently this setting is only used with the `recordrtc` `audioEngine`. |
 | `audioMimeType` | string | `'auto'` | The mime type for the audio recorder. Defaults to `auto` which will pick the best option available in the browser (e.g. either `audio/wav`, `audio/ogg` or `audio/webm`). A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html).|
@@ -259,7 +268,8 @@ The available options for this plugin are:
 | `audioSampleRate` | float | `44100` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
 | `audioBitRate` | float | `128` | The audio bitrate in kbps (only used in the lamejs plugin). |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller file size. |
-| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/build/encoderWorker.min.js`. Currently only used for opus-recorder and lamejs plugins. |
+| `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/build/encoderWorker.min.js`. Currently only used for opus-recorder and lamejs plugins. Use an empty string '' to disable (default). |
+| `audioWebAssemblyURL` | string | `''` | URL for the audio worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the vmsg plugin. |
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
@@ -609,8 +619,16 @@ Other audio libraries
 
 RecordRTC is the default recording library but there is also support
 for other audio libraries. Check the
-[plugins](https://github.com/collab-project/videojs-record/wiki/Plugins) wiki
-page for more information.
+[audio plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#audio)
+documentation for more information.
+
+Other video libraries
+---------------------
+
+RecordRTC is the default recording library but there is also support
+for other video libraries. Check the
+[video plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#video)
+documentation for more information.
 
 Localization
 ------------

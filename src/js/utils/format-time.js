@@ -20,6 +20,7 @@
  * @private
  */
 const formatTime = function(seconds, guide, msDisplayMax) {
+    // buddy ignore:start
     // Default to using seconds as guide
     seconds = seconds < 0 ? 0 : seconds;
     guide = guide || seconds;
@@ -61,7 +62,7 @@ const formatTime = function(seconds, guide, msDisplayMax) {
 
     // Check if leading zero is need for seconds
     s = ((s < 10) ? '0' + s : s);
-
+    // buddy ignore:end
     return h + m + s + ms;
 };
 

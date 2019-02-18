@@ -36,6 +36,11 @@ class RecordRTCEngine extends RecordEngine {
             this.mediaType.video = true;
         }
 
+        // recorder type
+        if (this.recorderType !== undefined) {
+            this.mediaType.video = this.recorderType;
+        }
+
         // setup RecordRTC
         this.engine = new RecordRTC.MRecordRTC();
         this.engine.mediaType = this.mediaType;
@@ -58,6 +63,10 @@ class RecordRTCEngine extends RecordEngine {
             this.engine.timeSlice = this.timeSlice;
             this.engine.onTimeStamp = this.onTimeStamp;
         }
+
+        // worker
+        this.engine.workerPath = this.workerPath;
+        this.engine.webAssemblyPath = this.videoWebAssemblyURL;
 
         // connect stream to recording engine
         this.engine.addStream(this.inputStream);

@@ -1,31 +1,29 @@
 /**
- * @since 3.3.0
+ * @since 3.5.0
  */
 
 import TestHelpers from '../test-helpers.js';
 
 // registers the plugin
-import VmsgEngine from '../../src/js/plugins/vmsg-plugin.js';
-import {VMSG} from '../../src/js/engine/record-engine.js';
+import {RecordRTCEngine} from '../../src/js/engine/record-rtc.js';
+import WebmWasmEngine from '../../src/js/plugins/webm-wasm-plugin.js';
+import {WEBMWASM} from '../../src/js/engine/record-engine.js';
 
 
-/** @test {VmsgEngine} */
-describe('plugins.vmsg-plugin', () => {
+/** @test {WebmWasmEngine} */
+describe('plugins.webm-wasm-plugin', () => {
     let player;
 
     afterEach(() => {
         player.dispose();
     });
 
-    /** @test {VmsgEngine} */
-    it('can run as an audio-only plugin', (done) => {
-        // allow test to fail
-        pending('disabled until test runner failure is figured out');
+    /** @test {WebmWasmEngine} */
+    it('can run as a video-only plugin', (done) => {
+        // create video-only player with webm-wasm plugin
+        player = TestHelpers.makeVideoOnlyPluginPlayer(WEBMWASM);
 
-        // create audio-only player with vmsg plugin
-        player = TestHelpers.makeAudioOnlyPluginPlayer(VMSG);
-
-        player.one('finishConvert', () => {
+        player.one('finishRecord', () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
