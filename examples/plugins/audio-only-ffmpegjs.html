@@ -29,17 +29,17 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
-var player = videojs("myAudio", {
+var options = {
     controls: true,
     width: 600,
     height: 300,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: "live",
-            waveColor: "#fffa00",
-            progressColor: "#FAFCD2",
-            cursorColor: "#FFFFFF",
+            src: 'live',
+            waveColor: '#fffa00',
+            progressColor: '#FAFCD2',
+            cursorColor: '#FFFFFF',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
@@ -50,20 +50,24 @@ var player = videojs("myAudio", {
             video: false,
             maxLength: 20,
             debug: true,
-            convertEngine: "ffmpeg.js",
-            convertOptions: ["-codec:a", "libmp3lame", "-qscale:a", "2"],
-            // use MP4 encoding worker (H.264 & AAC & MP3 encoders, popular decoders)
-            convertWorkerURL: "../../node_modules/ffmpeg.js/ffmpeg-worker-mp4.js"
-            // or use WebM encoding worker (VP8 & Opus encoders, popular decoders)
-            // convertWorkerURL: "../../node_modules/ffmpeg.js/ffmpeg-worker-webm.js"
+            convertEngine: 'ffmpeg.js',
+            convertOptions: ['-codec:a', 'libmp3lame', '-qscale:a', '2'],
+            // use MP4 encoding worker (H.264 & AAC & MP3 encoders)
+            convertWorkerURL: '../../node_modules/ffmpeg.js/ffmpeg-worker-mp4.js'
+            // or use WebM encoding worker (VP8 & Opus encoders)
+            // convertWorkerURL: '../../node_modules/ffmpeg.js/ffmpeg-worker-webm.js'
         }
     }
-}, function() {
+};
+  
+var player = videojs('myAudio', options, function() {
     // print version information at startup
-    videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'),
-        'and videojs-wavesurfer', videojs.getPluginVersion('wavesurfer'),
-        'and recordrtc', RecordRTC.version);
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+        RecordRTC.version;
+    videojs.log(msg);
 });
 
 // error handling
@@ -71,8 +75,8 @@ player.on('deviceError', function() {
     console.log('device error:', player.deviceErrorCode);
 });
 
-player.on('error', function(error) {
-    console.log('error:', error);
+player.on('error', function(element, error) {
+    console.warn(error);
 });
 
 // user clicked the record button and started recording
