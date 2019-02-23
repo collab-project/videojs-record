@@ -5,7 +5,7 @@ x.x.x - unreleased
 ------------------
 
 - New plugin that uses ffmpeg.js to convert the recorded data into other
-  audio/video file formats in the browser
+  audio/video file formats in the browser (#201)
 
 
 3.5.0 - unreleased

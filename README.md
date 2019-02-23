@@ -99,15 +99,20 @@ to visualize the audio waveform):
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
+- [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [opus-recorder](https://github.com/collab-project/videojs-record/wiki/Plugins#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
 - [libvorbis.js](https://github.com/collab-project/videojs-record/wiki/Plugins#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
-- [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [lamejs](https://github.com/collab-project/videojs-record/wiki/Plugins#lamejs) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
 - [recorder.js](https://github.com/collab-project/videojs-record/wiki/Plugins#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
 
 Optional dependencies when using [other video libraries](#other-video-libraries):
 
 - [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - Creates WebM recordings using libwebm (compiled with WebAssembly).
+
+Optional dependencies when using [converter libraries](#convert-data):
+
+- [ts-ebml](https://github.com/collab-project/videojs-record/wiki/Plugins#ts-ebml) - Creates seekable WebM files, by injecting metadata like duration.
+- [ffmpeg.js](https://github.com/collab-project/videojs-record/wiki/Plugins#ffmpegjs) - [FFmpeg](https://ffmpeg.org) builds ported to JavaScript using Emscripten.
 
 Usage
 -----
@@ -273,7 +278,7 @@ The available options for this plugin are:
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
-| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` or an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
 
 Methods
 -------
@@ -399,10 +404,10 @@ player.on('finishRecord', function() {
 ### Convert data
 
 It's possible to process and convert the recorded data in the browser. For example,
-adding metadata like duration to recorded webm files, or using FFmpeg to convert the
+adding metadata like duration to recorded WebM files, or using FFmpeg to convert the
 data with a different codec.
 
-Enable the plugin with the `convertEngine` option:
+For example, enable the `ts-ebml` plugin with the `convertEngine` option:
 
 ```javascript
 record: {
@@ -427,8 +432,8 @@ player.on('finishConvert', function() {
 ```
 
 Check the
-[plugins](https://github.com/collab-project/videojs-record/wiki/Plugins) wiki
-page for more information.
+[converter plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#converter)
+documentation for more information.
 
 ### Timestamps
 
