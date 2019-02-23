@@ -38,9 +38,12 @@ class FFmpegjsEngine extends ConvertEngine {
     convert(data) {
         console.log('FFmpegjsEngine.recordComplete - input:', data);
 
-        // convert blob to array buffer
-        let fileReader = new FileReader();
-        fileReader.onload = (event) => {
+        // save timestamp
+        this.timestamp = new Date();
+        this.timestamp.setTime(data.lastModified);
+
+        // load and convert blob
+        this.loadBlob(data).then((buffer) => {
             let opts = ['-i', data.name].concat(this.convertOptions);
             // XXX: ability to specify name
             opts.push('output.mp3');
@@ -51,12 +54,11 @@ class FFmpegjsEngine extends ConvertEngine {
             }
             this.engine.postMessage({
                 type: 'run',
-                MEMFS: [{name: data.name, data: event.target.result}],
+                MEMFS: [{name: data.name, data: buffer}],
                 // TOTAL_MEMORY: 256 * 1024 * 1024,
                 arguments: opts
             });
-        };
-        fileReader.readAsArrayBuffer(data);
+        });
     }
 
     /**
@@ -86,18 +88,21 @@ class FFmpegjsEngine extends ConvertEngine {
             case 'done':
                 let buf = msg.data.MEMFS[0].data;
 
-                // XXX: ability to specify type
-                let result = new Blob(buf, {type: 'audio/mp3'});
-
-                // inject date and name into blob
-                this.addFileInfo(result);
-
                 if (this.debug) {
                     console.log('FFmpeg.js worker finished job with result:', result);
                 }
 
-                // XXX: notify others
-                this.saveAs({'audio': result.name}, result);
+                // XXX: ability to specify type
+                let result = new Blob(buf, {type: 'audio/mp3'});
+
+                // inject date and name into blob
+                this.addFileInfo(result, this.timestamp);
+
+                // store result
+                this.player().convertedData = result;
+
+                // notify listeners
+                this.player().trigger('finishConvert');
                 break;
 
             // FFmpeg printed to stdout
