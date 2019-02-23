@@ -24,7 +24,7 @@
 }
 
 .vjs-record.video-js .vjs-control.vjs-record-indicator:before {
-    content: "REC";
+    content: attr(data-label);
     color: white;
     position: absolute;
     left: -2.7em;
