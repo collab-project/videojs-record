@@ -36,8 +36,6 @@ class FFmpegjsEngine extends ConvertEngine {
      * @param {blob} data - Reference to the recorded Blob.
      */
     convert(data) {
-        console.log('FFmpegjsEngine.recordComplete - input:', data);
-
         // save timestamp
         this.timestamp = new Date();
         this.timestamp.setTime(data.lastModified);
@@ -47,11 +45,8 @@ class FFmpegjsEngine extends ConvertEngine {
             let opts = ['-i', data.name].concat(this.convertOptions);
             // XXX: ability to specify name
             opts.push('output.mp3');
-            console.log(opts);
+
             // start conversion
-            if (this.debug) {
-                console.log('Starting FFmpeg.js conversion...');
-            }
             this.engine.postMessage({
                 type: 'run',
                 MEMFS: [{name: data.name, data: buffer}],
@@ -80,7 +75,7 @@ class FFmpegjsEngine extends ConvertEngine {
             // worker started job
             case 'run':
                 if (this.debug) {
-                    console.log('FFmpeg.js worker started job');
+                    console.log('FFmpeg.js worker started job.');
                 }
                 break;
 
@@ -89,10 +84,10 @@ class FFmpegjsEngine extends ConvertEngine {
                 let buf = msg.data.MEMFS[0].data;
 
                 if (this.debug) {
-                    console.log('FFmpeg.js worker finished job with result:', result);
+                    console.log('FFmpeg.js worker finished job.');
                 }
 
-                // XXX: ability to specify type
+                // XXX: ability to specify mime-type
                 let result = new Blob(buf, {type: 'audio/mp3'});
 
                 // inject date and name into blob
