@@ -9,7 +9,7 @@ import {Player, mergeOptions} from 'video.js';
 import adapter from 'webrtc-adapter';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
-import {TSEBML} from '../src/js/engine/convert-engine.js';
+import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine.js';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
@@ -194,10 +194,16 @@ const TestHelpers = {
             maxLength: 5,
             debug: true
         };
-        // setup audio plugin
+        // setup video plugin
         switch (pluginName) {
             case TSEBML:
                 recordPluginOptions.convertEngine = TSEBML;
+                break;
+
+            case FFMPEGJS:
+                recordPluginOptions.convertEngine = FFMPEGJS;
+                recordPluginOptions.convertWorkerURL = '/base/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js';
+                recordPluginOptions.convertOptions = ['-codec:a', 'libmp3lame', '-qscale:a', '2'];
                 break;
 
             default:
