@@ -279,6 +279,8 @@ The available options for this plugin are:
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 | `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.js plugin. Use an empty string '' to disable (default). |
+| `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
 
 Methods
 -------
