@@ -34,10 +34,14 @@ class RecordIndicator extends Component {
      *         The dom element that gets created.
      */
     createEl() {
-        return super.createEl('div', {
+        let props = {
             className: 'vjs-record-indicator vjs-control',
             dir: 'ltr'
-        });
+        };
+        let attr = {
+            'data-label': this.localize('REC')
+        };
+        return super.createEl('div', props, attr);
     }
 
     /**
