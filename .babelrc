@@ -6,7 +6,12 @@
       "modules": "commonjs"
     }]
   ],
-  "plugins": ["add-module-exports"],
+  "plugins": [
+      "add-module-exports",
+      ["@babel/plugin-transform-runtime", {
+          "regenerator": true
+      }]
+  ],
   "env": {
       "test": {
         "plugins": [
