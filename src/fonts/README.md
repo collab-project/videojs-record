@@ -45,7 +45,7 @@ cp -v /path/to/videojs-record/src/fonts/icons.json /path/to/font/videojs-record-
 Build the fonts and styles:
 
 ```
-grunt --exclude-default --custom-json=./videojs-record-icons.json
+grunt --exclude-default --custom-json=videojs-record-icons.json
 ```
 
 Open `index.html` in a browser to see the font and icons in action.
