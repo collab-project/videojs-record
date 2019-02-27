@@ -26,26 +26,6 @@ class PictureInPictureToggle extends Button {
     }
 
     /**
-     * Enable the `PictureInPictureToggle` element so that it can be activated or clicked.
-     */
-    enable() {
-        super.enable();
-
-        //this.on(this.player_, 'startRecord', this.onStart);
-        //this.on(this.player_, 'stopRecord', this.onStop);
-    }
-
-    /**
-     * Disable the `PictureInPictureToggle` element so that it cannot be activated or clicked.
-     */
-    disable() {
-        super.disable();
-
-        //this.off(this.player_, 'startRecord', this.onStart);
-        //this.off(this.player_, 'stopRecord', this.onStop);
-    }
-
-    /**
      * Show the `PictureInPictureToggle` element if it is hidden by removing the
      * 'vjs-hidden' class name from it.
      */
@@ -73,56 +53,22 @@ class PictureInPictureToggle extends Button {
         // disable button during picture-in-picture switch
         this.disable();
 
+        // switch picture-in-picture mode
         try {
             if (recorder.mediaElement !== document.pictureInPictureElement) {
                 // request picture-in-picture
                 await recorder.mediaElement.requestPictureInPicture();
             } else {
                 // exit picture-in-picture
-                await recorder.mediaElement.exitPictureInPicture();
+                await document.exitPictureInPicture();
             }
         } catch (error) {
             // notify listeners
-            this.player.trigger('error', error);
+            this.player_.trigger('error', error);
         } finally {
-            // ready
+            // switch completed
             this.enable();
         }
-        /*
-        if (!recorder.isRecording()) {
-            recorder.start();
-        } else {
-            recorder.stop();
-        }
-        */
-    }
-
-    /**
-     * Add the vjs-icon-record-stop class to the element so it can change appearance.
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @listens Player#startRecord
-     */
-    onStart(event) {
-        // replace element class so it can change appearance
-        this.removeClass('vjs-icon-record-start');
-        this.addClass('vjs-icon-record-stop');
-    }
-
-    /**
-     * Add the vjs-icon-record-start class to the element so it can change appearance.
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @listens Player#stopRecord
-     */
-    onStop(event) {
-        // replace element class so it can change appearance
-        this.removeClass('vjs-icon-record-stop');
-        this.addClass('vjs-icon-record-start');
     }
 }
 

@@ -605,6 +605,21 @@ class Record extends Plugin {
             // hide the volume bar while it's muted
             this.displayVolumeControl(false);
 
+            // picture-in-picture
+            if (this.pictureInPicture === true) {
+                // show button
+                this.player.pipToggle.show();
+
+                // listen to and forward Picture-in-Picture events
+                this.mediaElement = this.player.el().firstChild;
+                this.mediaElement.addEventListener('enterpictureinpicture', (event) => {
+                    this.player.trigger('enterPIP', event);
+                });
+                this.mediaElement.addEventListener('leavepictureinpicture', (event) => {
+                    this.player.trigger('leavePIP');
+                });
+            }
+
             // load stream
             this.load(this.stream);
 
