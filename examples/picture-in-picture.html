@@ -28,10 +28,13 @@
 
 <script>
 // check for support
+var pipEnabled = false;
 if (!('pictureInPictureEnabled' in document)) {
     alert('The Picture-in-Picture API is not available.');
 } else if (!document.pictureInPictureEnabled) {
     alert('The Picture-in-Picture API is disabled.');
+} else {
+    pipEnabled = true;
 }
 
 var options = {
@@ -46,7 +49,7 @@ var options = {
         record: {
             audio: false,
             video: true,
-            pip: true,
+            pip: pipEnabled,
             maxLength: 10,
             debug: true
         }
