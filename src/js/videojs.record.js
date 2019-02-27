@@ -611,7 +611,6 @@ class Record extends Plugin {
                 this.player.pipToggle.show();
 
                 // listen to and forward Picture-in-Picture events
-                this.mediaElement = this.player.el().firstChild;
                 this.mediaElement.addEventListener('enterpictureinpicture', (event) => {
                     this.player.trigger('enterPIP', event);
                 });
