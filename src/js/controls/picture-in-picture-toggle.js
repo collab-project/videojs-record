@@ -16,6 +16,21 @@ const Component = videojs.getComponent('Component');
 */
 class PictureInPictureToggle extends Button {
     /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        // listen for events
+        this.on(this.player_, 'enterPIP', this.onStart);
+        this.on(this.player_, 'leavePIP', this.onStop);
+    }
+
+    /**
      * Builds the default DOM `className`.
      *
      * @return {string}
@@ -56,17 +71,9 @@ class PictureInPictureToggle extends Button {
         // switch picture-in-picture mode
         try {
             if (recorder.mediaElement !== document.pictureInPictureElement) {
-                // replace element class so it can change appearance
-                this.removeClass('vjs-icon-picture-in-picture-start');
-                this.addClass('vjs-icon-picture-in-picture-stop');
-
                 // request picture-in-picture
                 await recorder.mediaElement.requestPictureInPicture();
             } else {
-                // replace element class so it can change appearance
-                this.removeClass('vjs-icon-picture-in-picture-stop');
-                this.addClass('vjs-icon-picture-in-picture-start');
-
                 // exit picture-in-picture
                 await document.exitPictureInPicture();
             }
@@ -77,6 +84,36 @@ class PictureInPictureToggle extends Button {
             // switch completed
             this.enable();
         }
+    }
+
+    /**
+     * Add the vjs-icon-picture-in-picture-stop class to the element so it can
+     * change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#enterPIP
+     */
+    onStart(event) {
+        // replace element class so it can change appearance
+        this.removeClass('vjs-icon-picture-in-picture-start');
+        this.addClass('vjs-icon-picture-in-picture-stop');
+    }
+
+    /**
+     * Add the vjs-icon-picture-in-picture-start class to the element so it can
+     * change appearance.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#leavePIP
+     */
+    onStop(event) {
+        // replace element class so it can change appearance
+        this.removeClass('vjs-icon-picture-in-picture-stop');
+        this.addClass('vjs-icon-picture-in-picture-start');
     }
 }
 
