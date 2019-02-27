@@ -11,7 +11,12 @@
     display: none;
 }
 
-.vjs-record .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture:before {
+.vjs-record .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture-start:before {
+    font-size: 1.4em;
+    line-height: 2.2em;
+}
+
+.vjs-record .vjs-pip-button.vjs-control.vjs-icon-picture-in-picture-stop:before {
     font-size: 1.4em;
     line-height: 2.2em;
 }

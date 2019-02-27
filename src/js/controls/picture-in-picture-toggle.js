@@ -22,7 +22,7 @@ class PictureInPictureToggle extends Button {
      *         The DOM `className` for this object.
      */
     buildCSSClass() {
-        return 'vjs-pip-button vjs-control vjs-button vjs-icon-picture-in-picture';
+        return 'vjs-pip-button vjs-control vjs-button vjs-icon-picture-in-picture-start';
     }
 
     /**
@@ -56,9 +56,17 @@ class PictureInPictureToggle extends Button {
         // switch picture-in-picture mode
         try {
             if (recorder.mediaElement !== document.pictureInPictureElement) {
+                // replace element class so it can change appearance
+                this.removeClass('vjs-icon-picture-in-picture-start');
+                this.addClass('vjs-icon-picture-in-picture-stop');
+
                 // request picture-in-picture
                 await recorder.mediaElement.requestPictureInPicture();
             } else {
+                // replace element class so it can change appearance
+                this.removeClass('vjs-icon-picture-in-picture-stop');
+                this.addClass('vjs-icon-picture-in-picture-start');
+
                 // exit picture-in-picture
                 await document.exitPictureInPicture();
             }
