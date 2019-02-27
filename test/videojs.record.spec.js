@@ -611,7 +611,7 @@ describe('Record', () => {
         player = TestHelpers.makeVideoOnlyPlayer(opts);
 
         player.one('ready', () => {
-            expect(player.controlBar.pipToggle.el().nodeName).toEqual('DIV');
+            expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
             done();
         });
     });
