@@ -115,6 +115,13 @@ class Record extends Plugin {
         player.pipToggle = new PictureInPictureToggle(player, options);
         player.pipToggle.hide();
 
+        // picture-in-picture
+        if (this.pictureInPicture === true) {
+            // dfine Picture-in-Picture event handlers once
+            this.onEnterPiPHandler = this.onEnterPiP.bind(this);
+            this.onLeavePiPHandler = this.onLeavePiP.bind(this);
+        }
+
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
             let customUIElements = ['deviceButton', 'recordIndicator',
@@ -611,14 +618,15 @@ class Record extends Plugin {
                 this.player.pipToggle.show();
 
                 // listen to and forward Picture-in-Picture events
-                this.mediaElement.addEventListener('enterpictureinpicture', (event) => {
-                    this.player.trigger('enterPIP', event);
-                });
-                this.mediaElement.addEventListener('leavepictureinpicture', (event) => {
-                    this.player.trigger('leavePIP');
-                });
+                this.mediaElement.removeEventListener('enterpictureinpicture',
+                    this.onEnterPiPHandler);
+                this.mediaElement.removeEventListener('leavepictureinpicture',
+                    this.onLeavePiPHandler);
+                this.mediaElement.addEventListener('enterpictureinpicture',
+                    this.onEnterPiPHandler);
+                this.mediaElement.addEventListener('leavepictureinpicture',
+                    this.onLeavePiPHandler);
             }
-
             // load stream
             this.load(this.stream);
 
@@ -1604,6 +1612,24 @@ class Record extends Plugin {
             }
             this.player.controlBar.volumePanel.el().style.display = display;
         }
+    }
+
+    /**
+     * Invoked when entering picture-in-picture mode.
+     * @private
+     * @param {object} event - Event data.
+     */
+    onEnterPiP(event) {
+        this.player.trigger('enterPIP', event);
+    }
+
+    /**
+     * Invoked when leaving picture-in-picture mode.
+     * @private
+     * @param {object} event - Event data.
+     */
+    onLeavePiP(event) {
+        this.player.trigger('leavePIP');
     }
 }
 
