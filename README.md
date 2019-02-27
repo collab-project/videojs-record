@@ -615,7 +615,7 @@ controlBar: {
 ```
 
 Custom interface elements for this library that can be hidden are: `deviceButton`,
-`recordIndicator`, `cameraButton` and `recordToggle`.
+`recordIndicator`, `cameraButton`, `pipToggle` and `recordToggle`.
 
 Picture-in-Picture
 ------------------
