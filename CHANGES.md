@@ -4,6 +4,9 @@ videojs-record changelog
 3.5.0 - unreleased
 ------------------
 
+- Support for Picture-in-Picture during playback and recording. Allows users to
+  record and playback in a floating window (always on top of other windows) while
+  interacting with other sites or applications (#340)
 - New webm-wasm plugin: create webm files using libwebm (compiled with
   WebAssembly) in the browser (#321)
 - Ability to change label of record indicator (#336)

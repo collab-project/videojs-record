@@ -70,6 +70,7 @@ const TestHelpers = {
                     audio: true,
                     video: false,
                     maxLength: 20,
+                    pip: false,
                     debug: true
                 }
             }

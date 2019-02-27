@@ -13,6 +13,7 @@ import DeviceButton from './controls/device-button';
 import CameraButton from './controls/camera-button';
 import RecordToggle from './controls/record-toggle';
 import RecordIndicator from './controls/record-indicator';
+import PictureInPictureToggle from './controls/picture-in-picture-toggle';
 
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
@@ -110,10 +111,21 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
+        // add picture-in-picture toggle button
+        player.pipToggle = new PictureInPictureToggle(player, options);
+        player.pipToggle.hide();
+
+        // picture-in-picture
+        if (this.pictureInPicture === true) {
+            // dfine Picture-in-Picture event handlers once
+            this.onEnterPiPHandler = this.onEnterPiP.bind(this);
+            this.onLeavePiPHandler = this.onLeavePiP.bind(this);
+        }
+
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
             let customUIElements = ['deviceButton', 'recordIndicator',
-                'cameraButton', 'recordToggle'];
+                'cameraButton', 'recordToggle', 'pipToggle'];
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
                     this.player[element].layoutExclude = true;
@@ -145,6 +157,7 @@ class Record extends Plugin {
         this.maxFileSize = recordOptions.maxFileSize;
         this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
         this.debug = recordOptions.debug;
+        this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
         this.autoMuteDevice = recordOptions.autoMuteDevice;
 
@@ -190,6 +203,7 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
+        this.player.controlBar.addChild(this.player.pipToggle);
 
         // get rid of unused controls
         if (this.player.controlBar.remainingTimeDisplay !== undefined) {
@@ -598,6 +612,21 @@ class Record extends Plugin {
             // hide the volume bar while it's muted
             this.displayVolumeControl(false);
 
+            // picture-in-picture
+            if (this.pictureInPicture === true) {
+                // show button
+                this.player.pipToggle.show();
+
+                // listen to and forward Picture-in-Picture events
+                this.mediaElement.removeEventListener('enterpictureinpicture',
+                    this.onEnterPiPHandler);
+                this.mediaElement.removeEventListener('leavepictureinpicture',
+                    this.onLeavePiPHandler);
+                this.mediaElement.addEventListener('enterpictureinpicture',
+                    this.onEnterPiPHandler);
+                this.mediaElement.addEventListener('leavepictureinpicture',
+                    this.onLeavePiPHandler);
+            }
             // load stream
             this.load(this.stream);
 
@@ -1583,6 +1612,24 @@ class Record extends Plugin {
             }
             this.player.controlBar.volumePanel.el().style.display = display;
         }
+    }
+
+    /**
+     * Invoked when entering picture-in-picture mode.
+     * @private
+     * @param {object} event - Event data.
+     */
+    onEnterPiP(event) {
+        this.player.trigger('enterPIP', event);
+    }
+
+    /**
+     * Invoked when leaving picture-in-picture mode.
+     * @private
+     * @param {object} event - Event data.
+     */
+    onLeavePiP(event) {
+        this.player.trigger('leavePIP');
     }
 }
 

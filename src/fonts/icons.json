@@ -28,5 +28,14 @@
   {
     "name": "photo-camera",
     "svg": "image/svg/production/ic_photo_camera_48px.svg"
-  }]
+  },
+  {
+    "name": "picture-in-picture-start",
+    "svg": "action/svg/production/ic_picture_in_picture_48px.svg"
+  },
+  {
+    "name": "picture-in-picture-stop",
+    "svg": "av/svg/production/ic_video_label_48px.svg"
+  }
+  ]
 }

@@ -597,4 +597,22 @@ describe('Record', () => {
             player.record().getDevice();
         });
     });
+
+    /** @test {Record} */
+    it('picture-in-picture', (done) => {
+        // create new player
+        let opts = {
+            plugins: {
+                record: {
+                    pip: true
+                }
+            }
+        };
+        player = TestHelpers.makeVideoOnlyPlayer(opts);
+
+        player.one('ready', () => {
+            expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            done();
+        });
+    });
 });

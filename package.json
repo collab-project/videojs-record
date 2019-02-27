@@ -77,6 +77,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
     "@mattiasbuelens/web-streams-polyfill": "^0.3.1",
