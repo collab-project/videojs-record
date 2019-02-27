@@ -594,7 +594,7 @@ Responsive layout
 The `fluid` option for video.js will resize the player according to the size
 of the window.
 
-Configure the player; enable the video.js `'fluid'` option:
+Configure the player; enable the video.js `fluid` option:
 
 ```javascript
 fluid: true
@@ -623,14 +623,14 @@ Picture-in-Picture
 Picture-in-Picture (PiP) allows users to record and playback in a floating window (always on top
 of other windows) while interacting with other sites or applications.
 
-Enable the PiP button with the `'pip'` option:
+Enable the PiP button with the `pip` option:
 
 ```javascript
 record: {
-    maxLength: 20,
+    pip: true
     debug: true,
     video: true,
-    pip: true
+    maxLength: 20
 }
 ```
 
