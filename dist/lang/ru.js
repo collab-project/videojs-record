@@ -3,5 +3,7 @@ videojs.addLanguage('ru', {
   "Record": "Запись",
   "Stop": "Стоп",
   "Image": "Изображение",
-  "Retry": "Повторить"
+  "Retry": "Повторить",
+  "REC": "REC",
+  "Picture in Picture": "Picture in Picture"
 });

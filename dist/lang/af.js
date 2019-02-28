@@ -3,5 +3,7 @@ videojs.addLanguage('af', {
   "Record": "Neem op",
   "Stop": "Stop",
   "Image": "Beeld",
-  "Retry": "Probeer weer"
+  "Retry": "Probeer weer",
+  "REC": "REC",
+  "Picture in Picture": "Picture in Picture"
 });

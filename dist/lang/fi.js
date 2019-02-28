@@ -3,5 +3,7 @@ videojs.addLanguage('fi', {
   "Record": "Nauhoita",
   "Stop": "Lopeta",
   "Image": "Kuva",
-  "Retry": "Uudestaan"
+  "Retry": "Uudestaan",
+  "REC": "REC",
+  "Picture in Picture": "Picture in Picture"
 });

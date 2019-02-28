@@ -3,5 +3,7 @@ videojs.addLanguage('nl', {
   "Record": "Opnemen",
   "Stop": "Stop",
   "Image": "Afbeelding",
-  "Retry": "Opnieuw"
+  "Retry": "Opnieuw",
+  "REC": "REC",
+  "Picture in Picture": "Picture in Picture"
 });

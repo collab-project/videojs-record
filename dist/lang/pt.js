@@ -3,5 +3,7 @@ videojs.addLanguage('pt', {
   "Record": "Gravar",
   "Stop": "Stop",
   "Image": "Imagem",
-  "Retry": "Fazer de novo"
+  "Retry": "Fazer de novo",
+  "REC": "REC",
+  "Picture in Picture": "Picture in Picture"
 });

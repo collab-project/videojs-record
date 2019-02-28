@@ -25,6 +25,7 @@
     "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' examples/lib/lamejs/worker-example/",
     "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' examples/lib/opus-recorder/",
     "update:vmsg": "cpx -v 'node_modules/vmsg/*.wasm' examples/lib/vmsg/",
+    "update:webm-wasm": "cpx -v 'node_modules/webm-wasm/dist/*.wasm' examples/lib/webm-wasm/",
     "docs": "jsdoc node_modules/videojs-record/src/js -c ./.jsdoc.json",
     "test": "echo No tests yet!",
     "watch": "npm-run-all -p watch:*",
@@ -43,10 +44,11 @@
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
     "ts-ebml": "^2.0.2",
     "video.js": "^7.4.1",
-    "videojs-record": "^3.4.3",
+    "videojs-record": "^3.5.0",
     "videojs-wavesurfer": "^2.7.0",
     "vmsg": "^0.3.5",
-    "webrtc-adapter": "^7.2.0"
+    "webm-wasm": "^0.4.1",
+    "webrtc-adapter": "^7.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -56,7 +58,7 @@
     "cpx": "^1.5.0",
     "del": "^3.0.0",
     "download-tarball": "^2.0.0",
-    "htmlhint": "^0.10.1",
+    "htmlhint": "^0.11.0",
     "in-publish": "^2.0.0",
     "jsdoc": "^3.5.5",
     "mime": "^2.4.0",

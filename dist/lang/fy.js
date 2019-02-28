@@ -3,5 +3,7 @@ videojs.addLanguage('fy', {
   "Record": "Opnimme",
   "Stop": "Stop",
   "Image": "Ôfbylding",
-  "Retry": "Op 'e nij"
+  "Retry": "Op 'e nij",
+  "REC": "REC",
+  "Picture in Picture": "Picture in Picture"
 });

@@ -1,5 +1,5 @@
 /*!
- * opus-recorder plugin for videojs-record
+ * webm-wasm plugin for videojs-record
  * @version 3.5.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
@@ -9,11 +9,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("opus-recorder", [], factory);
+		define("webm-wasm", [], factory);
 	else if(typeof exports === 'object')
-		exports["opus-recorder"] = factory();
+		exports["webm-wasm"] = factory();
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["opus-recorder"] = factory();
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["webm-wasm"] = factory();
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -98,7 +98,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/plugins/opus-recorder-plugin.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/plugins/webm-wasm-plugin.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -133,6 +133,17 @@ eval("function _classCallCheck(instance, Constructor) {\n  if (!(instance instan
 /***/ (function(module, exports) {
 
 eval("function _defineProperties(target, props) {\n  for (var i = 0; i < props.length; i++) {\n    var descriptor = props[i];\n    descriptor.enumerable = descriptor.enumerable || false;\n    descriptor.configurable = true;\n    if (\"value\" in descriptor) descriptor.writable = true;\n    Object.defineProperty(target, descriptor.key, descriptor);\n  }\n}\n\nfunction _createClass(Constructor, protoProps, staticProps) {\n  if (protoProps) _defineProperties(Constructor.prototype, protoProps);\n  if (staticProps) _defineProperties(Constructor, staticProps);\n  return Constructor;\n}\n\nmodule.exports = _createClass;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./node_modules/@babel/runtime/helpers/createClass.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/get.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/get.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\");\n\nvar superPropBase = __webpack_require__(/*! ./superPropBase */ \"./node_modules/@babel/runtime/helpers/superPropBase.js\");\n\nfunction _get(target, property, receiver) {\n  if (typeof Reflect !== \"undefined\" && Reflect.get) {\n    module.exports = _get = Reflect.get;\n  } else {\n    module.exports = _get = function _get(target, property, receiver) {\n      var base = superPropBase(target, property);\n      if (!base) return;\n      var desc = Object.getOwnPropertyDescriptor(base, property);\n\n      if (desc.get) {\n        return desc.get.call(receiver);\n      }\n\n      return desc.value;\n    };\n  }\n\n  return _get(target, property, receiver || target);\n}\n\nmodule.exports = _get;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./node_modules/@babel/runtime/helpers/get.js?");
 
 /***/ }),
 
@@ -191,6 +202,17 @@ eval("function _setPrototypeOf(o, p) {\n  module.exports = _setPrototypeOf = Obj
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/superPropBase.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/superPropBase.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\");\n\nfunction _superPropBase(object, property) {\n  while (!Object.prototype.hasOwnProperty.call(object, property)) {\n    object = getPrototypeOf(object);\n    if (object === null) break;\n  }\n\n  return object;\n}\n\nmodule.exports = _superPropBase;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./node_modules/@babel/runtime/helpers/superPropBase.js?");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/typeof.js":
 /*!*******************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
@@ -202,15 +224,15 @@ eval("function _typeof2(obj) { if (typeof Symbol === \"function\" && typeof Symb
 
 /***/ }),
 
-/***/ "./src/js/plugins/opus-recorder-plugin.js":
-/*!************************************************!*\
-  !*** ./src/js/plugins/opus-recorder-plugin.js ***!
-  \************************************************/
+/***/ "./src/js/plugins/webm-wasm-plugin.js":
+/*!********************************************!*\
+  !*** ./src/js/plugins/webm-wasm-plugin.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar RecordEngine = videojs.getComponent('RecordEngine');\n\nvar OpusRecorderEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(OpusRecorderEngine, _RecordEngine);\n\n  function OpusRecorderEngine() {\n    (0, _classCallCheck2.default)(this, OpusRecorderEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(OpusRecorderEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(OpusRecorderEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      this.audioType = 'audio/ogg';\n      this.engine = new Recorder({\n        leaveStreamOpen: true,\n        numberOfChannels: this.audioChannels,\n        bufferLength: this.bufferSize,\n        encoderSampleRate: this.sampleRate,\n        encoderPath: this.audioWorkerURL\n      });\n      this.engine.ondataavailable = this.onRecordingAvailable.bind(this);\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      var _this = this;\n\n      this.engine.start(this.audioSourceNode).then(function () {}).catch(function (err) {\n        _this.player().trigger('error', err);\n      });\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n    }\n  }, {\n    key: \"pause\",\n    value: function pause() {\n      this.engine.pause();\n    }\n  }, {\n    key: \"resume\",\n    value: function resume() {\n      this.engine.resume();\n    }\n  }, {\n    key: \"onRecordingAvailable\",\n    value: function onRecordingAvailable(data) {\n      var blob = new Blob([data], {\n        type: this.audioType\n      });\n      this.onStopRecording(blob);\n    }\n  }]);\n  return OpusRecorderEngine;\n}(RecordEngine);\n\nvideojs.OpusRecorderEngine = OpusRecorderEngine;\nvar _default = OpusRecorderEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/opus-recorder-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ \"./node_modules/@babel/runtime/helpers/get.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar RecordRTCEngine = videojs.getComponent('RecordRTCEngine');\n\nvar WebmWasmEngine = function (_RecordRTCEngine) {\n  (0, _inherits2.default)(WebmWasmEngine, _RecordRTCEngine);\n\n  function WebmWasmEngine() {\n    (0, _classCallCheck2.default)(this, WebmWasmEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebmWasmEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(WebmWasmEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.recorderType = RecordRTC.WebAssemblyRecorder;\n      this.workerPath = this.videoWorkerURL;\n      (0, _get2.default)((0, _getPrototypeOf2.default)(WebmWasmEngine.prototype), \"setup\", this).call(this, stream, mediaType, debug);\n    }\n  }]);\n  return WebmWasmEngine;\n}(RecordRTCEngine);\n\nvideojs.WebmWasmEngine = WebmWasmEngine;\nvar _default = WebmWasmEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/webm-wasm-plugin.js?");
 
 /***/ })
 
