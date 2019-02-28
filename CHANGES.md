@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.5.0 - unreleased
+3.5.0 - 2019/02/28
 ------------------
 
 - Support for Picture-in-Picture during playback and recording. Allows users to
