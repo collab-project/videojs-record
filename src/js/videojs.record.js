@@ -364,6 +364,14 @@ class Record extends Plugin {
                 this.surfer.liveMode = true;
                 this.surfer.surfer.microphone.paused = false;
 
+                // resume AudioContext when it's suspended by the browser, due to
+                // autoplay rules. Chrome warns with the following message:
+                // "The AudioContext was not allowed to start. It must be resumed
+                // (or created) after a user gesture on the page."
+                if (this.surfer.surfer.backend.ac.state === 'suspended') {
+                    this.surfer.surfer.backend.ac.resume();
+                }
+
                 // assign custom reloadBufferFunction for microphone plugin to
                 // obtain AudioBuffer chunks
                 if (this.audioBufferUpdate === true) {
