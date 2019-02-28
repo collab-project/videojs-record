@@ -490,7 +490,7 @@ describe('Record', () => {
             }, 2000);
         });
 
-        player.one(Event.TIMESTAMP, () => {
+        player.on(Event.TIMESTAMP, () => {
             total += 1;
 
             expect(player.currentTimestamp).toBeDefined();
