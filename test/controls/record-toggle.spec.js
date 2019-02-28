@@ -4,6 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
+import Event from '../../src/js/event.js';
 import RecordToggle from '../../src/js/controls/record-toggle.js';
 
 
@@ -38,7 +39,7 @@ describe('controls.RecordToggle', () => {
     it('can be disabled', (done) => {
         let toggle = new RecordToggle(player);
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             toggle.disable();
             expect(toggle.enabled_).toBeFalse();
 
@@ -51,14 +52,14 @@ describe('controls.RecordToggle', () => {
 
         expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
 
-        player.one('ready', () => {
-            player.trigger('startRecord');
+        player.one(Event.READY, () => {
+            player.trigger(Event.STARTRECORD);
 
             expect(toggle.hasClass('vjs-icon-record-start')).toBeFalse();
             expect(toggle.hasClass('vjs-icon-record-stop')).toBeTrue();
             expect(toggle.controlText_).toEqual('Stop');
 
-            player.trigger('stopRecord');
+            player.trigger(Event.STOPRECORD);
 
             expect(toggle.hasClass('vjs-icon-record-stop')).toBeFalse();
             expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
@@ -71,7 +72,7 @@ describe('controls.RecordToggle', () => {
     it('accept interaction', (done) => {
         let toggle = new RecordToggle(player);
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // start
             toggle.trigger('click');
             expect(player.record().isRecording()).toBeTrue();
@@ -79,7 +80,7 @@ describe('controls.RecordToggle', () => {
             done();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             player.record().getDevice();
         });
     });

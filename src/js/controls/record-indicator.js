@@ -5,6 +5,8 @@
 
 import videojs from 'video.js';
 
+import Event from '../event';
+
 const Component = videojs.getComponent('Component');
 
 /**
@@ -48,16 +50,16 @@ class RecordIndicator extends Component {
      * Enable event handlers.
      */
     enable() {
-        this.on(this.player_, 'startRecord', this.show);
-        this.on(this.player_, 'stopRecord', this.hide);
+        this.on(this.player_, Event.STARTRECORD, this.show);
+        this.on(this.player_, Event.STOPRECORD, this.hide);
     }
 
     /**
      * Disable event handlers.
      */
     disable() {
-        this.off(this.player_, 'startRecord', this.show);
-        this.off(this.player_, 'stopRecord', this.hide);
+        this.off(this.player_, Event.STARTRECORD, this.show);
+        this.off(this.player_, Event.STOPRECORD, this.hide);
     }
 
     /**

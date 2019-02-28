@@ -4,6 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
+import Event from '../../src/js/event.js';
 import DeviceButton from '../../src/js/controls/device-button.js';
 
 
@@ -32,11 +33,11 @@ describe('controls.DeviceButton', () => {
     it('accepts interaction', (done) => {
         let button = new DeviceButton(player);
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             done();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             button.trigger('click');
 
             expect(player.record().mediaType).toBeDefined();

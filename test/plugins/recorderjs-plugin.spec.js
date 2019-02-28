@@ -4,6 +4,8 @@
 
 import TestHelpers from '../test-helpers.js';
 
+import Event from '../../src/js/event.js';
+
 // registers the plugin
 import RecorderjsEngine from '../../src/js/plugins/recorderjs-plugin.js';
 import {RECORDERJS} from '../../src/js/engine/record-engine.js';
@@ -30,14 +32,13 @@ describe('plugins.recorderjs-plugin', () => {
 
     /** @test {RecorderjsEngine} */
     it('can run as an audio-only plugin', (done) => {
-
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             setTimeout(() => {
                 done();
             }, 2000);
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });

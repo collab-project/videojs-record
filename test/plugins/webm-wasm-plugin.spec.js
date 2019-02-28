@@ -4,6 +4,8 @@
 
 import TestHelpers from '../test-helpers.js';
 
+import Event from '../../src/js/event.js';
+
 // registers the plugin
 import {RecordRTCEngine} from '../../src/js/engine/record-rtc.js';
 import WebmWasmEngine from '../../src/js/plugins/webm-wasm-plugin.js';
@@ -23,7 +25,7 @@ describe('plugins.webm-wasm-plugin', () => {
         // create video-only player with webm-wasm plugin
         player = TestHelpers.makeVideoOnlyPluginPlayer(WEBMWASM);
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -32,19 +34,19 @@ describe('plugins.webm-wasm-plugin', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 4000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some audio
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });

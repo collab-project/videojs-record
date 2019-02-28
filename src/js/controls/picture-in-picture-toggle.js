@@ -5,6 +5,8 @@
 
 import videojs from 'video.js';
 
+import Event from '../event';
+
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
 
@@ -26,8 +28,8 @@ class PictureInPictureToggle extends Button {
         super(player, options);
 
         // listen for events
-        this.on(this.player_, 'enterPIP', this.onStart);
-        this.on(this.player_, 'leavePIP', this.onStop);
+        this.on(this.player_, Event.ENTERPIP, this.onStart);
+        this.on(this.player_, Event.LEAVEPIP, this.onStop);
     }
 
     /**
@@ -79,7 +81,7 @@ class PictureInPictureToggle extends Button {
             }
         } catch (error) {
             // notify listeners
-            this.player_.trigger('error', error);
+            this.player_.trigger(Event.ERROR, error);
         } finally {
             // switch completed
             this.enable();

@@ -4,6 +4,8 @@
 
 import TestHelpers from '../test-helpers.js';
 
+import Event from '../../src/js/event.js';
+
 // registers the plugin
 import VmsgEngine from '../../src/js/plugins/vmsg-plugin.js';
 import {VMSG} from '../../src/js/engine/record-engine.js';
@@ -25,7 +27,7 @@ describe('plugins.vmsg-plugin', () => {
         // create audio-only player with vmsg plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(VMSG);
 
-        player.one('finishConvert', () => {
+        player.one(Event.FINISHCONVERT, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -34,19 +36,19 @@ describe('plugins.vmsg-plugin', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 4000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some audio
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
