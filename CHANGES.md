@@ -11,6 +11,7 @@ videojs-record changelog
   WebAssembly) in the browser (#321)
 - Ability to change label of record indicator (#336)
 - Move event types to separate class (#341)
+- Fix suspended wavesurfer.js `AudioContext` in Chrome (#335)
 
 **Backwards-incompatible change** (when upgrading from a previous version):
 
@@ -48,7 +49,7 @@ videojs-record changelog
 - Bump required version for recordrtc to 5.5.3 for Safari video recording
   support (#320)
 - Add example for changing video source (#223)
-- Add ability to permanently hide custom UI elements (e.g. `recordToggle`) 
+- Add ability to permanently hide custom UI elements (e.g. `recordToggle`)
 
 
 3.3.0 - 2019/01/10
