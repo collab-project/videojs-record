@@ -16,8 +16,6 @@ Event.DURATIONCHANGE = 'durationchange';
 Event.ENDED = 'ended';
 Event.PAUSE = 'pause';
 Event.PLAY = 'play';
-Event.ENTERPIP = 'enterPIP';
-Event.LEAVEPIP = 'leavePIP';
 
 // videojs-record
 Event.DEVICE_READY = 'deviceReady';
@@ -33,6 +31,8 @@ Event.ENUMERATE_ERROR = 'enumerateError';
 Event.AUDIO_BUFFER_UPDATE = 'audioBufferUpdate';
 Event.AUDIO_OUTPUT_READY = 'audioOutputReady';
 Event.FINISH_CONVERT = 'finishConvert';
+Event.ENTER_PIP = 'enterPIP';
+Event.LEAVE_PIP = 'leavePIP';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';
