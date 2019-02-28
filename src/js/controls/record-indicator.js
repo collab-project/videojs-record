@@ -5,6 +5,8 @@
 
 import videojs from 'video.js';
 
+import Event from '../event';
+
 const Component = videojs.getComponent('Component');
 
 /**
@@ -34,26 +36,30 @@ class RecordIndicator extends Component {
      *         The dom element that gets created.
      */
     createEl() {
-        return super.createEl('div', {
+        let props = {
             className: 'vjs-record-indicator vjs-control',
             dir: 'ltr'
-        });
+        };
+        let attr = {
+            'data-label': this.localize('REC')
+        };
+        return super.createEl('div', props, attr);
     }
 
     /**
      * Enable event handlers.
      */
     enable() {
-        this.on(this.player_, 'startRecord', this.show);
-        this.on(this.player_, 'stopRecord', this.hide);
+        this.on(this.player_, Event.START_RECORD, this.show);
+        this.on(this.player_, Event.STOP_RECORD, this.hide);
     }
 
     /**
      * Disable event handlers.
      */
     disable() {
-        this.off(this.player_, 'startRecord', this.show);
-        this.off(this.player_, 'stopRecord', this.hide);
+        this.off(this.player_, Event.START_RECORD, this.show);
+        this.off(this.player_, Event.STOP_RECORD, this.hide);
     }
 
     /**

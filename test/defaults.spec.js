@@ -26,6 +26,7 @@ describe('pluginDefaultOptions', () => {
             frameWidth: 320,
             frameHeight: 240,
             debug: false,
+            pip: false,
             autoMuteDevice: false,
             videoEngine: 'recordrtc',
             videoMimeType: 'video/webm',

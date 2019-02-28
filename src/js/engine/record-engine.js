@@ -5,6 +5,7 @@
 
 import videojs from 'video.js';
 
+import Event from '../event';
 import {downloadBlob, addFileInfo} from '../utils/file-util';
 
 const Component = videojs.getComponent('Component');
@@ -99,7 +100,7 @@ class RecordEngine extends Component {
         this.dispose();
 
         // notify listeners
-        this.trigger('recordComplete');
+        this.trigger(Event.RECORD_COMPLETE);
     }
 
     /**

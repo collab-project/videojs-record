@@ -33,6 +33,8 @@ const pluginDefaultOptions = {
     frameHeight: 240,
     // Enables console logging for debugging purposes.
     debug: false,
+    // Enable Picture-in-Picture support.
+    pip: false,
     // Turn off the camera/mic (and light) when audio and/or video recording
     // stops, and turns them on again when you resume recording.
     autoMuteDevice: false,

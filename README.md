@@ -35,6 +35,7 @@ Table of Contents
 - [Controlling the input and output devices](#controlling-the-input-and-output-devices)
 - [Responsive layout](#responsive-layout)
 - [Customizing controls](#customizing-controls)
+- [Picture-in-Picture](#picture-in-picture)
 - [Other audio libraries](#other-audio-libraries)
 - [Other video libraries](#other-video-libraries)
 - [Localization](#localization)
@@ -249,6 +250,7 @@ The available options for this plugin are:
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
 | `screen` | boolean or object | `false` | Screen capture without audio. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
+| `pip` | boolean | `false` | Enables [Picture-in-Picture support](#picture-in-picture). Enable to add Picture-in-Picture button to controlbar. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `maxFileSize` | float | `0` | Maximum file size of a recorded clip (in bytes). Recording will stop when the limit is reached. Default is 0 (no file size limit). Can only be used when `timeSlice` option is also enabled. |
 | `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
@@ -328,7 +330,8 @@ player.on('startRecord', function() {
 | `enumerateError` | An error occurred after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
 | `audioBufferUpdate` | Get real-time `AudioBuffer` instances from microphone. Fires continuously during audio-only recording (until recording is stopped or paused) when the `audioBufferUpdate` option is enabled. |
-
+| `enterPIP` | Entered [Picture-in-Picture](#picture-in-picture) mode. |
+| `leavePIP` | Left [Picture-in-Picture](#picture-in-picture) mode. |
 
 Media constraints
 -----------------
@@ -591,7 +594,7 @@ Responsive layout
 The `fluid` option for video.js will resize the player according to the size
 of the window.
 
-Configure the player; enable the video.js `'fluid'` option:
+Configure the player; enable the video.js `fluid` option:
 
 ```javascript
 fluid: true
@@ -612,7 +615,28 @@ controlBar: {
 ```
 
 Custom interface elements for this library that can be hidden are: `deviceButton`,
-`recordIndicator`, `cameraButton` and `recordToggle`.
+`recordIndicator`, `cameraButton`, `pipToggle` and `recordToggle`.
+
+Picture-in-Picture
+------------------
+
+Picture-in-Picture (PiP) allows users to record and playback in a floating window (always on top
+of other windows) while interacting with other sites or applications.
+
+Enable the PiP button with the `pip` option:
+
+```javascript
+record: {
+    pip: true
+    debug: true,
+    video: true,
+    maxLength: 20
+}
+```
+
+Check out the `picture-in-picture` example
+([demo](https://collab-project.github.io/videojs-record/examples/picture-in-picture.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/picture-in-picture.html)).
 
 Other audio libraries
 ---------------------
