@@ -4,14 +4,13 @@
 
 import TestHelpers from './test-helpers.js';
 
-import { isFirefox, detectBrowser } from '../src/js/utils/detect-browser.js';
+import Event from '../src/js/event.js';
+import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser.js';
 
 // registers the plugin
 import Record from '../src/js/videojs.record.js';
 
-
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-
 
 /** @test {Record} */
 describe('Record', () => {
@@ -28,7 +27,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             expect(player.el().nodeName).toEqual('DIV');
             expect(player.hasClass('vjs-record')).toBeTrue();
             expect(player.on).toBeFunction();
@@ -53,7 +52,7 @@ describe('Record', () => {
         // create video-only plugin
         player = TestHelpers.makeVideoOnlyPlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -62,7 +61,7 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // start recording for few seconds
             player.record().start();
             setTimeout(() => {
@@ -71,7 +70,7 @@ describe('Record', () => {
             }, 2000);
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // correct device button icon
             expect(player.deviceButton.buildCSSClass().endsWith(
                 'video-perm')).toBeTrue();
@@ -90,7 +89,7 @@ describe('Record', () => {
         player.recordCanvas.el().firstChild.videoWidth = 320;
         player.recordCanvas.el().firstChild.videoHeight = 240;
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             // received a base-64 encoded PNG string
             expect(player.recordedData.startsWith(
                 'data:image/png;base64,i')).toBeTrue();
@@ -100,12 +99,12 @@ describe('Record', () => {
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // create snapshot
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // correct device button icon
             expect(player.deviceButton.buildCSSClass().endsWith(
                 'video-perm')).toBeTrue();
@@ -120,7 +119,7 @@ describe('Record', () => {
         // create audio-only plugin
         player = TestHelpers.makeAudioOnlyPlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -129,19 +128,19 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some audio
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // correct device button icon
             expect(player.deviceButton.buildCSSClass().endsWith(
                 'audio-perm')).toBeTrue();
@@ -156,7 +155,7 @@ describe('Record', () => {
         // create audio-video plugin
         player = TestHelpers.makeAudioVideoPlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             let data = player.recordedData;
             expect(data instanceof Blob).toBeTruthy();
 
@@ -165,19 +164,19 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some audio+video
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // correct device button icon
             expect(player.deviceButton.buildCSSClass().endsWith(
                 'av-perm')).toBeTrue();
@@ -198,7 +197,7 @@ describe('Record', () => {
         let browser = detectBrowser();
         if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 72) ||
             browser.browser === 'edge') {
-            player.one('finishRecord', () => {
+            player.one(Event.FINISHRECORD, () => {
                 // received a blob file
                 expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -207,7 +206,7 @@ describe('Record', () => {
                 setTimeout(done, 1000);
             });
 
-            player.one('deviceReady', () => {
+            player.one(Event.DEVICEREADY, () => {
                 // start recording for few seconds
                 player.record().start();
 
@@ -217,7 +216,7 @@ describe('Record', () => {
                 }, 2000);
             });
 
-            player.one('ready', () => {
+            player.one(Event.READY, () => {
                 // start device
                 player.record().getDevice();
             });
@@ -231,7 +230,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             expect(player.record().isDestroyed()).toBeFalse();
             player.record().destroy();
 
@@ -244,7 +243,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // reset
             player.record().reset();
 
@@ -259,12 +258,12 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('enumerateReady', () => {
+        player.one(Event.ENUMERATEREADY, () => {
             expect(player.record().devices).toBeNonEmptyArray();
             done();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             player.record().enumerateDevices();
         });
     });
@@ -280,7 +279,7 @@ describe('Record', () => {
             }
         });
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             let browser = detectBrowser();
             if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 70)) {
                 expect(player.record().stream.getVideoTracks()[0].enabled).toBeFalse();
@@ -291,19 +290,19 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             player.record().getDevice();
         });
     });
@@ -313,17 +312,17 @@ describe('Record', () => {
         // create new audio player
         player = TestHelpers.makeAudioOnlyPlayer();
 
-        player.one('error', (e) => {
-            expect(e.type).toEqual('error');
+        player.one(Event.ERROR, (e) => {
+            expect(e.type).toEqual(Event.ERROR);
 
             done();
         });
 
-        player.one('enumerateReady', () => {
+        player.one(Event.ENUMERATEREADY, () => {
             player.record().setAudioOutput('fakeId');
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             player.record().enumerateDevices();
         });
     });
@@ -333,7 +332,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             player.record().saveAs({'video': 'name-of-video-file'});
 
             // wait till it's loaded before destroying
@@ -341,19 +340,19 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -364,7 +363,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             expect(player.record().getDuration()).toBeWithinRange(1.5, 2.5);
             expect(player.record().getCurrentTime()).toEqual(0);
 
@@ -373,14 +372,14 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             expect(player.record().getDuration()).toEqual(0);
             expect(player.record().getCurrentTime()).toEqual(0);
 
@@ -388,7 +387,7 @@ describe('Record', () => {
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -399,7 +398,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             expect(player.record().getDuration()).toBeWithinRange(3.9, 4.5);
             expect(player.record().getCurrentTime()).toEqual(0);
 
@@ -408,7 +407,7 @@ describe('Record', () => {
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // pause recording after few seconds
             setTimeout(() => {
                 player.record().pause();
@@ -428,12 +427,12 @@ describe('Record', () => {
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -444,25 +443,25 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             // wait till it's loaded before destroying
             // (XXX: create new event for this)
             setTimeout(done, 1000);
         });
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             // stop device after few seconds
             setTimeout(() => {
                 player.record().stopDevice();
             }, 2000);
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -481,9 +480,9 @@ describe('Record', () => {
             }
         });
 
-        player.one('finishRecord', () => {
+        player.one(Event.FINISHRECORD, () => {
             // kill listener
-            player.off('timestamp');
+            player.off(Event.TIMESTAMP);
 
             // wait few seconds
             setTimeout(() => {
@@ -491,7 +490,7 @@ describe('Record', () => {
             }, 2000);
         });
 
-        player.on('timestamp', () => {
+        player.on(Event.TIMESTAMP, () => {
             total += 1;
 
             expect(player.currentTimestamp).toBeDefined();
@@ -502,12 +501,12 @@ describe('Record', () => {
             }
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             // record some
             player.record().start();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -518,7 +517,7 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makePlayer();
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             expect(player.options_.plugins.record.video).toBeFalse();
 
             let newOptions = {
@@ -546,7 +545,7 @@ describe('Record', () => {
             }
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
 
@@ -562,12 +561,12 @@ describe('Record', () => {
         // create new player
         player = TestHelpers.makeAudioOnlyPluginPlayer('foo');
 
-        player.one('error', (e) => {
-            expect(e.type).toEqual('error');
+        player.one(Event.ERROR, (e) => {
+            expect(e.type).toEqual(Event.ERROR);
             done();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -585,14 +584,14 @@ describe('Record', () => {
             }
         });
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             expect(player.options_.plugins.record.audioMimeType).toEqual(
                 mtype);
             expect(player.record().audioMimeType).toEqual(mtype);
             done();
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
@@ -610,7 +609,7 @@ describe('Record', () => {
         };
         player = TestHelpers.makeVideoOnlyPlayer(opts);
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
             done();
         });
