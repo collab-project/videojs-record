@@ -33,7 +33,7 @@ describe('controls.DeviceButton', () => {
     it('accepts interaction', (done) => {
         let button = new DeviceButton(player);
 
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             done();
         });
 

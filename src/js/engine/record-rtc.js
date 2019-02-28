@@ -181,7 +181,7 @@ class RecordRTCEngine extends RecordEngine {
             this.addFileInfo(this.recordedData);
 
             // notify listeners
-            this.trigger(Event.RECORDCOMPLETE);
+            this.trigger(Event.RECORD_COMPLETE);
         });
     }
 }

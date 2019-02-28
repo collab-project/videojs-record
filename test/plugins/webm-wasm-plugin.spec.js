@@ -25,7 +25,7 @@ describe('plugins.webm-wasm-plugin', () => {
         // create video-only player with webm-wasm plugin
         player = TestHelpers.makeVideoOnlyPluginPlayer(WEBMWASM);
 
-        player.one(Event.FINISHRECORD, () => {
+        player.one(Event.FINISH_RECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -34,14 +34,14 @@ describe('plugins.webm-wasm-plugin', () => {
             setTimeout(done, 1000);
         });
 
-        player.one(Event.STARTRECORD, () => {
+        player.one(Event.START_RECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 4000);
         });
 
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             // record some audio
             player.record().start();
         });

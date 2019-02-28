@@ -97,7 +97,7 @@ class RecordEngine extends Component {
         this.dispose();
 
         // notify listeners
-        this.trigger(Event.RECORDCOMPLETE);
+        this.trigger(Event.RECORD_COMPLETE);
     }
 
     /**

@@ -33,8 +33,8 @@ class RecordToggle extends Button {
     enable() {
         super.enable();
 
-        this.on(this.player_, Event.STARTRECORD, this.onStart);
-        this.on(this.player_, Event.STOPRECORD, this.onStop);
+        this.on(this.player_, Event.START_RECORD, this.onStart);
+        this.on(this.player_, Event.STOP_RECORD, this.onStop);
     }
 
     /**
@@ -43,8 +43,8 @@ class RecordToggle extends Button {
     disable() {
         super.disable();
 
-        this.off(this.player_, Event.STARTRECORD, this.onStart);
-        this.off(this.player_, Event.STOPRECORD, this.onStop);
+        this.off(this.player_, Event.START_RECORD, this.onStart);
+        this.off(this.player_, Event.STOP_RECORD, this.onStop);
     }
 
     /**

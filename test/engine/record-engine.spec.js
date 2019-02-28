@@ -52,7 +52,7 @@ describe('engine.record-engine', () => {
 
     it('trigger recordComplete event', (done) => {
         let engine = new RecordEngine(player, {});
-        engine.on(Event.RECORDCOMPLETE, () => {
+        engine.on(Event.RECORD_COMPLETE, () => {
             done();
         });
 
@@ -62,7 +62,7 @@ describe('engine.record-engine', () => {
 
     it('add file info', (done) => {
         let engine = new RecordEngine(player, {});
-        engine.on(Event.RECORDCOMPLETE, () => {
+        engine.on(Event.RECORD_COMPLETE, () => {
             let fileName = engine.recordedData.lastModified + '.ogg';
             expect(engine.recordedData.name).toEqual(fileName);
 
@@ -79,7 +79,7 @@ describe('engine.record-engine', () => {
 
     it('save as', (done) => {
         let engine = new RecordEngine(player, {});
-        engine.on(Event.RECORDCOMPLETE, () => {
+        engine.on(Event.RECORD_COMPLETE, () => {
             let fileName = 'foo';
             engine.saveAs({'audio': fileName});
 

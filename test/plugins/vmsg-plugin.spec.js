@@ -27,7 +27,7 @@ describe('plugins.vmsg-plugin', () => {
         // create audio-only player with vmsg plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(VMSG);
 
-        player.one(Event.FINISHCONVERT, () => {
+        player.one(Event.FINISH_CONVERT, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -36,14 +36,14 @@ describe('plugins.vmsg-plugin', () => {
             setTimeout(done, 1000);
         });
 
-        player.one(Event.STARTRECORD, () => {
+        player.one(Event.START_RECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 4000);
         });
 
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             // record some audio
             player.record().start();
         });

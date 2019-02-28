@@ -53,7 +53,7 @@ describe('controls.CameraButton', () => {
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        player.one(Event.STARTRECORD, () => {
+        player.one(Event.START_RECORD, () => {
             expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
             expect(button.hasClass('vjs-icon-replay')).toBeTrue();
             expect(button.controlText_).toEqual('Retry');
@@ -65,14 +65,14 @@ describe('controls.CameraButton', () => {
                 done();
             }, 2000);
         });
-        player.one(Event.STOPRECORD, () => {
+        player.one(Event.STOP_RECORD, () => {
             expect(button.hasClass('vjs-icon-replay')).toBeFalse();
             expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
             expect(button.controlText_).toEqual('Image');
 
             done();
         });
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             button.trigger('click');
         });
 

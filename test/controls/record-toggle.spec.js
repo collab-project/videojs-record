@@ -53,13 +53,13 @@ describe('controls.RecordToggle', () => {
         expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
 
         player.one(Event.READY, () => {
-            player.trigger(Event.STARTRECORD);
+            player.trigger(Event.START_RECORD);
 
             expect(toggle.hasClass('vjs-icon-record-start')).toBeFalse();
             expect(toggle.hasClass('vjs-icon-record-stop')).toBeTrue();
             expect(toggle.controlText_).toEqual('Stop');
 
-            player.trigger(Event.STOPRECORD);
+            player.trigger(Event.STOP_RECORD);
 
             expect(toggle.hasClass('vjs-icon-record-stop')).toBeFalse();
             expect(toggle.hasClass('vjs-icon-record-start')).toBeTrue();
@@ -72,7 +72,7 @@ describe('controls.RecordToggle', () => {
     it('accept interaction', (done) => {
         let toggle = new RecordToggle(player);
 
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             // start
             toggle.trigger('click');
             expect(player.record().isRecording()).toBeTrue();

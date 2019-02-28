@@ -24,7 +24,7 @@ describe('plugins.libvorbis-plugin', () => {
         // create audio-only player with libvorbis.js plugin
         player = TestHelpers.makeAudioOnlyPluginPlayer(LIBVORBISJS);
 
-        player.one(Event.FINISHRECORD, () => {
+        player.one(Event.FINISH_RECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
 
@@ -33,14 +33,14 @@ describe('plugins.libvorbis-plugin', () => {
             setTimeout(done, 1000);
         });
 
-        player.one(Event.STARTRECORD, () => {
+        player.one(Event.START_RECORD, () => {
             // stop recording after few seconds
             setTimeout(() => {
                 player.record().stop();
             }, 2000);
         });
 
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             // record some audio
             player.record().start();
         });

@@ -20,19 +20,19 @@ Event.ENTERPIP = 'enterPIP';
 Event.LEAVEPIP = 'leavePIP';
 
 // videojs-record
-Event.DEVICEREADY = 'deviceReady';
-Event.DEVICEERROR = 'deviceError';
-Event.STARTRECORD = 'startRecord';
-Event.STOPRECORD = 'stopRecord';
-Event.FINISHRECORD = 'finishRecord';
-Event.RECORDCOMPLETE = 'recordComplete';
-Event.PROGRESSRECORD = 'progressRecord';
+Event.DEVICE_READY = 'deviceReady';
+Event.DEVICE_ERROR = 'deviceError';
+Event.START_RECORD = 'startRecord';
+Event.STOP_RECORD = 'stopRecord';
+Event.FINISH_RECORD = 'finishRecord';
+Event.RECORD_COMPLETE = 'recordComplete';
+Event.PROGRESS_RECORD = 'progressRecord';
 Event.TIMESTAMP = 'timestamp';
-Event.ENUMERATEREADY = 'enumerateReady';
-Event.ENUMERATEERROR = 'enumerateError';
-Event.AUDIOBUFFERUPDATE = 'audioBufferUpdate';
-Event.AUDIOOUTPUTREADY = 'audioOutputReady';
-Event.FINISHCONVERT = 'finishConvert';
+Event.ENUMERATE_READY = 'enumerateReady';
+Event.ENUMERATE_ERROR = 'enumerateError';
+Event.AUDIO_BUFFER_UPDATE = 'audioBufferUpdate';
+Event.AUDIO_OUTPUT_READY = 'audioOutputReady';
+Event.FINISH_CONVERT = 'finishConvert';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';

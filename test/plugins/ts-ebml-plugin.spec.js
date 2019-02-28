@@ -26,12 +26,12 @@ describe('plugins.ts-ebml-plugin', () => {
 
     /** @test {TsEBMLEngine} */
     it('converts', (done) => {
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             let req = new Request(TestHelpers.TEST_WEBM);
             fetch(req).then((response) => {
                 return response.blob();
             }).then((blob) => {
-                player.one(Event.FINISHCONVERT, () => {
+                player.one(Event.FINISH_CONVERT, () => {
                     expect(player.convertedData instanceof Blob).toBeTruthy();
                     done();
                 });

@@ -346,15 +346,15 @@ class Record extends Plugin {
                     video: false
                 };
                 // remove existing microphone listeners
-                this.surfer.surfer.microphone.un(Event.DEVICEREADY,
+                this.surfer.surfer.microphone.un(Event.DEVICE_READY,
                     this.deviceReadyCallback);
-                this.surfer.surfer.microphone.un(Event.DEVICEERROR,
+                this.surfer.surfer.microphone.un(Event.DEVICE_ERROR,
                     this.deviceErrorCallback);
 
                 // setup new microphone listeners
-                this.surfer.surfer.microphone.on(Event.DEVICEREADY,
+                this.surfer.surfer.microphone.on(Event.DEVICE_READY,
                     this.deviceReadyCallback);
-                this.surfer.surfer.microphone.on(Event.DEVICEERROR,
+                this.surfer.surfer.microphone.on(Event.DEVICE_ERROR,
                     this.deviceErrorCallback);
 
                 // disable existing playback events
@@ -375,7 +375,7 @@ class Record extends Plugin {
 
                             // store data and notify others
                             this.player.recordedData = event.inputBuffer;
-                            this.player.trigger(Event.AUDIOBUFFERUPDATE);
+                            this.player.trigger(Event.AUDIO_BUFFER_UPDATE);
                         }
                     };
                 }
@@ -514,7 +514,7 @@ class Record extends Plugin {
             }
 
             // listen for events
-            this.engine.on(Event.RECORDCOMPLETE, this.engineStopCallback);
+            this.engine.on(Event.RECORD_COMPLETE, this.engineStopCallback);
 
             // audio settings
             this.engine.bufferSize = this.audioBufferSize;
@@ -638,11 +638,11 @@ class Record extends Plugin {
                 this.mediaElement.play();
 
                 // forward to listeners
-                this.player.trigger(Event.DEVICEREADY);
+                this.player.trigger(Event.DEVICE_READY);
             });
         } else {
             // forward to listeners
-            this.player.trigger(Event.DEVICEREADY);
+            this.player.trigger(Event.DEVICE_READY);
         }
     }
 
@@ -660,7 +660,7 @@ class Record extends Plugin {
             this.player.deviceErrorCode = code;
 
             // forward error to player
-            this.player.trigger(Event.DEVICEERROR);
+            this.player.trigger(Event.DEVICE_ERROR);
         }
     }
 
@@ -731,7 +731,7 @@ class Record extends Plugin {
                     this.createSnapshot();
 
                     // notify UI
-                    this.player.trigger(Event.STARTRECORD);
+                    this.player.trigger(Event.START_RECORD);
                     break;
 
                 case VIDEO_ONLY:
@@ -777,7 +777,7 @@ class Record extends Plugin {
         this.engine.start();
 
         // notify UI
-        this.player.trigger(Event.STARTRECORD);
+        this.player.trigger(Event.START_RECORD);
     }
 
     /**
@@ -790,7 +790,7 @@ class Record extends Plugin {
 
             if (this.getRecordType() !== IMAGE_ONLY) {
                 // notify UI
-                this.player.trigger(Event.STOPRECORD);
+                this.player.trigger(Event.STOP_RECORD);
 
                 // stop countdown
                 this.player.clearInterval(this.countDown);
@@ -807,7 +807,7 @@ class Record extends Plugin {
             } else {
                 if (this.player.recordedData) {
                     // notify listeners that image data is (already) available
-                    this.player.trigger(Event.FINISHRECORD);
+                    this.player.trigger(Event.FINISH_RECORD);
                 }
             }
         }
@@ -820,7 +820,7 @@ class Record extends Plugin {
         if (this.isRecording()) {
             // stop stream once recorded data is available,
             // otherwise it'll break recording
-            this.player.one(Event.FINISHRECORD, this.stopStream.bind(this));
+            this.player.one(Event.FINISH_RECORD, this.stopStream.bind(this));
 
             // stop recording
             this.stop();
@@ -894,7 +894,7 @@ class Record extends Plugin {
         }
 
         // notify listeners that data is available
-        this.player.trigger(Event.FINISHRECORD);
+        this.player.trigger(Event.FINISH_RECORD);
 
         // skip loading when player is destroyed after finishRecord event
         if (this.isDestroyed()) {
@@ -1017,7 +1017,7 @@ class Record extends Plugin {
             this.setCurrentTime(currentTime, duration);
 
             // notify listeners
-            this.player.trigger(Event.PROGRESSRECORD);
+            this.player.trigger(Event.PROGRESS_RECORD);
         }
     }
 
@@ -1179,7 +1179,7 @@ class Record extends Plugin {
         if (this.engine) {
             this.engine.dispose();
             this.engine.destroy();
-            this.engine.off(Event.RECORDCOMPLETE, this.engineStopCallback);
+            this.engine.off(Event.RECORD_COMPLETE, this.engineStopCallback);
         }
 
         // stop recording and device
@@ -1216,7 +1216,7 @@ class Record extends Plugin {
         // prevent callbacks if recording is in progress
         if (this.engine) {
             this.engine.dispose();
-            this.engine.off(Event.RECORDCOMPLETE, this.engineStopCallback);
+            this.engine.off(Event.RECORD_COMPLETE, this.engineStopCallback);
         }
 
         // stop recording and device
@@ -1535,7 +1535,7 @@ class Record extends Plugin {
     enumerateDevices() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
             this.player.enumerateErrorCode = 'enumerateDevices() not supported.';
-            this.player.trigger(Event.ENUMERATEERROR);
+            this.player.trigger(Event.ENUMERATE_ERROR);
             return;
         }
 
@@ -1547,10 +1547,10 @@ class Record extends Plugin {
             });
 
             // notify listeners
-            this.player.trigger(Event.ENUMERATEREADY);
+            this.player.trigger(Event.ENUMERATE_READY);
         }).catch((err) => {
             this.player.enumerateErrorCode = err;
-            this.player.trigger(Event.ENUMERATEERROR);
+            this.player.trigger(Event.ENUMERATE_ERROR);
         });
     }
 
@@ -1567,7 +1567,7 @@ class Record extends Plugin {
                 // use wavesurfer
                 this.surfer.surfer.setSinkId(deviceId).then((result) => {
                     // notify listeners
-                    this.player.trigger(Event.AUDIOOUTPUTREADY);
+                    this.player.trigger(Event.AUDIO_OUTPUT_READY);
                     return;
                 }).catch((err) => {
                     errorMessage = err;
@@ -1580,7 +1580,7 @@ class Record extends Plugin {
                     if (typeof element.sinkId !== 'undefined') {
                         element.setSinkId(deviceId).then((result) => {
                             // notify listeners
-                            this.player.trigger(Event.AUDIOOUTPUTREADY);
+                            this.player.trigger(Event.AUDIO_OUTPUT_READY);
                             return;
                         }).catch((err) => {
                             errorMessage = err;

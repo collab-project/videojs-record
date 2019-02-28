@@ -50,16 +50,16 @@ class RecordIndicator extends Component {
      * Enable event handlers.
      */
     enable() {
-        this.on(this.player_, Event.STARTRECORD, this.show);
-        this.on(this.player_, Event.STOPRECORD, this.hide);
+        this.on(this.player_, Event.START_RECORD, this.show);
+        this.on(this.player_, Event.STOP_RECORD, this.hide);
     }
 
     /**
      * Disable event handlers.
      */
     disable() {
-        this.off(this.player_, Event.STARTRECORD, this.show);
-        this.off(this.player_, Event.STOPRECORD, this.hide);
+        this.off(this.player_, Event.START_RECORD, this.show);
+        this.off(this.player_, Event.STOP_RECORD, this.hide);
     }
 
     /**

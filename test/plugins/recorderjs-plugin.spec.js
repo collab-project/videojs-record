@@ -32,7 +32,7 @@ describe('plugins.recorderjs-plugin', () => {
 
     /** @test {RecorderjsEngine} */
     it('can run as an audio-only plugin', (done) => {
-        player.one(Event.DEVICEREADY, () => {
+        player.one(Event.DEVICE_READY, () => {
             setTimeout(() => {
                 done();
             }, 2000);
