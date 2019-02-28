@@ -28,8 +28,8 @@ class PictureInPictureToggle extends Button {
         super(player, options);
 
         // listen for events
-        this.on(this.player_, Event.ENTERPIP, this.onStart);
-        this.on(this.player_, Event.LEAVEPIP, this.onStop);
+        this.on(this.player_, Event.ENTER_PIP, this.onStart);
+        this.on(this.player_, Event.LEAVE_PIP, this.onStop);
     }
 
     /**

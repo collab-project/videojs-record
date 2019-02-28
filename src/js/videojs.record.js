@@ -1621,7 +1621,7 @@ class Record extends Plugin {
      * @param {object} event - Event data.
      */
     onEnterPiP(event) {
-        this.player.trigger(Event.ENTERPIP, event);
+        this.player.trigger(Event.ENTER_PIP, event);
     }
 
     /**
@@ -1630,7 +1630,7 @@ class Record extends Plugin {
      * @param {object} event - Event data.
      */
     onLeavePiP(event) {
-        this.player.trigger(Event.LEAVEPIP);
+        this.player.trigger(Event.LEAVE_PIP);
     }
 }
 
