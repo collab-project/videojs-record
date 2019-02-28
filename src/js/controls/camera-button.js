@@ -5,6 +5,8 @@
 
 import videojs from 'video.js';
 
+import Event from '../event';
+
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
 
@@ -31,8 +33,8 @@ class CameraButton extends Button {
     enable() {
         super.enable();
 
-        this.on(this.player_, 'startRecord', this.onStart);
-        this.on(this.player_, 'stopRecord', this.onStop);
+        this.on(this.player_, Event.STARTRECORD, this.onStart);
+        this.on(this.player_, Event.STOPRECORD, this.onStop);
     }
 
     /**
@@ -41,8 +43,8 @@ class CameraButton extends Button {
     disable() {
         super.disable();
 
-        this.off(this.player_, 'startRecord', this.onStart);
-        this.off(this.player_, 'stopRecord', this.onStop);
+        this.off(this.player_, Event.STARTRECORD, this.onStart);
+        this.off(this.player_, Event.STOPRECORD, this.onStop);
     }
 
     /**

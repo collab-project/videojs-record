@@ -4,6 +4,7 @@
 
 import TestHelpers from '../test-helpers.js';
 
+import Event from '../../src/js/event.js';
 import CameraButton from '../../src/js/controls/camera-button.js';
 
 
@@ -52,7 +53,7 @@ describe('controls.CameraButton', () => {
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        player.one('startRecord', () => {
+        player.one(Event.STARTRECORD, () => {
             expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
             expect(button.hasClass('vjs-icon-replay')).toBeTrue();
             expect(button.controlText_).toEqual('Retry');
@@ -64,18 +65,18 @@ describe('controls.CameraButton', () => {
                 done();
             }, 2000);
         });
-        player.one('stopRecord', () => {
+        player.one(Event.STOPRECORD, () => {
             expect(button.hasClass('vjs-icon-replay')).toBeFalse();
             expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
             expect(button.controlText_).toEqual('Image');
 
             done();
         });
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICEREADY, () => {
             button.trigger('click');
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             player.record().getDevice();
         });
     });

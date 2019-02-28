@@ -10,6 +10,7 @@ videojs-record changelog
 - New webm-wasm plugin: create webm files using libwebm (compiled with
   WebAssembly) in the browser (#321)
 - Ability to change label of record indicator (#336)
+- Move event types to separate class (#341)
 
 **Backwards-incompatible change** (when upgrading from a previous version):
 

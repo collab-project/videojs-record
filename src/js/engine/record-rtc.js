@@ -4,6 +4,8 @@
  */
 
 import videojs from 'video.js';
+
+import Event from '../event';
 import {RecordEngine} from './record-engine';
 import {isChrome} from '../utils/detect-browser';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY} from './record-mode';
@@ -179,7 +181,7 @@ class RecordRTCEngine extends RecordEngine {
             this.addFileInfo(this.recordedData);
 
             // notify listeners
-            this.trigger('recordComplete');
+            this.trigger(Event.RECORDCOMPLETE);
         });
     }
 }
