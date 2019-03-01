@@ -13,7 +13,9 @@ import DeviceButton from './controls/device-button';
 import CameraButton from './controls/camera-button';
 import RecordToggle from './controls/record-toggle';
 import RecordIndicator from './controls/record-indicator';
+import PictureInPictureToggle from './controls/picture-in-picture-toggle';
 
+import Event from './event';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
@@ -110,10 +112,21 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
+        // add picture-in-picture toggle button
+        player.pipToggle = new PictureInPictureToggle(player, options);
+        player.pipToggle.hide();
+
+        // picture-in-picture
+        if (this.pictureInPicture === true) {
+            // dfine Picture-in-Picture event handlers once
+            this.onEnterPiPHandler = this.onEnterPiP.bind(this);
+            this.onLeavePiPHandler = this.onLeavePiP.bind(this);
+        }
+
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
             let customUIElements = ['deviceButton', 'recordIndicator',
-                'cameraButton', 'recordToggle'];
+                'cameraButton', 'recordToggle', 'pipToggle'];
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
                     this.player[element].layoutExclude = true;
@@ -123,7 +136,7 @@ class Record extends Plugin {
         }
 
         // wait until player ui is ready
-        this.player.one('ready', this.setupUI.bind(this));
+        this.player.one(Event.READY, this.setupUI.bind(this));
     }
 
     /**
@@ -145,6 +158,7 @@ class Record extends Plugin {
         this.maxFileSize = recordOptions.maxFileSize;
         this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
         this.debug = recordOptions.debug;
+        this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
         this.autoMuteDevice = recordOptions.autoMuteDevice;
 
@@ -192,6 +206,7 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
+        this.player.controlBar.addChild(this.player.pipToggle);
 
         // get rid of unused controls
         if (this.player.controlBar.remainingTimeDisplay !== undefined) {
@@ -221,11 +236,11 @@ class Record extends Plugin {
 
                 // 'loadedmetadata' and 'loadstart' events reset the
                 // durationDisplay for the first time: prevent this
-                this.player.one('loadedmetadata', () => {
+                this.player.one(Event.LOADEDMETADATA, () => {
                     // display max record time
                     this.setDuration(this.maxLength);
                 });
-                this.player.one('loadstart', () => {
+                this.player.one(Event.LOADSTART, () => {
                     // display max record time
                     this.setDuration(this.maxLength);
                 });
@@ -249,7 +264,7 @@ class Record extends Plugin {
                     }
 
                     // prevent controlbar fadeout
-                    this.player.on('userinactive', (event) => {
+                    this.player.on(Event.USERINACTIVE, (event) => {
                         this.player.userActive(true);
                     });
 
@@ -263,10 +278,10 @@ class Record extends Plugin {
 
         // disable time display events that constantly try to reset the current time
         // and duration values
-        this.player.off('timeupdate');
-        this.player.off('durationchange');
-        this.player.off('loadedmetadata');
-        this.player.off('loadstart');
+        this.player.off(Event.TIMEUPDATE);
+        this.player.off(Event.DURATIONCHANGE);
+        this.player.off(Event.LOADEDMETADATA);
+        this.player.off(Event.LOADSTART);
 
         // display max record time
         this.setDuration(this.maxLength);
@@ -333,15 +348,15 @@ class Record extends Plugin {
                     video: false
                 };
                 // remove existing microphone listeners
-                this.surfer.surfer.microphone.un('deviceReady',
+                this.surfer.surfer.microphone.un(Event.DEVICE_READY,
                     this.deviceReadyCallback);
-                this.surfer.surfer.microphone.un('deviceError',
+                this.surfer.surfer.microphone.un(Event.DEVICE_ERROR,
                     this.deviceErrorCallback);
 
                 // setup new microphone listeners
-                this.surfer.surfer.microphone.on('deviceReady',
+                this.surfer.surfer.microphone.on(Event.DEVICE_READY,
                     this.deviceReadyCallback);
-                this.surfer.surfer.microphone.on('deviceError',
+                this.surfer.surfer.microphone.on(Event.DEVICE_ERROR,
                     this.deviceErrorCallback);
 
                 // disable existing playback events
@@ -350,6 +365,14 @@ class Record extends Plugin {
                 // (re)set surfer liveMode
                 this.surfer.liveMode = true;
                 this.surfer.surfer.microphone.paused = false;
+
+                // resume AudioContext when it's suspended by the browser, due to
+                // autoplay rules. Chrome warns with the following message:
+                // "The AudioContext was not allowed to start. It must be resumed
+                // (or created) after a user gesture on the page."
+                if (this.surfer.surfer.backend.ac.state === 'suspended') {
+                    this.surfer.surfer.backend.ac.resume();
+                }
 
                 // assign custom reloadBufferFunction for microphone plugin to
                 // obtain AudioBuffer chunks
@@ -362,7 +385,7 @@ class Record extends Plugin {
 
                             // store data and notify others
                             this.player.recordedData = event.inputBuffer;
-                            this.player.trigger('audioBufferUpdate');
+                            this.player.trigger(Event.AUDIO_BUFFER_UPDATE);
                         }
                     };
                 }
@@ -466,8 +489,8 @@ class Record extends Plugin {
         }
 
         // reset playback listeners
-        this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
-        this.off(this.player, 'ended', this.playbackTimeUpdate);
+        this.off(this.player, Event.TIMEUPDATE, this.playbackTimeUpdate);
+        this.off(this.player, Event.ENDED, this.playbackTimeUpdate);
 
         // setup recording engine
         if (this.getRecordType() !== IMAGE_ONLY) {
@@ -501,7 +524,7 @@ class Record extends Plugin {
             }
 
             // listen for events
-            this.engine.on('recordComplete', this.engineStopCallback);
+            this.engine.on(Event.RECORD_COMPLETE, this.engineStopCallback);
 
             // audio settings
             this.engine.bufferSize = this.audioBufferSize;
@@ -604,21 +627,36 @@ class Record extends Plugin {
             // hide the volume bar while it's muted
             this.displayVolumeControl(false);
 
+            // picture-in-picture
+            if (this.pictureInPicture === true) {
+                // show button
+                this.player.pipToggle.show();
+
+                // listen to and forward Picture-in-Picture events
+                this.mediaElement.removeEventListener(Event.ENTERPICTUREINPICTURE,
+                    this.onEnterPiPHandler);
+                this.mediaElement.removeEventListener(Event.LEAVEPICTUREINPICTURE,
+                    this.onLeavePiPHandler);
+                this.mediaElement.addEventListener(Event.ENTERPICTUREINPICTURE,
+                    this.onEnterPiPHandler);
+                this.mediaElement.addEventListener(Event.LEAVEPICTUREINPICTURE,
+                    this.onLeavePiPHandler);
+            }
             // load stream
             this.load(this.stream);
 
             // stream loading is async, so we wait until it's ready to play
             // the stream
-            this.player.one('loadedmetadata', () => {
+            this.player.one(Event.LOADEDMETADATA, () => {
                 // start stream
                 this.mediaElement.play();
 
                 // forward to listeners
-                this.player.trigger('deviceReady');
+                this.player.trigger(Event.DEVICE_READY);
             });
         } else {
             // forward to listeners
-            this.player.trigger('deviceReady');
+            this.player.trigger(Event.DEVICE_READY);
         }
     }
 
@@ -636,7 +674,7 @@ class Record extends Plugin {
             this.player.deviceErrorCode = code;
 
             // forward error to player
-            this.player.trigger('deviceError');
+            this.player.trigger(Event.DEVICE_ERROR);
         }
     }
 
@@ -653,8 +691,8 @@ class Record extends Plugin {
             }
 
             // reset playback listeners
-            this.off(this.player, 'timeupdate', this.playbackTimeUpdate);
-            this.off(this.player, 'ended', this.playbackTimeUpdate);
+            this.off(this.player, Event.TIMEUPDATE, this.playbackTimeUpdate);
+            this.off(this.player, Event.ENDED, this.playbackTimeUpdate);
 
             // start preview
             switch (this.getRecordType()) {
@@ -707,7 +745,7 @@ class Record extends Plugin {
                     this.createSnapshot();
 
                     // notify UI
-                    this.player.trigger('startRecord');
+                    this.player.trigger(Event.START_RECORD);
                     break;
 
                 case VIDEO_ONLY:
@@ -715,7 +753,7 @@ class Record extends Plugin {
                 case ANIMATION:
                 case SCREEN_ONLY:
                     // wait for media stream on video element to actually load
-                    this.player.one('loadedmetadata', () => {
+                    this.player.one(Event.LOADEDMETADATA, () => {
                         // start actually recording process
                         this.startRecording();
                     });
@@ -753,7 +791,7 @@ class Record extends Plugin {
         this.engine.start();
 
         // notify UI
-        this.player.trigger('startRecord');
+        this.player.trigger(Event.START_RECORD);
     }
 
     /**
@@ -766,7 +804,7 @@ class Record extends Plugin {
 
             if (this.getRecordType() !== IMAGE_ONLY) {
                 // notify UI
-                this.player.trigger('stopRecord');
+                this.player.trigger(Event.STOP_RECORD);
 
                 // stop countdown
                 this.player.clearInterval(this.countDown);
@@ -783,7 +821,7 @@ class Record extends Plugin {
             } else {
                 if (this.player.recordedData) {
                     // notify listeners that image data is (already) available
-                    this.player.trigger('finishRecord');
+                    this.player.trigger(Event.FINISH_RECORD);
                 }
             }
         }
@@ -796,7 +834,7 @@ class Record extends Plugin {
         if (this.isRecording()) {
             // stop stream once recorded data is available,
             // otherwise it'll break recording
-            this.player.one('finishRecord', this.stopStream.bind(this));
+            this.player.one(Event.FINISH_RECORD, this.stopStream.bind(this));
 
             // stop recording
             this.stop();
@@ -870,7 +908,7 @@ class Record extends Plugin {
         }
 
         // notify listeners that data is available
-        this.player.trigger('finishRecord');
+        this.player.trigger(Event.FINISH_RECORD);
 
         // skip loading when player is destroyed after finishRecord event
         if (this.isDestroyed()) {
@@ -891,7 +929,7 @@ class Record extends Plugin {
 
                 // restore interaction with controls after waveform
                 // rendering is complete
-                this.surfer.surfer.once('ready', () => {
+                this.surfer.surfer.once(Event.READY, () => {
                     this._processing = false;
                 });
 
@@ -905,7 +943,7 @@ class Record extends Plugin {
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
                 // have to wait for.
-                this.player.one('pause', () => {
+                this.player.one(Event.PAUSE, () => {
                     // video data is ready
                     this._processing = false;
 
@@ -916,9 +954,9 @@ class Record extends Plugin {
                     this.setDuration(this.streamDuration);
 
                     // update time during playback and at end
-                    this.on(this.player, 'timeupdate',
+                    this.on(this.player, Event.TIMEUPDATE,
                         this.playbackTimeUpdate);
-                    this.on(this.player, 'ended',
+                    this.on(this.player, Event.ENDED,
                         this.playbackTimeUpdate);
 
                     // unmute local audio during playback
@@ -957,10 +995,10 @@ class Record extends Plugin {
                 this.player.pause();
 
                 // show animation on play
-                this.on(this.player, 'play', this.showAnimation);
+                this.on(this.player, Event.PLAY, this.showAnimation);
 
                 // hide animation on pause
-                this.on(this.player, 'pause', this.hideAnimation);
+                this.on(this.player, Event.PAUSE, this.hideAnimation);
                 break;
         }
     }
@@ -993,7 +1031,7 @@ class Record extends Plugin {
             this.setCurrentTime(currentTime, duration);
 
             // notify listeners
-            this.player.trigger('progressRecord');
+            this.player.trigger(Event.PROGRESS_RECORD);
         }
     }
 
@@ -1147,15 +1185,15 @@ class Record extends Plugin {
      */
     dispose() {
         // disable common event listeners
-        this.player.off('ready');
-        this.player.off('userinactive');
-        this.player.off('loadedmetadata');
+        this.player.off(Event.READY);
+        this.player.off(Event.USERINACTIVE);
+        this.player.off(Event.LOADEDMETADATA);
 
         // prevent callbacks if recording is in progress
         if (this.engine) {
             this.engine.dispose();
             this.engine.destroy();
-            this.engine.off('recordComplete', this.engineStopCallback);
+            this.engine.off(Event.RECORD_COMPLETE, this.engineStopCallback);
         }
 
         // stop recording and device
@@ -1192,7 +1230,7 @@ class Record extends Plugin {
         // prevent callbacks if recording is in progress
         if (this.engine) {
             this.engine.dispose();
-            this.engine.off('recordComplete', this.engineStopCallback);
+            this.engine.off(Event.RECORD_COMPLETE, this.engineStopCallback);
         }
 
         // stop recording and device
@@ -1243,7 +1281,7 @@ class Record extends Plugin {
 
         // loadedmetadata resets the durationDisplay for the
         // first time
-        this.player.one('loadedmetadata', () => {
+        this.player.one(Event.LOADEDMETADATA, () => {
             // display max record time
             this.setDuration(this.maxLength);
         });
@@ -1393,10 +1431,10 @@ class Record extends Plugin {
      */
     startVideoPreview() {
         // disable playback events
-        this.off('timeupdate');
-        this.off('durationchange');
-        this.off('loadedmetadata');
-        this.off('play');
+        this.off(Event.TIMEUPDATE);
+        this.off(Event.DURATIONCHANGE);
+        this.off(Event.LOADEDMETADATA);
+        this.off(Event.PLAY);
 
         // mute local audio
         this.mediaElement.muted = true;
@@ -1496,7 +1534,7 @@ class Record extends Plugin {
         }
 
         // notify others
-        this.player.trigger('timestamp');
+        this.player.trigger(Event.TIMESTAMP);
 
         // automatically stop when max file size was reached
         if (maxFileSizeReached) {
@@ -1511,7 +1549,7 @@ class Record extends Plugin {
     enumerateDevices() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
             this.player.enumerateErrorCode = 'enumerateDevices() not supported.';
-            this.player.trigger('enumerateError');
+            this.player.trigger(Event.ENUMERATE_ERROR);
             return;
         }
 
@@ -1523,10 +1561,10 @@ class Record extends Plugin {
             });
 
             // notify listeners
-            this.player.trigger('enumerateReady');
+            this.player.trigger(Event.ENUMERATE_READY);
         }).catch((err) => {
             this.player.enumerateErrorCode = err;
-            this.player.trigger('enumerateError');
+            this.player.trigger(Event.ENUMERATE_ERROR);
         });
     }
 
@@ -1543,7 +1581,7 @@ class Record extends Plugin {
                 // use wavesurfer
                 this.surfer.surfer.setSinkId(deviceId).then((result) => {
                     // notify listeners
-                    this.player.trigger('audioOutputReady');
+                    this.player.trigger(Event.AUDIO_OUTPUT_READY);
                     return;
                 }).catch((err) => {
                     errorMessage = err;
@@ -1556,7 +1594,7 @@ class Record extends Plugin {
                     if (typeof element.sinkId !== 'undefined') {
                         element.setSinkId(deviceId).then((result) => {
                             // notify listeners
-                            this.player.trigger('audioOutputReady');
+                            this.player.trigger(Event.AUDIO_OUTPUT_READY);
                             return;
                         }).catch((err) => {
                             errorMessage = err;
@@ -1571,7 +1609,7 @@ class Record extends Plugin {
         }
 
         // error if we get here: notify listeners
-        this.player.trigger('error', errorMessage);
+        this.player.trigger(Event.ERROR, errorMessage);
     }
 
     /**
@@ -1589,6 +1627,24 @@ class Record extends Plugin {
             }
             this.player.controlBar.volumePanel.el().style.display = display;
         }
+    }
+
+    /**
+     * Invoked when entering picture-in-picture mode.
+     * @private
+     * @param {object} event - Event data.
+     */
+    onEnterPiP(event) {
+        this.player.trigger(Event.ENTER_PIP, event);
+    }
+
+    /**
+     * Invoked when leaving picture-in-picture mode.
+     * @private
+     * @param {object} event - Event data.
+     */
+    onLeavePiP(event) {
+        this.player.trigger(Event.LEAVE_PIP);
     }
 }
 

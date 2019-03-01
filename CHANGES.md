@@ -8,11 +8,17 @@ x.x.x - unreleased
   audio/video file formats in the browser (#201)
 
 
-3.5.0 - unreleased
+3.5.0 - 2019/02/28
 ------------------
 
+- Support for Picture-in-Picture during playback and recording. Allows users to
+  record and playback in a floating window (always on top of other windows) while
+  interacting with other sites or applications (#340)
 - New webm-wasm plugin: create webm files using libwebm (compiled with
   WebAssembly) in the browser (#321)
+- Ability to change label of record indicator (#336)
+- Move event types to separate class (#341)
+- Fix suspended wavesurfer.js `AudioContext` in Chrome (#335)
 
 **Backwards-incompatible change** (when upgrading from a previous version):
 
@@ -50,7 +56,7 @@ x.x.x - unreleased
 - Bump required version for recordrtc to 5.5.3 for Safari video recording
   support (#320)
 - Add example for changing video source (#223)
-- Add ability to permanently hide custom UI elements (e.g. `recordToggle`) 
+- Add ability to permanently hide custom UI elements (e.g. `recordToggle`)
 
 
 3.3.0 - 2019/01/10
