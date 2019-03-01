@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.5.1 - unreleased
+------------------
+
+- Remove Safari AudioContext workaround in examples (#335)
+
+
 3.5.0 - 2019/02/28
 ------------------
 
