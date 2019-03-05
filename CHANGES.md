@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.5.1 - unreleased
+3.5.1 - 2019/03/06
 ------------------
 
 - Fix RecordRTC import (#345)
