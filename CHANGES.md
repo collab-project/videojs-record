@@ -5,7 +5,7 @@ videojs-record changelog
 ------------------
 
 - Fix RecordRTC import (#345)
-- Remove Safari `AudioContext` workaround in examples (#335)
+- Update Safari `AudioContext` workaround in examples (#335)
 
 
 3.5.0 - 2019/02/28
