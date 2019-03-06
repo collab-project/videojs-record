@@ -5,24 +5,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const banner = require('./banner');
 const webpack = require('webpack');
-const datefns = require('date-fns');
 
-const year = datefns.format(new Date(), 'YYYY');
 const rootDir = path.resolve(__dirname, '..', '..');
 const pluginSrcDir = path.join(rootDir, 'src', 'js', 'plugins');
-const pckg = require(path.join(rootDir, 'package.json'));
-
-// plugin banner with copyright and version info
-let jsBanner = `[name] plugin for ${pckg.name}
-@version ${pckg.version}
-@see ${pckg.homepage}
-@copyright 2014-${year} ${pckg.author}
-@license ${pckg.license}`;
-let jsBannerPlugin = new webpack.BannerPlugin({
-    banner: jsBanner,
-    test: /\.js$/
-});
 
 // find plugins
 const PLUGINS = [];
@@ -54,7 +41,5 @@ module.exports = {
         filename: 'videojs.record.[name].js',
         library: ['VideojsRecord', '[name]']
     },
-    plugins: [
-        jsBannerPlugin
-    ]
+    plugins: [banner.pluginBanner]
 };
