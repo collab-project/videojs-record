@@ -305,6 +305,8 @@ player.record().destroy();
 | `pause` | Pause recording. |
 | `resume` | Resume recording. |
 
+All public methods are documented in the online [API documentation](https://collab-project.github.io/videojs-record/Record.html).
+
 Events
 ------
 
