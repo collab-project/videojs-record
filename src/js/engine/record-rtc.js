@@ -5,6 +5,8 @@
 
 import videojs from 'video.js';
 
+import RecordRTC from 'recordrtc';
+
 import Event from '../event';
 import {RecordEngine} from './record-engine';
 import {isChrome} from '../utils/detect-browser';

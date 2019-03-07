@@ -8,6 +8,13 @@ x.x.x - unreleased
   audio/video file formats in the browser (#201)
 
 
+3.5.1 - 2019/03/06
+------------------
+
+- Fix RecordRTC import (#345)
+- Update Safari `AudioContext` workaround in examples (#335)
+
+
 3.5.0 - 2019/02/28
 ------------------
 

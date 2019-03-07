@@ -41,7 +41,6 @@
         <input id="fileupload" type="file" name="files[]" multiple>
 
         <script>
-        var player;
         var options = {
             controls: true,
             width: 600,
@@ -65,16 +64,27 @@
             }
         };
 
-        function createPlayer(event) {
-            if (isSafari) {
-                if (event) {
-                    // hide start button on safari
-                    event.target.style.display = 'none';
+        $(function() {
+            // Initialize the jQuery File Upload widget
+            $('#fileupload').fileupload({
+                url: '//localhost/jQuery-File-Upload/server/php/',
+                done: function (e, data) {
+                    $.each(data.files, function (index, file) {
+                        var message = 'Upload complete: ' + file.name + ' (' +
+                            file.size + ' bytes)';
+                        $('<p/>').text(message).appendTo(document.body);
+                        console.log(message);
+                    });
+                },
+                fail: function (e, data) {
+                    console.error('upload error:', e.type, data);
                 }
-                updateContext(options);
-            }
+            });
 
-            player = videojs('myAudio', options, function() {
+            // apply some workarounds for certain browsers
+            applyAudioWorkaround();
+
+            var player = videojs('myAudio', options, function() {
                 // print version information at startup
                 var msg = 'Using video.js ' + videojs.VERSION +
                     ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -104,35 +114,6 @@
                 var filesList = [audioFile];
                 $('#fileupload').fileupload('add', {files: filesList});
             });
-        }
-
-        $(function() {
-            // Initialize the jQuery File Upload widget
-            $('#fileupload').fileupload({
-                url: '//localhost/jQuery-File-Upload/server/php/',
-                done: function (e, data) {
-                    $.each(data.files, function (index, file) {
-                        var message = 'Upload complete: ' + file.name + ' (' +
-                            file.size + ' bytes)';
-                        $('<p/>').text(message).appendTo(document.body);
-                        console.log(message);
-                    });
-                },
-                fail: function (e, data) {
-                    console.error('upload error:', e.type, data);
-                }
-            });
-
-            // apply some workarounds for certain browsers
-            applyAudioWorkaround();
-
-            if (isSafari) {
-                // add start button for safari
-                addStartButton();
-            } else {
-                // other browsers
-                createPlayer();
-            }
         });
         </script>
 

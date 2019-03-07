@@ -48,7 +48,6 @@
                 }
             });
             // setup videojs-record
-            var player;
             var options = {
                 controls: true,
                 width: 600,
@@ -75,54 +74,36 @@
             // apply some workarounds for certain browsers
             applyAudioWorkaround();
 
-            if (isSafari) {
-                // add start button for safari
-                addStartButton();
-            } else {
-                // other browsers
-                createPlayer();
-            }
+            var player = videojs('myAudio', options, function() {
+                // print version information at startup
+                var msg = 'Using video.js ' + videojs.VERSION +
+                    ' with videojs-record ' + videojs.getPluginVersion('record') +
+                    ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+                    ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+                    RecordRTC.version;
+                videojs.log(msg);
+            });
 
-            function createPlayer(event) {
-                if (isSafari) {
-                    if (event) {
-                        // hide start button on safari
-                        event.target.style.display = 'none';
-                    }
-                    updateContext(options);
-                }
+            // player error handling
+            player.on('deviceError', function() {
+                console.warn('device error:', player.deviceErrorCode);
+            });
 
-                player = videojs('myAudio', options, function() {
-                    // print version information at startup
-                    var msg = 'Using video.js ' + videojs.VERSION +
-                        ' with videojs-record ' + videojs.getPluginVersion('record') +
-                        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-                        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
-                        RecordRTC.version;
-                    videojs.log(msg);
-                });
+            player.on('error', function(element, error) {
+                console.error(error);
+            });
 
-                // player error handling
-                player.on('deviceError', function() {
-                    console.warn('device error:', player.deviceErrorCode);
-                });
+            // data is available
+            player.on('finishRecord', function() {
+                // the blob object contains the audio data
+                var audioFile = player.recordedData;
 
-                player.on('error', function(element, error) {
-                    console.error(error);
-                });
+                console.log('finished recording: ', audioFile);
 
-                // data is available
-                player.on('finishRecord', function() {
-                    // the blob object contains the audio data
-                    var audioFile = player.recordedData;
-
-                    console.log('finished recording: ', audioFile);
-
-                    // upload data to server
-                    var filesList = [audioFile];
-                    uploader.addFiles(filesList);
-                });
-            }
+                // upload data to server
+                var filesList = [audioFile];
+                uploader.addFiles(filesList);
+            });
         </script>
 
     </body>
