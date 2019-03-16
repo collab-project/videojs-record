@@ -285,6 +285,20 @@ class Record extends Plugin {
         // display max record time
         this.setDuration(this.maxLength);
 
+        // hot keys
+        if (this.player.options_.plugins.record &&
+            this.player.options_.plugins.record.hotkeys &&
+            (this.player.options_.plugins.record.hotkeys !== false)) {
+
+            let handler = this.player.options_.plugins.record.hotkeys;
+            if (this.player.options_.plugins.record.hotkeys === true) {
+                handler = defaultKeyHandler;
+            }
+            this.player.options_.userActions = {
+                hotkeys: handler
+            };
+        }
+
         // hide play control (if present)
         if (this.player.controlBar.playToggle !== undefined) {
             this.player.controlBar.playToggle.hide();
