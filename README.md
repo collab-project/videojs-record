@@ -35,6 +35,7 @@ Table of Contents
 - [Controlling the input and output devices](#controlling-the-input-and-output-devices)
 - [Responsive layout](#responsive-layout)
 - [Customizing controls](#customizing-controls)
+- [Hotkeys](#hotkeys)
 - [Picture-in-Picture](#picture-in-picture)
 - [Other audio libraries](#other-audio-libraries)
 - [Other video libraries](#other-video-libraries)
@@ -276,6 +277,7 @@ The available options for this plugin are:
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 | `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` or an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](#hotkeys). Disabled by default. |
 
 Methods
 -------
@@ -618,6 +620,19 @@ controlBar: {
 
 Custom interface elements for this library that can be hidden are: `deviceButton`,
 `recordIndicator`, `cameraButton`, `pipToggle` and `recordToggle`.
+
+Hotkeys
+-------
+
+The `hotKeys` option allows you to control videojs-record using a keyboard.
+
+Default videojs-record hotkey handling is:
+
+| Key | Action | Description |
+| :-: | ------ | ----------- |
+| `x` | toggle record | start/stop recording (or take snapshot in image-only mode)
+| `c` | toggle playback | start/stop playback
+| `p` | toggle picture-in-picture | enter/exit picture-in-picture mode (if enabled)
 
 Picture-in-Picture
 ------------------

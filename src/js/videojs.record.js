@@ -287,13 +287,14 @@ class Record extends Plugin {
 
         // hot keys
         if (this.player.options_.plugins.record &&
-            this.player.options_.plugins.record.hotkeys &&
-            (this.player.options_.plugins.record.hotkeys !== false)) {
+            this.player.options_.plugins.record.hotKeys &&
+            (this.player.options_.plugins.record.hotKeys !== false)) {
 
-            let handler = this.player.options_.plugins.record.hotkeys;
-            if (this.player.options_.plugins.record.hotkeys === true) {
+            let handler = this.player.options_.plugins.record.hotKeys;
+            if (handler === true) {
                 handler = defaultKeyHandler;
             }
+            // enable video.js user action
             this.player.options_.userActions = {
                 hotkeys: handler
             };

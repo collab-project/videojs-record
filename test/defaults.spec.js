@@ -46,7 +46,8 @@ describe('pluginDefaultOptions', () => {
             animationFrameRate: 200,
             animationQuality: 10,
             timeSlice: 0,
-            convertEngine: ''
+            convertEngine: '',
+            hotKeys: false
         });
     });
 });
