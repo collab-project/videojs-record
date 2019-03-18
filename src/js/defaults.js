@@ -111,7 +111,9 @@ const pluginDefaultOptions = {
     timeSlice: 0,
     // Media converter library to use. Legal values are 'ts-ebml' or an empty
     // string '' to disable (default).
-    convertEngine: ''
+    convertEngine: '',
+    // Enable keyboard hotkeys.
+    hotKeys: false
 };
 
 export default pluginDefaultOptions;

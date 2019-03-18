@@ -16,6 +16,7 @@ import RecordIndicator from './controls/record-indicator';
 import PictureInPictureToggle from './controls/picture-in-picture-toggle';
 
 import Event from './event';
+import defaultKeyHandler from './hot-keys';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
@@ -283,6 +284,21 @@ class Record extends Plugin {
 
         // display max record time
         this.setDuration(this.maxLength);
+
+        // hot keys
+        if (this.player.options_.plugins.record &&
+            this.player.options_.plugins.record.hotKeys &&
+            (this.player.options_.plugins.record.hotKeys !== false)) {
+
+            let handler = this.player.options_.plugins.record.hotKeys;
+            if (handler === true) {
+                handler = defaultKeyHandler;
+            }
+            // enable video.js user action
+            this.player.options_.userActions = {
+                hotkeys: handler
+            };
+        }
 
         // hide play control (if present)
         if (this.player.controlBar.playToggle !== undefined) {
