@@ -624,10 +624,10 @@ Custom interface elements for this library that can be hidden are: `deviceButton
 Hotkeys
 -------
 
-The `hotKeys` option allows you to control videojs-record using a keyboard (disabled
-by default).
+The `hotKeys` option allows you to control this plugin using a keyboard (disabled
+by default). Note that this requires video.js 7.5.0 or newer.
 
-The built-in videojs-record hotkey handling is:
+The built-in hotkey handling is:
 
 | Key | Action | Description |
 | :-: | ------ | ----------- |
