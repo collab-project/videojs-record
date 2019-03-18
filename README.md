@@ -624,7 +624,7 @@ Custom interface elements for this library that can be hidden are: `deviceButton
 Hotkeys
 -------
 
-The `hotKeys` option allows you to control this plugin using a keyboard (disabled
+The `hotKeys` plugin option allows you to control this plugin using a keyboard (disabled
 by default). Note that this requires video.js 7.5.0 or newer.
 
 The built-in hotkey handling is:
@@ -635,7 +635,7 @@ The built-in hotkey handling is:
 | `c` | toggle playback | start/stop playback
 | `p` | toggle picture-in-picture | enter/exit picture-in-picture mode (if enabled)
 
-To enable the built-in handler, specify `true` for the video.js `hotKeys` option:
+To enable the built-in handler, specify `true` for the `hotKeys` plugin option:
 
 ```javascript
 record: {
