@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Add support for keyboard hotkeys (#339)
+- Improve pause/resume accuracy with monotonic clock
 
 
 3.5.1 - 2019/03/06
