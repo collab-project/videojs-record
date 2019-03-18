@@ -115,7 +115,9 @@ const pluginDefaultOptions = {
     // URL for the converter worker.
     convertWorkerURL: '',
     // List of string options to pass to the convert engine.
-    convertOptions: []
+    convertOptions: [],
+    // Enable keyboard hotkeys.
+    hotKeys: false
 };
 
 export default pluginDefaultOptions;

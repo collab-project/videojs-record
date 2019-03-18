@@ -35,6 +35,7 @@ Table of Contents
 - [Controlling the input and output devices](#controlling-the-input-and-output-devices)
 - [Responsive layout](#responsive-layout)
 - [Customizing controls](#customizing-controls)
+- [Hotkeys](#hotkeys)
 - [Picture-in-Picture](#picture-in-picture)
 - [Other audio libraries](#other-audio-libraries)
 - [Other video libraries](#other-video-libraries)
@@ -283,6 +284,7 @@ The available options for this plugin are:
 | `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
 | `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.js plugin. Use an empty string '' to disable (default). |
 | `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
+| `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](#hotkeys). Disabled by default. |
 
 Methods
 -------
@@ -311,6 +313,8 @@ player.record().destroy();
 | `stop` | Stop recording. |
 | `pause` | Pause recording. |
 | `resume` | Resume recording. |
+
+All public methods are documented in the online [API documentation](https://collab-project.github.io/videojs-record/Record.html).
 
 Events
 ------
@@ -623,6 +627,54 @@ controlBar: {
 
 Custom interface elements for this library that can be hidden are: `deviceButton`,
 `recordIndicator`, `cameraButton`, `pipToggle` and `recordToggle`.
+
+Hotkeys
+-------
+
+The `hotKeys` option allows you to control this plugin using a keyboard (disabled
+by default). Note that this requires video.js 7.5.0 or newer.
+
+The built-in hotkey handling is:
+
+| Key | Action | Description |
+| :-: | ------ | ----------- |
+| `x` | toggle record | start/stop recording (or take snapshot in image-only mode)
+| `c` | toggle playback | start/stop playback
+| `p` | toggle picture-in-picture | enter/exit picture-in-picture mode (if enabled)
+
+To enable the built-in handler, specify `true` for the video.js `hotKeys` option:
+
+```javascript
+record: {
+    maxLength: 20,
+    debug: true,
+    video: true,
+    hotKeys: true
+},
+```
+
+Or use your own handler by specifying a function:
+
+```javascript
+record: {
+    maxLength: 20,
+    debug: true,
+    video: true,
+    hotKeys: function(event) {
+        console.log('pressed key: ' + event.which);
+
+        // check https://github.com/timoxley/keycode for codes
+        if (event.which == 88) {
+            // toggle record button when pressing 'x' key
+            player.recordToggle.trigger('click');
+        }
+    }
+},
+```
+
+Check out the `hot-keys` example
+([demo](https://collab-project.github.io/videojs-record/examples/hot-keys.html) or
+[source](https://github.com/collab-project/videojs-record/blob/master/examples/hot-keys.html)).
 
 Picture-in-Picture
 ------------------

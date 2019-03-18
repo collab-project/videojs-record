@@ -48,7 +48,8 @@ describe('pluginDefaultOptions', () => {
             timeSlice: 0,
             convertEngine: '',
             convertWorkerURL: '',
-            convertOptions: []
+            convertOptions: [],
+            hotKeys: false
         });
     });
 });

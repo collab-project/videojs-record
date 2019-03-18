@@ -8,6 +8,13 @@ x.x.x - unreleased
   audio/video file formats in the browser (#201)
 
 
+3.6.0 - unreleased
+------------------
+
+- Add support for keyboard hotkeys (requires video.js 7.5.0 or newer) (#339)
+- Improve pause/resume accuracy with monotonic clock
+
+
 3.5.1 - 2019/03/06
 ------------------
 
