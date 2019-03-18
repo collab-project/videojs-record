@@ -769,7 +769,7 @@ class Record extends Plugin {
         // register starting point
         this.paused = false;
         this.pauseTime = this.pausedTime = 0;
-        this.startTime = new Date().getTime();
+        this.startTime = performance.now();
 
         // start countdown
         const COUNTDOWN_SPEED = 100; // ms
@@ -862,7 +862,7 @@ class Record extends Plugin {
      */
     pause() {
         if (!this.paused) {
-            this.pauseTime = new Date().getTime();
+            this.pauseTime = performance.now();
             this.paused = true;
 
             this.engine.pause();
@@ -874,7 +874,7 @@ class Record extends Plugin {
      */
     resume() {
         if (this.paused) {
-            this.pausedTime += new Date().getTime() - this.pauseTime;
+            this.pausedTime += performance.now() - this.pauseTime;
 
             this.engine.resume();
             this.paused = false;
@@ -1003,7 +1003,7 @@ class Record extends Plugin {
      */
     onCountDown() {
         if (!this.paused) {
-            let now = new Date().getTime();
+            let now = performance.now();
             let duration = this.maxLength;
             let currentTime = (now - (this.startTime +
                 this.pausedTime)) / 1000; // buddy ignore:line

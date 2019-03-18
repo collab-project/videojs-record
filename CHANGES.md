@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.6.0 (unreleased)
+------------------
+
+- Improve time accuracy with monotonic clock
+
+
 3.5.1 - 2019/03/06
 ------------------
 
