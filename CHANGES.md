@@ -6,6 +6,7 @@ videojs-record changelog
 
 - Add support for keyboard hotkeys (requires video.js 7.5.0 or newer) (#339)
 - Improve pause/resume accuracy with monotonic clock
+- Make sure recorded data is garbage collected
 - Bump required version for videojs-wavesurfer to 2.8.0 for wavesurfer.js fixes
 
 

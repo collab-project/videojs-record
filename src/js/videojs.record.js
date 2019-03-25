@@ -1210,6 +1210,9 @@ class Record extends Plugin {
         this.stop();
         this.stopDevice();
 
+        // garbage collect recording
+        this.removeRecording();
+
         // stop countdown
         this.player.clearInterval(this.countDown);
 
@@ -1249,6 +1252,9 @@ class Record extends Plugin {
 
         // stop countdown
         this.player.clearInterval(this.countDown);
+
+        // garbage collect recording
+        this.removeRecording();
 
         // reset options
         this.loadOptions();
@@ -1306,6 +1312,17 @@ class Record extends Plugin {
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
+    }
+
+    /**
+     * Removes recorded `Blob` from cache.
+     * @private
+     */
+    removeRecording() {
+        if (this.mediaElement && this.mediaElement.src.startsWith('blob:') === true) {
+            URL.revokeObjectURL(this.mediaElement.src);
+            this.mediaElement.src = '';
+        }
     }
 
     /**
@@ -1451,6 +1468,9 @@ class Record extends Plugin {
 
         // hide volume control to prevent feedback
         this.displayVolumeControl(false);
+
+        // garbage collect previous recording
+        this.removeRecording();
 
         // start or resume live preview
         this.load(this.stream);
