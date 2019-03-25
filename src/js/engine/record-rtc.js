@@ -150,7 +150,7 @@ class RecordRTCEngine extends RecordEngine {
      * @param {string} type - Media type, eg. 'video' or 'audio'.
      */
     onStopRecording(audioVideoURL, type) {
-        // garbage collect blob
+        // garbage collect unused blob
         URL.revokeObjectURL(audioVideoURL);
 
         // store reference to recorded stream data
