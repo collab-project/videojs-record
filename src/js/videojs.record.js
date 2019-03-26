@@ -339,7 +339,8 @@ class Record extends Plugin {
     }
 
     /**
-     * Open the browser's recording device selection dialog.
+     * Open the browser's recording device selection dialog and start the
+     * device.
      */
     getDevice() {
         // define device callbacks once
@@ -352,6 +353,26 @@ class Record extends Plugin {
         if (this.engineStopCallback === undefined) {
             this.engineStopCallback = this.onRecordComplete.bind(this);
         }
+
+        // check for support because some browsers still do not support
+        // getDisplayMedia or getUserMedia (like Chrome iOS, see:
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=752458)
+        if (this.getRecordType() === SCREEN_ONLY) {
+            if (navigator.mediaDevices === undefined ||
+                navigator.mediaDevices.getDisplayMedia === undefined) {
+                this.player.trigger(Event.ERROR,
+                    'This browser does not support navigator.mediaDevices.getDisplayMedia');
+                return;
+            }
+        } else {
+            if (navigator.mediaDevices === undefined ||
+                navigator.mediaDevices.getUserMedia === undefined) {
+                this.player.trigger(Event.ERROR,
+                    'This browser does not support navigator.mediaDevices.getUserMedia');
+                return;
+            }
+        }
+
         // ask the browser to give the user access to the media device
         // and get a stream reference in the callback function
         switch (this.getRecordType()) {
