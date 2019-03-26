@@ -10,6 +10,7 @@ videojs-record changelog
 - Improve pause/resume accuracy with monotonic clock
 - Make sure recorded data is garbage collected
 - Bump required version for videojs-wavesurfer to 2.8.0 for wavesurfer.js fixes
+- Examples: add `playsinline` attribute to `video` element for Safari (#353)
 
 
 3.5.1 - 2019/03/06
