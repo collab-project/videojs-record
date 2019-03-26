@@ -72,10 +72,11 @@ Supported browsers
 | ------------- |-------------|-------------|
 | Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen |
 | Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + screen |
+| Chrome iOS | Not supported (missing `getUserMedia`) | - |
 | Opera | Stable / NEXT | Audio + Video + Image + Screen |
 | Android | Chrome / Firefox / Opera | Audio + Video + Image |
-| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
 | Safari | Stable / Beta/ Preview (OSX/iOS) | Audio + Video + Image + Screen |
+| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
 
 Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
 more information.
