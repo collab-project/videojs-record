@@ -72,10 +72,11 @@ Supported browsers
 | ------------- |-------------|-------------|
 | Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen |
 | Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + screen |
+| Chrome iOS | Not supported (missing `getUserMedia`) | - |
 | Opera | Stable / NEXT | Audio + Video + Image + Screen |
 | Android | Chrome / Firefox / Opera | Audio + Video + Image |
-| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
 | Safari | Stable / Beta/ Preview (OSX/iOS) | Audio + Video + Image + Screen |
+| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
 
 Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
 more information.
@@ -147,7 +148,7 @@ When recording either audio/video, video-only, animated GIF or a single image,
 include a `video` element:
 
 ```html
-<video id="myVideo" class="video-js vjs-default-skin"></video>
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
 ```
 
 ### Audio-only
