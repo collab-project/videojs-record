@@ -148,7 +148,7 @@ When recording either audio/video, video-only, animated GIF or a single image,
 include a `video` element:
 
 ```html
-<video id="myVideo" class="video-js vjs-default-skin"></video>
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
 ```
 
 ### Audio-only
