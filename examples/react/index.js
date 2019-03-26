@@ -49,7 +49,7 @@ class VideojsRecordPlayer extends React.Component {
     render() {
         return (
             <div data-vjs-player>
-                <video id="myVideo" ref={ node => this.videoNode = node } className="video-js vjs-default-skin"></video>
+                <video id="myVideo" ref={ node => this.videoNode = node } playsinline className="video-js vjs-default-skin"></video>
             </div>
         )
     }
