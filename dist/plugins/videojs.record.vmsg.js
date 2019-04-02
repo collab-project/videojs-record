@@ -1,6 +1,6 @@
 /*!
  * vmsg plugin for videojs-record
- * @version 3.5.1
+ * @version 3.6.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
@@ -165,7 +165,7 @@ eval("var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf */ \"./node_
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("function _interopRequireDefault(obj) {\n  return obj && obj.__esModule ? obj : {\n    default: obj\n  };\n}\n\nmodule.exports = _interopRequireDefault;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./node_modules/@babel/runtime/helpers/interopRequireDefault.js?");
+eval("function _interopRequireDefault(obj) {\n  return obj && obj.__esModule ? obj : {\n    \"default\": obj\n  };\n}\n\nmodule.exports = _interopRequireDefault;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./node_modules/@babel/runtime/helpers/interopRequireDefault.js?");
 
 /***/ }),
 
