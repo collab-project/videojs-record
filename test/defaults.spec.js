@@ -45,7 +45,8 @@ describe('pluginDefaultOptions', () => {
             audioBufferUpdate: false,
             animationOptions: {},
             timeSlice: 0,
-            convertEngine: ''
+            convertEngine: '',
+            hotKeys: false
         });
     });
 });

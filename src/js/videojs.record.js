@@ -16,6 +16,7 @@ import RecordIndicator from './controls/record-indicator';
 import PictureInPictureToggle from './controls/picture-in-picture-toggle';
 
 import Event from './event';
+import defaultKeyHandler from './hot-keys';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
@@ -283,6 +284,21 @@ class Record extends Plugin {
         // display max record time
         this.setDuration(this.maxLength);
 
+        // hot keys
+        if (this.player.options_.plugins.record &&
+            this.player.options_.plugins.record.hotKeys &&
+            (this.player.options_.plugins.record.hotKeys !== false)) {
+
+            let handler = this.player.options_.plugins.record.hotKeys;
+            if (handler === true) {
+                handler = defaultKeyHandler;
+            }
+            // enable video.js user action
+            this.player.options_.userActions = {
+                hotkeys: handler
+            };
+        }
+
         // hide play control (if present)
         if (this.player.controlBar.playToggle !== undefined) {
             this.player.controlBar.playToggle.hide();
@@ -322,7 +338,8 @@ class Record extends Plugin {
     }
 
     /**
-     * Open the browser's recording device selection dialog.
+     * Open the browser's recording device selection dialog and start the
+     * device.
      */
     getDevice() {
         // define device callbacks once
@@ -335,6 +352,26 @@ class Record extends Plugin {
         if (this.engineStopCallback === undefined) {
             this.engineStopCallback = this.onRecordComplete.bind(this);
         }
+
+        // check for support because some browsers still do not support
+        // getDisplayMedia or getUserMedia (like Chrome iOS, see:
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=752458)
+        if (this.getRecordType() === SCREEN_ONLY) {
+            if (navigator.mediaDevices === undefined ||
+                navigator.mediaDevices.getDisplayMedia === undefined) {
+                this.player.trigger(Event.ERROR,
+                    'This browser does not support navigator.mediaDevices.getDisplayMedia');
+                return;
+            }
+        } else {
+            if (navigator.mediaDevices === undefined ||
+                navigator.mediaDevices.getUserMedia === undefined) {
+                this.player.trigger(Event.ERROR,
+                    'This browser does not support navigator.mediaDevices.getUserMedia');
+                return;
+            }
+        }
+
         // ask the browser to give the user access to the media device
         // and get a stream reference in the callback function
         switch (this.getRecordType()) {
@@ -771,7 +808,7 @@ class Record extends Plugin {
         // register starting point
         this.paused = false;
         this.pauseTime = this.pausedTime = 0;
-        this.startTime = new Date().getTime();
+        this.startTime = performance.now();
 
         // start countdown
         const COUNTDOWN_SPEED = 100; // ms
@@ -864,7 +901,7 @@ class Record extends Plugin {
      */
     pause() {
         if (!this.paused) {
-            this.pauseTime = new Date().getTime();
+            this.pauseTime = performance.now();
             this.paused = true;
 
             this.engine.pause();
@@ -876,7 +913,7 @@ class Record extends Plugin {
      */
     resume() {
         if (this.paused) {
-            this.pausedTime += new Date().getTime() - this.pauseTime;
+            this.pausedTime += performance.now() - this.pauseTime;
 
             this.engine.resume();
             this.paused = false;
@@ -1006,7 +1043,7 @@ class Record extends Plugin {
      */
     onCountDown() {
         if (!this.paused) {
-            let now = new Date().getTime();
+            let now = performance.now();
             let duration = this.maxLength;
             let currentTime = (now - (this.startTime +
                 this.pausedTime)) / 1000; // buddy ignore:line
@@ -1197,6 +1234,9 @@ class Record extends Plugin {
         this.stop();
         this.stopDevice();
 
+        // garbage collect recording
+        this.removeRecording();
+
         // stop countdown
         this.player.clearInterval(this.countDown);
 
@@ -1236,6 +1276,9 @@ class Record extends Plugin {
 
         // stop countdown
         this.player.clearInterval(this.countDown);
+
+        // garbage collect recording
+        this.removeRecording();
 
         // reset options
         this.loadOptions();
@@ -1294,6 +1337,17 @@ class Record extends Plugin {
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
+    }
+
+    /**
+     * Removes recorded `Blob` from cache.
+     * @private
+     */
+    removeRecording() {
+        if (this.mediaElement && this.mediaElement.src.startsWith('blob:') === true) {
+            URL.revokeObjectURL(this.mediaElement.src);
+            this.mediaElement.src = '';
+        }
     }
 
     /**
@@ -1425,6 +1479,9 @@ class Record extends Plugin {
 
         // hide volume control to prevent feedback
         this.displayVolumeControl(false);
+
+        // garbage collect previous recording
+        this.removeRecording();
 
         // start or resume live preview
         this.load(this.stream);

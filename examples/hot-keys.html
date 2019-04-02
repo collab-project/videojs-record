@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Picture-in-Picture Example - Record Plugin for Video.js</title>
+  <title>Hot-keys Example - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
@@ -18,7 +18,7 @@
   <style>
   /* change player background color */
   #myVideo {
-      background-color: #89D963;
+      background-color: #DE1F85;
   }
   </style>
 </head>
@@ -28,17 +28,6 @@
 
 <script>
 /* eslint-disable */
-
-// check for support
-var pipEnabled = false;
-if (!('pictureInPictureEnabled' in document)) {
-    alert('The Picture-in-Picture API is not available.');
-} else if (!document.pictureInPictureEnabled) {
-    alert('The Picture-in-Picture API is disabled.');
-} else {
-    pipEnabled = true;
-}
-
 var options = {
     controls: true,
     width: 320,
@@ -51,9 +40,13 @@ var options = {
         record: {
             audio: false,
             video: true,
-            pip: pipEnabled,
-            maxLength: 60,
-            debug: true
+            maxLength: 10,
+            debug: true,
+            hotKeys: true,
+            // or specify a custom key handler
+            //hotKeys: function(event) {
+            //    console.log('pressed key: ' + event.which);
+            //}
         }
     }
 };
@@ -89,29 +82,6 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
 });
-
-// handle Picture-in-Picture events
-var pipWindow;
-player.on('enterPIP', function(element, evt) {
-    console.log('Entered Picture-in-Picture');
-
-    // listen for window resize
-    pipWindow = evt.pictureInPictureWindow;
-    pipWindow.addEventListener('resize', onPipWindowResize);
-
-    console.log(`Window size is ${pipWindow.width} x ${pipWindow.height}`);
-});
-player.on('leavePIP', function() {
-    console.log('Left Picture-in-Picture');
-
-    // stop listening for resize
-    pipWindow.removeEventListener('resize', onPipWindowResize);
-});
-
-function onPipWindowResize(evt) {
-    // print window size to console
-    console.log(`Window size changed to ${pipWindow.width} x ${pipWindow.height}`);
-}
 </script>
 
 </body>

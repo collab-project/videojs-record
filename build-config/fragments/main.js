@@ -5,23 +5,10 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const datefns = require('date-fns');
-
-const year = datefns.format(new Date(), 'YYYY');
-const rootDir = path.resolve(__dirname, '..', '..');
-const pckg = require(path.join(rootDir, 'package.json'));
+const banner = require('./banner');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// library banner with copyright and version info
-let jsBanner = `${pckg.name}
-@version ${pckg.version}
-@see ${pckg.homepage}
-@copyright 2014-${year} ${pckg.author}
-@license ${pckg.license}`;
-let jsBannerPlugin = new webpack.BannerPlugin({
-    banner: jsBanner,
-    test: /\.js$/
-});
+const rootDir = path.resolve(__dirname, '..', '..');
 
 // copy fonts to dist
 let copyFontsPlugin = new CopyWebpackPlugin([
@@ -48,7 +35,7 @@ module.exports = {
         library: 'VideojsRecord'
     },
     plugins: [
-        jsBannerPlugin,
+        banner.libBanner,
         copyFontsPlugin
     ]
 };
