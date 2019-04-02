@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.6.0 - unreleased
+3.6.0 - 2019/04/02
 ------------------
 
 - Add support for keyboard hotkeys (requires video.js 7.5.0 or newer) (#339)
