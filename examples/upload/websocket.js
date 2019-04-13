@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 /**
  * Example websocket server for uploads.
  */
@@ -8,20 +10,20 @@ const colors = require('colors/safe');
 const node_static = require('node-static');
 
 // create websocket
-var sockjs_upload = sockjs.createServer();
+const sockjs_upload = sockjs.createServer();
 
-var index = 0;
+let index = 0;
 
-sockjs_upload.on('connection', function(conn) {
-    conn.on('data', function(data) {
-        if (data == 'start') {
+sockjs_upload.on('connection', (conn) => {
+    conn.on('data', (data) => {
+        if (data === 'start') {
             //
             index = 0;
 
             console.log('');
             console.log(colors.yellow('started recording'));
             console.log('');
-        } else if (data == 'stop') {
+        } else if (data === 'stop') {
             //
             console.log('');
             console.log(colors.green('finished recording'));
@@ -36,14 +38,14 @@ sockjs_upload.on('connection', function(conn) {
 });
 
 // static files server
-var static_directory = new node_static.Server(__dirname);
-var server = http.createServer();
-var port = 9999;
-var host = '0.0.0.0';
-server.addListener('request', function(req, res) {
+const static_directory = new node_static.Server(__dirname);
+const server = http.createServer();
+const port = 9999;
+const host = '0.0.0.0';
+server.addListener('request', (req, res) => {
     static_directory.serve(req, res);
 });
-server.addListener('upgrade', function(req,res){
+server.addListener('upgrade', (req, res) => {
     res.end();
 });
 sockjs_upload.installHandlers(server, {prefix: '/upload-socket'});

@@ -1,6 +1,6 @@
 /**
  * @file banner.js
- * @since 3.5.2
+ * @since 3.6.0
 */
 
 const path = require('path');

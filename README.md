@@ -68,17 +68,8 @@ version of videojs-record.
 Supported browsers
 ------------------
 
-| Browser        | Support           | Features |
-| ------------- |-------------|-------------|
-| Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen |
-| Google Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + screen |
-| Opera | Stable / NEXT | Audio + Video + Image + Screen |
-| Android | Chrome / Firefox / Opera | Audio + Video + Image |
-| Microsoft Edge | Normal Build | Audio + Image but **no video or screen** |
-| Safari | Stable / Beta/ Preview (OSX/iOS) | Audio + Video + Image + Screen |
-
 Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
-more information.
+supported browsers information.
 
 Dependencies
 ------------
@@ -152,7 +143,7 @@ When recording either audio/video, video-only, animated GIF or a single image,
 include a `video` element:
 
 ```html
-<video id="myVideo" class="video-js vjs-default-skin"></video>
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
 ```
 
 ### Audio-only
@@ -631,7 +622,7 @@ Custom interface elements for this library that can be hidden are: `deviceButton
 Hotkeys
 -------
 
-The `hotKeys` option allows you to control this plugin using a keyboard (disabled
+The `hotKeys` plugin option allows you to control this plugin using a keyboard (disabled
 by default). Note that this requires video.js 7.5.0 or newer.
 
 The built-in hotkey handling is:
@@ -642,7 +633,7 @@ The built-in hotkey handling is:
 | `c` | toggle playback | start/stop playback
 | `p` | toggle picture-in-picture | enter/exit picture-in-picture mode (if enabled)
 
-To enable the built-in handler, specify `true` for the video.js `hotKeys` option:
+To enable the built-in handler, specify `true` for the `hotKeys` plugin option:
 
 ```javascript
 record: {

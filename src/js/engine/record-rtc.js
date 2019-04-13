@@ -145,13 +145,13 @@ class RecordRTCEngine extends RecordEngine {
      * Invoked when recording is stopped and resulting stream is available.
      *
      * @private
-     * @param {string} audioVideoURL - Reference to the recorded Blob
+     * @param {string} audioVideoURL - URI of the recorded Blob
      *     object, e.g. 'blob:http://localhost:8080/10100016-4248-9949-b0d6-0bb40db56eba'
      * @param {string} type - Media type, eg. 'video' or 'audio'.
      */
     onStopRecording(audioVideoURL, type) {
-        // store reference to recorded stream URL
-        this.mediaURL = audioVideoURL;
+        // garbage collect unused blob
+        URL.revokeObjectURL(audioVideoURL);
 
         // store reference to recorded stream data
         let recordType = this.player().record().getRecordType();

@@ -24,9 +24,11 @@
 </head>
 <body>
 
-<video id="myVideo" class="video-js vjs-default-skin" playsinline></video>
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
 
 <script>
+/* eslint-disable */
+
 // check for support
 var pipEnabled = false;
 if (!('pictureInPictureEnabled' in document)) {
