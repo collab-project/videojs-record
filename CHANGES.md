@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.6.1 - unreleased
+------------------
+
+- Examples: use dark theme when possible
+
+
 3.6.0 - 2019/04/02
 ------------------
 
