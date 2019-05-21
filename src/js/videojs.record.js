@@ -1705,11 +1705,7 @@ class Record extends Plugin {
                             this.player.trigger(Event.AUDIO_OUTPUT_READY);
                             return;
                         }).catch((err) => {
-                            if (err.name === 'SecurityError') {
-                                errorMessage = `You need to use HTTPS for selecting audio output device: ${err}`;
-                            } else {
-                                errorMessage = err;
-                            }
+                            errorMessage = err;
                         });
                     } else {
                         errorMessage = 'Browser does not support audio output device selection.';
