@@ -81,14 +81,12 @@ var player = videojs('myVideo', options, function() {
     videojs.log(msg);
 });
 
-player.on('deviceReady', function() {
+// enumerate devices once
+player.one('deviceReady', function() {
     player.record().enumerateDevices();
 });
 
 player.on('enumerateReady', function() {
-    // show input selector section
-    inputSection.style.display = 'block';
-
     devices = player.record().devices;
 
     // handle selection changes
@@ -120,6 +118,9 @@ player.on('enumerateReady', function() {
     } else {
         console.log('Total video input devices found:', inputSelector.length);
     }
+
+    // show input selector section
+    inputSection.style.display = 'block';
 });
 
 function changeVideoInput(event) {

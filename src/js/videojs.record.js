@@ -1625,18 +1625,19 @@ class Record extends Plugin {
      * @param {string} deviceId - Id of the video input device.
      */
     setVideoInput(deviceId) {
-        console.log('setVideoInputs', deviceId);
-        var tracks = this.stream.getTracks();
-        console.log(tracks);
+        if (this.recordVideo === Object(this.recordVideo)) {
+            // already using video constraints
+            this.recordVideo.deviceId = {exact: deviceId};
 
-        for(var i = 0; i < tracks.length; i++){
-           console.log(tracks[i].getSettings().deviceId);
+        } else if (this.recordVideo === true) {
+            // not using video constraints already, so force it
+            this.recordVideo = {
+                deviceId: {exact: deviceId}
+            };
         }
-        console.log(this.recordVideo);
-        /*
-        video: {
-        optional: [{sourceId: selected_video_source_id}]
-        }*/
+
+        // ask for video input device permissions and start device
+        this.getDevice();
     }
 
     /**
