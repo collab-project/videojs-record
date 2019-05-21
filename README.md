@@ -553,7 +553,7 @@ record: {
     audio: true,
     video: {
         // video constraints: use preset device
-        optional: [{sourceId: deviceId}]
+        deviceId: {exact: deviceId}
     }
 }
 ```
