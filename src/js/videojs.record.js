@@ -1620,13 +1620,32 @@ class Record extends Plugin {
     }
 
     /**
+     * Change the video input device.
+     *
+     * @param {string} deviceId - Id of the video input device.
+     */
+    setVideoInput(deviceId) {
+        console.log('setVideoInputs', deviceId);
+        var tracks = this.stream.getTracks();
+        console.log(tracks);
+
+        for(var i = 0; i < tracks.length; i++){
+           console.log(tracks[i].getSettings().deviceId);
+        }
+        console.log(this.recordVideo);
+        /*
+        video: {
+        optional: [{sourceId: selected_video_source_id}]
+        }*/
+    }
+
+    /**
      * Change the audio output device.
      *
      * @param {string} deviceId - Id of audio output device.
      */
     setAudioOutput(deviceId) {
         let errorMessage;
-
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // use wavesurfer
@@ -1648,13 +1667,17 @@ class Record extends Plugin {
                             this.player.trigger(Event.AUDIO_OUTPUT_READY);
                             return;
                         }).catch((err) => {
-                            errorMessage = err;
+                            if (err.name === 'SecurityError') {
+                                errorMessage = `You need to use HTTPS for selecting audio output device: ${err}`;
+                            } else {
+                                errorMessage = err;
+                            }
                         });
                     } else {
                         errorMessage = 'Browser does not support audio output device selection.';
                     }
                 } else {
-                    errorMessage = 'Invalid deviceId: ' + deviceId;
+                    errorMessage = `Invalid deviceId: ${deviceId}`;
                 }
                 break;
         }

@@ -126,8 +126,18 @@ function changeVideoInput(event) {
     var label = event.target.options[event.target.selectedIndex].text;
     deviceId = event.target.value;
 
-    console.log("changed video input to '" + label + "' (deviceId: " +
-      deviceId + ")");
+    try {
+        // change video input device
+        player.record().setVideoInput(deviceId);
+
+        console.log("changed video input to '" + label + "' (deviceId: " +
+            deviceId + ")");
+    } catch (error) {
+        console.warn(error);
+
+        // jump back to first output device in the list as it's the default
+        event.target.selectedIndex = 0;
+    }
 }
 
 // error handling
