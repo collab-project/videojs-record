@@ -116,7 +116,7 @@ player.on('enumerateReady', function() {
         inputSelector.disabled = true;
         console.warn(option.text);
     } else {
-        console.log('Total video input devices found:', inputSelector.length);
+        console.info('Total video input devices found:', inputSelector.length);
     }
 
     // show input selector section
@@ -131,7 +131,7 @@ function changeVideoInput(event) {
         // change video input device
         player.record().setVideoInput(deviceId);
 
-        console.log("changed video input to '" + label + "' (deviceId: " +
+        console.log("Changed video input to '" + label + "' (deviceId: " +
             deviceId + ")");
     } catch (error) {
         console.warn(error);
@@ -143,11 +143,11 @@ function changeVideoInput(event) {
 
 // error handling
 player.on('enumerateError', function() {
-    console.log('enumerate error:', player.enumerateErrorCode);
+    console.warn('enumerate error:', player.enumerateErrorCode);
 });
 
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
 
 player.on('error', function(element, error) {

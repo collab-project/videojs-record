@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Add `setVideoInput(deviceId)` for changing the video input device (#369)
+- Add `setAudioInput(deviceId)` for changing the audio input device (#374)
 - Examples: use dark theme when possible
 
 

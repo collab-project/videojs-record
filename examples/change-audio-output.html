@@ -129,7 +129,7 @@ player.on('enumerateReady', function() {
         outputSelector.disabled = true;
         console.warn(option.text);
     } else {
-        console.log('Total audio output devices found:', outputSelector.length);
+        console.info('Total audio output devices found:', outputSelector.length);
     }
 });
 
@@ -153,11 +153,11 @@ player.on('audioOutputReady', function() {
 
 // error handling
 player.on('enumerateError', function() {
-    console.log('enumerate error:', player.enumerateErrorCode);
+    console.warn('enumerate error:', player.enumerateErrorCode);
 });
 
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
 
 player.on('error', function(element, error) {

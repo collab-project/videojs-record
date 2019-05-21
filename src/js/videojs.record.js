@@ -1636,7 +1636,44 @@ class Record extends Plugin {
             };
         }
 
+        // release existing device
+        this.stopDevice();
+
         // ask for video input device permissions and start device
+        this.getDevice();
+    }
+
+    /**
+     * Change the audio input device.
+     *
+     * @param {string} deviceId - Id of the audio input device.
+     */
+    setAudioInput(deviceId) {
+        if (this.recordAudio === Object(this.recordAudio)) {
+            // already using audio constraints
+            this.recordAudio.deviceId = {exact: deviceId};
+
+        } else if (this.recordAudio === true) {
+            // not using audio constraints already, so force it
+            this.recordAudio = {
+                deviceId: {exact: deviceId}
+            };
+        }
+
+        // update wavesurfer microphone plugin constraints
+        switch (this.getRecordType()) {
+            case AUDIO_ONLY:
+                this.surfer.surfer.microphone.constraints = {
+                    video: false,
+                    audio: this.recordAudio
+                };
+                break;
+        }
+
+        // release existing device
+        this.stopDevice();
+
+        // ask for audio input device permissions and start device
         this.getDevice();
     }
 
