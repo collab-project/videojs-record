@@ -293,6 +293,8 @@ player.record().destroy();
 | `getCurrentTime` | Get the current time of the recorded stream during playback. Returns 0 if no recording is available (yet). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
 | `setAudioOutput(deviceId)` | Change the audio output device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
+| `setAudioInput(deviceId)` | Change the audio input device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
+| `setVideoInput(deviceId)` | Change the video input device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
 | `start` | Start recording. |
 | `stop` | Stop recording. |
 | `pause` | Pause recording. |
@@ -551,8 +553,8 @@ record: {
     audio: true,
     video: {
         // video constraints: use preset device
-        optional: [{sourceId: deviceId}]
-    },
+        deviceId: {exact: deviceId}
+    }
 }
 ```
 
