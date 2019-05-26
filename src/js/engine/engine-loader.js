@@ -5,7 +5,7 @@
 
 import RecordRTCEngine from './record-rtc';
 import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, AUDIO_PLUGINS} from './record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, OPUSMEDIARECORDER, VMSG, WEBMWASM, AUDIO_PLUGINS} from './record-engine';
 
 /**
  * Get audio plugin engine class.
@@ -40,6 +40,11 @@ const getAudioEngine = function(audioEngine) {
         case OPUSRECORDER:
             // opus-recorder
             AudioEngineClass = videojs.OpusRecorderEngine;
+            break;
+
+        case OPUSMEDIARECORDER:
+            // opus-media-recorder
+            AudioEngineClass = videojs.OpusMediaRecorderEngine;
             break;
 
         case VMSG:
