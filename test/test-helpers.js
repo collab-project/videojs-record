@@ -163,7 +163,7 @@ const TestHelpers = {
         let recordPluginOptions = {
             audio: false,
             video: true,
-            maxLength: 5,
+            maxLength: 50,
             debug: true
         };
         // setup video engine
@@ -192,7 +192,7 @@ const TestHelpers = {
         let recordPluginOptions = {
             audio: false,
             video: true,
-            maxLength: 5,
+            maxLength: 50,
             debug: true
         };
         // setup video plugin
@@ -236,7 +236,7 @@ const TestHelpers = {
                 record: {
                     audio: true,
                     video: true,
-                    maxLength: 5,
+                    maxLength: 50,
                     debug: true
                 }
             }

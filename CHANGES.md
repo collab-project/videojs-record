@@ -8,6 +8,14 @@ x.x.x - unreleased
   audio/video file formats in the browser (#201)
 
 
+3.7.0 - unreleased
+------------------
+
+- Add `setVideoInput(deviceId)` for changing the video input device (#369)
+- Add `setAudioInput(deviceId)` for changing the audio input device (#374)
+- Examples: use dark theme when possible
+
+
 3.6.0 - 2019/04/02
 ------------------
 
