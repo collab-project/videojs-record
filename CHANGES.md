@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.7.0 - unreleased
+3.7.0 - 2019/05/27
 ------------------
 
 - Add `setVideoInput(deviceId)` for changing the video input device (#369)
