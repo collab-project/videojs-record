@@ -60,7 +60,7 @@
     "download-tarball": "^2.0.0",
     "htmlhint": "^0.11.0",
     "in-publish": "^2.0.0",
-    "jsdoc": "^3.6.2",
+    "jsdoc": "^3.5.5",
     "mime": "^2.4.3",
     "mv": "^2.1.1",
     "nodemon": "^1.19.1",
