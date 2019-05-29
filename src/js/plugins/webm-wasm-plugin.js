@@ -3,6 +3,9 @@
  * @since 3.5.0
  */
 
+import videojs from 'video.js';
+import RecordRTC from 'recordrtc';
+
 const RecordRTCEngine = videojs.getComponent('RecordRTCEngine');
 
 /**

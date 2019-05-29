@@ -3,6 +3,8 @@
  * @since 3.3.0
  */
 
+import videojs from 'video.js';
+
 import RecordRTCEngine from './record-rtc';
 import {CONVERT_PLUGINS, TSEBML} from './convert-engine';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, AUDIO_PLUGINS} from './record-engine';

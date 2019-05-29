@@ -3,6 +3,8 @@
  * @since 1.1.0
  */
 
+import videojs from 'video.js';
+
 const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
