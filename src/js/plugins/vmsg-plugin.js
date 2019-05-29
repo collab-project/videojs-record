@@ -3,6 +3,8 @@
  * @since 3.3.0
  */
 
+import videojs from 'video.js';
+
 import {Recorder} from 'vmsg';
 
 const RecordEngine = videojs.getComponent('RecordEngine');
