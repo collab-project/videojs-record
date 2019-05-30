@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.7.1 - unreleased
+3.7.1 - 2019/05/30
 ------------------
 
 - Add missing video.js imports for plugins (#378)
