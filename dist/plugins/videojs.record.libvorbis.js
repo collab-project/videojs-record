@@ -1,20 +1,20 @@
 /*!
  * libvorbis plugin for videojs-record
- * @version 3.7.0
+ * @version 3.7.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("videojs"));
 	else if(typeof define === 'function' && define.amd)
-		define("libvorbis", [], factory);
+		define("libvorbis", ["videojs"], factory);
 	else if(typeof exports === 'object')
-		exports["libvorbis"] = factory();
+		exports["libvorbis"] = factory(require("videojs"));
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["libvorbis"] = factory();
-})(window, function() {
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["libvorbis"] = factory(root["videojs"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_video_js__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -210,7 +210,18 @@ eval("function _typeof2(obj) { if (typeof Symbol === \"function\" && typeof Symb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar RecordEngine = videojs.getComponent('RecordEngine');\n\nvar LibVorbisEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(LibVorbisEngine, _RecordEngine);\n\n  function LibVorbisEngine() {\n    (0, _classCallCheck2.default)(this, LibVorbisEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(LibVorbisEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(LibVorbisEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      this.options = {\n        audioBitsPerSecond: this.sampleRate\n      };\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      this.chunks = [];\n      this.engine = new VorbisMediaRecorder(this.inputStream, this.options);\n      this.engine.ondataavailable = this.onData.bind(this);\n      this.engine.onstop = this.onRecordingAvailable.bind(this);\n      this.engine.start();\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      try {\n        this.engine.stop();\n      } catch (err) {}\n    }\n  }, {\n    key: \"onData\",\n    value: function onData(event) {\n      this.chunks.push(event.data);\n    }\n  }, {\n    key: \"onRecordingAvailable\",\n    value: function onRecordingAvailable() {\n      var blob = new Blob(this.chunks, {\n        type: this.chunks[0].type\n      });\n      this.chunks = [];\n      this.onStopRecording(blob);\n    }\n  }]);\n  return LibVorbisEngine;\n}(RecordEngine);\n\nvideojs.LibVorbisEngine = LibVorbisEngine;\nvar _default = LibVorbisEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/libvorbis-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar RecordEngine = _video.default.getComponent('RecordEngine');\n\nvar LibVorbisEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(LibVorbisEngine, _RecordEngine);\n\n  function LibVorbisEngine() {\n    (0, _classCallCheck2.default)(this, LibVorbisEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(LibVorbisEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(LibVorbisEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      this.options = {\n        audioBitsPerSecond: this.sampleRate\n      };\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      this.chunks = [];\n      this.engine = new VorbisMediaRecorder(this.inputStream, this.options);\n      this.engine.ondataavailable = this.onData.bind(this);\n      this.engine.onstop = this.onRecordingAvailable.bind(this);\n      this.engine.start();\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      try {\n        this.engine.stop();\n      } catch (err) {}\n    }\n  }, {\n    key: \"onData\",\n    value: function onData(event) {\n      this.chunks.push(event.data);\n    }\n  }, {\n    key: \"onRecordingAvailable\",\n    value: function onRecordingAvailable() {\n      var blob = new Blob(this.chunks, {\n        type: this.chunks[0].type\n      });\n      this.chunks = [];\n      this.onStopRecording(blob);\n    }\n  }]);\n  return LibVorbisEngine;\n}(RecordEngine);\n\n_video.default.LibVorbisEngine = LibVorbisEngine;\nvar _default = LibVorbisEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/libvorbis-plugin.js?");
+
+/***/ }),
+
+/***/ "video.js":
+/*!**************************!*\
+  !*** external "videojs" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_video_js__;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/external_%22videojs%22?");
 
 /***/ })
 

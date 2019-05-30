@@ -1,20 +1,20 @@
 /*!
  * opus-recorder plugin for videojs-record
- * @version 3.7.0
+ * @version 3.7.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("videojs"));
 	else if(typeof define === 'function' && define.amd)
-		define("opus-recorder", [], factory);
+		define("opus-recorder", ["videojs"], factory);
 	else if(typeof exports === 'object')
-		exports["opus-recorder"] = factory();
+		exports["opus-recorder"] = factory(require("videojs"));
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["opus-recorder"] = factory();
-})(window, function() {
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["opus-recorder"] = factory(root["videojs"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_video_js__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -210,7 +210,18 @@ eval("function _typeof2(obj) { if (typeof Symbol === \"function\" && typeof Symb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar RecordEngine = videojs.getComponent('RecordEngine');\n\nvar OpusRecorderEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(OpusRecorderEngine, _RecordEngine);\n\n  function OpusRecorderEngine() {\n    (0, _classCallCheck2.default)(this, OpusRecorderEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(OpusRecorderEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(OpusRecorderEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      this.audioType = 'audio/ogg';\n      this.engine = new Recorder({\n        leaveStreamOpen: true,\n        numberOfChannels: this.audioChannels,\n        bufferLength: this.bufferSize,\n        encoderSampleRate: this.sampleRate,\n        encoderPath: this.audioWorkerURL\n      });\n      this.engine.ondataavailable = this.onRecordingAvailable.bind(this);\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      var _this = this;\n\n      this.engine.start(this.audioSourceNode).then(function () {}).catch(function (err) {\n        _this.player().trigger('error', err);\n      });\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n    }\n  }, {\n    key: \"pause\",\n    value: function pause() {\n      this.engine.pause();\n    }\n  }, {\n    key: \"resume\",\n    value: function resume() {\n      this.engine.resume();\n    }\n  }, {\n    key: \"onRecordingAvailable\",\n    value: function onRecordingAvailable(data) {\n      var blob = new Blob([data], {\n        type: this.audioType\n      });\n      this.onStopRecording(blob);\n    }\n  }]);\n  return OpusRecorderEngine;\n}(RecordEngine);\n\nvideojs.OpusRecorderEngine = OpusRecorderEngine;\nvar _default = OpusRecorderEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/opus-recorder-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar RecordEngine = _video.default.getComponent('RecordEngine');\n\nvar OpusRecorderEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(OpusRecorderEngine, _RecordEngine);\n\n  function OpusRecorderEngine() {\n    (0, _classCallCheck2.default)(this, OpusRecorderEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(OpusRecorderEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(OpusRecorderEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      this.audioType = 'audio/ogg';\n      this.engine = new Recorder({\n        leaveStreamOpen: true,\n        numberOfChannels: this.audioChannels,\n        bufferLength: this.bufferSize,\n        encoderSampleRate: this.sampleRate,\n        encoderPath: this.audioWorkerURL\n      });\n      this.engine.ondataavailable = this.onRecordingAvailable.bind(this);\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      var _this = this;\n\n      this.engine.start(this.audioSourceNode).then(function () {}).catch(function (err) {\n        _this.player().trigger('error', err);\n      });\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n    }\n  }, {\n    key: \"pause\",\n    value: function pause() {\n      this.engine.pause();\n    }\n  }, {\n    key: \"resume\",\n    value: function resume() {\n      this.engine.resume();\n    }\n  }, {\n    key: \"onRecordingAvailable\",\n    value: function onRecordingAvailable(data) {\n      var blob = new Blob([data], {\n        type: this.audioType\n      });\n      this.onStopRecording(blob);\n    }\n  }]);\n  return OpusRecorderEngine;\n}(RecordEngine);\n\n_video.default.OpusRecorderEngine = OpusRecorderEngine;\nvar _default = OpusRecorderEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/opus-recorder-plugin.js?");
+
+/***/ }),
+
+/***/ "video.js":
+/*!**************************!*\
+  !*** external "videojs" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_video_js__;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/external_%22videojs%22?");
 
 /***/ })
 

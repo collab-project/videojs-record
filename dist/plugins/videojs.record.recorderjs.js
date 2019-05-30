@@ -1,20 +1,20 @@
 /*!
  * recorderjs plugin for videojs-record
- * @version 3.7.0
+ * @version 3.7.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("videojs"));
 	else if(typeof define === 'function' && define.amd)
-		define("recorderjs", [], factory);
+		define("recorderjs", ["videojs"], factory);
 	else if(typeof exports === 'object')
-		exports["recorderjs"] = factory();
+		exports["recorderjs"] = factory(require("videojs"));
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["recorderjs"] = factory();
-})(window, function() {
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["recorderjs"] = factory(root["videojs"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_video_js__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -210,7 +210,18 @@ eval("function _typeof2(obj) { if (typeof Symbol === \"function\" && typeof Symb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar RecordEngine = videojs.getComponent('RecordEngine');\n\nvar RecorderjsEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(RecorderjsEngine, _RecordEngine);\n\n  function RecorderjsEngine() {\n    (0, _classCallCheck2.default)(this, RecorderjsEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RecorderjsEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(RecorderjsEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n      this.engine = new Recorder(this.audioSourceNode, {\n        bufferLen: this.bufferSize,\n        numChannels: this.audioChannels\n      });\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      this.engine.record();\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n\n      if (this.engine.exportWAV !== undefined) {\n        this.engine.exportWAV(this.onStopRecording.bind(this));\n      }\n\n      if (this.engine.clear !== undefined) {\n        this.engine.clear();\n      }\n    }\n  }]);\n  return RecorderjsEngine;\n}(RecordEngine);\n\nvideojs.RecorderjsEngine = RecorderjsEngine;\nvar _default = RecorderjsEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/recorderjs-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar RecordEngine = _video.default.getComponent('RecordEngine');\n\nvar RecorderjsEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(RecorderjsEngine, _RecordEngine);\n\n  function RecorderjsEngine() {\n    (0, _classCallCheck2.default)(this, RecorderjsEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RecorderjsEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(RecorderjsEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n      this.engine = new Recorder(this.audioSourceNode, {\n        bufferLen: this.bufferSize,\n        numChannels: this.audioChannels\n      });\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      this.engine.record();\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n\n      if (this.engine.exportWAV !== undefined) {\n        this.engine.exportWAV(this.onStopRecording.bind(this));\n      }\n\n      if (this.engine.clear !== undefined) {\n        this.engine.clear();\n      }\n    }\n  }]);\n  return RecorderjsEngine;\n}(RecordEngine);\n\n_video.default.RecorderjsEngine = RecorderjsEngine;\nvar _default = RecorderjsEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/recorderjs-plugin.js?");
+
+/***/ }),
+
+/***/ "video.js":
+/*!**************************!*\
+  !*** external "videojs" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_video_js__;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/external_%22videojs%22?");
 
 /***/ })
 

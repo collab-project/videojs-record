@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.7.0</span>
+            <span class="version">v3.7.1</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -52,6 +52,9 @@
  * @file webm-wasm-plugin.js
  * @since 3.5.0
  */
+
+import videojs from 'video.js';
+import RecordRTC from 'recordrtc';
 
 const RecordRTCEngine = videojs.getComponent('RecordRTCEngine');
 

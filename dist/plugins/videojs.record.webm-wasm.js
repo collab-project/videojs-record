@@ -1,20 +1,20 @@
 /*!
  * webm-wasm plugin for videojs-record
- * @version 3.7.0
+ * @version 3.7.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("RecordRTC"), require("videojs"));
 	else if(typeof define === 'function' && define.amd)
-		define("webm-wasm", [], factory);
+		define("webm-wasm", ["RecordRTC", "videojs"], factory);
 	else if(typeof exports === 'object')
-		exports["webm-wasm"] = factory();
+		exports["webm-wasm"] = factory(require("RecordRTC"), require("videojs"));
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["webm-wasm"] = factory();
-})(window, function() {
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["webm-wasm"] = factory(root["RecordRTC"], root["videojs"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_recordrtc__, __WEBPACK_EXTERNAL_MODULE_video_js__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -232,7 +232,29 @@ eval("function _typeof2(obj) { if (typeof Symbol === \"function\" && typeof Symb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ \"./node_modules/@babel/runtime/helpers/get.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar RecordRTCEngine = videojs.getComponent('RecordRTCEngine');\n\nvar WebmWasmEngine = function (_RecordRTCEngine) {\n  (0, _inherits2.default)(WebmWasmEngine, _RecordRTCEngine);\n\n  function WebmWasmEngine() {\n    (0, _classCallCheck2.default)(this, WebmWasmEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebmWasmEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(WebmWasmEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.recorderType = RecordRTC.WebAssemblyRecorder;\n      this.workerPath = this.videoWorkerURL;\n      (0, _get2.default)((0, _getPrototypeOf2.default)(WebmWasmEngine.prototype), \"setup\", this).call(this, stream, mediaType, debug);\n    }\n  }]);\n  return WebmWasmEngine;\n}(RecordRTCEngine);\n\nvideojs.WebmWasmEngine = WebmWasmEngine;\nvar _default = WebmWasmEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/webm-wasm-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ \"./node_modules/@babel/runtime/helpers/get.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar _recordrtc = _interopRequireDefault(__webpack_require__(/*! recordrtc */ \"recordrtc\"));\n\nvar RecordRTCEngine = _video.default.getComponent('RecordRTCEngine');\n\nvar WebmWasmEngine = function (_RecordRTCEngine) {\n  (0, _inherits2.default)(WebmWasmEngine, _RecordRTCEngine);\n\n  function WebmWasmEngine() {\n    (0, _classCallCheck2.default)(this, WebmWasmEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WebmWasmEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(WebmWasmEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.recorderType = _recordrtc.default.WebAssemblyRecorder;\n      this.workerPath = this.videoWorkerURL;\n      (0, _get2.default)((0, _getPrototypeOf2.default)(WebmWasmEngine.prototype), \"setup\", this).call(this, stream, mediaType, debug);\n    }\n  }]);\n  return WebmWasmEngine;\n}(RecordRTCEngine);\n\n_video.default.WebmWasmEngine = WebmWasmEngine;\nvar _default = WebmWasmEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/webm-wasm-plugin.js?");
+
+/***/ }),
+
+/***/ "recordrtc":
+/*!****************************!*\
+  !*** external "RecordRTC" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_recordrtc__;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/external_%22RecordRTC%22?");
+
+/***/ }),
+
+/***/ "video.js":
+/*!**************************!*\
+  !*** external "videojs" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_video_js__;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/external_%22videojs%22?");
 
 /***/ })
 

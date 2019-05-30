@@ -1,20 +1,20 @@
 /*!
  * ts-ebml plugin for videojs-record
- * @version 3.7.0
+ * @version 3.7.1
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("videojs"));
 	else if(typeof define === 'function' && define.amd)
-		define("ts-ebml", [], factory);
+		define("ts-ebml", ["videojs"], factory);
 	else if(typeof exports === 'object')
-		exports["ts-ebml"] = factory();
+		exports["ts-ebml"] = factory(require("videojs"));
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["ts-ebml"] = factory();
-})(window, function() {
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["ts-ebml"] = factory(root["videojs"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_video_js__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -417,7 +417,18 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _tsEbml = __webpack_require__(/*! ts-ebml */ \"./node_modules/ts-ebml/lib/index.js\");\n\nvar ConvertEngine = videojs.getComponent('ConvertEngine');\n\nvar TsEBMLEngine = function (_ConvertEngine) {\n  (0, _inherits2.default)(TsEBMLEngine, _ConvertEngine);\n\n  function TsEBMLEngine() {\n    (0, _classCallCheck2.default)(this, TsEBMLEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TsEBMLEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(TsEBMLEngine, [{\n    key: \"convert\",\n    value: function convert(data) {\n      var _this = this;\n\n      var decoder = new _tsEbml.Decoder();\n      var reader = new _tsEbml.Reader();\n      reader.logging = false;\n      reader.drop_default_duration = false;\n      var timestamp = new Date();\n      timestamp.setTime(data.lastModified);\n      this.loadBlob(data).then(function (buffer) {\n        var elms = decoder.decode(buffer);\n        elms.forEach(function (elm) {\n          reader.read(elm);\n        });\n        reader.stop();\n\n        var refinedMetadataBuf = _tsEbml.tools.makeMetadataSeekable(reader.metadatas, reader.duration, reader.cues);\n\n        var body = buffer.slice(reader.metadataSize);\n        var result = new Blob([refinedMetadataBuf, body], {\n          type: data.type\n        });\n\n        _this.addFileInfo(result, timestamp);\n\n        _this.player().convertedData = result;\n\n        _this.player().trigger('finishConvert');\n      });\n    }\n  }]);\n  return TsEBMLEngine;\n}(ConvertEngine);\n\nvideojs.TsEBMLEngine = TsEBMLEngine;\nvar _default = TsEBMLEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/ts-ebml-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar _tsEbml = __webpack_require__(/*! ts-ebml */ \"./node_modules/ts-ebml/lib/index.js\");\n\nvar ConvertEngine = _video.default.getComponent('ConvertEngine');\n\nvar TsEBMLEngine = function (_ConvertEngine) {\n  (0, _inherits2.default)(TsEBMLEngine, _ConvertEngine);\n\n  function TsEBMLEngine() {\n    (0, _classCallCheck2.default)(this, TsEBMLEngine);\n    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TsEBMLEngine).apply(this, arguments));\n  }\n\n  (0, _createClass2.default)(TsEBMLEngine, [{\n    key: \"convert\",\n    value: function convert(data) {\n      var _this = this;\n\n      var decoder = new _tsEbml.Decoder();\n      var reader = new _tsEbml.Reader();\n      reader.logging = false;\n      reader.drop_default_duration = false;\n      var timestamp = new Date();\n      timestamp.setTime(data.lastModified);\n      this.loadBlob(data).then(function (buffer) {\n        var elms = decoder.decode(buffer);\n        elms.forEach(function (elm) {\n          reader.read(elm);\n        });\n        reader.stop();\n\n        var refinedMetadataBuf = _tsEbml.tools.makeMetadataSeekable(reader.metadatas, reader.duration, reader.cues);\n\n        var body = buffer.slice(reader.metadataSize);\n        var result = new Blob([refinedMetadataBuf, body], {\n          type: data.type\n        });\n\n        _this.addFileInfo(result, timestamp);\n\n        _this.player().convertedData = result;\n\n        _this.player().trigger('finishConvert');\n      });\n    }\n  }]);\n  return TsEBMLEngine;\n}(ConvertEngine);\n\n_video.default.TsEBMLEngine = TsEBMLEngine;\nvar _default = TsEBMLEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/ts-ebml-plugin.js?");
+
+/***/ }),
+
+/***/ "video.js":
+/*!**************************!*\
+  !*** external "videojs" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_video_js__;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/external_%22videojs%22?");
 
 /***/ })
 
