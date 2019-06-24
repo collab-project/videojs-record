@@ -8,7 +8,13 @@ x.x.x - unreleased
   audio/video file formats in the browser (#201)
 
 
-3.7.0 - unreleased
+3.7.1 - 2019/05/30
+------------------
+
+- Add missing video.js imports for plugins (#378)
+
+
+3.7.0 - 2019/05/27
 ------------------
 
 - Add `setVideoInput(deviceId)` for changing the video input device (#369)

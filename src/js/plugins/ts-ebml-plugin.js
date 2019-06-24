@@ -3,6 +3,8 @@
  * @since 3.3.0
  */
 
+import videojs from 'video.js';
+
 import {Decoder, Encoder, tools, Reader} from 'ts-ebml';
 
 const ConvertEngine = videojs.getComponent('ConvertEngine');
