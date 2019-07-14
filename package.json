@@ -117,6 +117,7 @@
     "karma-webpack": "^4.0.2",
     "lamejs": ">=1.2.0",
     "libvorbis.js": ">=1.1.2",
+    "log-timestamp": "^0.3.0",
     "mini-css-extract-plugin": "^0.7.0",
     "node-fs-extra": "^0.8.2",
     "node-sass": "^4.12.0",

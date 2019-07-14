@@ -6,8 +6,11 @@
 
 const http = require('http');
 const sockjs = require('sockjs');
+const datefns = require('date-fns');
+
 const colors = require('colors/safe');
 const node_static = require('node-static');
+const timestamp = require('log-timestamp')(function() { return '[' + datefns.format(new Date(), 'YYYY/MM/DD HH:mm:ss.SSS') + '] %s'; });
 
 // create websocket
 const sockjs_upload = sockjs.createServer();
@@ -17,22 +20,22 @@ let index = 0;
 sockjs_upload.on('connection', (conn) => {
     conn.on('data', (data) => {
         if (data === 'start') {
-            //
+            // started recording
             index = 0;
 
             console.log('');
             console.log(colors.yellow('started recording'));
             console.log('');
         } else if (data === 'stop') {
-            //
+            // stopped recording
             console.log('');
             console.log(colors.green('finished recording'));
             console.log('');
-        } else {
+        } else if (data) {
             //
             index++;
 
-            console.log(colors.blue(' received data [' + colors.cyan(index) + ']...'), data);
+            console.log(colors.blue(' received data [' + colors.cyan(index) + ']:'), data);
         }
     });
 });
@@ -50,6 +53,7 @@ server.addListener('upgrade', (req, res) => {
 });
 sockjs_upload.installHandlers(server, {prefix: '/upload-socket'});
 
+// print startup message
 console.log('');
 console.log(colors.green(' [examples] Websocket upload server listening on ') +
             colors.yellow(host + ':' + port));
