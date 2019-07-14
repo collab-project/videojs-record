@@ -467,6 +467,9 @@ player.on('timestamp', function() {
 });
 ```
 
+Check the [timeslice](https://github.com/collab-project/videojs-record/blob/master/examples/timeslice.html)
+example.
+
 ### Upload data
 
 The example below shows how to upload each recording:
@@ -496,10 +499,10 @@ player.on('finishRecord', function() {
 ```
 
 Check the [simple upload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html)
-for the complete example.
+example.
 
 The example below shows how to 'stream' upload recorded data segments to a server
-using the [jQuery](http://jquery.com/) library and the `timestamp` event:
+using the [jQuery](https://jquery.com/) library and the `timestamp` event:
 
 ```javascript
 var segmentNumber = 0;
