@@ -57,7 +57,10 @@ var options = {
             audioEngine: 'opus-recorder',
             audioSampleRate: 48000,
             audioChannels: 2,
-            audioWorkerURL: '../../node_modules/opus-recorder/dist/encoderWorker.min.js'
+            audioWorkerURL: '../../node_modules/opus-recorder/dist/encoderWorker.min.js',
+            audioOptionalConfig: {
+                foo: 'bar'
+            }
         }
     }
 };

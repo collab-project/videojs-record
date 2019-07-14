@@ -34,13 +34,22 @@ class OpusRecorderEngine extends RecordEngine {
         // in that case
         this.audioType = 'audio/ogg';
 
-        this.engine = new Recorder({
+        // minimal default config
+        this.config = {
             leaveStreamOpen: true,
             numberOfChannels: this.audioChannels,
             bufferLength: this.bufferSize,
             encoderSampleRate: this.sampleRate,
             encoderPath: this.audioWorkerURL
-        });
+        };
+
+        // extend config with optional options
+        if (this.optionalConfig) {
+            this.config = Object.assign(this.config, this.optionalConfig);
+        }
+
+        // create Recorder engine
+        this.engine = new Recorder(this.config);
         this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
 
         let AudioContext = window.AudioContext || window.webkitAudioContext;
