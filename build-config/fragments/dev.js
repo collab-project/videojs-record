@@ -59,7 +59,8 @@ module.exports = {
             // =============================================
             // file upload handler for simple upload example
             // =============================================
-            // make sure upload directory exists
+            // make sure 'uploads' directory exists (and
+            // create it otherwise)
             const targetDir = 'uploads';
             fs.ensureDirSync(targetDir);
 

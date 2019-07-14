@@ -76,6 +76,8 @@ player.on('finishRecord', function() {
 });
 
 function upload(blob) {
+    // this upload handler is served using webpack-dev-server for
+    // this example, see build-config/fragments/dev.js
     var serverUrl = '/upload';
     var formData = new FormData();
     formData.append('file', blob, blob.name);
