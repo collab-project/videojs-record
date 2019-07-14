@@ -1,6 +1,13 @@
 videojs-record changelog
 ========================
 
+3.8.0 - unreleased
+------------------
+
+- Bump required version for videojs-wavesurfer to 2.9.0 or newer
+- Bump required version for webrtc-adapter to 7.2.8 or newer
+
+
 3.7.1 - 2019/05/30
 ------------------
 
