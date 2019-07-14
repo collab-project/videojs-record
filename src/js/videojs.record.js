@@ -598,7 +598,7 @@ class Record extends Plugin {
             // timeSlice
             if (this.recordTimeSlice && this.recordTimeSlice > 0) {
                 this.engine.timeSlice = this.recordTimeSlice;
-                this.engine.onTimeStamp = this.onTimeStamp.bind(this);
+                this.engine.maxFileSize = this.maxFileSize;
             }
 
             // initialize recorder
@@ -1536,61 +1536,6 @@ class Record extends Plugin {
     playbackTimeUpdate() {
         this.setCurrentTime(this.player.currentTime(),
             this.streamDuration);
-    }
-
-    /**
-     * Received new timestamp (when timeSlice option is enabled).
-     * @private
-     * @param {float} current - Current timestamp.
-     * @param {array} all - List of timestamps so far.
-     */
-    onTimeStamp(current, all) {
-        this.player.currentTimestamp = current;
-        this.player.allTimestamps = all;
-
-        // get blob (only for MediaStreamRecorder)
-        let internal;
-        switch (this.getRecordType()) {
-            case AUDIO_ONLY:
-                internal = this.engine.engine.audioRecorder;
-                break;
-
-            case ANIMATION:
-                internal = this.engine.engine.gifRecorder;
-                break;
-
-            default:
-                internal = this.engine.engine.videoRecorder;
-        }
-
-        let maxFileSizeReached = false;
-        if (internal) {
-            internal = internal.getInternalRecorder();
-        }
-
-        if ((internal instanceof MediaStreamRecorder) === true) {
-            this.player.recordedData = internal.getArrayOfBlobs();
-
-            // inject file info for newest blob
-            this.engine.addFileInfo(
-                this.player.recordedData[this.player.recordedData.length - 1]);
-
-            // check max file size
-            if (this.maxFileSize > 0) {
-                let currentSize = new Blob(this.player.recordedData).size;
-                if (currentSize >= this.maxFileSize) {
-                    maxFileSizeReached = true;
-                }
-            }
-        }
-
-        // notify others
-        this.player.trigger(Event.TIMESTAMP);
-
-        // automatically stop when max file size was reached
-        if (maxFileSizeReached) {
-            this.stop();
-        }
     }
 
     /**

@@ -49,8 +49,8 @@
   "dependencies": {
     "recordrtc": ">=5.5.4",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.8.0",
-    "webrtc-adapter": ">=7.2.3"
+    "videojs-wavesurfer": ">=2.9.0",
+    "webrtc-adapter": ">=7.2.8"
   },
   "devDependencies": {
     "lamejs": "https://github.com/zhuker/lamejs.git",

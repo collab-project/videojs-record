@@ -19,8 +19,17 @@ module.exports = {
         publicPath: '/',
         watchContentBase: true,
         watchOptions: {
-            ignored: ['.chrome', 'node_modules', 'bower_components',
-                'coverage', 'docs', 'vendor']
+            ignored: [
+                /.build_cache/,
+                /.chrome/,
+                /docs/,
+                /node_modules/,
+                /bower_components/,
+                /coverage/,
+                /build-config/,
+                /test/,
+                /vendor/
+            ]
         },
         // webpack-dev-server middleware
         before(app) {
@@ -50,7 +59,8 @@ module.exports = {
             // =============================================
             // file upload handler for simple upload example
             // =============================================
-            // make sure upload directory exists
+            // make sure 'uploads' directory exists (and
+            // create it otherwise)
             const targetDir = 'uploads';
             fs.ensureDirSync(targetDir);
 
