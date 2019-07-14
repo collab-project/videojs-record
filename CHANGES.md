@@ -5,6 +5,8 @@ videojs-record changelog
 ------------------
 
 - Bump required version for videojs-wavesurfer to 2.9.0 or newer
+- Fix `RecordRTC.MediaStreamRecorder` import when using the `timeSlice` option
+- Examples: add `timeSlice` example demonstrating use of `timestamp` event
 - Bump required version for webrtc-adapter to 7.2.8 or newer
 
 
