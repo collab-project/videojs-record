@@ -367,7 +367,7 @@ class Record extends Plugin {
         // check for support because some browsers still do not support
         // getDisplayMedia or getUserMedia (like Chrome iOS, see:
         // https://bugs.chromium.org/p/chromium/issues/detail?id=752458)
-        if (this.getRecordType() === SCREEN_ONLY) {
+        if (this.getRecordType() === SCREEN_ONLY || this.getRecordType() === AUDIO_SCREEN) {
             if (navigator.mediaDevices === undefined ||
                 navigator.mediaDevices.getDisplayMedia === undefined) {
                 this.player.trigger(Event.ERROR,
@@ -455,8 +455,26 @@ class Record extends Plugin {
                 );
                 break;
 
-            case AUDIO_VIDEO:
             case AUDIO_SCREEN:
+                // setup camera and microphone
+                this.mediaType = {
+                    audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
+                    video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
+                };
+                navigator.mediaDevices.getDisplayMedia({
+                    video: true // This needs to be true for Firefox to work
+                }).then(screenStream => {
+                    navigator.mediaDevices.getUserMedia({ audio:this.recordAudio }).then((mic) => {
+                        // Join microphone track with screencast stream (order matters)
+                        screenStream.addTrack(mic.getTracks()[0]);
+                        this.onDeviceReady.bind(this)(screenStream);
+                    });
+                }).catch(
+                    this.onDeviceError.bind(this)
+                );
+                break;
+
+            case AUDIO_VIDEO:
                 // setup camera and microphone
                 this.mediaType = {
                     audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
