@@ -70,7 +70,7 @@
     "opus"
   ],
   "dependencies": {
-    "recordrtc": ">=5.5.4",
+    "recordrtc": ">=5.5.8",
     "video.js": ">=6.2.7",
     "videojs-wavesurfer": ">=2.9.0",
     "webrtc-adapter": ">=7.2.8"

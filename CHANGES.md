@@ -4,9 +4,15 @@ videojs-record changelog
 3.8.0 - unreleased
 ------------------
 
-- Bump required version for videojs-wavesurfer to 2.9.0 or newer
+- Support for specifying optional plugin settings using the `pluginLibraryOptions`
+  option (#383)
+- New options: `videoBitRate` and `videoFrameRate` (currently only used in the
+  webm-wasm plugin)
 - Fix `RecordRTC.MediaStreamRecorder` import when using the `timeSlice` option
 - Examples: add `timeSlice` example demonstrating use of `timestamp` event
+- Bump required version for videojs-wavesurfer to 2.9.0 or newer for wavesurfer.js
+  3.0.0 support
+- Bump required version for recordrtc to 5.5.8
 - Bump required version for webrtc-adapter to 7.2.8 or newer
 
 

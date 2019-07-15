@@ -15,6 +15,47 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  */
 class RecorderjsEngine extends RecordEngine {
     /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Enables console logging for debugging purposes.
+         *
+         * @type {boolean}
+         */
+        this.debug = false;
+        /**
+         * The number of channels to record. 1 = mono, 2 = stereo.
+         * Maximum 2 channels are supported.
+         *
+         * @type {number}
+         */
+        this.audioChannels = 2;
+        /**
+         * The length of the buffer that the internal `JavaScriptNode`
+         * uses to capture the audio. Can be tweaked if experiencing
+         * performance issues.
+         *
+         * @type {number}
+         */
+        this.bufferSize = 4096;
+        /**
+         * Mime-type for audio output.
+         *
+         * @type {string}
+         */
+        this.audioType = 'audio/wav';
+    }
+
+    /**
      * Setup recording engine.
      *
      * @param {LocalMediaStream} stream - Media stream to record.
@@ -36,7 +77,8 @@ class RecorderjsEngine extends RecordEngine {
         // setup recorder.js
         this.engine = new Recorder(this.audioSourceNode, {
             bufferLen: this.bufferSize,
-            numChannels: this.audioChannels
+            numChannels: this.audioChannels,
+            type: this.audioType
         });
     }
 

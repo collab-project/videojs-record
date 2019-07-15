@@ -28,7 +28,9 @@ describe('pluginDefaultOptions', () => {
             debug: false,
             pip: false,
             autoMuteDevice: false,
+            videoBitRate: 1200,
             videoEngine: 'recordrtc',
+            videoFrameRate: 30,
             videoMimeType: 'video/webm',
             videoRecorderType: 'auto',
             videoWorkerURL: '',
@@ -47,7 +49,8 @@ describe('pluginDefaultOptions', () => {
             animationQuality: 10,
             timeSlice: 0,
             convertEngine: '',
-            hotKeys: false
+            hotKeys: false,
+            pluginLibraryOptions: {}
         });
     });
 });

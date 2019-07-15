@@ -15,6 +15,50 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  */
 class LamejsEngine extends RecordEngine {
     /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Enables console logging for debugging purposes.
+         *
+         * @type {boolean}
+         */
+        this.debug = false;
+        /**
+         * Specifies the sample rate to encode at.
+         *
+         * @type {number}
+         */
+        this.sampleRate = 44100;
+        /**
+         * Specifies the bitrate in kbps.
+         *
+         * @type {number}
+         */
+        this.bitRate = 128;
+        /**
+         * Path to `worker-realtime.js` worker script.
+         *
+         * @type {string}
+         */
+        this.audioWorkerURL = 'worker-realtime.js';
+        /**
+         * Mime-type for audio output.
+         *
+         * @type {string}
+         */
+        this.audioType = 'audio/mp3';
+    }
+
+    /**
      * Setup recording engine.
      *
      * @param {LocalMediaStream} stream - Media stream to record.
@@ -27,7 +71,6 @@ class LamejsEngine extends RecordEngine {
         this.inputStream = stream;
         this.mediaType = mediaType;
         this.debug = debug;
-        this.audioType = 'audio/mp3';
 
         this.config = {
             debug: this.debug,
