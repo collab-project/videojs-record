@@ -6,7 +6,7 @@ videojs-record changelog
 
 - New ffmpeg.js plugin: convert recorded data into other audio/video file formats
   in the browser (#201)
-- Support for specifying optional plugin settings using the `pluginLibraryOptions`
+- Support for specifying third-party plugin settings using the `pluginLibraryOptions`
   option (#383)
 - New options: `videoBitRate` and `videoFrameRate` (currently only used in the
   webm-wasm plugin)
