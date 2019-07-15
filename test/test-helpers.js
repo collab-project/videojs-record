@@ -195,7 +195,7 @@ const TestHelpers = {
             maxLength: 50,
             debug: true
         };
-        // setup video plugin
+        // setup convert plugin
         switch (pluginName) {
             case TSEBML:
                 recordPluginOptions.convertEngine = TSEBML;
