@@ -77,7 +77,7 @@ class OpusRecorderEngine extends RecordEngine {
          */
         this.optionalConfig = {};
     }
-    
+
     /**
      * Setup recording engine.
      *
