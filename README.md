@@ -271,6 +271,7 @@ The available options for this plugin are:
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
 | `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` or an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
 | `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](#hotkeys). Disabled by default. |
+| `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used in the opus-recorder and vmsg plugins. |
 
 Methods
 -------

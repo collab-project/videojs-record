@@ -49,7 +49,8 @@ describe('pluginDefaultOptions', () => {
             animationQuality: 10,
             timeSlice: 0,
             convertEngine: '',
-            hotKeys: false
+            hotKeys: false,
+            pluginLibraryOptions: {}
         });
     });
 });

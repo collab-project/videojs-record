@@ -162,6 +162,7 @@ class Record extends Plugin {
         this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
         this.autoMuteDevice = recordOptions.autoMuteDevice;
+        this.pluginLibraryOptions = recordOptions.pluginLibraryOptions;
 
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
@@ -562,6 +563,8 @@ class Record extends Plugin {
 
             // listen for events
             this.engine.on(Event.RECORD_COMPLETE, this.engineStopCallback);
+
+            this.engine.pluginLibraryOptions = this.pluginLibraryOptions;
 
             // audio settings
             this.engine.bufferSize = this.audioBufferSize;

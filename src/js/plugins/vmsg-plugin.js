@@ -45,7 +45,7 @@ class VmsgEngine extends RecordEngine {
          *
          * @type {object}
          */
-        this.optionalConfig = {};
+        this.pluginLibraryOptions = {};
     }
 
     /**
@@ -68,7 +68,7 @@ class VmsgEngine extends RecordEngine {
         };
 
         // extend config with optional options
-        this.config = Object.assign(this.config, this.optionalConfig);
+        this.config = Object.assign(this.config, this.pluginLibraryOptions);
 
         this.engine = new Recorder(this.config,
             this.onRecordingAvailable.bind(this));

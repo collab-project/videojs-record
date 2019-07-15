@@ -117,7 +117,10 @@ const pluginDefaultOptions = {
     // string '' to disable (default).
     convertEngine: '',
     // Enable keyboard hotkeys.
-    hotKeys: false
+    hotKeys: false,
+    // Use this object to specify additional settings for the library used by the
+    // plugin (only used in opus-recorder and vmsg plugins).
+    pluginLibraryOptions: {}
 };
 
 export default pluginDefaultOptions;

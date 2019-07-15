@@ -4,7 +4,8 @@ videojs-record changelog
 3.8.0 - unreleased
 ------------------
 
-- Support for specifying optional plugin settings (#383)
+- Support for specifying optional plugin settings using the `pluginLibraryOptions`
+  option (#383)
 - New options: `videoBitRate` and `videoFrameRate` (currently only used in the
   webm-wasm plugin)
 - Fix `RecordRTC.MediaStreamRecorder` import when using the `timeSlice` option

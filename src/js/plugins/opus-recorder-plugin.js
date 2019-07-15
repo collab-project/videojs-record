@@ -75,7 +75,7 @@ class OpusRecorderEngine extends RecordEngine {
          *
          * @type {object}
          */
-        this.optionalConfig = {};
+        this.pluginLibraryOptions = {};
     }
 
     /**
@@ -102,7 +102,7 @@ class OpusRecorderEngine extends RecordEngine {
         };
 
         // extend config with optional options
-        this.config = Object.assign(this.config, this.optionalConfig);
+        this.config = Object.assign(this.config, this.pluginLibraryOptions);
 
         // create Recorder engine
         this.engine = new Recorder(this.config);
