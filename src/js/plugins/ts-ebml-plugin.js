@@ -21,7 +21,7 @@ class TsEBMLEngine extends ConvertEngine {
     /**
      * Inject metadata.
      *
-     * @param {Blob} data - Recorded data.
+     * @param {Blob} data - Recorded data that needs to be converted.
      */
     convert(data) {
         const decoder = new Decoder();

@@ -15,6 +15,45 @@ const ConvertEngine = videojs.getComponent('ConvertEngine');
  */
 class FFmpegjsEngine extends ConvertEngine {
     /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Enables console logging for debugging purposes.
+         *
+         * @type {boolean}
+         */
+        this.debug = false;
+        /**
+         * Path to worker script `ffmpeg-worker-mp4.js` (H.264 & AAC & MP3 encoders)
+         * or `ffmpeg-worker-webm.js` (VP8 & Opus encoders).
+         *
+         * @type {string}
+         */
+        this.convertWorkerURL = 'ffmpeg-worker-mp4.js';
+        /**
+         * Mime-type for output.
+         *
+         * @type {string}
+         */
+        this.outputType = null;
+        /**
+         * Additional configuration options for the opus-recorder library.
+         *
+         * @type {object}
+         */
+        this.pluginLibraryOptions = {};
+    }
+
+    /**
      * Setup recording engine.
      *
      * @param {Object} mediaType - Object describing the media type of this
@@ -25,8 +64,15 @@ class FFmpegjsEngine extends ConvertEngine {
     setup(mediaType, debug) {
         this.mediaType = mediaType;
         this.debug = debug;
-
         this.stdout = this.stderr = '';
+
+        // set output mime type
+        if (this.pluginLibraryOptions.outputType === undefined) {
+            throw new Error('no outputType specified!');
+        }
+        this.outputType = this.pluginLibraryOptions.outputType;
+
+        // setup worker
         this.engine = new Worker(this.convertWorkerURL);
         this.engine.onmessage = this.onWorkerMessage.bind(this);
     }
@@ -34,7 +80,8 @@ class FFmpegjsEngine extends ConvertEngine {
     /**
      * Invoked when recording is stopped and resulting stream is available.
      *
-     * @param {blob} data - Reference to the recorded `Blob`.
+     * @param {blob} data - Reference to the recorded `Blob` that needs to be
+     *     converted.
      */
     convert(data) {
         // save timestamp
@@ -43,15 +90,19 @@ class FFmpegjsEngine extends ConvertEngine {
 
         // load and convert blob
         this.loadBlob(data).then((buffer) => {
-            let opts = ['-i', data.name].concat(this.convertOptions);
-            // XXX: ability to specify name
-            opts.push('output.mp3');
+            // specify input
+            let opts = ['-i', data.name];
+
+            // add ffmpeg options
+            opts = opts.concat(this.convertOptions);
+
+            // use a temporary name
+            opts.push('output_' + this.timestamp.getTime());
 
             // start conversion
             this.engine.postMessage({
                 type: 'run',
                 MEMFS: [{name: data.name, data: buffer}],
-                // TOTAL_MEMORY: 256 * 1024 * 1024,
                 arguments: opts
             });
         });
@@ -60,7 +111,7 @@ class FFmpegjsEngine extends ConvertEngine {
     /**
      * Received a message from the worker.
      *
-     * @param {Object} event - TODO
+     * @param {Object} event - Event containing converted data.
      * @private
      */
     onWorkerMessage(event) {
@@ -78,10 +129,16 @@ class FFmpegjsEngine extends ConvertEngine {
 
             // job finished with some result
             case 'done':
-                let buf = msg.data.MEMFS[0].data;
+                // converted data
+                let buf;
+                try {
+                    buf = msg.data.MEMFS[0].data;
+                } catch (e) {
+                    this.player().trigger('error', this.stderr);
+                }
 
-                // XXX: ability to specify mime-type
-                let result = new Blob(buf, {type: 'audio/mp3'});
+                // store in blob
+                let result = new Blob(buf, {type: this.outputType});
 
                 // inject date and name into blob
                 this.addFileInfo(result, this.timestamp);
