@@ -177,6 +177,8 @@ class Record extends Plugin {
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
+        this.convertWorkerURL = recordOptions.convertWorkerURL;
+        this.convertOptions = recordOptions.convertOptions;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -564,8 +566,6 @@ class Record extends Plugin {
             // listen for events
             this.engine.on(Event.RECORD_COMPLETE, this.engineStopCallback);
 
-            this.engine.pluginLibraryOptions = this.pluginLibraryOptions;
-
             // audio settings
             this.engine.bufferSize = this.audioBufferSize;
             this.engine.sampleRate = this.audioSampleRate;
@@ -608,6 +608,9 @@ class Record extends Plugin {
                 this.engine.maxFileSize = this.maxFileSize;
             }
 
+            // additional 3rd-party library options
+            this.engine.pluginLibraryOptions = this.pluginLibraryOptions;
+
             // initialize recorder
             this.engine.setup(this.stream, this.mediaType, this.debug);
 
@@ -622,6 +625,11 @@ class Record extends Plugin {
                     throw new Error('Could not load ' + this.convertEngine +
                         ' plugin');
                 }
+
+                // convert settings
+                this.converter.convertWorkerURL = this.convertWorkerURL;
+                this.converter.convertOptions = this.convertOptions;
+                this.converter.pluginLibraryOptions = this.pluginLibraryOptions;
 
                 // initialize converter
                 this.converter.setup(this.mediaType, this.debug);

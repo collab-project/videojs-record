@@ -7,7 +7,6 @@ import TestHelpers from '../test-helpers.js';
 import Event from '../../src/js/event.js';
 import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
 
-
 /** @test {record-engine} */
 describe('engine.record-engine', () => {
     let player;

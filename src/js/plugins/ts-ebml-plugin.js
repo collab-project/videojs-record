@@ -21,7 +21,7 @@ class TsEBMLEngine extends ConvertEngine {
     /**
      * Inject metadata.
      *
-     * @param {Blob} data - Recorded data.
+     * @param {Blob} data - Recorded data that needs to be converted.
      */
     convert(data) {
         const decoder = new Decoder();
@@ -32,6 +32,9 @@ class TsEBMLEngine extends ConvertEngine {
         // save timestamp
         const timestamp = new Date();
         timestamp.setTime(data.lastModified);
+
+        // notify listeners
+        this.player().trigger('startConvert');
 
         // load and convert blob
         this.loadBlob(data).then((buffer) => {

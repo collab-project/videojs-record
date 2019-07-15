@@ -49,6 +49,8 @@ describe('pluginDefaultOptions', () => {
             animationQuality: 10,
             timeSlice: 0,
             convertEngine: '',
+            convertWorkerURL: '',
+            convertOptions: [],
             hotKeys: false,
             pluginLibraryOptions: {}
         });

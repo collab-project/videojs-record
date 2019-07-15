@@ -71,6 +71,11 @@ player.on('startRecord', function() {
     console.log('started recording!');
 });
 
+// converter started processing
+player.on('startConvert', function() {
+    console.log('started converting!');
+});
+
 // user completed recording and stream is available
 player.on('finishRecord', function() {
     // the blob object contains the recorded data that
