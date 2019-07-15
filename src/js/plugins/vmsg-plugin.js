@@ -17,6 +17,38 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  */
 class VmsgEngine extends RecordEngine {
     /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Enables console logging for debugging purposes.
+         *
+         * @type {boolean}
+         */
+        this.debug = false;
+        /**
+         * Path to `vmsg.wasm` WebAssembly script.
+         *
+         * @type {string}
+         */
+        this.audioWebAssemblyURL = 'vmsg.wasm';
+        /**
+         * Additional configuration options for the vmsg library.
+         *
+         * @type {object}
+         */
+        this.pluginLibraryOptions = {};
+    }
+
+    /**
      * Setup recording engine.
      *
      * @param {LocalMediaStream} stream - Media stream to record.
@@ -30,10 +62,13 @@ class VmsgEngine extends RecordEngine {
         this.mediaType = mediaType;
         this.debug = debug;
 
+        // minimal default config
         this.config = {
             wasmURL: this.audioWebAssemblyURL
-            // XXX: support shimURL?
         };
+
+        // extend config with optional options
+        this.config = Object.assign(this.config, this.pluginLibraryOptions);
 
         this.engine = new Recorder(this.config,
             this.onRecordingAvailable.bind(this));

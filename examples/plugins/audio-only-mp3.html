@@ -55,6 +55,12 @@ var options = {
             debug: true,
             audioEngine: 'vmsg',
             audioWebAssemblyURL: '../../node_modules/vmsg/vmsg.wasm'
+            // use the pluginLibraryOptions option to specify optional settings for the
+            // vmsg library. For example:
+            // pluginLibraryOptions: {
+            //    shimURL: '/static/js/wasm-polyfill.js',
+            //    pitch: 1
+            // }
         }
     }
 };

@@ -162,10 +162,13 @@ class Record extends Plugin {
         this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
         this.autoMuteDevice = recordOptions.autoMuteDevice;
+        this.pluginLibraryOptions = recordOptions.pluginLibraryOptions;
 
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
         this.videoFrameHeight = recordOptions.frameHeight;
+        this.videoFrameRate = recordOptions.videoFrameRate;
+        this.videoBitRate = recordOptions.videoBitRate;
         this.videoEngine = recordOptions.videoEngine;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
@@ -563,6 +566,8 @@ class Record extends Plugin {
             // listen for events
             this.engine.on(Event.RECORD_COMPLETE, this.engineStopCallback);
 
+            this.engine.pluginLibraryOptions = this.pluginLibraryOptions;
+
             // audio settings
             this.engine.bufferSize = this.audioBufferSize;
             this.engine.sampleRate = this.audioSampleRate;
@@ -584,6 +589,8 @@ class Record extends Plugin {
             // video/canvas settings
             this.engine.videoWorkerURL = this.videoWorkerURL;
             this.engine.videoWebAssemblyURL = this.videoWebAssemblyURL;
+            this.engine.videoBitRate = this.videoBitRate;
+            this.engine.videoFrameRate = this.videoFrameRate;
             this.engine.video = {
                 width: this.videoFrameWidth,
                 height: this.videoFrameHeight
@@ -600,7 +607,7 @@ class Record extends Plugin {
             // timeSlice
             if (this.recordTimeSlice && this.recordTimeSlice > 0) {
                 this.engine.timeSlice = this.recordTimeSlice;
-                this.engine.onTimeStamp = this.onTimeStamp.bind(this);
+                this.engine.maxFileSize = this.maxFileSize;
             }
 
             // initialize recorder
@@ -1542,61 +1549,6 @@ class Record extends Plugin {
     playbackTimeUpdate() {
         this.setCurrentTime(this.player.currentTime(),
             this.streamDuration);
-    }
-
-    /**
-     * Received new timestamp (when timeSlice option is enabled).
-     * @private
-     * @param {float} current - Current timestamp.
-     * @param {array} all - List of timestamps so far.
-     */
-    onTimeStamp(current, all) {
-        this.player.currentTimestamp = current;
-        this.player.allTimestamps = all;
-
-        // get blob (only for MediaStreamRecorder)
-        let internal;
-        switch (this.getRecordType()) {
-            case AUDIO_ONLY:
-                internal = this.engine.engine.audioRecorder;
-                break;
-
-            case ANIMATION:
-                internal = this.engine.engine.gifRecorder;
-                break;
-
-            default:
-                internal = this.engine.engine.videoRecorder;
-        }
-
-        let maxFileSizeReached = false;
-        if (internal) {
-            internal = internal.getInternalRecorder();
-        }
-
-        if ((internal instanceof MediaStreamRecorder) === true) {
-            this.player.recordedData = internal.getArrayOfBlobs();
-
-            // inject file info for newest blob
-            this.engine.addFileInfo(
-                this.player.recordedData[this.player.recordedData.length - 1]);
-
-            // check max file size
-            if (this.maxFileSize > 0) {
-                let currentSize = new Blob(this.player.recordedData).size;
-                if (currentSize >= this.maxFileSize) {
-                    maxFileSizeReached = true;
-                }
-            }
-        }
-
-        // notify others
-        this.player.trigger(Event.TIMESTAMP);
-
-        // automatically stop when max file size was reached
-        if (maxFileSizeReached) {
-            this.stop();
-        }
     }
 
     /**

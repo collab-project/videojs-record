@@ -58,6 +58,12 @@ var options = {
             audioSampleRate: 48000,
             audioChannels: 2,
             audioWorkerURL: '../../node_modules/opus-recorder/dist/encoderWorker.min.js'
+            // use the pluginLibraryOptions option to specify optional settings for the
+            // opus-recorder library. For example:
+            // pluginLibraryOptions: {
+            //    monitorGain: 0.4,
+            //    originalSampleRateOverride: 16000
+            // }
         }
     }
 };

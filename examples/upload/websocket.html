@@ -75,7 +75,7 @@ var player = videojs('myAudio', options, function() {
 
     // connect to websocket server
     var sockjs_url = 'http://0.0.0.0:9999/upload-socket';
-    console.log('connecting to ' + sockjs_url);
+    console.log('connecting to websocket: ' + sockjs_url);
     sock = new SockJS(sockjs_url);
 
     // websocket event handlers
