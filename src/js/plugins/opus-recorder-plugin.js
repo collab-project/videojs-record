@@ -42,7 +42,7 @@ class OpusRecorderEngine extends RecordEngine {
          */
         this.audioChannels = 2;
         /**
-         * The length of the buffer that the internal JavaScriptNode
+         * The length of the buffer that the internal `JavaScriptNode`
          * uses to capture the audio. Can be tweaked if experiencing
          * performance issues.
          *
@@ -64,7 +64,7 @@ class OpusRecorderEngine extends RecordEngine {
          */
         this.audioWorkerURL = 'encoderWorker.min.js';
         /**
-         * Mime-type for audio output. Also supports 'audio/wav'; but make sure
+         * Mime-type for audio output. Also supports `audio/wav`; but make sure
          * to use waveEncoder worker in that case.
          *
          * @type {string}
