@@ -33,6 +33,9 @@ class TsEBMLEngine extends ConvertEngine {
         const timestamp = new Date();
         timestamp.setTime(data.lastModified);
 
+        // notify listeners
+        this.player().trigger('startConvert');
+
         // load and convert blob
         this.loadBlob(data).then((buffer) => {
             // decode

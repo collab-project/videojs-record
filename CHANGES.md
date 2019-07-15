@@ -10,6 +10,7 @@ videojs-record changelog
   option (#383)
 - New options: `videoBitRate` and `videoFrameRate` (currently only used in the
   webm-wasm plugin)
+- New event: `startConvert` (used in ts-ebml and ffmpeg.js plugins) (#201)
 - Fix `RecordRTC.MediaStreamRecorder` import when using the `timeSlice` option
 - Examples: add `timeSlice` example demonstrating use of `timestamp` event
 - Bump required version for videojs-wavesurfer to 2.9.0 or newer for wavesurfer.js

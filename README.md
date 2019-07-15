@@ -332,13 +332,14 @@ player.on('startRecord', function() {
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `timestamp` | Fires continuously during recording [whenever a new timestamp is available](#timestamps). Only fires if the `timeSlice` option is set. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
-| `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occurred after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
 | `audioBufferUpdate` | Get real-time `AudioBuffer` instances from microphone. Fires continuously during audio-only recording (until recording is stopped or paused) when the `audioBufferUpdate` option is enabled. |
 | `enterPIP` | Entered [Picture-in-Picture](#picture-in-picture) mode. |
 | `leavePIP` | Left [Picture-in-Picture](#picture-in-picture) mode. |
+| `startConvert` | The convert plugin started processing the recorded data. |
+| `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
 
 Media constraints
 -----------------

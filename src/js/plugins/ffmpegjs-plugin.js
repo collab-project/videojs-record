@@ -1,8 +1,9 @@
-/* eslint-disable no-console */
 /**
  * @file ffmpegjs-plugin.js
- * @since x.x.x
+ * @since 3.8.0
  */
+
+import videojs from 'video.js';
 
 const ConvertEngine = videojs.getComponent('ConvertEngine');
 
@@ -33,7 +34,7 @@ class FFmpegjsEngine extends ConvertEngine {
     /**
      * Invoked when recording is stopped and resulting stream is available.
      *
-     * @param {blob} data - Reference to the recorded Blob.
+     * @param {blob} data - Reference to the recorded `Blob`.
      */
     convert(data) {
         // save timestamp
@@ -67,25 +68,17 @@ class FFmpegjsEngine extends ConvertEngine {
         switch (msg.type) {
             // worker loaded and ready to accept commands
             case 'ready':
-                if (this.debug) {
-                    console.log('FFmpeg.js engine ready.');
-                }
                 break;
 
             // worker started job
             case 'run':
-                if (this.debug) {
-                    console.log('FFmpeg.js worker started job.');
-                }
+                // notify listeners
+                this.player().trigger('startConvert');
                 break;
 
             // job finished with some result
             case 'done':
                 let buf = msg.data.MEMFS[0].data;
-
-                if (this.debug) {
-                    console.log('FFmpeg.js worker finished job.');
-                }
 
                 // XXX: ability to specify mime-type
                 let result = new Blob(buf, {type: 'audio/mp3'});
@@ -112,11 +105,6 @@ class FFmpegjsEngine extends ConvertEngine {
 
             // FFmpeg exited
             case 'exit':
-                if (this.debug) {
-                    console.log('FFmpeg.js process exited with code ' + msg.data);
-                    console.log(this.stdout);
-                }
-                // this.engine.terminate();
                 break;
 
             // error occured
