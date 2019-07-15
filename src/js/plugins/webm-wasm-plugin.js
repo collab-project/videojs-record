@@ -28,6 +28,8 @@ class WebmWasmEngine extends RecordRTCEngine {
         // set options
         this.recorderType = RecordRTC.WebAssemblyRecorder;
         this.workerPath = this.videoWorkerURL;
+        this.bitrate = this.videoBitRate;
+        this.frameRate = this.videoFrameRate;
 
         super.setup(stream, mediaType, debug);
     }

@@ -253,6 +253,8 @@ The available options for this plugin are:
 | `videoEngine` | string | `'recordrtc'` | Video recording library/plugin to use. Legal values are `recordrtc` and `webm-wasm`. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
+| `videoBitRate` | float | `1200` |  The video bitrate in kbps (only used in webm-wasm plugin). |
+| `videoFrameRate` | float | `30` |  The video frame rate in frames per second (only used in webm-wasm plugin). |
 | `videoWorkerURL` | string | `''` | URL for the video worker, for example: `../node_modules/webm-wasm/dist/webm-worker.js`. Currently only used for webm-wasm plugin. Use an empty string '' to disable (default). |
 | `videoWebAssemblyURL` | string | `''` | URL for the video worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the webm-wasm plugin. |
 | `audioEngine` | string | `'recordrtc'` | Audio recording library/plugin to use. Legal values are `recordrtc`, `libvorbis.js`, `vmsg`, `opus-recorder`,  `lamejs` and `recorder.js`. |

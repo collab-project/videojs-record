@@ -59,6 +59,7 @@ class RecordRTCEngine extends RecordEngine {
         // video/canvas settings
         this.engine.video = this.video;
         this.engine.canvas = this.canvas;
+        this.engine.bitrate = this.bitRate;
 
         // animated gif settings
         this.engine.quality = this.quality;

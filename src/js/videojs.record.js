@@ -166,6 +166,8 @@ class Record extends Plugin {
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
         this.videoFrameHeight = recordOptions.frameHeight;
+        this.videoFrameRate = recordOptions.videoFrameRate;
+        this.videoBitRate = recordOptions.videoBitRate;
         this.videoEngine = recordOptions.videoEngine;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
@@ -582,6 +584,8 @@ class Record extends Plugin {
             // video/canvas settings
             this.engine.videoWorkerURL = this.videoWorkerURL;
             this.engine.videoWebAssemblyURL = this.videoWebAssemblyURL;
+            this.engine.videoBitRate = this.videoBitRate;
+            this.engine.videoFrameRate = this.videoFrameRate;
             this.engine.video = {
                 width: this.videoFrameWidth,
                 height: this.videoFrameHeight
