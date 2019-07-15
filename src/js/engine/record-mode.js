@@ -20,17 +20,17 @@ const getRecorderMode = function(image, audio, video, animation, screen) {
     } else if (isModeEnabled(animation)) {
         return ANIMATION;
 
-    } else if (isModeEnabled(screen) && !isModeEnabled(audio)) {
+    } else if (isModeEnabled(audio) && isModeEnabled(video)) {
+        return AUDIO_VIDEO;
+
+    } else if (isModeEnabled(audio) && isModeEnabled(screen)) {
+        return AUDIO_SCREEN;
+
+    } else if (!isModeEnabled(audio) && isModeEnabled(screen)) {
         return SCREEN_ONLY;
 
     } else if (isModeEnabled(audio) && !isModeEnabled(video)) {
         return AUDIO_ONLY;
-
-    } else if (isModeEnabled(audio) && isModeEnabled(video)) {
-        return AUDIO_VIDEO;
-
-    } else if (isModeEnabled(screen) && isModeEnabled(audio)) {
-        return AUDIO_SCREEN;
 
     } else if (!isModeEnabled(audio) && isModeEnabled(video)) {
         return VIDEO_ONLY;
