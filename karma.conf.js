@@ -13,7 +13,9 @@ var support_dir = path.resolve(__dirname, 'test', 'support');
 var fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
 var fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 
+//-------------------------------------------
 // Chrome CLI options
+//-------------------------------------------
 // http://peter.sh/experiments/chromium-command-line-switches/
 var chromeFlags = [
     '--no-sandbox',
@@ -33,6 +35,9 @@ var chromeFlags = [
     '--allow-insecure-localhost',
     '--enable-experimental-web-platform-features'
 ];
+//-------------------------------------------
+// Firefox CLI options
+//-------------------------------------------
 var firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true,
@@ -50,7 +55,9 @@ module.exports = function(config) {
         singleRun: true, // enable for headless testing
         autoWatch: false,
         files: [
+            // -------------------------------------------
             // demo files
+            // -------------------------------------------
             {
                 pattern: 'test/support/*',
                 included: false,
@@ -60,20 +67,29 @@ module.exports = function(config) {
             // style
             'node_modules/video.js/dist/video-js.css',
             'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
-            'dist/css/videojs.record.css',
 
             // library dependencies
             'node_modules/video.js/dist/video.js',
             'node_modules/webrtc-adapter/out/adapter.js',
             'node_modules/recordrtc/RecordRTC.js',
+
+            // -------------------------------------------
+            // third-party dependencies for audio-only
+            // -------------------------------------------
+            // wavesurfer.js
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
+            // videojs-wavesurfer
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
-            // web streams API polyfill to support Firefox (for webm-wasm)
-            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
+            // -------------------------------------------
+            // plugin style
+            // -------------------------------------------
+            'dist/css/videojs.record.css',
 
-            // optional library dependencies for plugins
+            // -----------------------------------------------
+            // third-party dependencies for (optional) plugins
+            // -----------------------------------------------
             // recorder.js
             'node_modules/recorderjs/dist/recorder.js',
             // libvorbis.js
@@ -87,6 +103,8 @@ module.exports = function(config) {
             'node_modules/opus-recorder/dist/recorder.min.js',
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
+            // web streams API polyfill to support Firefox (for webm-wasm)
+            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
             // webm-wasm
             {pattern: 'node_modules/webm-wasm/dist/webm-worker.js', included: false, served: true},
             {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
@@ -95,13 +113,15 @@ module.exports = function(config) {
             // gif-recorder: only available on CDN
             'http://cdn.webrtc-experiment.com/gif-recorder.js',
 
+            // -------------------------------------------
             // specs
+            // -------------------------------------------
             {pattern: 'test/**/*.spec.js', watched: false}
         ],
         // for CDN scripts
         crossOriginAttribute: false,
         proxies: {
-            // lame workaround for opus-recorder
+            // necessary workaround for opus-recorder plugin
             '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
             '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
         },
