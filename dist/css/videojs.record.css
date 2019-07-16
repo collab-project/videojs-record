@@ -1,5 +1,5 @@
 /*!
-Default styles for videojs-record 3.7.1
+Default styles for videojs-record 3.8.0
 */
 @font-face {
   font-family: videojs-record;
@@ -13,6 +13,13 @@ Default styles for videojs-record 3.7.1
   font-style: normal; }
   .vjs-icon-av-perm:before {
     content: "\f101"; }
+
+.vjs-icon-sv-perm {
+  font-family: videojs-record;
+  font-weight: normal;
+  font-style: normal; }
+  .vjs-icon-sv-perm:before {
+    content: "\f104"; }
 
 .vjs-icon-video-perm {
   font-family: videojs-record;
@@ -143,6 +150,7 @@ Default styles for videojs-record 3.7.1
   display: none; }
 
 .vjs-record button.vjs-device-button.vjs-control.vjs-icon-av-perm:before,
+.vjs-record button.vjs-device-button.vjs-control.vjs-icon-sv-perm:before,
 .vjs-record button.vjs-device-button.vjs-control.vjs-icon-audio-perm:before,
 .vjs-record button.vjs-device-button.vjs-control.vjs-icon-video-perm:before,
 .vjs-record button.vjs-device-button.vjs-control.vjs-icon-screen-perm:before {

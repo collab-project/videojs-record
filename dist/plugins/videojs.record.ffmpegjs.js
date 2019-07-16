@@ -1,5 +1,5 @@
 /*!
- * recorderjs plugin for videojs-record
+ * ffmpegjs plugin for videojs-record
  * @version 3.8.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2019 Collab
@@ -9,11 +9,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("videojs"));
 	else if(typeof define === 'function' && define.amd)
-		define("recorderjs", ["videojs"], factory);
+		define("ffmpegjs", ["videojs"], factory);
 	else if(typeof exports === 'object')
-		exports["recorderjs"] = factory(require("videojs"));
+		exports["ffmpegjs"] = factory(require("videojs"));
 	else
-		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["recorderjs"] = factory(root["videojs"]);
+		root["VideojsRecord"] = root["VideojsRecord"] || {}, root["VideojsRecord"]["ffmpegjs"] = factory(root["videojs"]);
 })(window, function(__WEBPACK_EXTERNAL_MODULE_video_js__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -98,7 +98,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/plugins/recorderjs-plugin.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/plugins/ffmpegjs-plugin.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -202,15 +202,15 @@ eval("function _typeof2(obj) { if (typeof Symbol === \"function\" && typeof Symb
 
 /***/ }),
 
-/***/ "./src/js/plugins/recorderjs-plugin.js":
-/*!*********************************************!*\
-  !*** ./src/js/plugins/recorderjs-plugin.js ***!
-  \*********************************************/
+/***/ "./src/js/plugins/ffmpegjs-plugin.js":
+/*!*******************************************!*\
+  !*** ./src/js/plugins/ffmpegjs-plugin.js ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar RecordEngine = _video.default.getComponent('RecordEngine');\n\nvar RecorderjsEngine = function (_RecordEngine) {\n  (0, _inherits2.default)(RecorderjsEngine, _RecordEngine);\n\n  function RecorderjsEngine(player, options) {\n    var _this;\n\n    (0, _classCallCheck2.default)(this, RecorderjsEngine);\n    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RecorderjsEngine).call(this, player, options));\n    _this.debug = false;\n    _this.audioChannels = 2;\n    _this.bufferSize = 4096;\n    _this.audioType = 'audio/wav';\n    return _this;\n  }\n\n  (0, _createClass2.default)(RecorderjsEngine, [{\n    key: \"setup\",\n    value: function setup(stream, mediaType, debug) {\n      this.inputStream = stream;\n      this.mediaType = mediaType;\n      this.debug = debug;\n      var AudioContext = window.AudioContext || window.webkitAudioContext;\n      this.audioContext = new AudioContext();\n      this.audioSourceNode = this.audioContext.createMediaStreamSource(this.inputStream);\n      this.engine = new Recorder(this.audioSourceNode, {\n        bufferLen: this.bufferSize,\n        numChannels: this.audioChannels,\n        type: this.audioType\n      });\n    }\n  }, {\n    key: \"start\",\n    value: function start() {\n      this.engine.record();\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.engine.stop();\n\n      if (this.engine.exportWAV !== undefined) {\n        this.engine.exportWAV(this.onStopRecording.bind(this));\n      }\n\n      if (this.engine.clear !== undefined) {\n        this.engine.clear();\n      }\n    }\n  }]);\n  return RecorderjsEngine;\n}(RecordEngine);\n\n_video.default.RecorderjsEngine = RecorderjsEngine;\nvar _default = RecorderjsEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/recorderjs-plugin.js?");
+eval("\n\nvar _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ \"./node_modules/@babel/runtime/helpers/interopRequireDefault.js\");\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\n\nvar _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ \"./node_modules/@babel/runtime/helpers/classCallCheck.js\"));\n\nvar _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ \"./node_modules/@babel/runtime/helpers/createClass.js\"));\n\nvar _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ \"./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js\"));\n\nvar _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ \"./node_modules/@babel/runtime/helpers/getPrototypeOf.js\"));\n\nvar _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ \"./node_modules/@babel/runtime/helpers/inherits.js\"));\n\nvar _video = _interopRequireDefault(__webpack_require__(/*! video.js */ \"video.js\"));\n\nvar ConvertEngine = _video.default.getComponent('ConvertEngine');\n\nvar FFmpegjsEngine = function (_ConvertEngine) {\n  (0, _inherits2.default)(FFmpegjsEngine, _ConvertEngine);\n\n  function FFmpegjsEngine(player, options) {\n    var _this;\n\n    (0, _classCallCheck2.default)(this, FFmpegjsEngine);\n    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(FFmpegjsEngine).call(this, player, options));\n    _this.debug = false;\n    _this.convertWorkerURL = 'ffmpeg-worker-mp4.js';\n    _this.outputType = null;\n    _this.pluginLibraryOptions = {};\n    return _this;\n  }\n\n  (0, _createClass2.default)(FFmpegjsEngine, [{\n    key: \"setup\",\n    value: function setup(mediaType, debug) {\n      this.mediaType = mediaType;\n      this.debug = debug;\n      this.stdout = this.stderr = '';\n\n      if (this.pluginLibraryOptions.outputType === undefined) {\n        throw new Error('no outputType specified!');\n      }\n\n      this.outputType = this.pluginLibraryOptions.outputType;\n      this.engine = new Worker(this.convertWorkerURL);\n      this.engine.onmessage = this.onWorkerMessage.bind(this);\n    }\n  }, {\n    key: \"convert\",\n    value: function convert(data) {\n      var _this2 = this;\n\n      this.timestamp = new Date();\n      this.timestamp.setTime(data.lastModified);\n      this.loadBlob(data).then(function (buffer) {\n        var opts = ['-i', data.name];\n        opts = opts.concat(_this2.convertOptions);\n        opts.push('output_' + _this2.timestamp.getTime());\n\n        _this2.engine.postMessage({\n          type: 'run',\n          MEMFS: [{\n            name: data.name,\n            data: buffer\n          }],\n          arguments: opts\n        });\n      });\n    }\n  }, {\n    key: \"onWorkerMessage\",\n    value: function onWorkerMessage(event) {\n      var msg = event.data;\n\n      switch (msg.type) {\n        case 'ready':\n          break;\n\n        case 'run':\n          this.player().trigger('startConvert');\n          break;\n\n        case 'done':\n          var buf;\n\n          try {\n            buf = msg.data.MEMFS[0].data;\n          } catch (e) {\n            this.player().trigger('error', this.stderr);\n          }\n\n          var result = new Blob(buf, {\n            type: this.outputType\n          });\n          this.addFileInfo(result, this.timestamp);\n          this.player().convertedData = result;\n          this.player().trigger('finishConvert');\n          break;\n\n        case 'stdout':\n          this.stdout += msg.data + '\\n';\n          break;\n\n        case 'stderr':\n          this.stderr += msg.data + \"\\n\";\n          break;\n\n        case 'exit':\n          break;\n\n        case 'error':\n          this.player().trigger('error', msg.data);\n          break;\n      }\n    }\n  }]);\n  return FFmpegjsEngine;\n}(ConvertEngine);\n\n_video.default.FFmpegjsEngine = FFmpegjsEngine;\nvar _default = FFmpegjsEngine;\nexports.default = _default;\nmodule.exports = exports.default;\n\n//# sourceURL=webpack://VideojsRecord.%5Bname%5D/./src/js/plugins/ffmpegjs-plugin.js?");
 
 /***/ }),
 
