@@ -6,6 +6,7 @@ videojs-record changelog
 
 - New ffmpeg.js plugin: convert recorded data into other audio/video file formats
   in the browser (#201)
+- Support for capturing screen + audio (#385 by @tony)
 - Support for specifying third-party plugin settings using the `pluginLibraryOptions`
   option (#383)
 - New options: `videoBitRate` and `videoFrameRate` (currently only used in the
