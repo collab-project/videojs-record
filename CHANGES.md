@@ -12,6 +12,8 @@ videojs-record changelog
 - New options: `videoBitRate` and `videoFrameRate` (currently only used in the
   webm-wasm plugin)
 - New event: `startConvert` (used in ts-ebml and ffmpeg.js plugins) (#201)
+- Support for video.js Picture-In-Picture API (available in video.js >= 7.6.0). Tries
+  to use `PictureInPictureToggle`, otherwise fallback to own implementation (#381)
 - Fix `RecordRTC.MediaStreamRecorder` import when using the `timeSlice` option
 - Examples: add `timeSlice` example demonstrating use of `timestamp` event
 - Bump required version for videojs-wavesurfer to 2.9.0 or newer for wavesurfer.js

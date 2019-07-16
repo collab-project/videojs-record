@@ -20,6 +20,7 @@ import defaultKeyHandler from './hot-keys';
 import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
+import compareVersion from './utils/compare-version';
 import {detectBrowser} from './utils/detect-browser';
 
 import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
@@ -117,13 +118,15 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
-        // add picture-in-picture toggle button
-        player.pipToggle = new PictureInPictureToggle(player, options);
-        player.pipToggle.hide();
+        // add picture-in-picture toggle button for older video.js versions
+        if (videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1) {
+            player.pipToggle = new PictureInPictureToggle(player, options);
+            player.pipToggle.hide();
+        }
 
         // picture-in-picture
         if (this.pictureInPicture === true) {
-            // dfine Picture-in-Picture event handlers once
+            // define Picture-in-Picture event handlers once
             this.onEnterPiPHandler = this.onEnterPiP.bind(this);
             this.onLeavePiPHandler = this.onLeavePiP.bind(this);
         }
@@ -131,7 +134,10 @@ class Record extends Plugin {
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
             let customUIElements = ['deviceButton', 'recordIndicator',
-                'cameraButton', 'recordToggle', 'pipToggle'];
+                'cameraButton', 'recordToggle'];
+            if (player.pipToggle) {
+                customUIElements.push('pipToggle');
+            }
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
                     this.player[element].layoutExclude = true;
@@ -214,7 +220,14 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
-        this.player.controlBar.addChild(this.player.pipToggle);
+        if (this.player.controlBar.pictureInPictureToggle === undefined) {
+            // add custom PiP toggle
+            this.player.controlBar.addChild(this.player.pipToggle);
+        } else {
+            // use video.js PiP toggle
+            this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
+            this.player.pipToggle.hide();
+        }
 
         // get rid of unused controls
         if (this.player.controlBar.remainingTimeDisplay !== undefined) {
