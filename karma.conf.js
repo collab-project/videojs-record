@@ -114,6 +114,8 @@ module.exports = function(config) {
             'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
             {pattern: 'node_modules/webm-wasm/dist/webm-worker.js', included: false, served: true},
             {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
+            // ffmpeg.js
+            {pattern: 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js', included: false, served: true},
 
             // -------------------------------------------
             // specs

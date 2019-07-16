@@ -38,9 +38,13 @@ const pluginDefaultOptions = {
     // Turn off the camera/mic (and light) when audio and/or video recording
     // stops, and turns them on again when you resume recording.
     autoMuteDevice: false,
+    // The video bitrate in kbps (only used in webm-wasm plugin).
+    videoBitRate: 1200,
     // Video recording library to use. Legal values are 'recordrtc' (default)
     // and 'webm-wasm'.
     videoEngine: 'recordrtc',
+    // The video frame rate in frames per second (only used in webm-wasm plugin).
+    videoFrameRate: 30,
     // The mime type for the video recorder. Default to 'video/webm'.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.
@@ -101,11 +105,18 @@ const pluginDefaultOptions = {
     animationOptions: {},
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
     timeSlice: 0,
-    // Media converter library to use. Legal values are 'ts-ebml' or an empty
-    // string '' to disable (default).
+    // Media converter library to use. Legal values are 'ts-ebml' and 'ffmpeg.js'.
+    // Use an empty string '' to disable (default).
     convertEngine: '',
+    // URL for the converter worker.
+    convertWorkerURL: '',
+    // List of string options to pass to the convert engine.
+    convertOptions: [],
     // Enable keyboard hotkeys.
-    hotKeys: false
+    hotKeys: false,
+    // Use this object to specify additional settings for the library used by the
+    // plugin (only used in opus-recorder and vmsg plugins).
+    pluginLibraryOptions: {}
 };
 
 export default pluginDefaultOptions;

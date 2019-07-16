@@ -42,7 +42,7 @@ describe('plugins.webm-wasm-plugin', () => {
         });
 
         player.one(Event.DEVICE_READY, () => {
-            // record some audio
+            // record some video
             player.record().start();
         });
 

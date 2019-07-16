@@ -7,6 +7,7 @@
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
+  <link href="../assets/css/examples.css" rel="stylesheet">
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
   <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
@@ -54,6 +55,12 @@ var options = {
             debug: true,
             audioEngine: 'vmsg',
             audioWebAssemblyURL: '../../node_modules/vmsg/vmsg.wasm'
+            // use the pluginLibraryOptions option to specify optional settings for the
+            // vmsg library. For example:
+            // pluginLibraryOptions: {
+            //    shimURL: '/static/js/wasm-polyfill.js',
+            //    pitch: 1
+            // }
         }
     }
 };

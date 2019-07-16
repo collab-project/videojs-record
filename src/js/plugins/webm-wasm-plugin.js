@@ -3,6 +3,9 @@
  * @since 3.5.0
  */
 
+import videojs from 'video.js';
+import RecordRTC from 'recordrtc';
+
 const RecordRTCEngine = videojs.getComponent('RecordRTCEngine');
 
 /**
@@ -12,6 +15,50 @@ const RecordRTCEngine = videojs.getComponent('RecordRTCEngine');
  * @augments videojs.RecordRTCEngine
  */
 class WebmWasmEngine extends RecordRTCEngine {
+    /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Enables console logging for debugging purposes.
+         *
+         * @type {boolean}
+         */
+        this.debug = false;
+        /**
+         * Video bitrate in kbps.
+         *
+         * @type {number}
+         */
+        this.videoBitRate = 1200;
+        /**
+         * Video frame rate in fps.
+         *
+         * @type {number}
+         */
+        this.videoFrameRate = 30;
+        /**
+         * Path to `webm-worker.js` worker script.
+         *
+         * @type {string}
+         */
+        this.videoWorkerURL = 'webm-worker.js';
+        /**
+         * Path to `webm-wasm.wasm` WebAssembly script.
+         *
+         * @type {string}
+         */
+        this.videoWebAssemblyURL = 'webm-wasm.wasm';
+    }
+
     /**
      * Setup recording engine.
      *
@@ -25,6 +72,8 @@ class WebmWasmEngine extends RecordRTCEngine {
         // set options
         this.recorderType = RecordRTC.WebAssemblyRecorder;
         this.workerPath = this.videoWorkerURL;
+        this.bitRate = this.videoBitRate;
+        this.frameRate = this.videoFrameRate;
 
         super.setup(stream, mediaType, debug);
     }

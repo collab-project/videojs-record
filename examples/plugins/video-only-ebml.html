@@ -6,6 +6,7 @@
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
+  <link href="../assets/css/examples.css" rel="stylesheet">
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
   <script src="../../node_modules/recordrtc/RecordRTC.js"></script>
@@ -68,6 +69,11 @@ player.on('error', function(element, error) {
 // user clicked the record button and started recording
 player.on('startRecord', function() {
     console.log('started recording!');
+});
+
+// converter started processing
+player.on('startConvert', function() {
+    console.log('started converting!');
 });
 
 // user completed recording and stream is available

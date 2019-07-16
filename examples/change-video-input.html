@@ -6,6 +6,7 @@
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
+  <link href="assets/css/examples.css" rel="stylesheet">
 
   <script src="../node_modules/video.js/dist/video.min.js"></script>
   <script src="../node_modules/recordrtc/RecordRTC.js"></script>
@@ -80,14 +81,12 @@ var player = videojs('myVideo', options, function() {
     videojs.log(msg);
 });
 
-player.on('deviceReady', function() {
+// enumerate devices once
+player.one('deviceReady', function() {
     player.record().enumerateDevices();
 });
 
 player.on('enumerateReady', function() {
-    // show input selector section
-    inputSection.style.display = 'block';
-
     devices = player.record().devices;
 
     // handle selection changes
@@ -117,25 +116,38 @@ player.on('enumerateReady', function() {
         inputSelector.disabled = true;
         console.warn(option.text);
     } else {
-        console.log('Total video input devices found:', inputSelector.length);
+        console.info('Total video input devices found:', inputSelector.length);
     }
+
+    // show input selector section
+    inputSection.style.display = 'block';
 });
 
 function changeVideoInput(event) {
     var label = event.target.options[event.target.selectedIndex].text;
     deviceId = event.target.value;
 
-    console.log("changed video input to '" + label + "' (deviceId: " +
-      deviceId + ")");
+    try {
+        // change video input device
+        player.record().setVideoInput(deviceId);
+
+        console.log("Changed video input to '" + label + "' (deviceId: " +
+            deviceId + ")");
+    } catch (error) {
+        console.warn(error);
+
+        // jump back to first output device in the list as it's the default
+        event.target.selectedIndex = 0;
+    }
 }
 
 // error handling
 player.on('enumerateError', function() {
-    console.log('enumerate error:', player.enumerateErrorCode);
+    console.warn('enumerate error:', player.enumerateErrorCode);
 });
 
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
 
 player.on('error', function(element, error) {

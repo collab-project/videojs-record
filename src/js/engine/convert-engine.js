@@ -11,9 +11,10 @@ const Component = videojs.getComponent('Component');
 
 // supported convert plugin engines
 const TSEBML = 'ts-ebml';
+const FFMPEGJS = 'ffmpeg.js';
 
 // all convert plugins
-const CONVERT_PLUGINS = [TSEBML];
+const CONVERT_PLUGINS = [TSEBML, FFMPEGJS];
 
 /**
  * Base class for converter backends.
@@ -75,5 +76,5 @@ videojs.ConvertEngine = ConvertEngine;
 Component.registerComponent('ConvertEngine', ConvertEngine);
 
 export {
-    ConvertEngine, CONVERT_PLUGINS, TSEBML
+    ConvertEngine, CONVERT_PLUGINS, TSEBML, FFMPEGJS
 };

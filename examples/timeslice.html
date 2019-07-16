@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Audio/Video Example - Record Plugin for Video.js</title>
+  <title>timeSlice Example - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
@@ -19,7 +19,7 @@
   <style>
   /* change player background color */
   #myVideo {
-      background-color: #9ab87a;
+      background-color: #374b6b;
   }
   </style>
 </head>
@@ -37,8 +37,10 @@ var options = {
         record: {
             audio: true,
             video: true,
-            maxLength: 10,
-            debug: true
+            maxLength: 30,
+            debug: true,
+            // fire the timestamp event every 5 seconds
+            timeSlice: 5000
         }
     }
 };
@@ -46,6 +48,7 @@ var options = {
 // apply some workarounds for opera browser
 applyVideoWorkaround();
 
+var startedRecord = false;
 var player = videojs('myVideo', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
@@ -68,11 +71,20 @@ player.on('startRecord', function() {
     console.log('started recording!');
 });
 
-// user completed recording and stream is available
+// user completed recording
 player.on('finishRecord', function() {
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
+    console.log('finished recording');
+});
+
+// monitor stream data during recording
+player.on('timestamp', function() {
+    console.log('current timestamp: ', player.currentTimestamp);
+    console.log('all timestamps (' + player.allTimestamps.length + '): ',
+        player.allTimestamps);
+
+    // stream data
+    console.log('array of blobs: ', player.recordedData);
+    console.log('---------------------------------------');
 });
 </script>
 

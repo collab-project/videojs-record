@@ -162,10 +162,13 @@ class Record extends Plugin {
         this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
         this.autoMuteDevice = recordOptions.autoMuteDevice;
+        this.pluginLibraryOptions = recordOptions.pluginLibraryOptions;
 
         // video/canvas settings
         this.videoFrameWidth = recordOptions.frameWidth;
         this.videoFrameHeight = recordOptions.frameHeight;
+        this.videoFrameRate = recordOptions.videoFrameRate;
+        this.videoBitRate = recordOptions.videoBitRate;
         this.videoEngine = recordOptions.videoEngine;
         this.videoRecorderType = recordOptions.videoRecorderType;
         this.videoMimeType = recordOptions.videoMimeType;
@@ -174,6 +177,8 @@ class Record extends Plugin {
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
+        this.convertWorkerURL = recordOptions.convertWorkerURL;
+        this.convertOptions = recordOptions.convertOptions;
 
         // audio settings
         this.audioEngine = recordOptions.audioEngine;
@@ -589,6 +594,8 @@ class Record extends Plugin {
             // video/canvas settings
             this.engine.videoWorkerURL = this.videoWorkerURL;
             this.engine.videoWebAssemblyURL = this.videoWebAssemblyURL;
+            this.engine.videoBitRate = this.videoBitRate;
+            this.engine.videoFrameRate = this.videoFrameRate;
             this.engine.video = {
                 width: this.videoFrameWidth,
                 height: this.videoFrameHeight
@@ -604,8 +611,11 @@ class Record extends Plugin {
             // timeSlice
             if (this.recordTimeSlice && this.recordTimeSlice > 0) {
                 this.engine.timeSlice = this.recordTimeSlice;
-                this.engine.onTimeStamp = this.onTimeStamp.bind(this);
+                this.engine.maxFileSize = this.maxFileSize;
             }
+
+            // additional 3rd-party library options
+            this.engine.pluginLibraryOptions = this.pluginLibraryOptions;
 
             // initialize recorder
             this.engine.setup(this.stream, this.mediaType, this.debug);
@@ -621,6 +631,11 @@ class Record extends Plugin {
                     throw new Error('Could not load ' + this.convertEngine +
                         ' plugin');
                 }
+
+                // convert settings
+                this.converter.convertWorkerURL = this.convertWorkerURL;
+                this.converter.convertOptions = this.convertOptions;
+                this.converter.pluginLibraryOptions = this.pluginLibraryOptions;
 
                 // initialize converter
                 this.converter.setup(this.mediaType, this.debug);
@@ -1529,61 +1544,6 @@ class Record extends Plugin {
     }
 
     /**
-     * Received new timestamp (when timeSlice option is enabled).
-     * @private
-     * @param {float} current - Current timestamp.
-     * @param {array} all - List of timestamps so far.
-     */
-    onTimeStamp(current, all) {
-        this.player.currentTimestamp = current;
-        this.player.allTimestamps = all;
-
-        // get blob (only for MediaStreamRecorder)
-        let internal;
-        switch (this.getRecordType()) {
-            case AUDIO_ONLY:
-                internal = this.engine.engine.audioRecorder;
-                break;
-
-            case ANIMATION:
-                internal = this.engine.engine.gifRecorder;
-                break;
-
-            default:
-                internal = this.engine.engine.videoRecorder;
-        }
-
-        let maxFileSizeReached = false;
-        if (internal) {
-            internal = internal.getInternalRecorder();
-        }
-
-        if ((internal instanceof MediaStreamRecorder) === true) {
-            this.player.recordedData = internal.getArrayOfBlobs();
-
-            // inject file info for newest blob
-            this.engine.addFileInfo(
-                this.player.recordedData[this.player.recordedData.length - 1]);
-
-            // check max file size
-            if (this.maxFileSize > 0) {
-                let currentSize = new Blob(this.player.recordedData).size;
-                if (currentSize >= this.maxFileSize) {
-                    maxFileSizeReached = true;
-                }
-            }
-        }
-
-        // notify others
-        this.player.trigger(Event.TIMESTAMP);
-
-        // automatically stop when max file size was reached
-        if (maxFileSizeReached) {
-            this.stop();
-        }
-    }
-
-    /**
      * Collects information about the media input and output devices
      * available on the system.
      */
@@ -1610,13 +1570,70 @@ class Record extends Plugin {
     }
 
     /**
+     * Change the video input device.
+     *
+     * @param {string} deviceId - Id of the video input device.
+     */
+    setVideoInput(deviceId) {
+        if (this.recordVideo === Object(this.recordVideo)) {
+            // already using video constraints
+            this.recordVideo.deviceId = {exact: deviceId};
+
+        } else if (this.recordVideo === true) {
+            // not using video constraints already, so force it
+            this.recordVideo = {
+                deviceId: {exact: deviceId}
+            };
+        }
+
+        // release existing device
+        this.stopDevice();
+
+        // ask for video input device permissions and start device
+        this.getDevice();
+    }
+
+    /**
+     * Change the audio input device.
+     *
+     * @param {string} deviceId - Id of the audio input device.
+     */
+    setAudioInput(deviceId) {
+        if (this.recordAudio === Object(this.recordAudio)) {
+            // already using audio constraints
+            this.recordAudio.deviceId = {exact: deviceId};
+
+        } else if (this.recordAudio === true) {
+            // not using audio constraints already, so force it
+            this.recordAudio = {
+                deviceId: {exact: deviceId}
+            };
+        }
+
+        // update wavesurfer microphone plugin constraints
+        switch (this.getRecordType()) {
+            case AUDIO_ONLY:
+                this.surfer.surfer.microphone.constraints = {
+                    video: false,
+                    audio: this.recordAudio
+                };
+                break;
+        }
+
+        // release existing device
+        this.stopDevice();
+
+        // ask for audio input device permissions and start device
+        this.getDevice();
+    }
+
+    /**
      * Change the audio output device.
      *
      * @param {string} deviceId - Id of audio output device.
      */
     setAudioOutput(deviceId) {
         let errorMessage;
-
         switch (this.getRecordType()) {
             case AUDIO_ONLY:
                 // use wavesurfer
@@ -1644,7 +1661,7 @@ class Record extends Plugin {
                         errorMessage = 'Browser does not support audio output device selection.';
                     }
                 } else {
-                    errorMessage = 'Invalid deviceId: ' + deviceId;
+                    errorMessage = `Invalid deviceId: ${deviceId}`;
                 }
                 break;
         }

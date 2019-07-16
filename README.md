@@ -92,15 +92,20 @@ to visualize the audio waveform):
 
 Optional dependencies when using [other audio libraries](#other-audio-libraries) (note that most of these audio codecs are already available in most modern browsers):
 
+- [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [opus-recorder](https://github.com/collab-project/videojs-record/wiki/Plugins#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
 - [libvorbis.js](https://github.com/collab-project/videojs-record/wiki/Plugins#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
-- [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [lamejs](https://github.com/collab-project/videojs-record/wiki/Plugins#lamejs) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
 - [recorder.js](https://github.com/collab-project/videojs-record/wiki/Plugins#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes.
 
 Optional dependencies when using [other video libraries](#other-video-libraries):
 
 - [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - Creates WebM recordings using libwebm (compiled with WebAssembly).
+
+Optional dependencies when using [converter libraries](#convert-data):
+
+- [ts-ebml](https://github.com/collab-project/videojs-record/wiki/Plugins#ts-ebml) - Creates seekable WebM files, by injecting metadata like duration.
+- [ffmpeg.js](https://github.com/collab-project/videojs-record/wiki/Plugins#ffmpegjs) - [FFmpeg](https://ffmpeg.org) builds ported to JavaScript using Emscripten.
 
 Usage
 -----
@@ -253,6 +258,8 @@ The available options for this plugin are:
 | `videoEngine` | string | `'recordrtc'` | Video recording library/plugin to use. Legal values are `recordrtc` and `webm-wasm`. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
+| `videoBitRate` | float | `1200` |  The video bitrate in kbps (only used in webm-wasm plugin). |
+| `videoFrameRate` | float | `30` |  The video frame rate in frames per second (only used in webm-wasm plugin). |
 | `videoWorkerURL` | string | `''` | URL for the video worker, for example: `../node_modules/webm-wasm/dist/webm-worker.js`. Currently only used for webm-wasm plugin. Use an empty string '' to disable (default). |
 | `videoWebAssemblyURL` | string | `''` | URL for the video worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the webm-wasm plugin. |
 | `audioEngine` | string | `'recordrtc'` | Audio recording library/plugin to use. Legal values are `recordrtc`, `libvorbis.js`, `vmsg`, `opus-recorder`,  `lamejs` and `recorder.js`. |
@@ -267,8 +274,11 @@ The available options for this plugin are:
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
-| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` or an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.js plugin. Use an empty string '' to disable (default). |
+| `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
 | `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](#hotkeys). Disabled by default. |
+| `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used in the opus-recorder and vmsg plugins. |
 
 Methods
 -------
@@ -293,6 +303,8 @@ player.record().destroy();
 | `getCurrentTime` | Get the current time of the recorded stream during playback. Returns 0 if no recording is available (yet). |
 | `enumerateDevices` | [Get async list of media input and output devices](#controlling-the-input-and-output-devices) available on the system. |
 | `setAudioOutput(deviceId)` | Change the audio output device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
+| `setAudioInput(deviceId)` | Change the audio input device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
+| `setVideoInput(deviceId)` | Change the video input device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
 | `start` | Start recording. |
 | `stop` | Stop recording. |
 | `pause` | Pause recording. |
@@ -320,13 +332,14 @@ player.on('startRecord', function() {
 | `stopRecord` | User pressed the stop button to stop recording. |
 | `timestamp` | Fires continuously during recording [whenever a new timestamp is available](#timestamps). Only fires if the `timeSlice` option is set. |
 | `finishRecord` | The recorded stream or image is available. [Check the](#get-recorded-data) `player.recordedData` object for the recorded data. |
-| `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
 | `enumerateReady` | `enumerateDevices` returned the devices successfully. The list of devices is stored in the `player.record().devices` array. |
 | `enumerateError` | An error occurred after calling `enumerateDevices`. Check the `player.enumerateErrorCode` property for an description of the error. |
 | `audioOutputReady` | Audio output was changed and is now active. |
 | `audioBufferUpdate` | Get real-time `AudioBuffer` instances from microphone. Fires continuously during audio-only recording (until recording is stopped or paused) when the `audioBufferUpdate` option is enabled. |
 | `enterPIP` | Entered [Picture-in-Picture](#picture-in-picture) mode. |
 | `leavePIP` | Left [Picture-in-Picture](#picture-in-picture) mode. |
+| `startConvert` | The convert plugin started processing the recorded data. |
+| `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
 
 Media constraints
 -----------------
@@ -397,10 +410,10 @@ player.on('finishRecord', function() {
 ### Convert data
 
 It's possible to process and convert the recorded data in the browser. For example,
-adding metadata like duration to recorded webm files, or using FFmpeg to convert the
+adding metadata like duration to recorded WebM files, or using FFmpeg to convert the
 data with a different codec.
 
-Enable the plugin with the `convertEngine` option:
+For example, enable the `ts-ebml` plugin with the `convertEngine` option:
 
 ```javascript
 record: {
@@ -425,8 +438,8 @@ player.on('finishConvert', function() {
 ```
 
 Check the
-[plugins](https://github.com/collab-project/videojs-record/wiki/Plugins) wiki
-page for more information.
+[converter plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#converter)
+documentation for more information.
 
 ### Timestamps
 
@@ -465,6 +478,9 @@ player.on('timestamp', function() {
 });
 ```
 
+Check the [timeslice](https://github.com/collab-project/videojs-record/blob/master/examples/timeslice.html)
+example.
+
 ### Upload data
 
 The example below shows how to upload each recording:
@@ -494,10 +510,10 @@ player.on('finishRecord', function() {
 ```
 
 Check the [simple upload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html)
-for the complete example.
+example.
 
 The example below shows how to 'stream' upload recorded data segments to a server
-using the [jQuery](http://jquery.com/) library and the `timestamp` event:
+using the [jQuery](https://jquery.com/) library and the `timestamp` event:
 
 ```javascript
 var segmentNumber = 0;
@@ -551,8 +567,8 @@ record: {
     audio: true,
     video: {
         // video constraints: use preset device
-        optional: [{sourceId: deviceId}]
-    },
+        deviceId: {exact: deviceId}
+    }
 }
 ```
 

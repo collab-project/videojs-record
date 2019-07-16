@@ -9,7 +9,7 @@ import {Player, mergeOptions} from 'video.js';
 import adapter from 'webrtc-adapter';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
-import {TSEBML} from '../src/js/engine/convert-engine.js';
+import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine.js';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
@@ -163,7 +163,7 @@ const TestHelpers = {
         let recordPluginOptions = {
             audio: false,
             video: true,
-            maxLength: 5,
+            maxLength: 50,
             debug: true
         };
         // setup video engine
@@ -192,13 +192,20 @@ const TestHelpers = {
         let recordPluginOptions = {
             audio: false,
             video: true,
-            maxLength: 5,
+            maxLength: 50,
             debug: true
         };
-        // setup audio plugin
+        // setup convert plugin
         switch (pluginName) {
             case TSEBML:
                 recordPluginOptions.convertEngine = TSEBML;
+                break;
+
+            case FFMPEGJS:
+                recordPluginOptions.convertEngine = FFMPEGJS;
+                recordPluginOptions.convertWorkerURL = '/base/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js';
+                recordPluginOptions.convertOptions = ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'];
+                recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mp3'};
                 break;
 
             default:
@@ -230,7 +237,7 @@ const TestHelpers = {
                 record: {
                     audio: true,
                     video: true,
-                    maxLength: 5,
+                    maxLength: 50,
                     debug: true
                 }
             }

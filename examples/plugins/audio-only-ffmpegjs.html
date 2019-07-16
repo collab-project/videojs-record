@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Lamejs Audio-only Example - Record Plugin for Video.js</title>
+  <title>FFmpeg.js Audio-only Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
@@ -10,20 +10,21 @@
   <link href="../assets/css/examples.css" rel="stylesheet">
 
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
+  <script src="../../node_modules/recordrtc/RecordRTC.js"></script>
   <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
   <script src="../../node_modules/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="../../node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
   <script src="../../node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="../../dist/videojs.record.js"></script>
-  <script src="../../dist/plugins/videojs.record.lamejs.js"></script>
+  <script src="../../dist/plugins/videojs.record.ffmpegjs.js"></script>
 
   <script src="../browser-workarounds.js"></script>
 
   <style>
   /* change player background color */
   #myAudio {
-      background-color: #493657;
+      background-color: #42b6f5;
   }
   </style>
 </head>
@@ -40,9 +41,10 @@ var options = {
     fluid: false,
     plugins: {
         wavesurfer: {
-            src:'live',
-            waveColor: '#fffa00',
+            src: 'live',
+            waveColor: '#f5f06e',
             progressColor: '#FAFCD2',
+            cursorColor: '#FFFFFF',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
@@ -53,20 +55,31 @@ var options = {
             video: false,
             maxLength: 20,
             debug: true,
-            audioEngine: 'lamejs',
-            audioWorkerURL: '../../node_modules/lamejs/worker-example/worker-realtime.js',
-            audioSampleRate: 44100,
-            audioBitRate: 128
+            convertEngine: 'ffmpeg.js',
+            // convert recorded data to MP3
+            convertOptions: ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'],
+            // specify MP3 output mime-type
+            pluginLibraryOptions: {
+                outputType: 'audio/mp3'
+            },
+            // use MP4 encoding worker (H.264 & AAC & MP3 encoders)
+            convertWorkerURL: '../../node_modules/ffmpeg.js/ffmpeg-worker-mp4.js'
+            // or use WebM encoding worker (VP8 & Opus encoders)
+            // convertWorkerURL: '../../node_modules/ffmpeg.js/ffmpeg-worker-webm.js'
         }
     }
 };
+
+// apply audio workarounds for certain browsers
+applyAudioWorkaround();
 
 var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
         ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ' and wavesurfer.js ' + WaveSurfer.VERSION;
+        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+        RecordRTC.version;
     videojs.log(msg);
 });
 
@@ -74,7 +87,6 @@ var player = videojs('myAudio', options, function() {
 player.on('deviceError', function() {
     console.log('device error:', player.deviceErrorCode);
 });
-
 player.on('error', function(element, error) {
     console.error(error);
 });
@@ -89,6 +101,18 @@ player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
+});
+
+// converter started processing
+player.on('startConvert', function() {
+    console.log('started converting!');
+});
+
+// converter completed and stream is available
+player.on('finishConvert', function() {
+    // the convertedData object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished converting: ', player.convertedData);
 });
 </script>
 </body>
