@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.8.0 - unreleased
+3.8.0 - 2019/07/16
 ------------------
 
 - New ffmpeg.js plugin: convert recorded data into other audio/video file formats
