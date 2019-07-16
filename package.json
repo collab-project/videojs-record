@@ -26,6 +26,7 @@
     "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' examples/lib/opus-recorder/",
     "update:vmsg": "cpx -v 'node_modules/vmsg/*.wasm' examples/lib/vmsg/",
     "update:webm-wasm": "cpx -v 'node_modules/webm-wasm/dist/*' examples/lib/webm-wasm/",
+    "update:ffmpeg": "cpx -v 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js' examples/lib/ffmpeg.js/",
     "docs": "jsdoc node_modules/videojs-record/src/js -c ./.jsdoc.json",
     "test": "echo No tests yet!",
     "watch": "npm-run-all -p watch:*",
