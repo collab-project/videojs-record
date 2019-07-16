@@ -12,6 +12,12 @@ import Record from '../src/js/videojs.record.js';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
+const isScreenCompatible = (browser) => (
+    isFirefox() ||
+    (browser.browser === 'chrome' && browser.version >= 72) ||
+    browser.browser === 'edge'
+);
+
 /** @test {Record} */
 describe('Record', () => {
     let player;
@@ -187,6 +193,46 @@ describe('Record', () => {
     });
 
     /** @test {Record} */
+    it('runs as audio-screen plugin', (done) => {
+        // create audio-screen plugin
+        player = TestHelpers.makeAudioScreenPlayer();
+
+        // correct device button icon
+        expect(player.deviceButton.buildCSSClass().endsWith(
+            'sv-perm')).toBeTrue();
+
+        if (isScreenCompatible(detectBrowser())) {
+            player.one(Event.FINISH_RECORD, () => {
+                let data = player.recordedData;
+                expect(data instanceof Blob).toBeTruthy();
+
+                // wait till it's loaded before destroying
+                // (XXX: create new event for this)
+                setTimeout(done, 1000);
+            });
+
+            player.one(Event.START_RECORD, () => {
+                // stop recording after few seconds
+                setTimeout(() => {
+                    player.record().stop();
+                }, 2000);
+            });
+
+            player.one(Event.DEVICE_READY, () => {
+                // record some audio+video
+                player.record().start();
+            });
+
+            player.one(Event.READY, () => {
+                // start device
+                player.record().getDevice();
+            });
+        } else {
+            done();
+        }
+    });
+
+    /** @test {Record} */
     it('runs as screen-only plugin', (done) => {
         // create screen-only plugin
         player = TestHelpers.makeScreenOnlyPlayer();
@@ -194,9 +240,7 @@ describe('Record', () => {
         expect(player.deviceButton.buildCSSClass().endsWith(
             'screen-perm')).toBeTrue();
 
-        let browser = detectBrowser();
-        if (isFirefox() || (browser.browser === 'chrome' && browser.version >= 72) ||
-            browser.browser === 'edge') {
+        if (isScreenCompatible(detectBrowser())) {
             player.one(Event.FINISH_RECORD, () => {
                 // received a blob file
                 expect(player.recordedData instanceof Blob).toBeTruthy();

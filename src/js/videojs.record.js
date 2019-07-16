@@ -23,7 +23,7 @@ import setSrcObject from './utils/browser-shim';
 import {detectBrowser} from './utils/detect-browser';
 
 import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');
@@ -68,6 +68,7 @@ class Record extends Plugin {
 
         // add device button with icon based on type
         let deviceIcon = 'av-perm';
+
         switch (this.getRecordType()) {
             case IMAGE_ONLY:
             case VIDEO_ONLY:
@@ -79,6 +80,9 @@ class Record extends Plugin {
                 break;
             case SCREEN_ONLY:
                 deviceIcon = 'screen-perm';
+                break;
+            case AUDIO_SCREEN:
+                deviceIcon = 'sv-perm';
                 break;
         }
 
@@ -235,6 +239,7 @@ class Record extends Plugin {
             case AUDIO_VIDEO:
             case ANIMATION:
             case SCREEN_ONLY:
+            case AUDIO_SCREEN:
                 // customize controls
                 this.player.bigPlayButton.hide();
 
@@ -362,7 +367,7 @@ class Record extends Plugin {
         // check for support because some browsers still do not support
         // getDisplayMedia or getUserMedia (like Chrome iOS, see:
         // https://bugs.chromium.org/p/chromium/issues/detail?id=752458)
-        if (this.getRecordType() === SCREEN_ONLY) {
+        if (this.getRecordType() === SCREEN_ONLY || this.getRecordType() === AUDIO_SCREEN) {
             if (navigator.mediaDevices === undefined ||
                 navigator.mediaDevices.getDisplayMedia === undefined) {
                 this.player.trigger(Event.ERROR,
@@ -446,6 +451,25 @@ class Record extends Plugin {
                 }).then(
                     this.onDeviceReady.bind(this)
                 ).catch(
+                    this.onDeviceError.bind(this)
+                );
+                break;
+
+            case AUDIO_SCREEN:
+                // setup camera and microphone
+                this.mediaType = {
+                    audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
+                    video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
+                };
+                navigator.mediaDevices.getDisplayMedia({
+                    video: true // This needs to be true for Firefox to work
+                }).then(screenStream => {
+                    navigator.mediaDevices.getUserMedia({ audio:this.recordAudio }).then((mic) => {
+                        // Join microphone track with screencast stream (order matters)
+                        screenStream.addTrack(mic.getTracks()[0]);
+                        this.onDeviceReady.bind(this)(screenStream);
+                    });
+                }).catch(
                     this.onDeviceError.bind(this)
                 );
                 break;
@@ -754,6 +778,7 @@ class Record extends Plugin {
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
+                case AUDIO_SCREEN:
                 case SCREEN_ONLY:
                     // preview video stream in video element
                     this.startVideoPreview();
@@ -796,6 +821,7 @@ class Record extends Plugin {
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
+                case AUDIO_SCREEN:
                 case ANIMATION:
                 case SCREEN_ONLY:
                     // wait for media stream on video element to actually load
@@ -985,6 +1011,7 @@ class Record extends Plugin {
 
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
+            case AUDIO_SCREEN:
             case SCREEN_ONLY:
                 // pausing the player so we can visualize the recorded data
                 // will trigger an async video.js 'pause' event that we
@@ -1006,7 +1033,7 @@ class Record extends Plugin {
                         this.playbackTimeUpdate);
 
                     // unmute local audio during playback
-                    if (this.getRecordType() === AUDIO_VIDEO) {
+                    if (this.getRecordType() === AUDIO_VIDEO || this.getRecordType() === AUDIO_SCREEN) {
                         this.mediaElement.muted = false;
 
                         // show the volume bar when it's unmuted
@@ -1117,6 +1144,7 @@ class Record extends Plugin {
 
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
+            case AUDIO_SCREEN:
             case ANIMATION:
             case SCREEN_ONLY:
                 if (this.player.controlBar.currentTimeDisplay &&
@@ -1161,6 +1189,7 @@ class Record extends Plugin {
 
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
+            case AUDIO_SCREEN:
             case ANIMATION:
             case SCREEN_ONLY:
                 // update duration display component
@@ -1190,6 +1219,7 @@ class Record extends Plugin {
             case IMAGE_ONLY:
             case VIDEO_ONLY:
             case AUDIO_VIDEO:
+            case AUDIO_SCREEN:
             case ANIMATION:
             case SCREEN_ONLY:
                 if (url instanceof Blob || url instanceof File) {
@@ -1368,6 +1398,7 @@ class Record extends Plugin {
      */
     muteTracks(mute) {
         if ((this.getRecordType() === AUDIO_ONLY ||
+            this.getRecordType() === AUDIO_SCREEN ||
             this.getRecordType() === AUDIO_VIDEO) &&
             this.stream.getAudioTracks().length > 0) {
             this.stream.getAudioTracks()[0].enabled = !mute;

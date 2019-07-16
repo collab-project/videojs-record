@@ -6,6 +6,10 @@
     "svg": "action/svg/production/ic_perm_camera_mic_48px.svg"
   },
   {
+    "name": "sv-perm",
+    "svg": "communication/svg/production/ic_screen_share_48px.svg"
+  },
+  {
     "name": "video-perm",
     "svg": "av/svg/production/ic_videocam_48px.svg"
   },

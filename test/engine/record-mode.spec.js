@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, getRecorderMode} from '../../src/js/engine/record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, AUDIO_SCREEN, getRecorderMode} from '../../src/js/engine/record-mode';
 
 /** @test {record-mode} */
 describe('engine.record-mode', () => {
@@ -14,6 +14,7 @@ describe('engine.record-mode', () => {
         expect(AUDIO_VIDEO).toEqual('audio_video');
         expect(ANIMATION).toEqual('animation');
         expect(SCREEN_ONLY).toEqual('screen_only');
+        expect(AUDIO_SCREEN).toEqual('audio_screen');
     });
 
     it('returns the correct recorder mode', () => {
@@ -24,6 +25,7 @@ describe('engine.record-mode', () => {
         expect(getRecorderMode(false, true, false, false, false)).toEqual(AUDIO_ONLY);
         expect(getRecorderMode(true, false, false, false, false)).toEqual(IMAGE_ONLY);
         expect(getRecorderMode(false, true, true, false, false)).toEqual(AUDIO_VIDEO);
+        expect(getRecorderMode(false, true, false, false, true)).toEqual(AUDIO_SCREEN);
         expect(getRecorderMode(false, false, false, false, false)).toBeUndefined();
 
         // and object
@@ -33,5 +35,6 @@ describe('engine.record-mode', () => {
         expect(getRecorderMode(false, {}, false, false, false)).toEqual(AUDIO_ONLY);
         expect(getRecorderMode({}, false, false, false, false)).toEqual(IMAGE_ONLY);
         expect(getRecorderMode(false, {}, {}, false, false)).toEqual(AUDIO_VIDEO);
+        expect(getRecorderMode(false, {}, false, false, {})).toEqual(AUDIO_SCREEN);
     });
 });
