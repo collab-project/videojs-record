@@ -9,7 +9,7 @@
  * @param {string} v1 - First version number to compare.
  * @param {string} v2 - Second version number to compare.
  * @returns {number} - Returns 0 if versions are equal,
- *     1 if `v1` is greater, and -1 if `v` is smaller.
+ *     1 if `v1` is greater, and -1 if `v2` is smaller.
  */
 const compareVersion = function(v1, v2) {
     if (typeof v1 !== 'string') return false;
