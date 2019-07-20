@@ -71,7 +71,6 @@ module.exports = function(config) {
 
             // library dependencies
             'node_modules/video.js/dist/video.js',
-            'node_modules/video.js/dist/video-js.css',
             'node_modules/webrtc-adapter/out/adapter.js',
             'node_modules/recordrtc/RecordRTC.js',
 
