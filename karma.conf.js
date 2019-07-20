@@ -13,9 +13,9 @@ var support_dir = path.resolve(__dirname, 'test', 'support');
 var fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
 var fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 
-// -------------------------------------------
+//-------------------------------------------
 // Chrome CLI options
-// -------------------------------------------
+//-------------------------------------------
 // http://peter.sh/experiments/chromium-command-line-switches/
 var chromeFlags = [
     '--no-sandbox',
@@ -36,9 +36,9 @@ var chromeFlags = [
     '--enable-experimental-web-platform-features'
 ];
 
-// -------------------------------------------
+//-------------------------------------------
 // Firefox CLI options
-// -------------------------------------------
+//-------------------------------------------
 var firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true,
@@ -68,7 +68,6 @@ module.exports = function(config) {
             // style
             'node_modules/video.js/dist/video-js.css',
             'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
-            'dist/css/videojs.record.css',
 
             // library dependencies
             'node_modules/video.js/dist/video.js',
@@ -83,7 +82,6 @@ module.exports = function(config) {
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             // videojs-wavesurfer
-            'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
             // -------------------------------------------
@@ -109,6 +107,8 @@ module.exports = function(config) {
             'node_modules/gifshot/dist/gifshot.min.js',
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
+            // web streams API polyfill to support Firefox (for webm-wasm)
+            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
             // webm-wasm
             // web streams API polyfill to support Firefox (for webm-wasm)
             'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
@@ -125,7 +125,7 @@ module.exports = function(config) {
         // for CDN scripts
         crossOriginAttribute: false,
         proxies: {
-            // necessary workaround for opus-recorder
+            // necessary workaround for opus-recorder plugin
             '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
             '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
         },

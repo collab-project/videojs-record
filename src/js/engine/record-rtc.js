@@ -10,7 +10,7 @@ import RecordRTC from 'recordrtc';
 import Event from '../event';
 import {RecordEngine} from './record-engine';
 import {isChrome} from '../utils/detect-browser';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY} from './record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, AUDIO_SCREEN} from './record-mode';
 
 const Component = videojs.getComponent('Component');
 
@@ -168,6 +168,7 @@ class RecordRTCEngine extends RecordEngine {
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
+                case AUDIO_SCREEN:
                 case SCREEN_ONLY:
                     // recordrtc returns a single blob that includes both audio
                     // and video data

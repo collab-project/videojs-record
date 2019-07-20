@@ -32,10 +32,11 @@
 
 // check for support
 var pipEnabled = false;
+var pipStatusMsg;
 if (!('pictureInPictureEnabled' in document)) {
-    alert('The Picture-in-Picture API is not available.');
+    pipStatusMsg = 'The Picture-in-Picture API is not available.';
 } else if (!document.pictureInPictureEnabled) {
-    alert('The Picture-in-Picture API is disabled.');
+    pipStatusMsg = 'The Picture-in-Picture API is disabled.';
 } else {
     pipEnabled = true;
 }
@@ -68,6 +69,12 @@ var player = videojs('myVideo', options, function() {
         ' with videojs-record ' + videojs.getPluginVersion('record') +
         ' and recordrtc ' + RecordRTC.version;
     videojs.log(msg);
+});
+
+player.on('ready', function() {
+    if (!pipEnabled) {
+        alert(pipStatusMsg + ' Disabled the PiP button.');
+    }
 });
 
 // error handling

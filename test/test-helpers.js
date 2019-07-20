@@ -25,6 +25,14 @@ const TestHelpers = {
         hideScrollbar: true
     },
 
+    applyScreenWorkaround() {
+        // use polyfill in Firefox for now, see:
+        // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
+        if (adapter.browserDetails.browser === 'firefox') {
+            adapter.browserShim.shimGetDisplayMedia(window, 'screen');
+        }
+    },
+
     /**
      * Create DOM element.
      */
@@ -68,6 +76,7 @@ const TestHelpers = {
                 wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
                     audio: true,
+                    screen: false,
                     video: false,
                     maxLength: 20,
                     pip: false,
@@ -292,11 +301,7 @@ const TestHelpers = {
     },
 
     makeScreenOnlyPlayer(newOptions) {
-        // use polyfill in Firefox for now, see:
-        // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-        if (adapter.browserDetails.browser === 'firefox') {
-            adapter.browserShim.shimGetDisplayMedia(window, 'screen');
-        }
+        TestHelpers.applyScreenWorkaround();
         let opts = {
             controls: true,
             autoplay: false,
@@ -318,6 +323,31 @@ const TestHelpers = {
         let tag = TestHelpers.makeTag('video', 'screenOnly');
         return this.makePlayer(tag, opts);
     },
+
+    makeAudioScreenPlayer(newOptions) {
+        TestHelpers.applyScreenWorkaround();
+        let opts = {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            plugins: {
+                record: {
+                    audio: true,
+                    screen: true,
+                    maxLength: 50,
+                    debug: true
+                }
+            }
+        };
+
+        opts = mergeOptions(opts, newOptions);
+        let tag = TestHelpers.makeTag('video', 'audioScreen');
+        return this.makePlayer(tag, opts);
+    },
+
 
     makeAnimatedPlayer() {
         let tag = TestHelpers.makeTag('video', 'animationOnly');

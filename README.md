@@ -139,7 +139,7 @@ Add the extra stylesheet for the plugin that includes a
 
 ### Audio/video/image
 
-When recording either audio/video, video-only, animated GIF or a single image,
+When recording either audio/video, video-only, screen-only, audio/screen, animated GIF or a single image,
 include a `video` element:
 
 ```html
@@ -178,7 +178,8 @@ Examples
 - audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html))
 - image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
 - animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
-- screen capture ([demo](https://collab-project.github.io/videojs-record/examples/screen-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html))
+- screen-only  ([demo](https://collab-project.github.io/videojs-record/examples/screen-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html))
+- audio/screen ([demo](https://collab-project.github.io/videojs-record/examples/audio-screen.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-screen.html))
 
 To try out the examples locally, download the [zip-file](https://github.com/collab-project/videojs-record/archive/master.zip)
 and unpack it, or checkout the repository using Git:
@@ -245,7 +246,7 @@ The available options for this plugin are:
 | `audio` | boolean or object | `false` | Include audio in the recorded clip. |
 | `video` | boolean or object | `false` | Include video in the recorded clip. |
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
-| `screen` | boolean or object | `false` | Screen capture without audio. |
+| `screen` | boolean or object | `false` | Include screen capture in the recorded clip. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
 | `pip` | boolean | `false` | Enables [Picture-in-Picture support](#picture-in-picture). Enable to add Picture-in-Picture button to controlbar. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
@@ -293,7 +294,7 @@ player.record().destroy();
 | Method | Description |
 | --- | --- |
 | `isRecording` | Returns a boolean indicating whether recording is active or not. |
-| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `screen_only`, `audio_only`, `video_only` or `audio_video`. |
+| `getRecordType` | Get recorder type as string. Either `image_only`, `animation`, `audio_only`, `video_only`, `audio_video`, `screen_only` or `audio_screen`. |
 | `saveAs` | Show save as dialog in browser so the user can [store the recorded media locally](#save-data). |
 | `destroy` | Destroys the recorder instance and children (including the video.js player). |
 | `reset` | Not as destructive as `destroy`: use this if you want to reset the player interface and recorder state. |
