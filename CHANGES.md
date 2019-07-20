@@ -4,6 +4,8 @@ videojs-record changelog
 x.x.x - unreleased
 ------------------
 
+- New gifshot plugin: improved animated GIF support (#291)
+
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
 - Support for animated GIF recording using RecordRTC was removed and replaced
@@ -122,7 +124,6 @@ x.x.x - unreleased
   metadata like duration (#317)
 - New vmsg audio plugin: produces MP3 using a WebAssembly version of the
   LAME library (#287)
-- New gifshot plugin: improved animated GIF support (#291)
 
 
 3.2.1 - 2019/01/08
@@ -167,7 +168,7 @@ x.x.x - unreleased
 - In older versions a `player.recordedData.video` would be available in Chrome
   when recording audio and video. This is removed and `player.recordedData`
   is always a `Blob` across all recording types and browsers now (#269)
-- Upgraded to video.js/font 3.1.0: removed support for IE8, 9, 10, and
+- Upgraded to video.js/font 3.0.0: removed support for IE8, 9, 10, and
   Android < 4.4 by removing support for the `eot` font file (#279)
 
 
