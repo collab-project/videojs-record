@@ -1,6 +1,15 @@
 videojs-record changelog
 ========================
 
+x.x.x - unreleased
+------------------
+
+**Backwards-incompatible changes** (when upgrading from a previous version):
+
+- Support for animated GIF recording using RecordRTC was removed and replaced
+  with a new plugin using the Gifshot library (#291)
+
+
 3.8.0 - 2019/07/16
 ------------------
 
@@ -114,11 +123,6 @@ videojs-record changelog
 - New vmsg audio plugin: produces MP3 using a WebAssembly version of the
   LAME library (#287)
 - New gifshot plugin: improved animated GIF support (#291)
-
-**Backwards-incompatible changes** (when upgrading from a previous version):
-
-- Support for animated GIF recording using RecordRTC was removed and replaced
-  with a new plugin using the Gifshot library (#291)
 
 
 3.2.1 - 2019/01/08
