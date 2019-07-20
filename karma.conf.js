@@ -109,8 +109,6 @@ module.exports = function(config) {
             // web streams API polyfill to support Firefox (for webm-wasm)
             'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
             // webm-wasm
-            // web streams API polyfill to support Firefox (for webm-wasm)
-            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
             {pattern: 'node_modules/webm-wasm/dist/webm-worker.js', included: false, served: true},
             {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
             // ffmpeg.js
