@@ -1,6 +1,6 @@
 /**
  * @file opus-media-recorder-plugin.js
- * @since 3.7.0
+ * @since x.x.x
  */
 
 import OpusMediaRecorder from 'opus-media-recorder';
