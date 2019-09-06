@@ -81,6 +81,9 @@ class CameraButton extends Button {
 
             // reset camera button
             this.onStop();
+
+            // trigger replay callback
+            this.player_.trigger(Event.REPLAY);
         }
     }
 
