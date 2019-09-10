@@ -341,6 +341,7 @@ player.on('startRecord', function() {
 | `leavePIP` | Left [Picture-in-Picture](#picture-in-picture) mode. |
 | `startConvert` | The convert plugin started processing the recorded data. |
 | `finishConvert` | The converted data is available. [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `retry` | User clicked on `retry` to take another picture. Only available for image-only mode. |
 
 Media constraints
 -----------------
