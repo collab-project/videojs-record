@@ -1436,23 +1436,48 @@ class Record extends Plugin {
     }
 
     /**
-     * Create and display snapshot image.
+     * Create snapshot image.
      * @private
      */
     createSnapshot() {
         this.captureFrame().then((result) => {
-            // turn the canvas data into base64 data with a PNG header
-            this.player.recordedData = result.toDataURL('image/png');
+            if (this.player.options_.plugins.record.image.returnType === 'blob')
+            {
+                // turn the canvas into blob object
+                result.toBlob(
+                    (blob) =>
+                    {
+                        this.player.recordedData = blob;
 
-            // hide preview video
-            this.mediaElement.style.display = 'none';
+                        // display the snapshot
+                        this.displaySnapshot();
+                    }
+                );
+            }
+            else
+            {
+                // turn the canvas data into base64 data with a PNG header
+                this.player.recordedData = result.toDataURL('image/png');
 
-            // show the snapshot
-            this.player.recordCanvas.show();
-
-            // stop recording
-            this.stop();
+                // display the snapshot
+                this.displaySnapshot();
+            }
         });
+    }
+
+    /**
+     * Display snapshot image.
+     * @private
+     */
+    displaySnapshot() {
+        // hide preview video
+        this.mediaElement.style.display = 'none';
+
+        // show the snapshot
+        this.player.recordCanvas.show();
+
+        // stop recording
+        this.stop();
     }
 
     /**

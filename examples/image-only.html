@@ -37,10 +37,13 @@ var options = {
     },
     plugins: {
         record: {
-            image: true,
+            image: true, // return base64 by default from canvas
+            // image: {
+            //   returnType: 'blob' // return blob from canvas
+            // },
             debug: true
         }
-    }
+    },
 };
 
 var player = videojs('myImage', options, function() {
