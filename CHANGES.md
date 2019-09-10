@@ -1,8 +1,10 @@
 videojs-record changelog
 ========================
-3.8.1 - 2019/09/10
+
+3.8.1 - unreleased
 ------------------
-- Added `Event.RETRY` only in picture case.
+
+- Trigger `Event.RETRY` for image-only (by @vendramini)
 
 
 3.8.0 - 2019/07/16
