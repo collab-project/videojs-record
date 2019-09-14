@@ -1,14 +1,11 @@
 videojs-record changelog
 ========================
-3.8.1 - 2019/09/10
-------------------
-- Added `Event.RETRY` only in picture case.
-
 
 3.8.1 - unreleased
 ------------------
 
 - Trigger `Event.RETRY` for image-only (by @vendramini)
+- Added `returnType` for image-only options (base64 or blob. Defaults to base64) (by @vendramini)
 
 
 3.8.0 - 2019/07/16

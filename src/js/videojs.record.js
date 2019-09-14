@@ -1441,7 +1441,10 @@ class Record extends Plugin {
      */
     createSnapshot() {
         this.captureFrame().then((result) => {
-            if (this.player.options_.plugins.record.image.returnType === 'blob')
+            if (
+                typeof this.player.options_.plugins.record.image !== 'boolean' &&
+                this.player.options_.plugins.record.image.returnType === 'blob'
+            )
             {
                 // turn the canvas into blob object
                 result.toBlob(
