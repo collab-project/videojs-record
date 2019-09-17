@@ -10,6 +10,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 module.exports = {
     mode: 'production',
     optimization: {
+        minimize: true,
         minimizer: [
             new TerserPlugin({
                 sourceMap: false,
@@ -17,9 +18,11 @@ module.exports = {
                 cache: './.build_cache/terser',
                 terserOptions: {
                     output: {
-                        comments: false
+                        // preserve license comments
+                        comments:  /@license/i,
                     }
-                }
+                },
+                extractComments: false
             }),
             new OptimizeCSSAssetsPlugin({})
         ]
