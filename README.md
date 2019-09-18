@@ -5,12 +5,13 @@ Video.js plugin for recording audio/video/image files.
 
 ![Screenshot](examples/assets/img/screenshot.png?raw=true "Screenshot")
 
-[![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab) [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
+[![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 [![Coverage Status](https://coveralls.io/repos/github/collab-project/videojs-record/badge.svg?branch=master)](https://coveralls.io/github/collab-project/videojs-record?branch=master)
 ![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
+[![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
 ![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
 
 Table of Contents
@@ -822,16 +823,6 @@ This work is licensed under the [MIT License](LICENSE).
 
 Donate
 ------
-
-Please consider donating if you like this project. Bitcoin is accepted
-and can be sent to `3PmXCqUggtq7KUWPbpN8WhMnb1Mfb1jbq8`.
-
-## Contributors
-
-### Code Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/collab-project/videojs-record/graphs/contributors"><img src="https://opencollective.com/collab/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
 
