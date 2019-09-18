@@ -39,7 +39,8 @@
     "lint:html": "htmlhint examples",
     "start": "npm run build && webpack-dev-server --config ./build-config/webpack.dev.main.js",
     "test": "karma start karma.conf.js",
-    "prepublishOnly": "not-in-install && npm run build || in-install"
+    "prepublishOnly": "not-in-install && npm run build || in-install",
+    "postinstall": "opencollective-postinstall || true"
   },
   "files": [
     "dist/",
@@ -70,6 +71,7 @@
     "opus"
   ],
   "dependencies": {
+    "opencollective-postinstall": "^2.0.2",
     "recordrtc": ">=5.5.8",
     "video.js": ">=6.2.7",
     "videojs-wavesurfer": ">=2.9.0",
@@ -141,5 +143,9 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.1",
     "webpack-merge": "^4.2.2"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/collab"
   }
 }
