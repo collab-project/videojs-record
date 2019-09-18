@@ -11,6 +11,7 @@ Video.js plugin for recording audio/video/image files.
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 [![Coverage Status](https://coveralls.io/repos/github/collab-project/videojs-record/badge.svg?branch=master)](https://coveralls.io/github/collab-project/videojs-record?branch=master)
 ![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
+[![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
 ![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
 
 Table of Contents
@@ -823,5 +824,25 @@ This work is licensed under the [MIT License](LICENSE).
 Donate
 ------
 
-Please consider donating if you like this project. Bitcoin is accepted
-and can be sent to `3PmXCqUggtq7KUWPbpN8WhMnb1Mfb1jbq8`.
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/collab/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/collab"><img src="https://opencollective.com/collab/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/collab/contribute)]
+
+<a href="https://opencollective.com/collab/organization/0/website"><img src="https://opencollective.com/collab/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/1/website"><img src="https://opencollective.com/collab/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/2/website"><img src="https://opencollective.com/collab/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/3/website"><img src="https://opencollective.com/collab/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/4/website"><img src="https://opencollective.com/collab/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/5/website"><img src="https://opencollective.com/collab/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/6/website"><img src="https://opencollective.com/collab/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/7/website"><img src="https://opencollective.com/collab/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/8/website"><img src="https://opencollective.com/collab/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/9/website"><img src="https://opencollective.com/collab/organization/9/avatar.svg"></a>
