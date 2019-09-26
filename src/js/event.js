@@ -34,6 +34,7 @@ Event.START_CONVERT = 'startConvert';
 Event.FINISH_CONVERT = 'finishConvert';
 Event.ENTER_PIP = 'enterPIP';
 Event.LEAVE_PIP = 'leavePIP';
+Event.RETRY = 'retry';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';

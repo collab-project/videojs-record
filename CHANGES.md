@@ -10,6 +10,7 @@ videojs-record changelog
     image quality
   - `imageOutputType`: either `'blob'` or `'dataURL'` (default)
   - `imageOutputFormat`: image format (default: `image/png`)
+- Trigger `Event.RETRY` for image-only (by @vendramini)
 
 
 3.8.0 - 2019/07/16

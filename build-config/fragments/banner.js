@@ -7,7 +7,7 @@ const path = require('path');
 const webpack = require('webpack');
 const datefns = require('date-fns');
 
-const year = datefns.format(new Date(), 'YYYY');
+const year = datefns.format(new Date(), 'yyyy');
 const rootDir = path.resolve(__dirname, '..', '..');
 const pckg = require(path.join(rootDir, 'package.json'));
 

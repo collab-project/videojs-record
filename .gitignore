@@ -4,6 +4,7 @@
 # IDE
 .project
 .pydevproject
+.idea
 
 # examples
 *.phar

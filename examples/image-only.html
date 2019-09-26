@@ -68,6 +68,10 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('snapshot ready: ', player.recordedData);
 });
+
+player.on('retry', function() {
+  console.log('retry');
+});
 </script>
 
 </body>
