@@ -202,6 +202,11 @@ class Record extends Plugin {
         this.audioMimeType = recordOptions.audioMimeType;
         this.audioBufferUpdate = recordOptions.audioBufferUpdate;
 
+        // image settings
+        this.imageOutputType = recordOptions.imageOutputType;
+        this.imageOutputFormat = recordOptions.imageOutputFormat;
+        this.imageOutputQuality = recordOptions.imageOutputQuality;
+
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
