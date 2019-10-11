@@ -5,6 +5,7 @@ videojs-record changelog
 ------------------
 
 - Trigger `Event.RETRY` for image-only (by @vendramini)
+- Add `style` and `sass` entries to `package.json`
 - Specify non-minified videojs-record in `main` entry of `package.json`
 
 
