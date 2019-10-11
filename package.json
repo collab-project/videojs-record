@@ -9,7 +9,7 @@
     "url": "https://github.com/collab-project/videojs-record/issues"
   },
   "homepage": "https://github.com/collab-project/videojs-record",
-  "main": "dist/videojs.record.min.js",
+  "main": "dist/videojs.record.js",
   "directories": {
     "doc": "./docs",
     "lib": "./src",
