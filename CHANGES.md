@@ -1,10 +1,12 @@
 videojs-record changelog
 ========================
 
-3.8.1 - unreleased
+3.9.0 - unreleased
 ------------------
 
 - Trigger `Event.RETRY` for image-only (by @vendramini)
+- Add `style` and `sass` entries to `package.json`
+- Specify non-minified videojs-record in `main` entry of `package.json`
 
 
 3.8.0 - 2019/07/16
