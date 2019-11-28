@@ -111,6 +111,17 @@ const pluginDefaultOptions = {
     // Values greater than 20 do not yield significant improvements
     // in speed.
     animationQuality: 10,
+    // A string indicating the output type: dataURL (base64 string) or blob.
+    // The default output is dataURL.
+    imageOutputType: 'dataURL',
+    // A string indicating the image format used in image-only mode. The default
+    // format type is image/png.
+    imageOutputFormat: 'image/png',
+    // A number between 0 and 1 indicating the image quality to use for image
+    // formats that use lossy compression such as image/jpeg and image/webp.
+    // If this argument is anything else, the default value for image quality
+    // is used. The default value is 0.92.
+    imageOutputQuality: 0.92,
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
     timeSlice: 0,
     // Media converter library to use. Legal values are 'ts-ebml' and 'ffmpeg.js'.

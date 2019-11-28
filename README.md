@@ -11,6 +11,7 @@ Video.js plugin for recording audio/video/image files.
 [![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
 [![Coverage Status](https://coveralls.io/repos/github/collab-project/videojs-record/badge.svg?branch=master)](https://coveralls.io/github/collab-project/videojs-record?branch=master)
 ![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
+[![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
 ![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
 
 Table of Contents
@@ -256,6 +257,9 @@ The available options for this plugin are:
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
+| `imageOutputType` | string | `'dataURL'` | Image output **type**. Legal values are `dataURL` (base64 string) or `blob`. |
+| `imageOutputFormat` | string | `'image/png'` | Image output **format**. Only used if `imageOutputType` equals to `dataURL`. |
+| `imageOutputQuality` | float | `0.92` | Image output **quality**. Only used if `imageOutputType` equals to `dataURL`. |
 | `videoEngine` | string | `'recordrtc'` | Video recording library/plugin to use. Legal values are `recordrtc` and `webm-wasm`. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
@@ -823,5 +827,25 @@ This work is licensed under the [MIT License](LICENSE).
 Donate
 ------
 
-Please consider donating if you like this project. Bitcoin is accepted
-and can be sent to `3PmXCqUggtq7KUWPbpN8WhMnb1Mfb1jbq8`.
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/collab/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/collab"><img src="https://opencollective.com/collab/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/collab/contribute)]
+
+<a href="https://opencollective.com/collab/organization/0/website"><img src="https://opencollective.com/collab/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/1/website"><img src="https://opencollective.com/collab/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/2/website"><img src="https://opencollective.com/collab/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/3/website"><img src="https://opencollective.com/collab/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/4/website"><img src="https://opencollective.com/collab/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/5/website"><img src="https://opencollective.com/collab/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/6/website"><img src="https://opencollective.com/collab/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/7/website"><img src="https://opencollective.com/collab/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/8/website"><img src="https://opencollective.com/collab/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/collab/organization/9/website"><img src="https://opencollective.com/collab/organization/9/avatar.svg"></a>

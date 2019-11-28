@@ -1,9 +1,15 @@
 videojs-record changelog
 ========================
 
-3.8.1 - unreleased
+3.9.0 - unreleased
 ------------------
 
+- New options for image-only mode to change the data type of the
+  `player.recordedData` object:
+  - `imageOutputQuality`: number between 0 and 1 indicating the
+    image quality
+  - `imageOutputType`: either `'blob'` or `'dataURL'` (default)
+  - `imageOutputFormat`: image format (default: `image/png`)
 - Trigger `Event.RETRY` for image-only (by @vendramini)
 - Added `returnType` for image-only options (base64 or blob. Defaults to base64) (by @vendramini)
 

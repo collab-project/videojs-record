@@ -218,7 +218,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev', 'Firefox_dev'];
+        configuration.browsers = ['Chrome_dev'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 

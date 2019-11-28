@@ -202,6 +202,11 @@ class Record extends Plugin {
         this.audioMimeType = recordOptions.audioMimeType;
         this.audioBufferUpdate = recordOptions.audioBufferUpdate;
 
+        // image settings
+        this.imageOutputType = recordOptions.imageOutputType;
+        this.imageOutputFormat = recordOptions.imageOutputFormat;
+        this.imageOutputQuality = recordOptions.imageOutputQuality;
+
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
@@ -1436,36 +1441,28 @@ class Record extends Plugin {
     }
 
     /**
-     * Create snapshot image.
+     * Create and display snapshot image.
      * @private
      */
     createSnapshot() {
         this.captureFrame().then((result) => {
-            if (
-                typeof this.player.options_.plugins.record.image !== 'boolean' &&
-                this.player.options_.plugins.record.image.returnType === 'blob'
-            )
-            {
-                // turn the canvas into blob object
-                result.toBlob(
-                    (blob) =>
-                    {
-                        this.player.recordedData = blob;
+            if (this.imageOutputType === 'blob') {
+                // turn the canvas data into a Blob
+                result.toBlob((blob) => {
+                    this.player.recordedData = blob;
 
-                        // display the snapshot
-                        this.displaySnapshot();
-                    }
-                );
-            }
-            else
-            {
-                // turn the canvas data into base64 data with a PNG header
-                this.player.recordedData = result.toDataURL('image/png');
+                    // display the snapshot
+                    this.displaySnapshot();
+                });
+            } else if (this.imageOutputType === 'dataURL') {
+                // turn the canvas data into base64 data
+                this.player.recordedData = result.toDataURL(
+                    this.imageOutputFormat, this.imageOutputQuality);
 
                 // display the snapshot
                 this.displaySnapshot();
             }
-        });
+        }, this.imageOutputFormat, this.imageOutputQuality);
     }
 
     /**

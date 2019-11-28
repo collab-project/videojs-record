@@ -121,6 +121,45 @@ describe('Record', () => {
     });
 
     /** @test {Record} */
+    it('change image output from dataURL to blob', (done) => {
+        // create new player
+        let opts = {
+            plugins: {
+                record: {
+                    imageOutputType: 'blob',
+                }
+            }
+        };
+
+        player = TestHelpers.makeImageOnlyPlayer(opts);
+
+        player.recordCanvas.el().firstChild.videoWidth = 320;
+        player.recordCanvas.el().firstChild.videoHeight = 240;
+
+        expect(player.record().imageOutputType).toEqual('blob');
+
+        player.one(Event.FINISH_RECORD, () => {
+            expect(player.recordedData instanceof Blob).toBeTruthy();
+
+            setTimeout(done, 2000);
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            // create snapshot
+            player.record().start();
+        });
+
+        player.one(Event.READY, () => {
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass().endsWith(
+                'video-perm')).toBeTrue();
+
+            // start device
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record} */
     it('runs as audio-only plugin', (done) => {
         // create audio-only plugin
         player = TestHelpers.makeAudioOnlyPlayer();
