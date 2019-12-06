@@ -278,9 +278,9 @@ const TestHelpers = {
         return this.makePlayer(tag, opts);
     },
 
-    makeImageOnlyPlayer() {
+    makeImageOnlyPlayer(newOptions) {
         let tag = TestHelpers.makeTag('video', 'imageOnly');
-        return this.makePlayer(tag, {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -297,7 +297,9 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        return this.makePlayer(tag, opts);
     },
 
     makeScreenOnlyPlayer(newOptions) {

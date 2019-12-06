@@ -257,6 +257,9 @@ The available options for this plugin are:
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
 | `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
+| `imageOutputType` | string | `'dataURL'` | Image output **type**. Legal values are `dataURL` (base64 string) or `blob`. |
+| `imageOutputFormat` | string | `'image/png'` | Image output **format**. Only used if `imageOutputType` equals to `dataURL`. |
+| `imageOutputQuality` | float | `0.92` | Image output **quality**. Only used if `imageOutputType` equals to `dataURL`. |
 | `videoEngine` | string | `'recordrtc'` | Video recording library/plugin to use. Legal values are `recordrtc` and `webm-wasm`. |
 | `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/WebKit/LayoutTests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |

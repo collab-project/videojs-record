@@ -111,7 +111,8 @@ const pluginDefaultOptions = {
     // Values greater than 20 do not yield significant improvements
     // in speed.
     animationQuality: 10,
-    // XXX:
+    // A string indicating the output type: dataURL (base64 string) or blob.
+    // The default output is dataURL.
     imageOutputType: 'dataURL',
     // A string indicating the image format used in image-only mode. The default
     // format type is image/png.
