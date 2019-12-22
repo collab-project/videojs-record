@@ -229,7 +229,7 @@ class Record extends Plugin {
             this.player.pipToggle !== undefined) {
             // add custom PiP toggle
             this.player.controlBar.addChild(this.player.pipToggle);
-        } else {
+        } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
             // use video.js PiP toggle
             this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
             this.player.pipToggle.hide();
