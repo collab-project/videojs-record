@@ -382,6 +382,9 @@ class Record extends Plugin {
         if (this.engineStopCallback === undefined) {
             this.engineStopCallback = this.onRecordComplete.bind(this);
         }
+        if (this.streamVisibleCallback === undefined) {
+            this.streamVisibleCallback = this.onStreamVisible.bind(this);
+        }
 
         // check for support because some browsers still do not support
         // getDisplayMedia or getUserMedia (like Chrome iOS, see:
@@ -459,6 +462,8 @@ class Record extends Plugin {
 
             case IMAGE_ONLY:
             case VIDEO_ONLY:
+                this.player.el().firstChild.addEventListener(Event.PLAYING, this.streamVisibleCallback);
+
                 // setup camera
                 this.mediaType = {
                     audio: false,
@@ -545,6 +550,16 @@ class Record extends Plugin {
                 );
                 break;
         }
+    }
+
+    onStreamVisible(event) {
+        this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
+
+        console.log('yo');
+
+        // reset and show camera button
+        this.player.cameraButton.onStop();
+        this.player.cameraButton.show();
     }
 
     /**
@@ -700,8 +715,8 @@ class Record extends Plugin {
             this.retrySnapshot();
 
             // reset and show camera button
-            this.player.cameraButton.onStop();
-            this.player.cameraButton.show();
+            //this.player.cameraButton.onStop();
+            //this.player.cameraButton.show();
         }
 
         // setup preview
