@@ -74,7 +74,7 @@
   "dependencies": {
     "recordrtc": ">=5.5.8",
     "video.js": ">=6.2.7",
-    "videojs-wavesurfer": ">=2.11.0",
+    "videojs-wavesurfer": ">=2.11.0 <3",
     "webrtc-adapter": ">=7.3.0"
   },
   "devDependencies": {

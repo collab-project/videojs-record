@@ -14,7 +14,9 @@ videojs-record changelog
 - Add `style` and `sass` entries to `package.json`
 - Specify non-minified videojs-record in `main` entry of `package.json`
 - Check for `pipToggle` (#411)
-- Bump required version for videojs-wavesurfer to 2.11.0 or newer
+- Bump required version for videojs-wavesurfer to 2.11.0 or newer and reject
+  videojs-wavesurfer version 3.0.0 or newer until that release is available and
+  supported
 
 
 3.8.0 - 2019/07/16
