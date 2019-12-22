@@ -220,7 +220,8 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
-        if (this.player.controlBar.pictureInPictureToggle === undefined) {
+        if (this.player.controlBar.pictureInPictureToggle === undefined &&
+            this.player.pipToggle !== undefined) {
             // add custom PiP toggle
             this.player.controlBar.addChild(this.player.pipToggle);
         } else {
