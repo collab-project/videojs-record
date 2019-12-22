@@ -7,6 +7,7 @@ videojs-record changelog
 - Trigger `Event.RETRY` for image-only (by @vendramini)
 - Add `style` and `sass` entries to `package.json`
 - Specify non-minified videojs-record in `main` entry of `package.json`
+- Bump required version for videojs-wavesurfer to 2.11.0 or newer
 
 
 3.8.0 - 2019/07/16
