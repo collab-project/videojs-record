@@ -44,7 +44,10 @@ var options = {
     plugins: {
         record: {
             image: true,
-            debug: true
+            debug: true,
+            imageOutputType: 'dataURL',
+            imageOutputFormat: 'image/png',
+            imageOutputQuality: 0.92
         }
     }
 };
@@ -69,6 +72,10 @@ player.on('finishRecord', function() {
     // the blob object contains the image data that
     // can be downloaded by the user, stored on server etc.
     console.log('snapshot ready: ', player.recordedData);
+});
+
+player.on('retry', function() {
+  console.log('retry');
 });
 </script>
 
