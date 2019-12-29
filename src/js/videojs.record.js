@@ -462,7 +462,11 @@ class Record extends Plugin {
 
             case IMAGE_ONLY:
             case VIDEO_ONLY:
-                this.player.el().firstChild.addEventListener(Event.PLAYING, this.streamVisibleCallback);
+                if (this.getRecordType() === IMAGE_ONLY) {
+                    // using player.el() here because this.mediaElement is not available yet
+                    this.player.el().firstChild.addEventListener(Event.PLAYING,
+                        this.streamVisibleCallback);
+                }
 
                 // setup camera
                 this.mediaType = {
@@ -550,16 +554,6 @@ class Record extends Plugin {
                 );
                 break;
         }
-    }
-
-    onStreamVisible(event) {
-        this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
-
-        console.log('yo');
-
-        // reset and show camera button
-        this.player.cameraButton.onStop();
-        this.player.cameraButton.show();
     }
 
     /**
@@ -714,9 +708,7 @@ class Record extends Plugin {
             // used)
             this.retrySnapshot();
 
-            // reset and show camera button
-            //this.player.cameraButton.onStop();
-            //this.player.cameraButton.show();
+            // camera button will be displayed as soon as this.onStreamVisible fires
         }
 
         // setup preview
@@ -1322,6 +1314,12 @@ class Record extends Plugin {
                 // also disposes player
                 this.surfer.destroy();
             }
+        } else if (this.getRecordType() === IMAGE_ONLY) {
+            if (this.mediaElement && this.streamVisibleCallback) {
+                // cleanup listeners
+                this.mediaElement.removeEventListener(Event.PLAYING,
+                    this.streamVisibleCallback);
+            }
         }
 
         this.resetState();
@@ -1783,7 +1781,23 @@ class Record extends Plugin {
     }
 
     /**
+     * Invoked when the video device is ready and stream is visible.
+     *
+     * @private
+     * @param {Event} event - `playing` event
+     */
+    onStreamVisible(event) {
+        // only listen for this once; remove listener
+        this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
+
+        // reset and show camera button
+        this.player.cameraButton.onStop();
+        this.player.cameraButton.show();
+    }
+
+    /**
      * Invoked when entering picture-in-picture mode.
+     *
      * @private
      * @param {object} event - Event data.
      */
@@ -1793,6 +1807,7 @@ class Record extends Plugin {
 
     /**
      * Invoked when leaving picture-in-picture mode.
+     *
      * @private
      * @param {object} event - Event data.
      */
