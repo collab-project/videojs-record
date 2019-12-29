@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export OLD_VERSION=7.5.4
-export NEW_VERSION=7.6.0
+export OLD_VERSION=7.6.0
+export NEW_VERSION=7.6.6
 
 echo
 echo "Update video.js to v"$NEW_VERSION
