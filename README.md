@@ -43,6 +43,15 @@ versions in ``scripts/update-videojs.sh`` and run it:
 ./scripts/update-videojs.sh
 ```
 
+Release
+-------
+
+To create a release zip:
+
+```
+npm run release:zip
+```
+
 Development Server
 ------------------
 
