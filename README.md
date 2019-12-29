@@ -23,8 +23,8 @@ ncu
 Verify available updates and then upgrade everything in `package.json`:
 
 ```
-ncu -a
-npm update
+ncu -u
+npm install
 ```
 
 Copy updated libraries into repository:

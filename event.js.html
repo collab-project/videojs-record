@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.8.0</span>
+            <span class="version">v3.9.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -58,6 +58,7 @@ class Event {}
 // video.js
 Event.READY = 'ready';
 Event.ERROR = 'error';
+Event.PLAYING = 'playing';
 Event.LOADEDMETADATA = 'loadedmetadata';
 Event.LOADSTART = 'loadstart';
 Event.USERINACTIVE = 'userinactive';
@@ -84,6 +85,7 @@ Event.START_CONVERT = 'startConvert';
 Event.FINISH_CONVERT = 'finishConvert';
 Event.ENTER_PIP = 'enterPIP';
 Event.LEAVE_PIP = 'leavePIP';
+Event.RETRY = 'retry';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';

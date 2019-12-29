@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.8.0</span>
+            <span class="version">v3.9.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -252,6 +252,11 @@ class Record extends Plugin {
         this.audioMimeType = recordOptions.audioMimeType;
         this.audioBufferUpdate = recordOptions.audioBufferUpdate;
 
+        // image settings
+        this.imageOutputType = recordOptions.imageOutputType;
+        this.imageOutputFormat = recordOptions.imageOutputFormat;
+        this.imageOutputQuality = recordOptions.imageOutputQuality;
+
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
@@ -270,10 +275,11 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
-        if (this.player.controlBar.pictureInPictureToggle === undefined) {
+        if (this.player.controlBar.pictureInPictureToggle === undefined &amp;&amp;
+            this.player.pipToggle !== undefined) {
             // add custom PiP toggle
             this.player.controlBar.addChild(this.player.pipToggle);
-        } else {
+        } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
             // use video.js PiP toggle
             this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
             this.player.pipToggle.hide();
@@ -426,6 +432,9 @@ class Record extends Plugin {
         if (this.engineStopCallback === undefined) {
             this.engineStopCallback = this.onRecordComplete.bind(this);
         }
+        if (this.streamVisibleCallback === undefined) {
+            this.streamVisibleCallback = this.onStreamVisible.bind(this);
+        }
 
         // check for support because some browsers still do not support
         // getDisplayMedia or getUserMedia (like Chrome iOS, see:
@@ -503,6 +512,12 @@ class Record extends Plugin {
 
             case IMAGE_ONLY:
             case VIDEO_ONLY:
+                if (this.getRecordType() === IMAGE_ONLY) {
+                    // using player.el() here because this.mediaElement is not available yet
+                    this.player.el().firstChild.addEventListener(Event.PLAYING,
+                        this.streamVisibleCallback);
+                }
+
                 // setup camera
                 this.mediaType = {
                     audio: false,
@@ -743,9 +758,7 @@ class Record extends Plugin {
             // used)
             this.retrySnapshot();
 
-            // reset and show camera button
-            this.player.cameraButton.onStop();
-            this.player.cameraButton.show();
+            // camera button will be displayed as soon as this.onStreamVisible fires
         }
 
         // setup preview
@@ -1351,6 +1364,12 @@ class Record extends Plugin {
                 // also disposes player
                 this.surfer.destroy();
             }
+        } else if (this.getRecordType() === IMAGE_ONLY) {
+            if (this.mediaElement &amp;&amp; this.streamVisibleCallback) {
+                // cleanup listeners
+                this.mediaElement.removeEventListener(Event.PLAYING,
+                    this.streamVisibleCallback);
+            }
         }
 
         this.resetState();
@@ -1491,18 +1510,38 @@ class Record extends Plugin {
      */
     createSnapshot() {
         this.captureFrame().then((result) => {
-            // turn the canvas data into base64 data with a PNG header
-            this.player.recordedData = result.toDataURL('image/png');
+            if (this.imageOutputType === 'blob') {
+                // turn the canvas data into a Blob
+                result.toBlob((blob) => {
+                    this.player.recordedData = blob;
 
-            // hide preview video
-            this.mediaElement.style.display = 'none';
+                    // display the snapshot
+                    this.displaySnapshot();
+                });
+            } else if (this.imageOutputType === 'dataURL') {
+                // turn the canvas data into base64 data
+                this.player.recordedData = result.toDataURL(
+                    this.imageOutputFormat, this.imageOutputQuality);
 
-            // show the snapshot
-            this.player.recordCanvas.show();
+                // display the snapshot
+                this.displaySnapshot();
+            }
+        }, this.imageOutputFormat, this.imageOutputQuality);
+    }
 
-            // stop recording
-            this.stop();
-        });
+    /**
+     * Display snapshot image.
+     * @private
+     */
+    displaySnapshot() {
+        // hide preview video
+        this.mediaElement.style.display = 'none';
+
+        // show the snapshot
+        this.player.recordCanvas.show();
+
+        // stop recording
+        this.stop();
     }
 
     /**
@@ -1792,7 +1831,23 @@ class Record extends Plugin {
     }
 
     /**
+     * Invoked when the video device is ready and stream is visible.
+     *
+     * @private
+     * @param {Event} event - `playing` event
+     */
+    onStreamVisible(event) {
+        // only listen for this once; remove listener
+        this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
+
+        // reset and show camera button
+        this.player.cameraButton.onStop();
+        this.player.cameraButton.show();
+    }
+
+    /**
      * Invoked when entering picture-in-picture mode.
+     *
      * @private
      * @param {object} event - Event data.
      */
@@ -1802,6 +1857,7 @@ class Record extends Plugin {
 
     /**
      * Invoked when leaving picture-in-picture mode.
+     *
      * @private
      * @param {object} event - Event data.
      */

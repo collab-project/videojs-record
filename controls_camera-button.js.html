@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.8.0</span>
+            <span class="version">v3.9.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -129,8 +129,11 @@ class CameraButton extends Button {
             // retry
             recorder.retrySnapshot();
 
-            // reset camera button
+            // reset camera button appearance
             this.onStop();
+
+            // trigger replay event
+            this.player_.trigger(Event.RETRY);
         }
     }
 
