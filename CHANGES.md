@@ -10,7 +10,8 @@ videojs-record changelog
     image quality (default: 0.92)
   - `imageOutputType`: either `'blob'` or `'dataURL'` (default)
   - `imageOutputFormat`: image format (default: `image/png`)
-- Trigger `Event.RETRY` for image-only (by @vendramini)
+- Trigger `Event.RETRY` for image-only (#403 by @vendramini)
+- Image-only: prevent blank image at startup (#406)
 - Add `style` and `sass` entries to `package.json`
 - Specify non-minified videojs-record in `main` entry of `package.json`
 - Check for `pipToggle` (#411)
