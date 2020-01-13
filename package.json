@@ -78,10 +78,10 @@
     "webrtc-adapter": ">=7.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/register": "^7.7.7",
+    "@babel/core": "^7.8.0",
+    "@babel/plugin-transform-runtime": "^7.8.0",
+    "@babel/preset-env": "^7.8.2",
+    "@babel/register": "^7.8.0",
     "@mattiasbuelens/web-streams-polyfill": "^0.3.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-add-module-exports": "^1.0.2",
