@@ -59,7 +59,7 @@ var options = {
 applyAudioWorkaround();
 alert('Using safari: ' + isSafari);
 alert(JSON.stringify(options.plugins.record));
-alert(typeof options.plugins.record.audioRecorderType);
+alert(options.plugins.record.audioRecorderType);
 
 // create player
 var player = videojs('myAudio', options, function() {
