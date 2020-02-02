@@ -5,12 +5,6 @@ var isEdge = /Edge/.test(navigator.userAgent);
 
 function applyAudioWorkaround() {
     if (isSafari || isEdge) {
-
-        if (isSafari && window.MediaRecorder !== undefined) {
-            // this version of Safari has MediaRecorder
-            return;
-        }
-
         // see https://github.com/collab-project/videojs-record/issues/295
         options.plugins.record.audioRecorderType = StereoAudioRecorder;
         options.plugins.record.audioSampleRate = 44100;
