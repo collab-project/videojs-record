@@ -118,13 +118,17 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
-        // add picture-in-picture toggle button for older video.js versions
-        if (videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1) {
+        // picture-in-picture
+        let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
+        if (!('exitPictureInPicture' in document)) {
+            // no support for picture-in-picture, disable pip
+            this.pictureInPicture = false;
+        } else if (oldVideoJS) {
+            // add picture-in-picture toggle button for older video.js versions
+            // in browsers that support PIP
             player.pipToggle = new PictureInPictureToggle(player, options);
             player.pipToggle.hide();
         }
-
-        // picture-in-picture
         if (this.pictureInPicture === true) {
             // define Picture-in-Picture event handlers once
             this.onEnterPiPHandler = this.onEnterPiP.bind(this);
@@ -138,6 +142,7 @@ class Record extends Plugin {
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
             }
+
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
                     this.player[element].layoutExclude = true;
@@ -225,14 +230,18 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
-        if (this.player.controlBar.pictureInPictureToggle === undefined &&
-            this.player.pipToggle !== undefined) {
-            // add custom PiP toggle
-            this.player.controlBar.addChild(this.player.pipToggle);
-        } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
-            // use video.js PiP toggle
-            this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
-            this.player.pipToggle.hide();
+
+        // picture-in-picture
+        if (this.pictureInPicture === true) {
+            if (this.player.controlBar.pictureInPictureToggle === undefined &&
+                this.player.pipToggle !== undefined) {
+                // add custom PiP toggle
+                this.player.controlBar.addChild(this.player.pipToggle);
+            } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
+                // use video.js PiP toggle
+                this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
+                this.player.pipToggle.hide();
+            }
         }
 
         // get rid of unused controls

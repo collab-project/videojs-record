@@ -728,7 +728,9 @@ describe('Record', () => {
         player = TestHelpers.makeVideoOnlyPlayer(opts);
 
         player.one(Event.READY, () => {
-            expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            if (!isFirefox()) {
+                expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            }
             done();
         });
     });
