@@ -363,23 +363,21 @@ var player = videojs('myVideo', {
     loop: false,
     // dimensions of video.js player
     fluid: false,
-    width: 1280,
-    height: 720,
+    width: 640,
+    height: 480,
     plugins: {
         record: {
             maxLength: 5,
             debug: true,
             audio: false,
             video: {
-                // video constraints: set resolution of camera
-                mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                }
+                // video media constraints: set resolution of camera
+                width: 640,
+                height: 480
             },
             // dimensions of captured video frames
-            frameWidth: 1280,
-            frameHeight: 720
+            frameWidth: 640,
+            frameHeight: 480
         }
     }
 });
