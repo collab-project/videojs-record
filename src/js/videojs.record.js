@@ -489,10 +489,19 @@ class Record extends Plugin {
                     audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
                     video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
                 };
-                navigator.mediaDevices.getDisplayMedia({
-                    video: true // This needs to be true for Firefox to work
-                }).then(screenStream => {
-                    navigator.mediaDevices.getUserMedia({ audio:this.recordAudio }).then((mic) => {
+                let audioScreenConstraints = {};
+                if (this.recordScreen === true) {
+                    audioScreenConstraints = {
+                        video: true // needs to be true for it to work in Firefox
+                    };
+                } else if (typeof this.recordScreen === 'object' &&
+                    this.recordScreen.constructor === Object) {
+                    audioScreenConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(audioScreenConstraints).then(screenStream => {
+                    navigator.mediaDevices.getUserMedia({
+                        audio: this.recordAudio
+                    }).then((mic) => {
                         // Join microphone track with screencast stream (order matters)
                         screenStream.addTrack(mic.getTracks()[0]);
                         this.onDeviceReady.bind(this)(screenStream);
@@ -545,9 +554,16 @@ class Record extends Plugin {
                     screen: true,
                     gif: false
                 };
-                navigator.mediaDevices.getDisplayMedia({
-                    video: true
-                }).then(
+                let screenOnlyConstraints = {};
+                if (this.recordScreen === true) {
+                    screenOnlyConstraints = {
+                        video: true
+                    };
+                } else if (typeof this.recordScreen === 'object' &&
+                    this.recordScreen.constructor === Object) {
+                    screenOnlyConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(screenOnlyConstraints).then(
                     this.onDeviceReady.bind(this)
                 ).catch(
                     this.onDeviceError.bind(this)
