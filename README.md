@@ -21,7 +21,7 @@ Table of Contents
 - [Supported browsers](#supported-browsers)
 - [Dependencies](#dependencies)
 - [Usage](#usage)
-  - [Audio/video/image](#audiovideoimage)
+  - [Audio/video/image/screen](#audiovideoimagescreen)
   - [Audio-only](#audio-only)
 - [Examples](#examples)
 - [Options](#options)
@@ -138,7 +138,7 @@ Add the extra stylesheet for the plugin that includes a
 <link href="videojs.record.css" rel="stylesheet">
 ```
 
-### Audio/video/image
+### Audio/video/image/screen
 
 When recording either audio/video, video-only, screen-only, audio/screen, animated GIF or a single image,
 include a `video` element:
@@ -375,7 +375,7 @@ var player = videojs('myVideo', {
                 mandatory: {
                     minWidth: 1280,
                     minHeight: 720,
-                },
+                }
             },
             // dimensions of captured video frames
             frameWidth: 1280,

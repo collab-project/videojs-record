@@ -23,8 +23,6 @@ services:
   - xvfb
 
 install:
-  - npm install lightercollective
-  - npm prune
   - npm install
 
 script:

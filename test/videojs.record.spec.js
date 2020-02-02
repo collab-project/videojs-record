@@ -262,6 +262,21 @@ describe('Record', () => {
                 player.record().start();
             });
 
+            player.one(Event.DEVICE_ERROR, () => {
+                if (isFirefox()) {
+                    // requires a user gesture in firefox
+                    // see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#Usage_notes
+                    // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
+                    expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
+                    expect(player.deviceErrorCode.message).toEqual(
+                        'getDisplayMedia must be called from a user gesture handler.'
+                    );
+                }
+
+                //console.error(player.deviceErrorCode);
+                done();
+            });
+
             player.one(Event.READY, () => {
                 // start device
                 player.record().getDevice();
@@ -275,6 +290,7 @@ describe('Record', () => {
     it('runs as screen-only plugin', (done) => {
         // create screen-only plugin
         player = TestHelpers.makeScreenOnlyPlayer();
+
         // correct device button icon
         expect(player.deviceButton.buildCSSClass().endsWith(
             'screen-perm')).toBeTrue();
@@ -297,6 +313,21 @@ describe('Record', () => {
                     // stop recording
                     player.record().stop();
                 }, 2000);
+            });
+
+            player.one(Event.DEVICE_ERROR, () => {
+                if (isFirefox()) {
+                    // requires a user gesture in firefox
+                    // see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#Usage_notes
+                    // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
+                    expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
+                    expect(player.deviceErrorCode.message).toEqual(
+                        'getDisplayMedia must be called from a user gesture handler.'
+                    );
+                }
+
+                //console.error(player.deviceErrorCode);
+                done();
             });
 
             player.one(Event.READY, () => {
@@ -682,18 +713,24 @@ describe('Record', () => {
 
     /** @test {Record} */
     it('picture-in-picture', (done) => {
+        let pipEnabled = true;
+        if (isFirefox()) {
+            pipEnabled = false;
+        }
         // create new player
         let opts = {
             plugins: {
                 record: {
-                    pip: true
+                    pip: pipEnabled
                 }
             }
         };
         player = TestHelpers.makeVideoOnlyPlayer(opts);
 
         player.one(Event.READY, () => {
-            expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            if (pipEnabled) {
+                expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            }
             done();
         });
     });

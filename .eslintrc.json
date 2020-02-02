@@ -35,6 +35,7 @@
       }
     ],
     "keyword-spacing": ["error", { "before": true }],
+    "key-spacing": ["error", { "afterColon": true, "beforeColon": false }],
     "space-infix-ops": 2,
     "prefer-arrow-callback": 2,
     "valid-jsdoc": [2, {
