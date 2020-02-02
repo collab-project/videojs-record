@@ -19,7 +19,7 @@ module.exports = {
                 terserOptions: {
                     output: {
                         // preserve license comments
-                        comments:  /@license/i,
+                        comments: /@license/i,
                     }
                 },
                 extractComments: false
