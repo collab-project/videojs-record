@@ -10,6 +10,7 @@ function applyAudioWorkaround() {
         options.plugins.record.audioSampleRate = 44100;
         options.plugins.record.audioBufferSize = 4096;
         options.plugins.record.audioChannels = 2;
+        alert(options);
     }
 }
 
