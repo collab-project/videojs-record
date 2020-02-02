@@ -5,6 +5,8 @@ videojs-record changelog
 -------------------
 
 - Support constraints when recording screen-only or audio-screen (#440)
+- Prevent monkey-patched video.js `play` method being used by other video.js
+  players on the same (#437)
 
 
 3.9.0 - 2019/12/29

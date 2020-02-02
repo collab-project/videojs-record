@@ -28,7 +28,6 @@ import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');
-const BigPlayButton = videojs.getComponent('BigPlayButton');
 
 const AUTO = 'auto';
 
