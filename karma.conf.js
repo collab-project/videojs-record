@@ -8,16 +8,16 @@ process.env.BABEL_ENV = 'test';
 const path = require('path');
 require('@babel/register');
 
-var webpackConfig = require('./build-config/webpack.prod.main.js');
-var support_dir = path.resolve(__dirname, 'test', 'support');
-var fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
-var fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
+let webpackConfig = require('./build-config/webpack.prod.main.js');
+let support_dir = path.resolve(__dirname, 'test', 'support');
+let fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
+let fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 
 //-------------------------------------------
 // Chrome CLI options
 //-------------------------------------------
 // http://peter.sh/experiments/chromium-command-line-switches/
-var chromeFlags = [
+const chromeFlags = [
     '--no-sandbox',
     '--no-first-run',
     '--noerrdialogs',
@@ -38,15 +38,15 @@ var chromeFlags = [
 //-------------------------------------------
 // Firefox CLI options
 //-------------------------------------------
-var firefoxFlags = {
+const firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true,
     'javascript.options.streams': true
 };
-var ci = process.env.TRAVIS || process.env.APPVEYOR;
+const ci = process.env.TRAVIS || process.env.APPVEYOR;
 
 module.exports = function(config) {
-    var configuration = {
+    let configuration = {
         basePath: '',
         frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers'],
         hostname: 'localhost',
@@ -160,7 +160,7 @@ module.exports = function(config) {
             postDetection: function(availableBrowsers) {
                 if (availableBrowsers.length > 1) {
                     // use custom browser launchers
-                    var result = availableBrowsers;
+                    let result = availableBrowsers;
                     let cd = availableBrowsers.indexOf('ChromeHeadless');
                     if (cd > -1) {
                         availableBrowsers[cd] = 'Chrome_dev';
