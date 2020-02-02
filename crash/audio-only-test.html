@@ -57,8 +57,8 @@ var options = {
 
 // apply some workarounds for certain browsers
 applyAudioWorkaround();
-console.log('using safari:', isSafari);
-console.log('using options:', options);
+alert('using safari: ' + isSafari);
+alert(options);
 // create player
 var player = videojs('myAudio', options, function() {
     // print version information at startup
