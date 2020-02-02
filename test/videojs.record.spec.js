@@ -262,6 +262,21 @@ describe('Record', () => {
                 player.record().start();
             });
 
+            player.one(Event.DEVICE_ERROR, () => {
+                if (isFirefox()) {
+                    // requires a user gesture in firefox
+                    // see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#Usage_notes
+                    // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
+                    expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
+                    expect(player.deviceErrorCode.message).toEqual(
+                        'getDisplayMedia must be called from a user gesture handler.'
+                    );
+                }
+
+                //console.error(player.deviceErrorCode);
+                done();
+            });
+
             player.one(Event.READY, () => {
                 // start device
                 player.record().getDevice();
@@ -298,6 +313,21 @@ describe('Record', () => {
                     // stop recording
                     player.record().stop();
                 }, 2000);
+            });
+
+            player.one(Event.DEVICE_ERROR, () => {
+                if (isFirefox()) {
+                    // requires a user gesture in firefox
+                    // see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#Usage_notes
+                    // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
+                    expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
+                    expect(player.deviceErrorCode.message).toEqual(
+                        'getDisplayMedia must be called from a user gesture handler.'
+                    );
+                }
+
+                //console.error(player.deviceErrorCode);
+                done();
             });
 
             player.one(Event.READY, () => {
