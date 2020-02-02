@@ -713,22 +713,22 @@ describe('Record', () => {
 
     /** @test {Record} */
     it('picture-in-picture', (done) => {
-        let pip = true;
+        let pipEnabled = true;
         if (isFirefox()) {
-            pip = false;
+            pipEnabled = false;
         }
         // create new player
         let opts = {
             plugins: {
                 record: {
-                    pip: pip
+                    pip: pipEnabled
                 }
             }
         };
         player = TestHelpers.makeVideoOnlyPlayer(opts);
 
         player.one(Event.READY, () => {
-            if (!isFirefox()) {
+            if (pipEnabled) {
                 expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
             }
             done();
