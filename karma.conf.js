@@ -8,6 +8,7 @@ process.env.BABEL_ENV = 'test';
 const path = require('path');
 require('@babel/register');
 
+let ci = process.env.TRAVIS || process.env.APPVEYOR;
 let webpackConfig = require('./build-config/webpack.prod.main.js');
 let support_dir = path.resolve(__dirname, 'test', 'support');
 let fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
@@ -44,6 +45,17 @@ const firefoxFlags = {
     'media.getusermedia.screensharing.enabled': true,
     'media.setsinkid.enabled': true,
     'javascript.options.streams': true,
+    // devtools
+    'devtools.theme': 'dark',
+    'devtools.webconsole.timestampMessages': true,
+    'devtools.toolbox.host': 'right',
+    'devtools.toolbox.selectedTool': 'webconsole',
+    'devtools.chrome.enabled': true,
+    // disable autoplay blocking, see https://www.ghacks.net/2018/09/21/firefox-improved-autoplay-blocking/
+    'media.autoplay.default': 1,
+    'media.autoplay.ask-permission': false,
+    'media.autoplay.enabled.user-gestures-needed': false,
+    'media.autoplay.block-webaudio': false,
     // disable update and startup
     'extensions.update.enabled': false,
     'app.update.enabled': false,
@@ -51,7 +63,6 @@ const firefoxFlags = {
     'startup.homepage_welcome_url': '',
     'browser.shell.checkDefaultBrowser': false
 };
-const ci = process.env.TRAVIS || process.env.APPVEYOR;
 
 module.exports = function(config) {
     let configuration = {

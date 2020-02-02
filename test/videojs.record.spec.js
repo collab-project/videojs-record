@@ -275,6 +275,7 @@ describe('Record', () => {
     it('runs as screen-only plugin', (done) => {
         // create screen-only plugin
         player = TestHelpers.makeScreenOnlyPlayer();
+
         // correct device button icon
         expect(player.deviceButton.buildCSSClass().endsWith(
             'screen-perm')).toBeTrue();
