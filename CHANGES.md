@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.10.0 - unreleased
+-------------------
+
+- Support constraints when recording screen-only or audio-screen (#)
+
+
 3.9.0 - 2019/12/29
 ------------------
 
