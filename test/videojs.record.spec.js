@@ -682,11 +682,15 @@ describe('Record', () => {
 
     /** @test {Record} */
     it('picture-in-picture', (done) => {
+        let pip = true;
+        if (isFirefox()) {
+            pip = false;
+        }
         // create new player
         let opts = {
             plugins: {
                 record: {
-                    pip: true
+                    pip: pip
                 }
             }
         };
