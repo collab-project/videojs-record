@@ -31,17 +31,6 @@ const Player = videojs.getComponent('Player');
 
 const AUTO = 'auto';
 
-
-// monkey-patch play (#152)
-Player.prototype.play = function play() {
-    let retval = this.techGet_('play');
-    // silence errors (unhandled promise from play)
-    if (retval !== undefined && typeof retval.then === 'function') {
-        retval.then(null, (e) => {});
-    }
-    return retval;
-};
-
 /**
  * Record audio/video/images using the Video.js player.
  *
@@ -57,6 +46,16 @@ class Record extends Plugin {
      */
     constructor(player, options) {
         super(player, options);
+
+        // monkey-patch play (#152)
+        Player.prototype.play = function play() {
+            let retval = this.techGet_('play');
+            // silence errors (unhandled promise from play)
+            if (retval !== undefined && typeof retval.then === 'function') {
+                retval.then(null, (e) => {});
+            }
+            return retval;
+        };
 
         // add plugin style
         player.addClass('vjs-record');
