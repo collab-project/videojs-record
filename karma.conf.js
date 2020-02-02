@@ -42,6 +42,7 @@ const firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true,
     'media.getusermedia.screensharing.enabled': true,
+    'media.setsinkid.enabled': true,
     'javascript.options.streams': true,
     // disable update and startup
     'extensions.update.enabled': false,
