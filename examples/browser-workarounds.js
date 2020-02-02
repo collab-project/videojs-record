@@ -4,6 +4,7 @@ var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 var isEdge = /Edge/.test(navigator.userAgent);
 
 function applyAudioWorkaround() {
+    alert(isSafari);
     if (isSafari || isEdge) {
         // see https://github.com/collab-project/videojs-record/issues/295
         options.plugins.record.audioRecorderType = StereoAudioRecorder;
