@@ -115,7 +115,6 @@
     "karma-host-environment": "^2.0.3",
     "karma-jasmine": "^3.1.0",
     "karma-jasmine-matchers": "^4.0.2",
-    "karma-safari-launcher": "^1.0.0",
     "karma-verbose-reporter": "0.0.6",
     "karma-webpack": "^4.0.2",
     "lamejs": ">=1.2.0",

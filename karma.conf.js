@@ -144,7 +144,6 @@ module.exports = function(config) {
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-safari-launcher',
             'karma-edge-launcher',
             'karma-coverage',
             'karma-coveralls',
@@ -186,6 +185,16 @@ module.exports = function(config) {
                     if (ie > -1) {
                         availableBrowsers.splice(ie, 1);
                     }
+                    // ignore Safari (until it's supported...)
+                    let safariTechPreview = availableBrowsers.indexOf('SafariTechPreview');
+                    if (safariTechPreview > -1) {
+                        availableBrowsers.splice(safariTechPreview, 1);
+                    }
+                    let safari = availableBrowsers.indexOf('Safari');
+                    if (safari > -1) {
+                        availableBrowsers.splice(safari, 1);
+                    }
+
                     return result;
                 }
             }
