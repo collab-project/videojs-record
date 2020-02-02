@@ -59,6 +59,11 @@ var options = {
 applyAudioWorkaround();
 alert('using safari: ' + isSafari);
 alert(JSON.stringify(options));
+if (isSafari && window.MediaRecorder !== undefined) {
+    // this version of Safari has MediaRecorder
+    alert(window.MediaRecorder);
+}
+
 // create player
 var player = videojs('myAudio', options, function() {
     // print version information at startup
