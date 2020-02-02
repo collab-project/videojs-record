@@ -41,7 +41,14 @@ const chromeFlags = [
 const firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true,
-    'javascript.options.streams': true
+    'media.getusermedia.screensharing.enabled': true,
+    'javascript.options.streams': true,
+    // disable update and startup
+    'extensions.update.enabled': false,
+    'app.update.enabled': false,
+    'browser.startup.page': 0,
+    'startup.homepage_welcome_url': '',
+    'browser.shell.checkDefaultBrowser': false
 };
 const ci = process.env.TRAVIS || process.env.APPVEYOR;
 
@@ -166,7 +173,7 @@ module.exports = function(config) {
                     }
                     let fd = availableBrowsers.indexOf('FirefoxHeadless');
                     if (fd > -1) {
-                        availableBrowsers[fd] = 'Firefox_dev';
+                        availableBrowsers[fd] = 'Firefox_headless';
                     }
                     let fh = availableBrowsers.indexOf('Firefox');
                     if (fh > -1) {
@@ -220,6 +227,10 @@ module.exports = function(config) {
                 flags: chromeFlags
             },
             Firefox_dev: {
+                base: 'Firefox',
+                prefs: firefoxFlags
+            },
+            Firefox_headless: {
                 base: 'FirefoxHeadless',
                 prefs: firefoxFlags
             }
@@ -227,7 +238,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev', 'Firefox_dev'];
+        configuration.browsers = ['Chrome_dev', 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
