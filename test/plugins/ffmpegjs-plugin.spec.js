@@ -2,6 +2,8 @@
  * @since 3.8.0
  */
 
+import Event from '../../src/js/event.js';
+
 import TestHelpers from '../test-helpers.js';
 
 // registers the plugin
@@ -26,12 +28,12 @@ describe('plugins.ffmpegjs-plugin', () => {
         // allow test to fail
         pending('disabled until test runner failure is figured out');
 
-        player.one('deviceReady', () => {
+        player.one(Event.DEVICE_READY, () => {
             let req = new Request(TestHelpers.TEST_WEBM);
             fetch(req).then((response) => {
                 return response.blob();
             }).then((blob) => {
-                player.one('finishConvert', () => {
+                player.one(EVENT.FINISH_CONVERT, () => {
                     expect(player.convertedData instanceof Blob).toBeTruthy();
                     done();
                 });
@@ -39,7 +41,7 @@ describe('plugins.ffmpegjs-plugin', () => {
             });
         });
 
-        player.one('ready', () => {
+        player.one(Event.READY, () => {
             // start device
             player.record().getDevice();
         });
