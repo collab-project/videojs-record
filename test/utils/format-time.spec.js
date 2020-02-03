@@ -36,7 +36,12 @@ describe('utils.formatTime', () => {
         time = formatTime(6.001, 2, 20);
         expect(time).toEqual('0:06:001');
 
+        time = formatTime(66.121, 2, 20);
+        // XXX: should be 1:06:121
+        expect(time).toEqual('1:06:60120');
+
         time = formatTime(179.95755102040818, 2, 20);
+        // XXX: should be 2:59:957
         expect(time).toEqual('2:59:120957');
     });
 

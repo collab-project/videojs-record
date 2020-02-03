@@ -13,7 +13,7 @@
  *     string.
  * @param {number} guide - Number (in seconds) to model the string
  *     after.
- * @param {number} msDisplayMax - Number (in milliseconds) to model the string
+ * @param {number} msDisplayMax - Number (in seconds) to model the string
  *     after.
  * @return {string} Time formatted as H:MM:SS, M:SS or M:SS:MMM, e.g.
  *     0:00:12.
