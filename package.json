@@ -73,9 +73,9 @@
   ],
   "dependencies": {
     "recordrtc": ">=5.5.8",
-    "video.js": ">=7.6.6",
+    "video.js": ">=6.2.7",
     "videojs-wavesurfer": ">=2.11.0 <3",
-    "webrtc-adapter": ">=7.5.0"
+    "webrtc-adapter": ">=7.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -86,7 +86,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-istanbul": "^6.0.0",
-    "blueimp-file-upload": ">=10.7.0",
+    "blueimp-file-upload": ">=9.28.0",
     "browserslist": "^4.8.6",
     "buddy.js": "^0.9.3",
     "colors": "^1.4.0",
