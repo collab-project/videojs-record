@@ -1,8 +1,8 @@
 /*!
  * webm-wasm plugin for videojs-record
- * @version 3.9.0
+ * @version 3.10.0
  * @see https://github.com/collab-project/videojs-record
- * @copyright 2014-2019 Collab
+ * @copyright 2014-2020 Collab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {

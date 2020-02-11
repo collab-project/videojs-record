@@ -28,7 +28,7 @@
     <div class="title">
         <h1><a href="index.html" class="link">videojs-record</a></h1>
         
-            <span class="version">v3.9.0</span>
+            <span class="version">v3.10.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -81,17 +81,6 @@ const Player = videojs.getComponent('Player');
 
 const AUTO = 'auto';
 
-
-// monkey-patch play (#152)
-Player.prototype.play = function play() {
-    let retval = this.techGet_('play');
-    // silence errors (unhandled promise from play)
-    if (retval !== undefined &amp;&amp; typeof retval.then === 'function') {
-        retval.then(null, (e) => {});
-    }
-    return retval;
-};
-
 /**
  * Record audio/video/images using the Video.js player.
  *
@@ -107,6 +96,16 @@ class Record extends Plugin {
      */
     constructor(player, options) {
         super(player, options);
+
+        // monkey-patch play (#152)
+        Player.prototype.play = function play() {
+            let retval = this.techGet_('play');
+            // silence errors (unhandled promise from play)
+            if (retval !== undefined &amp;&amp; typeof retval.then === 'function') {
+                retval.then(null, (e) => {});
+            }
+            return retval;
+        };
 
         // add plugin style
         player.addClass('vjs-record');
@@ -168,13 +167,17 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
-        // add picture-in-picture toggle button for older video.js versions
-        if (videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1) {
+        // picture-in-picture
+        let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
+        if (!('exitPictureInPicture' in document)) {
+            // no support for picture-in-picture, disable pip
+            this.pictureInPicture = false;
+        } else if (oldVideoJS) {
+            // add picture-in-picture toggle button for older video.js versions
+            // in browsers that support PIP
             player.pipToggle = new PictureInPictureToggle(player, options);
             player.pipToggle.hide();
         }
-
-        // picture-in-picture
         if (this.pictureInPicture === true) {
             // define Picture-in-Picture event handlers once
             this.onEnterPiPHandler = this.onEnterPiP.bind(this);
@@ -188,6 +191,7 @@ class Record extends Plugin {
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
             }
+
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
                     this.player[element].layoutExclude = true;
@@ -275,14 +279,18 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
-        if (this.player.controlBar.pictureInPictureToggle === undefined &amp;&amp;
-            this.player.pipToggle !== undefined) {
-            // add custom PiP toggle
-            this.player.controlBar.addChild(this.player.pipToggle);
-        } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
-            // use video.js PiP toggle
-            this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
-            this.player.pipToggle.hide();
+
+        // picture-in-picture
+        if (this.pictureInPicture === true) {
+            if (this.player.controlBar.pictureInPictureToggle === undefined &amp;&amp;
+                this.player.pipToggle !== undefined) {
+                // add custom PiP toggle
+                this.player.controlBar.addChild(this.player.pipToggle);
+            } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
+                // use video.js PiP toggle
+                this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
+                this.player.pipToggle.hide();
+            }
         }
 
         // get rid of unused controls
@@ -539,10 +547,19 @@ class Record extends Plugin {
                     audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
                     video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
                 };
-                navigator.mediaDevices.getDisplayMedia({
-                    video: true // This needs to be true for Firefox to work
-                }).then(screenStream => {
-                    navigator.mediaDevices.getUserMedia({ audio:this.recordAudio }).then((mic) => {
+                let audioScreenConstraints = {};
+                if (this.recordScreen === true) {
+                    audioScreenConstraints = {
+                        video: true // needs to be true for it to work in Firefox
+                    };
+                } else if (typeof this.recordScreen === 'object' &amp;&amp;
+                    this.recordScreen.constructor === Object) {
+                    audioScreenConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(audioScreenConstraints).then(screenStream => {
+                    navigator.mediaDevices.getUserMedia({
+                        audio: this.recordAudio
+                    }).then((mic) => {
                         // Join microphone track with screencast stream (order matters)
                         screenStream.addTrack(mic.getTracks()[0]);
                         this.onDeviceReady.bind(this)(screenStream);
@@ -595,9 +612,16 @@ class Record extends Plugin {
                     screen: true,
                     gif: false
                 };
-                navigator.mediaDevices.getDisplayMedia({
-                    video: true
-                }).then(
+                let screenOnlyConstraints = {};
+                if (this.recordScreen === true) {
+                    screenOnlyConstraints = {
+                        video: true
+                    };
+                } else if (typeof this.recordScreen === 'object' &amp;&amp;
+                    this.recordScreen.constructor === Object) {
+                    screenOnlyConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(screenOnlyConstraints).then(
                     this.onDeviceReady.bind(this)
                 ).catch(
                     this.onDeviceError.bind(this)
