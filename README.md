@@ -42,6 +42,7 @@ Table of Contents
 - [Other video libraries](#other-video-libraries)
 - [Localization](#localization)
 - [Webpack](#webpack)
+- [Using with Vue](#using-with-vue)
 - [Using with React](#using-with-react)
 - [Using with Angular](#using-with-angular)
 - [More features using other plugins](#more-features-using-other-plugins)
@@ -749,6 +750,12 @@ Webpack
 -------
 
 The [Webpack](https://github.com/collab-project/videojs-record/wiki/Webpack) wiki page shows how to configure webpack for videojs-record.
+
+Using with Vue
+----------------
+
+The Vue [wiki page](https://github.com/collab-project/videojs-record/wiki/Vue.js) wiki page
+shows how to get started with Vue using [Vue-CLI](https://cli.vuejs.org/guide/).
 
 Using with React
 ----------------
