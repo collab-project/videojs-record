@@ -4,6 +4,7 @@ videojs-record changelog
 3.11.0 - unreleased
 -------------------
 
+- Fix autostop error when max file size was reached (#448 by @Eduardo-Lpz) 
 - Bump required version for recordrtc to 5.5.9
 
 
