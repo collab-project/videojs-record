@@ -1,6 +1,12 @@
 videojs-record changelog
 ========================
 
+3.11.0 - unreleased
+-------------------
+
+- Bump required version for recordrtc to 5.5.9
+
+
 3.10.0 - 2020/02/11
 -------------------
 
