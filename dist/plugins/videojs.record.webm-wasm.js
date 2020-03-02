@@ -1,6 +1,6 @@
 /*!
  * webm-wasm plugin for videojs-record
- * @version 3.10.0
+ * @version 3.11.0
  * @see https://github.com/collab-project/videojs-record
  * @copyright 2014-2020 Collab
  * @license MIT

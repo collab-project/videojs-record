@@ -1,0 +1,9 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": "last 2 version",
+      "debug": false,
+      "modules": "commonjs"
+    }]
+  ]
+}
