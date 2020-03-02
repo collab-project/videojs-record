@@ -1,7 +1,7 @@
 videojs-record changelog
 ========================
 
-3.11.0 - unreleased
+3.11.0 - 2020/03/02
 -------------------
 
 - Fix autostop error when max file size was reached (#448 by @Eduardo-Lpz) 
