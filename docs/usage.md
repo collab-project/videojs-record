@@ -1,0 +1,61 @@
+# Usage
+
+Start by including the video.js stylesheet and library:
+
+```html
+<link href="video-js.min.css" rel="stylesheet">
+<script src="video.min.js"></script>
+```
+
+If you're going to record audio and/or video you need to include RecordRTC as well:
+
+```html
+<script src="RecordRTC.js"></script>
+```
+
+The videojs-record plugin automatically registers itself when the script
+is included on the page:
+
+```html
+<script src="videojs.record.js"></script>
+```
+
+Add the extra stylesheet for the plugin that includes a
+[custom font](font) with additional icons:
+
+```html
+<link href="videojs.record.css" rel="stylesheet">
+```
+
+### Audio/video/image/screen
+
+When recording either audio/video, video-only, screen-only, audio/screen, animated GIF or a single image,
+include a `video` element:
+
+```html
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
+```
+
+### Audio-only
+
+![Audio-only screenshot](examples/assets/img/audio-only.png?raw=true "Audio-only screenshot")
+
+When recording audio-only, also include the wavesurfer.js library and
+the videojs-wavesurfer and microphone plugins. Make sure to place this before
+the `videojs.record.js` script.
+
+```html
+<script src="wavesurfer.min.js"></script>
+<script src="wavesurfer.microphone.min.js"></script>
+<script src="videojs.wavesurfer.js"></script>
+```
+
+And define an `audio` element:
+
+```html
+<audio id="myAudio" class="video-js vjs-default-skin"></audio>
+```
+
+There is also support for [additional audio libraries](#other-audio-libraries)
+that allows you to record audio with alternative codecs (that otherwise might not
+be supported in the browser) like Ogg Vorbis, MP3 and Opus.
