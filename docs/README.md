@@ -17,6 +17,7 @@ Video.js plugin for recording audio/video/image files.
 Table of Contents
 -----------------
 
+- [Installation](#installation)
 - [Supported browsers](#supported-browsers)
 - [Dependencies](#dependencies)
 - [Usage](#usage)
@@ -49,6 +50,22 @@ Table of Contents
 - [Font](#font)
 - [License](#license)
 - [Donate](#donate)
+
+Installation
+------------
+
+Use [npm](https://www.npmjs.org) (`npm install videojs-record`) to install the plugin
+or [download](https://github.com/collab-project/videojs-record/releases) the library
+and dependencies elsewhere. If you want to try the examples, check
+[these instructions below](#examples).
+
+Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer 2.0 or
+newer. If you want to use this plugin with an older version, check the
+[archived releases](https://github.com/collab-project/videojs-record/releases?after=1.7.1)
+for a 1.7.x or older release.
+
+Take a look at the [changelog](./CHANGES.md) when upgrading from a previous
+version of videojs-record.
 
 Supported browsers
 ------------------

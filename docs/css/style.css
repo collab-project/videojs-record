@@ -1,0 +1,13 @@
+.markdown-section code {
+    color: #2e8a60;
+    background-color: #e1f4f4;
+}
+
+.content {
+    padding-top: 0px;
+}
+
+.markdown-section h2 {
+    font-size: 1.75rem;
+    margin: 25px 0 .8rem;
+}
