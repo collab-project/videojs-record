@@ -1,6 +1,10 @@
+:root {
+  --theme-color: #661a8f;
+}
+
 .markdown-section code {
-    color: #2e8a60;
-    background-color: #e1f4f4;
+    color: #6d2991;
+    background-color: #f2fffd;
 }
 
 .content {
@@ -10,4 +14,9 @@
 .markdown-section h2 {
     font-size: 1.75rem;
     margin: 25px 0 .8rem;
+}
+
+.markdown-section pre, .markdown-section pre > code {
+    background-color: #f5fcfb;
+    color: #525252;
 }
