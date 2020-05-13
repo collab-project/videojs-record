@@ -2,7 +2,7 @@
 
 Video.js plugin for recording audio/video/image files.
 
-![Screenshot](examples/assets/img/screenshot.png?raw=true "Screenshot")
+![Screenshot](https://raw.githubusercontent.com/collab-project/videojs-record/master/docs/img/screenshot.png?raw=true "Screenshot")
 
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
@@ -12,13 +12,6 @@ Video.js plugin for recording audio/video/image files.
 ![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
 [![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
 ![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
-
-Supported browsers
-------------------
-
-Check the [wiki](https://github.com/collab-project/videojs-record/wiki/Browser-support) for
-supported browsers information.
-
 
 
 Using with React
