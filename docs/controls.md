@@ -11,5 +11,12 @@ controlBar: {
 }
 ```
 
-Custom interface elements for this library that can be hidden are: `deviceButton`,
-`recordIndicator`, `cameraButton`, `pipToggle` and `recordToggle`.
+Custom interface elements for this library that can be hidden are:
+
+- `deviceButton`
+- `recordIndicator`
+- `cameraButton`
+- `pipToggle`
+- `recordToggle`
+
+For more information, see the video.js [component options](https://github.com/videojs/video.js/blob/master/docs/guides/options.md#component-options).

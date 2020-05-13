@@ -57,6 +57,48 @@ And define an `audio` element:
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 ```
 
-There is also support for [additional audio libraries](#other-audio-libraries)
+There is also support for additional [audio plugins](audio-plugins.md)
 that allows you to record audio with alternative codecs (that otherwise might not
 be supported in the browser) like Ogg Vorbis, MP3 and Opus.
+
+## Configuration
+
+Define the player configuration and enable the videojs-record plugin by adding a `record` entry:
+
+
+```javascript
+let options = {
+    // video.js options
+    controls: true,
+    bigPlayButton: false,
+    loop: false,
+    fluid: false,
+    width: 320,
+    height: 240,
+    plugins: {
+        // videojs-record plugin options
+        record: {
+            image: false,
+            audio: false,
+            video: true,
+            maxLength: 5,
+            debug: true
+        }
+    }
+};
+```
+
+Finally, create the player:
+
+
+```javascript
+let player = videojs('myVideo', options, function() {
+    // print version information at startup
+    const msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record');
+    videojs.log(msg);
+});
+```
+
+Check the [options](options.md), [methods](methods.md) and [events](events.md) documentation
+for more information.

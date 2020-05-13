@@ -31,6 +31,12 @@ It's possible to process and convert the recorded data in the browser. For examp
 adding metadata like duration to recorded WebM files, or using FFmpeg to convert the
 data with a different codec.
 
+Read the
+[converter plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#converter)
+documentation for more information.
+
+### Usage
+
 For example, enable the `ts-ebml` plugin with the `convertEngine` option:
 
 ```javascript
@@ -55,15 +61,18 @@ player.on('finishConvert', function() {
 });
 ```
 
-Check the
-[converter plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#converter)
-documentation for more information.
-
 ## Timestamps
 
 It's also possible to get data during recording with specific time-intervals. This could
 be useful in scenarios where you're recording a long clip and planning to upload
 recorded blobs to a server periodically, where the clip is stitched together.
+
+### Example
+
+- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/timeslice.html)
+- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/timeslice.html)
+
+### Usage
 
 Enable the event with the `timeSlice` option:
 
@@ -96,10 +105,16 @@ player.on('timestamp', function() {
 });
 ```
 
-Check the [timeslice](https://github.com/collab-project/videojs-record/blob/master/examples/timeslice.html)
+## Upload data
+
+Upload the recorded data to a server for further processing and storage.
+
+### Example
+
+Check the [simple upload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html)
 example.
 
-## Upload data
+### Usage
 
 The example below shows how to upload each recording:
 
@@ -126,9 +141,6 @@ player.on('finishRecord', function() {
     );
 });
 ```
-
-Check the [simple upload](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html)
-example.
 
 The example below shows how to 'stream' upload recorded data segments to a server
 using the [jQuery](https://jquery.com/) library and the `timestamp` event:

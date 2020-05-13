@@ -1,32 +1,14 @@
 # Options
 
-Configure the player using the video.js
-[options](https://github.com/videojs/video.js/blob/master/docs/guides/options.md),
-and enable the plugin by adding a `record` configuration to `plugins`. For
-example:
+Configure the player with:
 
-```javascript
-var player = videojs('myVideo', {
-    // video.js options
-    controls: true,
-    loop: false,
-    fluid: false,
-    width: 320,
-    height: 240,
-    plugins: {
-        // videojs-record plugin options
-        record: {
-            image: false,
-            audio: false,
-            video: true,
-            maxLength: 5,
-            debug: true
-        }
-    }
-});
-```
+- [video.js options](https://github.com/videojs/video.js/blob/master/docs/guides/options.md)
 
-The available options for this plugin are:
+When using audio-only or audio/screen:
+
+- [wavesurfer.js options](https://wavesurfer-js.org/docs/options.html)
+
+Additional options for this plugin are:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -36,14 +18,14 @@ The available options for this plugin are:
 | `animation` | boolean or object | `false` | Animated GIF without audio. |
 | `screen` | boolean or object | `false` | Include screen capture in the recorded clip. |
 | `debug` | boolean | `false` | Enables console log messages during recording for debugging purposes. |
-| `pip` | boolean | `false` | Enables [Picture-in-Picture support](#picture-in-picture). Enable to add Picture-in-Picture button to controlbar. |
+| `pip` | boolean | `false` | Enables [Picture-in-Picture support](picture-in-picture.md). Enable to add Picture-in-Picture button to controlbar. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `maxFileSize` | float | `0` | Maximum file size of a recorded clip (in bytes). Recording will stop when the limit is reached. Default is 0 (no file size limit). Can only be used when `timeSlice` option is also enabled. |
 | `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
-| `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](#timestamps) during recording by listening for the `timestamp` event. |
+| `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](recorded-data#timestamps) during recording by listening for the `timestamp` event. |
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
-| `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](#media-constraints) to change the camera resolution width. |
-| `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](#media-constraints) to change the camera height. |
+| `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](media-constraints.md) to change the camera resolution width. |
+| `frameHeight` | float | `240` | Height of the recorded video frames. Use [media constraints](media-constraints.md) to change the camera height. |
 | `imageOutputType` | string | `'dataURL'` | Image output **type**. Legal values are `dataURL` (base64 string) or `blob`. |
 | `imageOutputFormat` | string | `'image/png'` | Image output **format**. Only used if `imageOutputType` equals to `dataURL`. |
 | `imageOutputQuality` | float | `0.92` | Image output **quality**. Only used if `imageOutputType` equals to `dataURL`. |
@@ -66,8 +48,8 @@ The available options for this plugin are:
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
-| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). [Check the](#convert-data) `player.convertedData` object for the converted data. |
+| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). Inspect the [player.convertedData](recorded-data#convert-data) object for the converted data. |
 | `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.js plugin. Use an empty string '' to disable (default). |
 | `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
-| `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](#hotkeys). Disabled by default. |
+| `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](hotkeys.md). Disabled by default. |
 | `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used in the opus-recorder and vmsg plugins. |

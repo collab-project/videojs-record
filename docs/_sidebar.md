@@ -19,6 +19,7 @@
   - [Font](font)
   - [Audio plugins](audio-plugins.md)
   - [Video plugins](video-plugins.md)
+  - [Convert plugins](converter-plugins.md)
   - [API documentation](https://collab-project.github.io/videojs-record/api/)
 
 - Frameworks
@@ -32,4 +33,3 @@
 - [Changelog](/changelog)
 - [Github](https://github.com/collab-project/videojs-record)
 - [License](/license)
-- [Donate](donate.md)

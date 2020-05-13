@@ -20,7 +20,7 @@ When recording audio-only, the following dependencies are also required
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a
   [microphone plugin](https://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
 
-Optional dependencies when using [other audio plugins](audio-plugins.md) (note that most of these audio codecs are already available in most modern browsers):
+Optional dependencies when using other [audio plugins](audio-plugins.md) (note that most of these audio codecs are already available in most modern browsers):
 
 - [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [opus-recorder](https://github.com/collab-project/videojs-record/wiki/Plugins#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
@@ -30,7 +30,7 @@ Optional dependencies when using [other audio plugins](audio-plugins.md) (note t
 
 ## Video
 
-Optional dependencies when using [other video plugins](video-plugins.md):
+Optional dependencies when using other [video plugins](video-plugins.md):
 
 - [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - Creates WebM recordings using libwebm (compiled with WebAssembly).
 

@@ -8,7 +8,7 @@ The following example shows how to change the camera or screen resolution to 128
 pixels:
 
 ```javascript
-var player = videojs('myVideo', {
+let options = {
     controls: true,
     loop: false,
     // dimensions of video.js player
@@ -30,5 +30,7 @@ var player = videojs('myVideo', {
             frameHeight: 480
         }
     }
-});
+};
+
+let player = videojs('myVideo', options);
 ```

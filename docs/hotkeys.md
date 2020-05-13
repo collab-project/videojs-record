@@ -1,15 +1,24 @@
 # Hotkeys
 
-The `hotKeys` plugin option allows you to control this plugin using a keyboard (disabled
-by default). Note that this requires video.js 7.5.0 or newer.
+The `hotKeys` plugin option (disabled by default) allows you to control this
+plugin using a keyboard. 
+
+Note that this requires video.js 7.5.0 or newer.
+
+## Example
+
+- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/hot-keys.html)
+- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/hot-keys.html)
+
+## Usage
 
 The built-in hotkey handling is:
 
 | Key | Action | Description |
 | :-: | ------ | ----------- |
-| `x` | toggle record | start/stop recording (or take snapshot in image-only mode)
-| `c` | toggle playback | start/stop playback
-| `p` | toggle picture-in-picture | enter/exit picture-in-picture mode (if enabled)
+| `x` | Toggle record | Start/stop recording (or take snapshot in image-only mode) |
+| `c` | Toggle playback | Start/stop playback |
+| `p` | Toggle picture-in-picture | Enter/exit picture-in-picture mode (if enabled) |
 
 To enable the built-in handler, specify `true` for the `hotKeys` plugin option:
 
@@ -19,7 +28,7 @@ record: {
     debug: true,
     video: true,
     hotKeys: true
-},
+}
 ```
 
 Or use your own handler by specifying a function:
@@ -38,9 +47,5 @@ record: {
             player.recordToggle.trigger('click');
         }
     }
-},
+}
 ```
-
-Check out the `hot-keys` example
-([demo](https://collab-project.github.io/videojs-record/examples/hot-keys.html) or
-[source](https://github.com/collab-project/videojs-record/blob/master/examples/hot-keys.html)).
