@@ -70,7 +70,6 @@ Define the player configuration and enable the videojs-record plugin by adding a
 let options = {
     // video.js options
     controls: true,
-    bigPlayButton: false,
     loop: false,
     fluid: false,
     width: 320,

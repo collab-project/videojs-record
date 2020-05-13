@@ -1,10 +1,15 @@
 # React
 
-This page shows how to get started with [React](https://reactjs.org) and videojs-record using the [create-react-app](https://github.com/facebook/create-react-app) utility.
+This page shows how to get started with [React](https://reactjs.org) and
+videojs-record using the [create-react-app](https://github.com/facebook/create-react-app)
+utility.
+
+For more information, check the video.js [documentation](https://github.com/videojs/video.js/blob/master/docs/guides/react.md)
+for React.
 
 ## Installation
 
-Create an example application called `record-app`:
+Create an example React application called `record-app`:
 
 ```console
 npx create-react-app record-app
@@ -17,10 +22,48 @@ cd record-app
 npm install --save videojs-record
 ```
 
-Install [react-app-wired](https://github.com/timarney/react-app-rewired) that we'll use to configure Webpack:
+Install [react-app-wired](https://github.com/timarney/react-app-rewired) used
+to configure Webpack:
 
 ```console
 npm install react-app-rewired --save-dev
+```
+
+## Configuration
+
+Create a `config-overrides.js` file in the root directory:
+
+```javascript
+const webpack = require("webpack");
+
+module.exports = function override(config, env) {
+  // Extend the config to work with videojs-record without ejecting create react app.
+  // Reference: https://collab-project.github.io/videojs-record/#/react
+  const videojsPlugin = new webpack.ProvidePlugin({
+    videojs: "video.js/dist/video.cjs.js",
+    RecordRTC: "recordrtc"
+  });
+  const videojsAlias = {
+    videojs: "video.js",
+    WaveSurfer: "wavesurfer.js",
+    RecordRTC: "recordrtc"
+  };
+  config.resolve.alias = { ...config.resolve.alias, ...videojsAlias };
+  config.plugins.push(videojsPlugin);
+  return config;
+};
+```
+
+Change the existing calls to `react-scripts` in the `scripts` section of `package.json`
+for `start`, `build` and `test`:
+
+```json
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+}
 ```
 
 ## Application
@@ -61,7 +104,12 @@ const videoJsOptions = {
     }
 };
 
-ReactDOM.render(<App { ...videoJsOptions }/>, document.getElementById('root'));
+ReactDOM.render(
+  <React.StrictMode>
+    <App { ...videoJsOptions }/>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -115,7 +163,7 @@ class App extends Component {
         // instantiate Video.js
         this.player = videojs(this.videoNode, this.props, () => {
             // print version information at startup
-            var version_info = 'Using video.js ' + videojs.VERSION +
+            const version_info = 'Using video.js ' + videojs.VERSION +
                 ' with videojs-record ' + videojs.getPluginVersion('record') +
                 ' and recordrtc ' + RecordRTC.version;
             videojs.log(version_info);
@@ -175,46 +223,12 @@ Add the following to `src/index.css`:
 }
 ```
 
-## Webpack configuration
-
-Create a `config-overrides.js` file in the root directory:
-
-```javascript
-const webpack = require("webpack");
-
-module.exports = function override(config, env) {
-  // Extend the config to work with the videojs-record project without ejecting create react app.
-  // Reference: https://github.com/collab-project/videojs-record/wiki/React
-  // Instead of ejecting apply webpack config changes here.
-  const videojsPlugin = new webpack.ProvidePlugin({
-    videojs: "video.js/dist/video.cjs.js",
-    RecordRTC: "recordrtc"
-  });
-  const videojsAlias = {
-    videojs: "video.js",
-    WaveSurfer: "wavesurfer.js",
-    RecordRTC: "recordrtc"
-  };
-  config.resolve.alias = { ...config.resolve.alias, ...videojsAlias };
-  config.plugins.push(videojsPlugin);
-  return config;
-};
-```
-
-Change the existing calls to `react-scripts` in the `scripts` section of `package.json` for the `start`, `build` and `test` commands:
-
-```diff
-  "scripts": {
--   "start": "react-scripts start",
-+   "start": "react-app-rewired start",
--   "build": "react-scripts build",
-+   "build": "react-app-rewired build",
--   "test": "react-scripts test --env=jsdom",
-+   "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-scripts eject"
-}
-```
-
 ## Run
 
-Now run `npm start` and visit http://localhost:3000 to try the example application.
+Start the development server:
+
+```console
+npm start
+```
+
+And open http://localhost:3000 in a browser.

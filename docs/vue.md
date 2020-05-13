@@ -2,6 +2,9 @@
 
 This page shows how to get started with [Vue.js](https://vuejs.org/) and videojs-record.
 
+For more information, check the video.js [documentation](https://github.com/videojs/video.js/blob/master/docs/guides/vue.md)
+for Vue.js.
+
 ## Installation
 
 Install the [Vue.js CLI](https://cli.vuejs.org/guide/) globally:
@@ -10,20 +13,20 @@ Install the [Vue.js CLI](https://cli.vuejs.org/guide/) globally:
 npm install -g @vue/cli
 ```
 
-Create a new application called `record-app`:
+Create a new application, e.g. `videojs-record-vue`:
 
 ```console
-vue create --preset default record-app
+vue create --default videojs-record-vue
 ```
 
 Install videojs-record:
 
 ```console
-cd record-app
+cd videojs-record-vue
 npm install --save videojs-record
 ```
 
-## Webpack config
+## Configuration
 
 Create `vue.config.js` with the following content:
 
@@ -167,7 +170,7 @@ export default {
 </style>
 ```
 
-## Run example
+## Run
 
 Start the Vue.js development server:
 

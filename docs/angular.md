@@ -2,55 +2,55 @@
 
 This document describes how to setup [Angular](https://angular.io) with videojs-record.
 
+For more information, check the video.js [documentation](https://github.com/videojs/video.js/blob/master/docs/guides/angular.md)
+for Angular.
+
 ## Installation
 
-Create a project directory, e.g. `angular-record-app`:
+Create a project directory, e.g. `angular-videojs-record`.
 
-```console
-mkdir angular-record-app
-cd angular-record-app
-```
-
-Create a `package.json` file inside the project directory that contains the project
+Create a `package.json` file inside that project directory that lists the project
 dependencies:
 
 ```json
 {
-    "name": "angular-record-app",
+    "name": "angular-videojs-record",
     "version": "1.0.0",
     "scripts": {
-        "start": "webpack-dev-server --mode development --open"
+        "start": "webpack-dev-server --mode development"
     },
     "dependencies": {
-        "@angular/common": "^8.1.2",
-        "@angular/compiler": "^8.1.2",
-        "@angular/core": "^8.1.2",
-        "@angular/forms": "^8.1.2",
-        "@angular/platform-browser": "^8.1.2",
-        "@angular/platform-browser-dynamic": "^8.1.2",
-        "@angular/router": "^8.1.2",
-        "core-js": "^3.1.4",
-        "rxjs": "^6.5.2",
-        "zone.js": "^0.9.1"
+        "@angular/common": "^9.1.6",
+        "@angular/compiler": "^9.1.6",
+        "@angular/core": "^9.1.6",
+        "@angular/forms": "^9.1.6",
+        "@angular/platform-browser": "^9.1.6",
+        "@angular/platform-browser-dynamic": "^9.1.6",
+        "@angular/router": "^9.1.6",
+        "core-js": "^3.6.5",
+        "rxjs": "^6.5.5",
+        "zone.js": "^0.10.3"
     },
     "devDependencies": {
-        "@types/node": "^12.6.8",
-        "html-webpack-plugin": "^3.2.0",
-        "raw-loader": "^3.1.0",
-        "ts-loader": "^6.0.4",
-        "typescript": "^3.5.3",
-        "webpack": "^4.36.1",
-        "webpack-cli": "^3.3.6",
-        "webpack-dev-server": "^3.7.2"
+        "@types/node": "^13.13.5",
+        "html-webpack-plugin": "^4.3.0",
+        "raw-loader": "^4.0.1",
+        "ts-loader": "^7.0.4",
+        "typescript": "^3.8.3",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.0"
     }
 }
 ```
+
 Install the dependencies:
 
 ```console
 npm install
 ```
-Finally, install and save `videojs-record` and `@types/video.js` using npm:
+
+Install `videojs-record` and `@types/video.js`:
 
 ```console
 npm install --save videojs-record @types/video.js
@@ -108,15 +108,11 @@ module.exports = {
 }
 ```
 
-## Sample Project Code
+## Application
 
-Create a `src/app/` directory inside the project:
 
-```console
-mkdir -p src/app
-```
-
-Create a new Angular component for videojs-record in `src/app/videojs.record.component.ts`:
+Create the `src/app/` directories and add a new Angular component for videojs-record
+in `src/app/videojs.record.component.ts`:
 
 ```ts
 import {
@@ -266,7 +262,7 @@ export class VideoJSRecordComponent implements OnInit, OnDestroy {
 }
 ```
 
-Create Angular app module in `src/app/app.module.ts`:
+Create the Angular app module in `src/app/app.module.ts`:
 
 ```ts
 import { NgModule } from '@angular/core';
@@ -282,14 +278,14 @@ import { VideoJSRecordComponent } from './videojs.record.component';
 export class AppModule { }
 ```
 
-Create Angular polyfills file in `src/polyfills.ts`:
+Create an Angular polyfills file in `src/polyfills.ts`:
 
 ```ts
 import 'core-js/features/reflect';
 import 'zone.js/dist/zone';
 ```
 
-Create Angular main file in `src/main.ts`:
+Create the Angular main file in `src/main.ts`:
 
 ```ts
 import './polyfills';
@@ -307,22 +303,22 @@ And finally, create the main index HTML file in `src/index.html`:
 <html>
 <head>
     <base href="/" />
-    <title>Angular + videojs-record</title>
+    <title>Angular videojs-record example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- styles -->
     <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
-    <!-- videojs.wavesurfer.css is only required when recording audio-only -->
+    <!-- videojs.wavesurfer.css is only required when recording audio-only
     <link href="node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css" rel="stylesheet">
+    -->
     <link href="node_modules/videojs-record/dist/css/videojs.record.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Angular + videojs-record</h2>
     <videojs-record></videojs-record>
 </body>
 </html>
 ```
 
-## Run example
+## Run
 
 Start the development server:
 

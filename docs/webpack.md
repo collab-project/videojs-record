@@ -1,27 +1,24 @@
 # Webpack
 
-This document describes how to setup [Webpack](https://github.com/webpack/webpack) with videojs-record.
+This document describes how to setup [Webpack](https://webpack.js.org/) with videojs-record.
 
-## Setup
+## Installation
 
-Let's create a simple project in a directory (`/tmp/webpack-test` in this case):
-
-```console
-cd /tmp
-mkdir webpack-test
-cd webpack-test
-```
-
-Now install Webpack and videojs-record using npm:
+Install Webpack:
 
 ```console
 npm install -D webpack webpack-dev-server webpack-cli css-loader style-loader
+```
+
+Install videojs-record:
+
+```console
 npm install videojs-record
 ```
 
-## Webpack config
+## Configuration
 
-Create a Webpack configuration file called `webpack.config.js`:
+Create the Webpack configuration file called `webpack.config.js`:
 
 ```javascript
 const path = require('path');
@@ -64,15 +61,9 @@ module.exports = {
 };
 ```
 
-## Sample project
+## Application
 
-Create the `src` directory:
-
-```console
-mkdir src
-```
-
-And create `src/index.html` containing:
+Create `src/index.html` containing:
 
 ```html
 <!DOCTYPE html>
@@ -98,7 +89,7 @@ And create `src/index.html` containing:
 </html>
 ```
 
-Create `src/app.js`:
+And create `src/app.js`:
 
 ```javascript
 /* eslint-disable */
@@ -125,8 +116,7 @@ import record_css from 'videojs-record/dist/css/videojs.record.css';
 import Record from 'videojs-record/dist/videojs.record.js';
 
 let player;
-const elementId = 'myVideo';
-const playerOptions = {
+const options = {
     controls: true,
     autoplay: false,
     fluid: false,
@@ -147,9 +137,9 @@ const playerOptions = {
 };
 
 // wait till DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     // create player
-    player = videojs(elementId, playerOptions, function() {
+    player = videojs('myVideo', options, () => {
         // print version information at startup
         const msg = 'Using video.js ' + videojs.VERSION +
             ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -158,34 +148,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // device is ready
-    player.on('deviceReady', function() {
+    player.on('deviceReady', () => {
         console.log('device is ready!');
     });
 
     // user clicked the record button and started recording
-    player.on('startRecord', function() {
+    player.on('startRecord', () => {
         console.log('started recording!');
     });
 
     // user completed recording and stream is available
-    player.on('finishRecord', function() {
+    player.on('finishRecord', () => {
         // the blob object contains the recorded data that
         // can be downloaded by the user, stored on server etc.
         console.log('finished recording: ', player.recordedData);
     });
 
     // error handler
-    player.on('error', function(element, error) {
+    player.on('error', (element, error) => {
         console.error(error);
     });
 
-    player.on('deviceError', function() {
+    player.on('deviceError', () => {
         console.error(player.deviceErrorCode);
     });
 });
 ```
 
-## Run example
+## Run
 
 Start the Webpack development server:
 

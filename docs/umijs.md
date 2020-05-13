@@ -4,23 +4,42 @@ This page shows how to get started with [UmiJS](https://umijs.org) and videojs-r
 
 ## Installation
 
-Install UmiJS globally:
+Create a project directory, e.g. `umi-videojs-record`.
+
+Create project files and install dependencies in the project directory:
 
 ```console
-npm install -g umi
-```
-
-Create an example project called `umi-record` and pick the `app` type:
-
-```console
-mkdir umi-record && cd umi-record
-npm create umi
+npm create @umijs/umi-app
+npm install
 ```
 
 Install videojs-record:
 
 ```console
 npm install --save videojs-record
+```
+
+## Configuration
+
+Change `.umirc.ts`:
+
+```ts
+import { defineConfig } from 'umi';
+
+export default defineConfig({
+  chainWebpack(config) {
+      // Set alias for videojs-record
+      config.resolve.alias.set('videojs', 'video.js');
+      config.resolve.alias.set('WaveSurfer', 'wavesurfer.js');
+      config.resolve.alias.set('RecordRTC', 'recordrtc');
+  },
+  nodeModulesTransform: {
+    type: 'none',
+  },
+  routes: [
+    { path: '/', component: '@/pages/index' },
+  ],
+});
 ```
 
 ## Application
@@ -31,7 +50,7 @@ Edit `src/pages/index.js`:
 /* eslint-disable */
 import React, { Component } from 'react';
 
-import styles from './index.css';
+import './app.css';
 
 import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
@@ -75,7 +94,7 @@ class VideojsRecordComponent extends Component {
       // instantiate Video.js
       this.player = videojs(this.videoNode, this.props, () => {
       // print version information at startup
-      var version_info =
+      const version_info =
         'Using video.js ' +
         videojs.VERSION +
         ' with videojs-record ' +
@@ -137,38 +156,21 @@ const RecordComponent = () => <VideojsRecordComponent {...videoJsOptions}/>
 export default RecordComponent;
 ```
 
-## Webpack configuration
+Create `src/pages/app.css`:
 
-Change `.umirc.js`:
-
-```javascript
-// ref: https://umijs.org/config/
-export default {
-  treeShaking: true,
-  chainWebpack(config) {
-      // Set alias for videojs-record
-      config.resolve.alias.set('videojs', 'video.js');
-      config.resolve.alias.set('WaveSurfer', 'wavesurfer.js');
-      config.resolve.alias.set('RecordRTC', 'recordrtc');
-  },
-  plugins: [
-    // ref: https://umijs.org/plugin/umi-plugin-react.html
-    ['umi-plugin-react', {
-      antd: false,
-      dva: false,
-      dynamicImport: false,
-      title: 'umi-record',
-      dll: false,
-      routes: {
-        exclude: [
-          /components\//,
-        ],
-      },
-    }],
-  ],
+```css
+/* change player background color */
+#myVideo {
+  background-color: #95DDF5;
 }
 ```
 
 ## Run
 
-Now run `npm start` and visit http://localhost:8000 to try the example application.
+Start the development server:
+
+```console
+npm start
+```
+
+And open http://localhost:8000 in a browser.
