@@ -1,14 +1,21 @@
-# Controlling the input and output devices
+# Change input/output device
+
+## List devices
 
 Use `enumerateDevices` to get a list of the available input and output devices
 on the user's system, e.g. `FaceTime HD-camera`, `default (Built-in microphone)`
 etc.
 
-Check out the `enumerateDevices` example
-([demo](https://collab-project.github.io/videojs-record/examples/enumerate-devices.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)).
+### Example
 
-After you acquired the device id (called `deviceId` in the example below) specify it in the player configuration
-using [constraints](#media-constraints):
+- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/enumerate-devices.html)
+- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/enumerate-devices.html)
+
+### Usage
+
+After you acquired the device id (called `deviceID` in the example below) with
+`enumerateDevices`, specify it in the player configuration using
+[constraints](media-constraints.md):
 
 ```javascript
 record: {
@@ -17,10 +24,19 @@ record: {
     audio: true,
     video: {
         // video constraints: use preset device
-        deviceId: {exact: deviceId}
+        deviceId: {exact: deviceID}
     }
 }
 ```
+
+## Output devices
+
+### Example
+
+- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/change-audio-output.html)
+- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/change-audio-output.html)
+
+### Usage
 
 If your system has multiple audio output devices, use `setAudioOutput(deviceId)` to change
 the active audio output device, and listen for the `audioOutputReady` event to be notified
@@ -35,16 +51,16 @@ player.on('audioOutputReady', function() {
 player.record().setAudioOutput(deviceId);
 ```
 
-See the full `change-audio-output` example
-([demo](https://collab-project.github.io/videojs-record/examples/change-audio-output.html) or
-[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html)).
+## Input devices
 
 If your system has multiple audio input devices and you want to display
-these devices and allow the user to choose one, check out the the full `change-audio-input` example
-([demo](https://collab-project.github.io/videojs-record/examples/change-audio-input.html) or
-[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-input.html)).
+these devices and allow the user to choose one, check out this example:
+
+- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/change-audio-input.html)
+- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/change-audio-input.html)
 
 Similarly, if your system has multiple video input devices and you want the
-user to choose one, check out the `change-video-input` example
-([demo](https://collab-project.github.io/videojs-record/examples/change-video-input.html) or
-[source](https://github.com/collab-project/videojs-record/blob/master/examples/change-video-input.html)).
+user to choose one, check out this example:
+
+- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/change-video-input.html)
+- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/change-video-input.html)

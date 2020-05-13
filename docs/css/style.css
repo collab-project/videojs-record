@@ -12,8 +12,11 @@
 }
 
 .markdown-section h2 {
-    font-size: 1.75rem;
     margin: 25px 0 .8rem;
+}
+
+.markdown-section h3 {
+    margin: 25px 0 .6rem;
 }
 
 .markdown-section pre, .markdown-section pre > code {

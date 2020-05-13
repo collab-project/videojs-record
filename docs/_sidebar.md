@@ -5,21 +5,20 @@
 
 - Guide
   - [Dependencies](dependencies.md)
+  - [Browser support](browser-support.md)
   - [Options](options.md)
   - [Methods](methods.md)
   - [Events](events.md)
+  - [Get recorded data](recorded-data.md)
+  - [Media constraints](media-constraints.md)
+  - [Plugins](plugins.md)
   - [Customizing controls](controls.md)
   - [Reponsive layout](responsive.md)
   - [Hotkeys](hotkeys.md)
-  - [Media constraints](media-constraints.md)
-  - [Picture-in-Picture](picture-in-picture.md)
   - [Change input/output device](change-device.md)
+  - [Picture-in-Picture](picture-in-picture.md)
   - [Localization](localization.md)
-  - [Get recorded data](recorded-data.md)
   - [Font](font)
-  - [Audio plugins](audio-plugins.md)
-  - [Video plugins](video-plugins.md)
-  - [Convert plugins](converter-plugins.md)
   - [API documentation](https://collab-project.github.io/videojs-record/api/)
 
 - Frameworks
@@ -32,4 +31,4 @@
 - [Development](development.md)
 - [Changelog](/changelog)
 - [Github](https://github.com/collab-project/videojs-record)
-- [License](/license)
+- [License](https://github.com/collab-project/videojs-record/blob/master/LICENSE)
