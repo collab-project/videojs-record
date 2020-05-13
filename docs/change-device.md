@@ -8,8 +8,8 @@ etc.
 
 ### Example
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/enumerate-devices.html)
-- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/enumerate-devices.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/enumerate-devices.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html)
 
 ### Usage
 
@@ -33,8 +33,8 @@ record: {
 
 ### Example
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/change-audio-output.html)
-- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/change-audio-output.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/change-audio-output.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html)
 
 ### Usage
 
@@ -56,11 +56,11 @@ player.record().setAudioOutput(deviceId);
 If your system has multiple audio input devices and you want to display
 these devices and allow the user to choose one, check out this example:
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/change-audio-input.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/change-audio-input.html)
 - [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/change-audio-input.html)
 
 Similarly, if your system has multiple video input devices and you want the
 user to choose one, check out this example:
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/change-video-input.html)
-- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/change-video-input.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/change-video-input.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/change-video-input.html)

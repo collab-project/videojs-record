@@ -31,9 +31,7 @@ It's possible to process and convert the recorded data in the browser. For examp
 adding metadata like duration to recorded WebM files, or using FFmpeg to convert the
 data with a different codec.
 
-Read the
-[converter plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#converter)
-documentation for more information.
+Read the [converter plugins](converter-plugins.md) documentation for more information.
 
 ### Usage
 
@@ -69,8 +67,8 @@ recorded blobs to a server periodically, where the clip is stitched together.
 
 ### Example
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/timeslice.html)
-- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/timeslice.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/timeslice.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/timeslice.html)
 
 ### Usage
 

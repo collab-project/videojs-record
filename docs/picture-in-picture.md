@@ -5,8 +5,8 @@ of other windows) while interacting with other sites or applications.
 
 ## Example
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/picture-in-picture.html)
-- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/picture-in-picture.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/picture-in-picture.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/picture-in-picture.html)
 
 ## Usage
 

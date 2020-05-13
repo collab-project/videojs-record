@@ -9,9 +9,9 @@
   - [Options](options.md)
   - [Methods](methods.md)
   - [Events](events.md)
+  - [Plugins](plugins.md)
   - [Get recorded data](recorded-data.md)
   - [Media constraints](media-constraints.md)
-  - [Plugins](plugins.md)
   - [Customizing controls](controls.md)
   - [Reponsive layout](responsive.md)
   - [Hotkeys](hotkeys.md)
@@ -27,6 +27,19 @@
   - [Angular](angular.md)
   - [Vue](vue.md)
   - [UmiJS](umijs.md)
+
+- Plugins
+  - Audio
+    - [vmsg](plugins/vmsg.md)
+    - [opus-recorder](plugins/opus-recorder.md)
+    - [libvorbis.js](plugins/libvorbis.js.md)
+    - [lamejs](plugins/lamejs.md)
+    - [recorder.js](plugins/recorder.js.md)
+  - Video
+    - [webm-wasm](plugins/webm-wasm.md)
+  - Converter
+    - [ffmpeg.js](plugins/ffmpeg.js.md)
+    - [ts-ebml](plugins/ts-ebml.md)
 
 - [Development](development.md)
 - [Changelog](/changelog)

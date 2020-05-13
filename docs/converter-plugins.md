@@ -1,4 +1,4 @@
-RecordRTC is the default recording library but there is also support
-for other audio libraries. Check the
-[audio plugins](https://github.com/collab-project/videojs-record/wiki/Plugins#audio)
-documentation for more information.
+# Converter plugins
+
+It's possible to process and convert the recorded data in the browser using the
+following plugins.

@@ -7,8 +7,8 @@ Note that this requires video.js 7.5.0 or newer.
 
 ## Example
 
-- [online demo](https://collab-project.github.io/videojs-wavesurfer/demo/hot-keys.html)
-- [demo source](https://github.com/collab-project/videojs-wavesurfer/blob/master/examples/hot-keys.html)
+- [online demo](https://collab-project.github.io/videojs-record/demo/hot-keys.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/hot-keys.html)
 
 ## Usage
 
