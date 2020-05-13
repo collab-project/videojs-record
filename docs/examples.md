@@ -1,37 +1,46 @@
-## Examples
+# Examples
 
-- audio/video ([demo](https://collab-project.github.io/videojs-record/examples/audio-video.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html))
-- video-only ([demo](https://collab-project.github.io/videojs-record/examples/video-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html))
-- audio-only example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html))
-- image ([demo](https://collab-project.github.io/videojs-record/examples/image-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html))
-- animated GIF ([demo](https://collab-project.github.io/videojs-record/examples/animated-gif.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html))
-- screen-only  ([demo](https://collab-project.github.io/videojs-record/examples/screen-only.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html))
-- audio/screen ([demo](https://collab-project.github.io/videojs-record/examples/audio-screen.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-screen.html))
+## Online demos
 
-To try out the examples locally, download the [zip-file](https://github.com/collab-project/videojs-record/archive/master.zip)
-and unpack it, or checkout the repository using Git:
+View the examples online:
 
-```
+| Example | Description | Demo | Source |
+| --- | --- | --- | --- |
+| **Audio/video** | Basic audio/video example | [online demo](https://collab-project.github.io/videojs-record/demo/audio-video.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-video.html) |
+| **Video-only** | Basic video-only example | [online demo](https://collab-project.github.io/videojs-record/demo/video-only.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/video-only.html) |
+| **Audio-only** | Basic audio-only example | [online demo](https://collab-project.github.io/videojs-record/demo/audio-only.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-only.html) |
+| **Image** | Basic image example | [online demo](https://collab-project.github.io/videojs-record/demo/image-only.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/image-only.html) |
+| **Screen-only** | Basic screen-only example | [online demo](https://collab-project.github.io/videojs-record/demo/screen-only.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html) |
+| **Audio/screen** | Basic audio/screen example | [online demo](https://collab-project.github.io/videojs-record/demo/audio-screen.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-screen.html) |
+| **Animated GIF** | Basic animated GIF example | [online demo](https://collab-project.github.io/videojs-record/demo/animated-gif.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html) |
+
+## Local setup
+
+To try out the examples locally either:
+
+- download the [zipfile](https://github.com/collab-project/videojs-record/archive/master.zip) and unpack it
+- or checkout the repository with Git:
+```console
 git clone https://github.com/collab-project/videojs-record.git
 ```
 
-And install the dependencies using npm:
+1. Install the dependencies:
 
-```
-cd videojs-record
+```console
+cd /path/to/videojs-record
 npm install
 ```
 
-Build the library and assets once:
+2. Build the library and assets once:
 
-```
+```console
 npm run build
 ```
 
-And start the local webserver:
+3. And start the local examples webserver:
 
-```
+```console
 npm run start
 ```
 
-And open http://localhost:8080/examples/audio-video.html in a browser.
+Open http://localhost:8080/examples/ in a browser.

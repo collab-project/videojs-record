@@ -2,7 +2,8 @@
 
 ## NPM
 
-You can use [npm](https://www.npmjs.org) to install the plugin:
+You can use [npm](https://www.npmjs.org) to install the plugin and
+[dependencies](dependencies.md):
 
 ```console
 npm install videojs-record

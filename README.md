@@ -1,6 +1,6 @@
 # videojs-record
 
-Video.js plugin for recording audio/video/image files.
+A [video.js](https://www.videojs.com/) plugin for recording audio/video/image files.
 
 ![Screenshot](https://raw.githubusercontent.com/collab-project/videojs-record/master/docs/img/screenshot.png?raw=true "Screenshot")
 
@@ -13,6 +13,9 @@ Video.js plugin for recording audio/video/image files.
 [![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
 ![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
 
+## Documentation
+
+The documentation and examples can be found on: https://collab-project.github.io/videojs-record
 
 Using with React
 ----------------

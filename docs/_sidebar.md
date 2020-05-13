@@ -2,9 +2,9 @@
   - [Installation](install.md)
   - [Usage](usage.md)
   - [Examples](examples.md)
-  - [Dependencies](dependencies.md)
 
 - Guide
+  - [Dependencies](dependencies.md)
   - [Options](options.md)
   - [Methods](methods.md)
   - [Events](events.md)

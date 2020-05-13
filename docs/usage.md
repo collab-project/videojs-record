@@ -1,5 +1,6 @@
 # Usage
 
+## Setup
 Start by including the video.js stylesheet and library:
 
 ```html
@@ -27,7 +28,7 @@ Add the extra stylesheet for the plugin that includes a
 <link href="videojs.record.css" rel="stylesheet">
 ```
 
-### Audio/video/image/screen
+## Audio/video/image/screen
 
 When recording either audio/video, video-only, screen-only, audio/screen, animated GIF or a single image,
 include a `video` element:
@@ -36,9 +37,9 @@ include a `video` element:
 <video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
 ```
 
-### Audio-only
+## Audio-only
 
-![Audio-only screenshot](examples/assets/img/audio-only.png?raw=true "Audio-only screenshot")
+![Audio-only screenshot](img/audio-only.png?raw=true "Audio-only screenshot")
 
 When recording audio-only, also include the wavesurfer.js library and
 the videojs-wavesurfer and microphone plugins. Make sure to place this before
