@@ -27,11 +27,11 @@
 - [License](https://github.com/collab-project/videojs-record/blob/master/LICENSE)
 
 - Frameworks
-  - [Webpack](webpack.md)
-  - [React](react.md)
-  - [Angular](angular.md)
-  - [Vue](vue.md)
-  - [UmiJS](umijs.md)
+  - [Webpack](frameworks/webpack.md)
+  - [React](frameworks/react.md)
+  - [Angular](frameworks/angular.md)
+  - [Vue](frameworks/vue.md)
+  - [UmiJS](frameworks/umijs.md)
 
 - Plugins
   - [vmsg](plugins/vmsg.md)
