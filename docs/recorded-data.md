@@ -31,7 +31,7 @@ It's possible to process and convert the recorded data in the browser. For examp
 adding metadata like duration to recorded WebM files, or using FFmpeg to convert the
 data with a different codec.
 
-Read the [converter plugins](converter-plugins.md) documentation for more information.
+Read the [converter plugins](plugins#converter) documentation for more information.
 
 ### Usage
 

@@ -13,6 +13,12 @@ View the examples online:
 | **Screen-only** | Basic screen-only example | [online demo](https://collab-project.github.io/videojs-record/demo/screen-only.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/screen-only.html) |
 | **Audio/screen** | Basic audio/screen example | [online demo](https://collab-project.github.io/videojs-record/demo/audio-screen.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-screen.html) |
 | **Animated GIF** | Basic animated GIF example | [online demo](https://collab-project.github.io/videojs-record/demo/animated-gif.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html) |
+| **Timeslice** | Get data during recording with specific time-intervals | [online demo](https://collab-project.github.io/videojs-record/demo/timeslice.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/timeslice.html) |
+| **Upload** | Basic upload example | N/A | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html) |
+| **jquery.fileupload** | Upload using jquery.fileupload library | N/A | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) |
+| **fine-uploader** | Upload using Fine Uploader library | N/A | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html) |
+| **Hotkeys** | XXX | [online demo](https://collab-project.github.io/videojs-record/demo/hot-keys.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/hot-keys.html) |
+| **Picture-in-Picture** | XXX | [online demo](https://collab-project.github.io/videojs-record/demo/picture-in-picture.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/picture-in-picture.html) |
 
 ## Local setup
 

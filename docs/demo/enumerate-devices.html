@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Enumerate Devices Example - Record Plugin for Video.js</title>
+
+  <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet">
+  <link href="//unpkg.com/videojs-wavesurfer@2.11.0/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
+  <link href="//unpkg.com/videojs-record/dist/css/videojs.record.css" rel="stylesheet">
+  <link href="assets/examples.css" rel="stylesheet">
+
+  <script src="//vjs.zencdn.net/7.6.6/video.min.js"></script>
+  <script src="//unpkg.com/recordrtc/RecordRTC.js"></script>
+  <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
+  <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
+  <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
+  <script src="//unpkg.com/videojs-wavesurfer@2.11.0/dist/videojs.wavesurfer.min.js"></script>
+
+  <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
+
+  <script src="browser-workarounds.js"></script>
+
+  <style>
+  /* change player background color */
+  #myAudio {
+      background-color: #8EDBE6;
+  }
+  </style>
+
+</head>
+<body>
+
+<audio id="myAudio" class="video-js vjs-default-skin"></audio>
+
+<div>
+    <button id="enumBtn">Enumerate input and output devices</button>
+    <ul id="devices"></ul>
+</div>
+
+<script>
+var options = {
+    controls: true,
+    width: 600,
+    height: 300,
+    plugins: {
+        wavesurfer: {
+            src: 'live',
+            waveColor: 'black',
+            progressColor: '#2E732D',
+            debug: true,
+            cursorWidth: 1,
+            msDisplayMax: 20,
+            hideScrollbar: true
+        },
+        record: {
+            audio: true,
+            video: false,
+            maxLength: 20,
+            debug: true
+        }
+    }
+};
+
+// apply some workarounds for certain browsers
+applyAudioWorkaround();
+
+// create player
+var player = videojs('myAudio', options, function() {
+    // print version information at startup
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
+        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and recordrtc ' +
+        RecordRTC.version;
+    videojs.log(msg);
+});
+
+// user requested to enumerate devices
+document.getElementById('enumBtn').onclick = function(ev) {
+    player.record().enumerateDevices();
+}
+
+player.on('enumerateReady', function() {
+    var devices = player.record().devices;
+    var list = document.getElementById('devices');
+    var node, textnode;
+
+    // remove existing list items
+    while (list.firstChild) {
+        list.removeChild(list.firstChild);
+    }
+    console.log('total devices:', devices.length);
+
+    // The user must have already granted permission to the page
+    // to use the media devices in order to get the device label
+    // populated. When served over HTTPS, the browser will remember
+    // permission granted on subsequent loads, so the permission
+    // will have been granted before requesting media. When using
+    // HTTP, not HTTPS, the getUserMedia request must be made and
+    // accepted before enumerateDevices will populate labels.
+    devices.forEach(function(device) {
+        description = device.kind + ' - label: ' +
+            (device.label || 'unknown') +
+            ' (id: ' + device.deviceId + ')';
+        console.log(description);
+
+        // add device to list
+        node = document.createElement('li');
+        textnode = document.createTextNode(description);
+        node.appendChild(textnode);
+        list.appendChild(node);
+    });
+});
+
+// enumerate error handling
+player.on('enumerateError', function() {
+    console.log('enumerate error:', player.enumerateErrorCode);
+});
+
+// error handling
+player.on('deviceError', function() {
+    console.log('device error:', player.deviceErrorCode);
+});
+
+player.on('error', function(element, error) {
+    console.error(error);
+});
+
+// user clicked the record button and started recording
+player.on('startRecord', function() {
+    console.log('started recording!');
+});
+
+// user completed recording and stream is available
+player.on('finishRecord', function() {
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording: ', player.recordedData);
+});
+</script>
+
+</body>
+</html>

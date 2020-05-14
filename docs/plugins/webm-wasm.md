@@ -18,4 +18,30 @@ Include the `videojs.record.webm-wasm.js` plugin:
 ```
 
 And specify the `webm-wasm` `videoEngine`, `videoWorkerURL` and
-`videoWebAssemblyURL` options.
+`videoWebAssemblyURL` options:
+
+```javascript
+record: {
+    audio: false,
+    video: true,
+    maxLength: 20,
+    debug: true,
+    videoEngine: 'webm-wasm',
+    videoWorkerURL: '../../node_modules/webm-wasm/dist/webm-worker.js',
+    videoWebAssemblyURL: 'webm-wasm.wasm',
+    videoBitRate: 1200,
+    videoFrameRate: 30
+}
+```
+
+## Options
+
+Options for this plugin:
+
+| Option | Value | Description |
+| --- | --- | --- |
+| `videoEngine` | `webm-wasm` | Enables the plugin. |
+| `videoWorkerURL` | `/path/to/webm-worker.js` | URL for the video worker. |
+| `videoWebAssemblyURL` | `/path/to/webm-wasm.wasm` | Path to WebAssembly file. |
+| `videoBitRate` | `1200` | The video bitrate in kbps. |
+| `videoFrameRate` | `30` | The video frame rate in frames per second. |
