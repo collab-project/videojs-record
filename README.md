@@ -4,6 +4,10 @@ A [video.js](https://www.videojs.com/) plugin for recording audio/video/image fi
 
 ![Screenshot](https://raw.githubusercontent.com/collab-project/videojs-record/master/docs/img/screenshot.png?raw=true "Screenshot")
 
+## Documentation
+
+The documentation and examples can be found on: https://collab-project.github.io/videojs-record
+
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
@@ -12,18 +16,6 @@ A [video.js](https://www.videojs.com/) plugin for recording audio/video/image fi
 ![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
 [![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
 ![Stars](https://img.shields.io/github/stars/collab-project/videojs-record.svg?style=social)
-
-## Documentation
-
-The documentation and examples can be found on: https://collab-project.github.io/videojs-record
-
-Using with React
-----------------
-
-Alternatively, the `react` example shows how to integrate this plugin in a [React](https://reactjs.org) component
-([demo](https://collab-project.github.io/videojs-record/examples/react/index.html) or
-[source](https://github.com/collab-project/videojs-record/blob/master/examples/react/index.html)).
-
 
 Donate
 ------

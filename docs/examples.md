@@ -14,11 +14,16 @@ View the examples online:
 | **Audio/screen** | Basic audio/screen example | [online demo](https://collab-project.github.io/videojs-record/demo/audio-screen.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/audio-screen.html) |
 | **Animated GIF** | Basic animated GIF example | [online demo](https://collab-project.github.io/videojs-record/demo/animated-gif.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/animated-gif.html) |
 | **Timeslice** | Get data during recording with specific time-intervals | [online demo](https://collab-project.github.io/videojs-record/demo/timeslice.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/timeslice.html) |
+| **Hotkeys** | Control this plugin using a keyboard | [online demo](https://collab-project.github.io/videojs-record/demo/hot-keys.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/hot-keys.html) |
+| **Picture-in-Picture** | Record and playback in a floating window  | [online demo](https://collab-project.github.io/videojs-record/demo/picture-in-picture.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/picture-in-picture.html) |
 | **Upload** | Basic upload example | N/A | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/upload/simple.html) |
 | **jquery.fileupload** | Upload using jquery.fileupload library | N/A | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/upload/jquery.fileupload.html) |
 | **fine-uploader** | Upload using Fine Uploader library | N/A | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/upload/fine-uploader.html) |
-| **Hotkeys** | XXX | [online demo](https://collab-project.github.io/videojs-record/demo/hot-keys.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/hot-keys.html) |
-| **Picture-in-Picture** | XXX | [online demo](https://collab-project.github.io/videojs-record/demo/picture-in-picture.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/picture-in-picture.html) |
+| **Enumerate devices** | List available input and output devices | [online demo](https://collab-project.github.io/videojs-record/demo/enumerate-devices.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/enumerate-devices.html) |
+| **Audio output devices** | Change audio output device | [online demo](https://collab-project.github.io/videojs-record/demo/change-audio-output.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-output.html) |
+| **Audio input devices** | Change audio input device | [online demo](https://collab-project.github.io/videojs-record/demo/change-audio-input.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/change-audio-input.html) |
+| **Video input devices** | Change video input device | [online demo](https://collab-project.github.io/videojs-record/demo/change-video-input.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/examples/change-video-input.html) |
+| **React** | Integrate plugin in a [React](https://reactjs.org) component | [online demo](https://collab-project.github.io/videojs-record/demo/react/index.html) | [example source](https://github.com/collab-project/videojs-record/blob/master/react/index.html) |
 
 ## Local setup
 
