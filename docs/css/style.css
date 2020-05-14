@@ -23,3 +23,8 @@
     background-color: #f5fcfb;
     color: #525252;
 }
+
+.sidebar-toggle {
+    bottom: unset;
+    top: 0;
+}
