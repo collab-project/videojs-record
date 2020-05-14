@@ -34,11 +34,11 @@
   - [UmiJS](frameworks/umijs.md)
 
 - Plugins
+  - [ffmpeg.js](plugins/ffmpeg.js.md)
+  - [ts-ebml](plugins/ts-ebml.md)
+  - [webm-wasm](plugins/webm-wasm.md)
   - [vmsg](plugins/vmsg.md)
   - [opus-recorder](plugins/opus-recorder.md)
   - [libvorbis.js](plugins/libvorbis.js.md)
   - [lamejs](plugins/lamejs.md)
   - [recorder.js](plugins/recorder.js.md)
-  - [webm-wasm](plugins/webm-wasm.md)
-  - [ffmpeg.js](plugins/ffmpeg.js.md)
-  - [ts-ebml](plugins/ts-ebml.md)

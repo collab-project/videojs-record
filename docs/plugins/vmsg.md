@@ -30,13 +30,13 @@ record: {
     debug: true,
     // enable vmsg plugin
     audioEngine: 'vmsg',
-    audioWebAssemblyURL: '../../node_modules/vmsg/vmsg.wasm',
+    audioWebAssemblyURL: '../../node_modules/vmsg/vmsg.wasm'
     // use the pluginLibraryOptions option to specify optional settings for the
     // vmsg library. For example:
-    pluginLibraryOptions: {
-        shimURL: '/static/js/wasm-polyfill.js',
-        pitch: 1
-    }
+    //pluginLibraryOptions: {
+    //    shimURL: '/static/js/wasm-polyfill.js',
+    //    pitch: 1
+    //}
 }
 ```
 
@@ -48,4 +48,4 @@ Options for this plugin:
 | --- | --- | --- |
 | `audioEngine` | `vmsg` | Enables the plugin. |
 | `audioWebAssemblyURL` | `/path/to/vmsg.wasm` | Path to WebAssembly file. |
-| `pluginLibraryOptions` | `{shimURL: '/static/js/wasm-polyfill.js', pitch: 1}` | Specify optional settings for the vmsg library. |
+| `pluginLibraryOptions` | `{}` | Specify optional settings for the vmsg library. |

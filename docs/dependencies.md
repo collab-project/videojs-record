@@ -4,14 +4,14 @@
 
 The plugin has the following mandatory dependencies:
 
-- [Video.js](https://github.com/videojs/video.js) - HTML5 media player that provides the user interface.
+- [video.js](https://github.com/videojs/video.js) - HTML5 media player that provides the user interface.
 - [webrtc-adapter](https://github.com/webrtc/adapter) - Provides cross-browser support for `getUserMedia` and other browser APIs used in this plugin.
 
 When recording audio and/or video/screen you also need:
 
 - [RecordRTC](https://github.com/muaz-khan/RecordRTC) - Adds support for audio/video/GIF recording.
 
-## Audio-only
+## Audio
 
 When recording audio-only, the following dependencies are also required
 (to visualize the audio waveform):

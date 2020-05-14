@@ -9,8 +9,14 @@ implementation of a PCM to Ogg Vorbis encoder and you can choose to use this
 instead of RecordRTC. libvorbis.js is currently only supported when recording
 audio-only.
 
-Include the libvorbis.js library (instead of RecordRTC.js) and place it before
-any other scripts:
+## Example
+
+- [online demo](https://collab-project.github.io/videojs-record/demo/audio-only-ogg.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/plugins/audio-only-ogg.html)
+
+## Usage
+
+Include the libvorbis.js script and place it before any other scripts:
 
 ```html
 <script src="libvorbis.min.js"></script>
@@ -23,6 +29,24 @@ Also include the `videojs.record.libvorbis.js` plugin:
 <script src="dist/plugins/videojs.record.libvorbis.js"></script>
 ```
 
-And use `libvorbis.js` for the `audioEngine` option.
+And use `libvorbis.js` for the `audioEngine` option:
 
-Check out the audio-only Ogg example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-ogg.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/plugins/audio-only-ogg.html)).
+```javascript
+record: {
+    audio: true,
+    video: false,
+    maxLength: 20,
+    debug: true,
+    audioEngine: 'libvorbis.js',
+    audioSampleRate: 32000
+}
+```
+
+## Options
+
+Options for this plugin:
+
+| Option | Value | Description |
+| --- | --- | --- |
+| `audioEngine` | `libvorbis.js` | Enables the plugin. |
+| `audioSampleRate` | `32000` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |

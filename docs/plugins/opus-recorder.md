@@ -4,14 +4,20 @@
 implementation of PCM to Opus encoder and exports it into an Ogg container.
 opus-recorder is currently only supported when recording audio-only.
 
-Include the recorder.js script (instead of RecordRTC.js) and place it before
-any other scripts:
+## Example
+
+- [online demo](https://collab-project.github.io/videojs-record/demo/audio-only-opus.html)
+- [demo source](https://github.com/collab-project/videojs-record/blob/master/examples/plugins/audio-only-opus.html)
+
+## Usage
+
+Include the opus-recorder script and place it before any other scripts:
 
 ```html
-<script src="recorder.js"></script>
+<script src="recorder.min.js"></script>
 ```
 
-And include the `videojs.record.opus-recorder.js` plugin:
+Include the `videojs.record.opus-recorder.js` plugin:
 
 ```html
 <script src="dist/videojs.record.js"></script>
@@ -19,13 +25,37 @@ And include the `videojs.record.opus-recorder.js` plugin:
 ```
 
 And specify the `opus-recorder` `audioEngine` and `audioWorkerURL` options.
-Use the `pluginLibraryOptions` option to specify optional settings for the opus-recorder library. For example:
+Use the `pluginLibraryOptions` option to specify optional settings for the opus-recorder library.
+
+For example:
 
 ```javascript
-pluginLibraryOptions: {
-    monitorGain: 0.4,
-    originalSampleRateOverride: 16000
+record: {
+    audio: true,
+    video: false,
+    maxLength: 20,
+    debug: true,
+    audioEngine: 'opus-recorder',
+    audioSampleRate: 48000,
+    audioChannels: 2,
+    audioWorkerURL: '../../node_modules/opus-recorder/dist/encoderWorker.min.js'
+    // use the pluginLibraryOptions option to specify optional settings for the
+    // opus-recorder library. For example:
+    // pluginLibraryOptions: {
+    //    monitorGain: 0.4,
+    //    originalSampleRateOverride: 16000
+    // }
 }
 ```
 
-Check out the audio-only Opus example ([demo](https://collab-project.github.io/videojs-record/examples/audio-only-opus.html) / [source](https://github.com/collab-project/videojs-record/blob/master/examples/plugins/audio-only-opus.html)).
+## Options
+
+Options for this plugin:
+
+| Option | Value | Description |
+| --- | --- | --- |
+| `audioEngine` | `opus-recorder` | Enables the plugin. |
+| `audioWorkerURL` | `/path/to/encoderWorker.min.js` | Path to encoder WebWorker file. |
+| `audioSampleRate` | `48000` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
+| `audioChannels` | `2` | Number of audio channels. Using a single channel results in a smaller file size. |
+| `pluginLibraryOptions` | `{}` | Specify optional settings for the opus-recorder library. |
