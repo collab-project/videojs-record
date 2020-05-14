@@ -21,6 +21,11 @@
   - [Font](font)
   - [API documentation](https://collab-project.github.io/videojs-record/api/)
 
+- [Development](development.md)
+- [Changelog](/changelog)
+- [Github](https://github.com/collab-project/videojs-record)
+- [License](https://github.com/collab-project/videojs-record/blob/master/LICENSE)
+
 - Frameworks
   - [Webpack](webpack.md)
   - [React](react.md)
@@ -29,19 +34,11 @@
   - [UmiJS](umijs.md)
 
 - Plugins
-  - Audio
-    - [vmsg](plugins/vmsg.md)
-    - [opus-recorder](plugins/opus-recorder.md)
-    - [libvorbis.js](plugins/libvorbis.js.md)
-    - [lamejs](plugins/lamejs.md)
-    - [recorder.js](plugins/recorder.js.md)
-  - Video
-    - [webm-wasm](plugins/webm-wasm.md)
-  - Converter
-    - [ffmpeg.js](plugins/ffmpeg.js.md)
-    - [ts-ebml](plugins/ts-ebml.md)
-
-- [Development](development.md)
-- [Changelog](/changelog)
-- [Github](https://github.com/collab-project/videojs-record)
-- [License](https://github.com/collab-project/videojs-record/blob/master/LICENSE)
+  - [vmsg](plugins/vmsg.md)
+  - [opus-recorder](plugins/opus-recorder.md)
+  - [libvorbis.js](plugins/libvorbis.js.md)
+  - [lamejs](plugins/lamejs.md)
+  - [recorder.js](plugins/recorder.js.md)
+  - [webm-wasm](plugins/webm-wasm.md)
+  - [ffmpeg.js](plugins/ffmpeg.js.md)
+  - [ts-ebml](plugins/ts-ebml.md)

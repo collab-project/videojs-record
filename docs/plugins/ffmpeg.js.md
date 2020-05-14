@@ -1,6 +1,9 @@
 # ffmpeg.js plugin
 
-[ffmpeg.js](https://github.com/Kagami/ffmpeg.js) provides [FFmpeg](https://ffmpeg.org)
+[FFmpeg](https://ffmpeg.org) is the Swiss-army knife of media transcoding. This plugin allows
+you to run FFmpeg in the browser and perform on-the-fly transcoding of recorded data.
+
+This plugin uses [ffmpeg.js](https://github.com/Kagami/ffmpeg.js) that provides FFmpeg
 builds ported to JavaScript using the Emscripten project, optimized for in-browser use.
 
 ## Example
@@ -25,6 +28,7 @@ record: {
     video: false,
     maxLength: 20,
     debug: true,
+    // enable ffmpeg.js plugin
     convertEngine: 'ffmpeg.js',
     // convert recorded data to MP3
     convertOptions: ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'],
@@ -38,3 +42,14 @@ record: {
     // convertWorkerURL: '../../node_modules/ffmpeg.js/ffmpeg-worker-webm.js'
 }
 ```
+
+## Options
+
+Options for this plugin:
+
+| Option | Value | Description |
+| --- | --- | --- |
+| `convertEngine` | `ffmpeg.js` | Enables the plugin. |
+| `convertOptions` | `['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2']` | Array of arguments for FFmpeg. |
+| `pluginLibraryOptions` | `{outputType: 'audio/mp3'}` | Specify output mime-type. |
+| `convertWorkerURL` | `/path/to/ffmpeg.js/ffmpeg-worker-mp4.js` | Specify encoding worker. |

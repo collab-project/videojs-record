@@ -17,4 +17,23 @@ Include the `videojs.record.ts-ebml.js` plugin:
 <script src="dist/plugins/videojs.record.ts-ebml.js"></script>
 ```
 
-And specify the `ts-ebml` `convertEngine` option.
+And specify the `ts-ebml` `convertEngine` option. For example:
+
+```javascript
+record: {
+    audio: false,
+    video: true,
+    maxLength: 20,
+    debug: true,
+    // enable ts-ebml plugin
+    convertEngine: 'ts-ebml'
+}
+```
+
+## Options
+
+Options for this plugin:
+
+| Option | Value | Description |
+| --- | --- | --- |
+| `convertEngine` | `ts-ebml` | Enables the plugin. |

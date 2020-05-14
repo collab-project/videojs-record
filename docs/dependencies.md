@@ -20,23 +20,23 @@ When recording audio-only, the following dependencies are also required
 - [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js) - Provides a navigable waveform for audio files. Comes with a
   [microphone plugin](https://wavesurfer-js.org/plugins/microphone.html) used for real-time visualization of the microphone audio signal.
 
-Optional dependencies when using other [audio plugins](audio-plugins.md) (note that most of these audio codecs are already available in most modern browsers):
+Optional dependencies when using other [audio plugins](plugins#audio) (note that most of these audio codecs are already available in most modern browsers):
 
-- [vmsg](https://github.com/collab-project/videojs-record/wiki/Plugins#vmsg) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
-- [opus-recorder](https://github.com/collab-project/videojs-record/wiki/Plugins#opus-recorder) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
-- [libvorbis.js](https://github.com/collab-project/videojs-record/wiki/Plugins#libvorbisjs) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
-- [lamejs](https://github.com/collab-project/videojs-record/wiki/Plugins#lamejs) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
-- [recorder.js](https://github.com/collab-project/videojs-record/wiki/Plugins#recorderjs) - A plugin for recording the PCM output of Web Audio API nodes (unmaintained and not recommended).
+- [vmsg](plugins/vmsg.md) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
+- [opus-recorder](plugins/opus-recorder.md) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
+- [libvorbis.js](plugins/libvorbis.js.md) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
+- [lamejs](plugins/lamejs.md) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
+- [recorder.js](plugins/recorder.js.md) - A plugin for recording the PCM output of Web Audio API nodes (unmaintained and not recommended).
 
 ## Video
 
-Optional dependencies when using other [video plugins](video-plugins.md):
+Optional dependencies when using other [video plugins](plugins#video):
 
-- [webm-wasm](https://github.com/collab-project/videojs-record/wiki/Plugins#webm-wasm) - Creates WebM recordings using libwebm (compiled with WebAssembly).
+- [webm-wasm](plugins/webm-wasm.md) - Creates WebM recordings using libwebm (compiled with WebAssembly).
 
 ## Convert
 
-Optional dependencies when using [converter plugins](converter-plugins.md):
+Optional dependencies when using [converter plugins](plugins#converter):
 
-- [ts-ebml](https://github.com/collab-project/videojs-record/wiki/Plugins#ts-ebml) - Creates seekable WebM files, by injecting metadata like duration.
-- [ffmpeg.js](https://github.com/collab-project/videojs-record/wiki/Plugins#ffmpegjs) - [FFmpeg](https://ffmpeg.org) builds ported to JavaScript using Emscripten.
+- [ts-ebml](plugins/ts-ebml.md) - Creates seekable WebM files, by injecting metadata like duration.
+- [ffmpeg.js](plugins/ffmpeg.js.md) - Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data.
