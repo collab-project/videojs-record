@@ -59,8 +59,8 @@ or [download](https://github.com/collab-project/videojs-record/releases) the lib
 and dependencies elsewhere. If you want to try the examples, check
 [these instructions below](#examples).
 
-Since v2.0 this plugin is compatible with video.js 6.0 and videojs-wavesurfer 2.0 or
-newer. If you want to use this plugin with an older version, check the
+Since v2.0 this plugin is compatible with video.js 6.0 or newer and videojs-wavesurfer 2.x
+(v3.x is not supported yet). If you want to use this plugin with an older version, check the
 [archived releases](https://github.com/collab-project/videojs-record/releases?after=1.7.1)
 for a 1.7.x or older release.
 
