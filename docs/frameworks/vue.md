@@ -62,14 +62,26 @@ Create `src/components/VideoJSRecord.vue`:
 </template>
 
 <script>
+    /* eslint-disable */
     import 'video.js/dist/video-js.css'
     import 'videojs-record/dist/css/videojs.record.css'
+    import videojs from 'video.js'
 
     import 'webrtc-adapter'
     import RecordRTC from 'recordrtc'
 
-    import videojs from 'video.js'
-    // eslint-disable-next-line
+    // the following imports are only needed when you're recording
+    // audio-only using the videojs-wavesurfer plugin
+    /*
+    import WaveSurfer from 'wavesurfer.js';
+    import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
+    WaveSurfer.microphone = MicrophonePlugin;
+
+    // register videojs-wavesurfer plugin
+    import wavesurfer_css from 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
+    import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
+    */
+
     import Record from 'videojs-record/dist/videojs.record.js'
 
     export default {
@@ -87,6 +99,18 @@ Create `src/components/VideoJSRecord.vue`:
                         volumePanel: false
                     },
                     plugins: {
+                        /*
+                        // this section is only needed when recording audio-only
+                        wavesurfer: {
+                            src: 'live',
+                            waveColor: '#36393b',
+                            progressColor: 'black',
+                            debug: true,
+                            cursorWidth: 1,
+                            msDisplayMax: 20,
+                            hideScrollbar: true
+                        },
+                        */
                         // configure videojs-record plugin
                         record: {
                             audio: false,

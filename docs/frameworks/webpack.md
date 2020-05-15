@@ -111,7 +111,7 @@ import wavesurfer_css from 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
 import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 */
 
-// register videojs-record plugin with this import
+// register videojs-record plugin
 import record_css from 'videojs-record/dist/css/videojs.record.css';
 import Record from 'videojs-record/dist/videojs.record.js';
 
@@ -127,6 +127,18 @@ const options = {
         volumePanel: false
     },
     plugins: {
+        /*
+        // this section is only needed when recording audio-only
+        wavesurfer: {
+            src: 'live',
+            waveColor: '#36393b',
+            progressColor: 'black',
+            debug: true,
+            cursorWidth: 1,
+            msDisplayMax: 20,
+            hideScrollbar: true
+        },
+        */
         // configure videojs-record plugin
         record: {
             audio: false,
