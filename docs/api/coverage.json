@@ -1,0 +1,337 @@
+{
+  "coverage": "55.09%",
+  "expectCount": 363,
+  "actualCount": 200,
+  "files": {
+    "js/controls/animation-display.js": {
+      "expectCount": 3,
+      "actualCount": 2,
+      "undocumentLines": [
+        8
+      ]
+    },
+    "js/controls/camera-button.js": {
+      "expectCount": 10,
+      "actualCount": 8,
+      "undocumentLines": [
+        10,
+        11
+      ]
+    },
+    "js/controls/device-button.js": {
+      "expectCount": 5,
+      "actualCount": 3,
+      "undocumentLines": [
+        8,
+        9
+      ]
+    },
+    "js/controls/picture-in-picture-toggle.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        10,
+        11
+      ]
+    },
+    "js/controls/record-canvas.js": {
+      "expectCount": 3,
+      "actualCount": 2,
+      "undocumentLines": [
+        8
+      ]
+    },
+    "js/controls/record-indicator.js": {
+      "expectCount": 7,
+      "actualCount": 6,
+      "undocumentLines": [
+        10
+      ]
+    },
+    "js/controls/record-toggle.js": {
+      "expectCount": 10,
+      "actualCount": 8,
+      "undocumentLines": [
+        10,
+        11
+      ]
+    },
+    "js/defaults.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "js/engine/convert-engine.js": {
+      "expectCount": 11,
+      "actualCount": 5,
+      "undocumentLines": [
+        10,
+        48,
+        49,
+        17,
+        13,
+        14
+      ]
+    },
+    "js/engine/engine-loader.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "js/engine/record-engine.js": {
+      "expectCount": 19,
+      "actualCount": 7,
+      "undocumentLines": [
+        11,
+        91,
+        34,
+        28,
+        31,
+        15,
+        18,
+        19,
+        20,
+        21,
+        22,
+        25
+      ]
+    },
+    "js/engine/record-mode.js": {
+      "expectCount": 9,
+      "actualCount": 2,
+      "undocumentLines": [
+        16,
+        8,
+        9,
+        10,
+        12,
+        13,
+        11
+      ]
+    },
+    "js/engine/record-rtc.js": {
+      "expectCount": 17,
+      "actualCount": 11,
+      "undocumentLines": [
+        15,
+        35,
+        36,
+        37,
+        49,
+        165
+      ]
+    },
+    "js/event.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "js/hot-keys.js": {
+      "expectCount": 4,
+      "actualCount": 1,
+      "undocumentLines": [
+        9,
+        10,
+        11
+      ]
+    },
+    "js/plugins/ffmpegjs-plugin.js": {
+      "expectCount": 15,
+      "actualCount": 9,
+      "undocumentLines": [
+        8,
+        65,
+        67,
+        76,
+        88,
+        160
+      ]
+    },
+    "js/plugins/lamejs-plugin.js": {
+      "expectCount": 20,
+      "actualCount": 12,
+      "undocumentLines": [
+        8,
+        71,
+        72,
+        75,
+        81,
+        91,
+        93,
+        96
+      ]
+    },
+    "js/plugins/libvorbis-plugin.js": {
+      "expectCount": 15,
+      "actualCount": 9,
+      "undocumentLines": [
+        8,
+        52,
+        53,
+        57,
+        66,
+        67
+      ]
+    },
+    "js/plugins/opus-recorder-plugin.js": {
+      "expectCount": 22,
+      "actualCount": 15,
+      "undocumentLines": [
+        8,
+        91,
+        92,
+        96,
+        108,
+        113,
+        114
+      ]
+    },
+    "js/plugins/recorderjs-plugin.js": {
+      "expectCount": 15,
+      "actualCount": 9,
+      "undocumentLines": [
+        8,
+        68,
+        69,
+        73,
+        74,
+        78
+      ]
+    },
+    "js/plugins/ts-ebml-plugin.js": {
+      "expectCount": 3,
+      "actualCount": 2,
+      "undocumentLines": [
+        10
+      ]
+    },
+    "js/plugins/vmsg-plugin.js": {
+      "expectCount": 19,
+      "actualCount": 11,
+      "undocumentLines": [
+        10,
+        61,
+        62,
+        66,
+        73,
+        78,
+        80,
+        83
+      ]
+    },
+    "js/plugins/webm-wasm-plugin.js": {
+      "expectCount": 13,
+      "actualCount": 8,
+      "undocumentLines": [
+        9,
+        73,
+        74,
+        75,
+        76
+      ]
+    },
+    "js/utils/browser-shim.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "js/utils/compare-version.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "js/utils/detect-browser.js": {
+      "expectCount": 7,
+      "actualCount": 2,
+      "undocumentLines": [
+        75,
+        83,
+        87,
+        79,
+        91
+      ]
+    },
+    "js/utils/file-util.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "js/utils/format-time.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "js/videojs.record.js": {
+      "expectCount": 115,
+      "actualCount": 49,
+      "undocumentLines": [
+        29,
+        30,
+        32,
+        124,
+        133,
+        134,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        177,
+        178,
+        179,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        193,
+        194,
+        195,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        210,
+        211,
+        212,
+        215,
+        216,
+        261,
+        385,
+        388,
+        391,
+        394,
+        421,
+        590,
+        593,
+        637,
+        697,
+        741,
+        806,
+        898,
+        899,
+        900,
+        904,
+        925,
+        1005,
+        1140,
+        1202,
+        1436
+      ]
+    }
+  }
+}

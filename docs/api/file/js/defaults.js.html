@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">js/defaults.js | videojs-record</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A video.js plugin for recording audio/video/image files."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="videojs-record"><meta property="twitter:description" content="A video.js plugin for recording audio/video/image files."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/collab-project/videojs-record.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/event.js~Event.html">Event</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/videojs.record.js~Record.html">Record</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-defaultKeyHandler">defaultKeyHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pluginDefaultOptions">pluginDefaultOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Plugin">Plugin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#controls">controls</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/animation-display.js~AnimationDisplay.html">AnimationDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/camera-button.js~CameraButton.html">CameraButton</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/device-button.js~DeviceButton.html">DeviceButton</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/picture-in-picture-toggle.js~PictureInPictureToggle.html">PictureInPictureToggle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/record-canvas.js~RecordCanvas.html">RecordCanvas</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/record-indicator.js~RecordIndicator.html">RecordIndicator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/controls/record-toggle.js~RecordToggle.html">RecordToggle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Component">Component</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Button">Button</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#engine">engine</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/engine/convert-engine.js~ConvertEngine.html">ConvertEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/engine/record-engine.js~RecordEngine.html">RecordEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/engine/record-rtc.js~RecordRTCEngine.html">RecordRTCEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAudioEngine">getAudioEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getConvertEngine">getConvertEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getVideoEngine">getVideoEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isAudioPluginActive">isAudioPluginActive</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRecorderMode">getRecorderMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CONVERT_PLUGINS">CONVERT_PLUGINS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGJS">FFMPEGJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TSEBML">TSEBML</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_PLUGINS">AUDIO_PLUGINS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LAMEJS">LAMEJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LIBVORBISJS">LIBVORBISJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSRECORDER">OPUSRECORDER</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDERJS">RECORDERJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDRTC">RECORDRTC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORD_PLUGINS">RECORD_PLUGINS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIDEO_PLUGINS">VIDEO_PLUGINS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VMSG">VMSG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WEBMWASM">WEBMWASM</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ANIMATION">ANIMATION</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_ONLY">AUDIO_ONLY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_SCREEN">AUDIO_SCREEN</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_VIDEO">AUDIO_VIDEO</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IMAGE_ONLY">IMAGE_ONLY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SCREEN_ONLY">SCREEN_ONLY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIDEO_ONLY">VIDEO_ONLY</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ts-ebml-plugin.js~TsEBMLEngine.html">TsEBMLEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/vmsg-plugin.js~VmsgEngine.html">VmsgEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/webm-wasm-plugin.js~WebmWasmEngine.html">WebmWasmEngine</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setSrcObject">setSrcObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compareVersion">compareVersion</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detectBrowser">detectBrowser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isChrome">isChrome</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isEdge">isEdge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFirefox">isFirefox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isOpera">isOpera</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isSafari">isSafari</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addFileInfo">addFileInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-blobToArrayBuffer">blobToArrayBuffer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-downloadBlob">downloadBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">js/defaults.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * @file defaults.js
+ * @since 2.0.0
+ */
+
+// plugin defaults
+const pluginDefaultOptions = {
+    // Single snapshot image.
+    image: false,
+    // Include audio in the recorded clip.
+    audio: false,
+    // Include video in the recorded clip.
+    video: false,
+    // Animated GIF.
+    animation: false,
+    // Screen capture.
+    screen: false,
+    // Maximum length of the recorded clip.
+    maxLength: 10,
+    // Maximum file size of the recorded clip. Works only when the timeSlice
+    // option is also enabled.
+    maxFileSize: 0,
+    // msDisplayMax indicates the number of seconds that is
+    // considered the boundary value for displaying milliseconds
+    // in the time controls. An audio clip with a total length of
+    // 2 seconds and a msDisplayMax of 3 will use the format
+    // M:SS:MMM. Clips longer than msDisplayMax will be displayed
+    // as M:SS or HH:MM:SS.
+    msDisplayMax: 3,
+    // Width of the recorded video frames.
+    frameWidth: 320,
+    // Height of the recorded video frames.
+    frameHeight: 240,
+    // Enables console logging for debugging purposes.
+    debug: false,
+    // Enable Picture-in-Picture support.
+    pip: false,
+    // Turn off the camera/mic (and light) when audio and/or video recording
+    // stops, and turns them on again when you resume recording.
+    autoMuteDevice: false,
+    // The video bitrate in kbps (only used in webm-wasm plugin).
+    videoBitRate: 1200,
+    // Video recording library to use. Legal values are &apos;recordrtc&apos; (default)
+    // and &apos;webm-wasm&apos;.
+    videoEngine: &apos;recordrtc&apos;,
+    // The video frame rate in frames per second (only used in webm-wasm plugin).
+    videoFrameRate: 30,
+    // The mime type for the video recorder. Default to &apos;video/webm&apos;.
+    // Use &apos;video/mp4&apos; (Firefox) or &apos;video/webm;codecs=H264&apos; (Chrome 52 and
+    // newer) for MP4.
+    videoMimeType: &apos;video/webm&apos;,
+    // Video recorder type to use. This allows you to specify an alternative
+    // recorder class, e.g. WhammyRecorder from recordrtc. Defaults to &apos;auto&apos;
+    // which let&apos;s recordrtc specify the best available recorder type.
+    videoRecorderType: &apos;auto&apos;,
+    // URL for the video worker. Use an empty string &apos;&apos; to disable (default).
+    videoWorkerURL: &apos;&apos;,
+    // URL for the video worker WebAssembly file. Use an empty string &apos;&apos; to
+    // disable (default).
+    videoWebAssemblyURL: &apos;&apos;,
+    // Audio recording library to use. Legal values are &apos;recordrtc&apos; (default),
+    // &apos;libvorbis.js&apos;, &apos;opus-recorder&apos;, &apos;lamejs&apos;, &apos;vmsg&apos; and &apos;recorder.js&apos;.
+    audioEngine: &apos;recordrtc&apos;,
+    // Audio recorder type to use. This allows you to specify an alternative
+    // recorder class, e.g. StereoAudioRecorder. Defaults to &apos;auto&apos; which let&apos;s
+    // recordrtc specify the best available recorder type. Currently this
+    // setting is only used with the &apos;recordrtc&apos; audioEngine.
+    audioRecorderType: &apos;auto&apos;,
+    // The mime type for the audio recorder. Defaults to &apos;auto&apos; which will pick
+    // the best option available in the browser (e.g. either &apos;audio/wav&apos;,
+    // &apos;audio/ogg&apos; or &apos;audio/webm&apos;).
+    audioMimeType: &apos;auto&apos;,
+    // The size of the audio buffer (in sample-frames) which needs to
+    // be processed each time onprocessaudio is called.
+    // From the spec: This value controls how frequently the audioprocess event is
+    // dispatched and how many sample-frames need to be processed each call.
+    // Lower values for buffer size will result in a lower (better) latency.
+    // Higher values will be necessary to avoid audio breakup and glitches.
+    // Legal values are 256, 512, 1024, 2048, 4096, 8192 or 16384.
+    audioBufferSize: 4096,
+    // The audio sample rate (in sample-frames per second) at which the
+    // AudioContext handles audio. It is assumed that all AudioNodes
+    // in the context run at this rate. In making this assumption,
+    // sample-rate converters or &quot;varispeed&quot; processors are not supported
+    // in real-time processing.
+    // The sampleRate parameter describes the sample-rate of the
+    // linear PCM audio data in the buffer in sample-frames per second.
+    // An implementation must support sample-rates in at least
+    // the range 22050 to 96000.
+    audioSampleRate: 44100,
+    // The audio bitrate in kbps (only used in lamejs plugin).
+    audioBitRate: 128,
+    // Allows you to record single-channel audio, which can reduce the
+    // file size.
+    audioChannels: 2,
+    // URL for the audio worker. Use an empty string &apos;&apos; to disable (default).
+    audioWorkerURL: &apos;&apos;,
+    // URL for the audio worker WebAssembly file. Use an empty string &apos;&apos; to
+    // disable (default).
+    audioWebAssemblyURL: &apos;&apos;,
+    // Enables the audioBufferUpdate event that provides realtime AudioBuffer
+    // instances from the input audio device.
+    audioBufferUpdate: false,
+    // Frame rate in frames per second.
+    animationFrameRate: 200,
+    // Sets quality of color quantization (conversion of images to the
+    // maximum 256 colors allowed by the GIF specification).
+    // Lower values (minimum = 1) produce better colors,
+    // but slow processing significantly. 10 is the default,
+    // and produces good color mapping at reasonable speeds.
+    // Values greater than 20 do not yield significant improvements
+    // in speed.
+    animationQuality: 10,
+    // A string indicating the output type: dataURL (base64 string) or blob.
+    // The default output is dataURL.
+    imageOutputType: &apos;dataURL&apos;,
+    // A string indicating the image format used in image-only mode. The default
+    // format type is image/png.
+    imageOutputFormat: &apos;image/png&apos;,
+    // A number between 0 and 1 indicating the image quality to use for image
+    // formats that use lossy compression such as image/jpeg and image/webp.
+    // If this argument is anything else, the default value for image quality
+    // is used. The default value is 0.92.
+    imageOutputQuality: 0.92,
+    // Accepts numbers in milliseconds; use this to force intervals-based blobs.
+    timeSlice: 0,
+    // Media converter library to use. Legal values are &apos;ts-ebml&apos; and &apos;ffmpeg.js&apos;.
+    // Use an empty string &apos;&apos; to disable (default).
+    convertEngine: &apos;&apos;,
+    // URL for the converter worker.
+    convertWorkerURL: &apos;&apos;,
+    // List of string options to pass to the convert engine.
+    convertOptions: [],
+    // Enable keyboard hotkeys.
+    hotKeys: false,
+    // Use this object to specify additional settings for the library used by the
+    // plugin (only used in opus-recorder and vmsg plugins).
+    pluginLibraryOptions: {}
+};
+
+export default pluginDefaultOptions;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

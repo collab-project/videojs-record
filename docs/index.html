@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>videojs-record</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="A video.js plugin for recording audio/video/image files.">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'videojs-record',
+      loadSidebar: true,
+      subMaxLevel: 2,
+      alias: {
+          '/changelog': 'https://raw.githubusercontent.com/collab-project/videojs-record/master/CHANGES.md',
+          '/font': 'https://raw.githubusercontent.com/collab-project/videojs-record/master/src/fonts/README.md'
+      },
+      plugins: [
+          function(hook) {
+              hook.beforeEach(function(content, next) {
+                  const reg = /#[1-9]\d*\b/g;
+                  next(content.replace(reg, function(x) {
+                    // add github issue links
+                    return `[${x}](https://github.com/collab-project/videojs-record/issues/${x.substr(1)})`;
+                  }));
+              });
+          }
+      ]
+    };
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-diff.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-json.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-typescript.min.js"></script>
+</body>
+</html>

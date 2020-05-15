@@ -31,6 +31,7 @@ test_script:
   - npm run lint
   - npm run build
   - npm run test
+  - npm run docs
 
 cache:
   - '%APPDATA%\npm-cache'
