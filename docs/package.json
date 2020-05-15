@@ -1,0 +1,48 @@
+{
+  "name": "videojs-record-documentation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "videojs-record documentation website",
+  "homepage": "https://collab-project.github.io/videojs-record",
+  "author": "Collab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/collab-project/videojs-record/issues"
+  },
+  "main": "index.js",
+  "directories": {
+    "demo": "demo"
+  },
+  "scripts": {
+    "start": "docsify serve .",
+    "update": "npm-run-all -s update:*",
+    "update:libvorbis": "cpx -v 'node_modules/libvorbis.js/js/libvorbis.min.js' demo/lib/libvorbis.js/",
+    "update:lamejs": "cpx -v 'node_modules/lamejs/lame.*.js' demo/lib/lamejs/",
+    "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' demo/lib/lamejs/worker-example/",
+    "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' demo/lib/opus-recorder/",
+    "update:vmsg": "cpx -v 'node_modules/vmsg/*.wasm' demo/lib/vmsg/",
+    "update:webm-wasm": "cpx -v 'node_modules/webm-wasm/dist/*' demo/lib/webm-wasm/",
+    "update:ffmpeg": "cpx -v 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js' demo/lib/ffmpeg.js/",
+    "test": "echo No tests yet!",
+    "watch": "npm-run-all -p watch:*",
+    "release:zip": "node scripts/release-zip.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/collab-project/videojs-record.git"
+  },
+  "dependencies": {
+    "ffmpeg.js": "^3.1.9001",
+    "lamejs": "^1.2.0",
+    "libvorbis.js": "^1.1.2",
+    "opus-recorder": "^6.2.0",
+    "vmsg": "^0.3.6",
+    "webm-wasm": "^0.4.1"
+  },
+  "devDependencies": {
+    "cpx": "^1.5.0",
+    "docsify": "^4.11.3",
+    "in-publish": "^2.0.1",
+    "npm-run-all": "^4.1.5"
+  }
+}
