@@ -95,7 +95,7 @@
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^7.0.0",
-    "ffmpeg.js": "^3.1.9001",
+    "ffmpeg.js": "^4.2.9003",
     "file-loader": "^6.0.0",
     "fine-uploader": ">=5.16",
     "formidable": "^1.2.2",
