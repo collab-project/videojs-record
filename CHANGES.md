@@ -2,7 +2,7 @@
 
 ## 3.12.0 - unreleased
 
-- Move documentation to website
+- Move documentation to website (#472)
 
 
 ## 3.11.0 - 2020/03/02

@@ -34,7 +34,7 @@ Alternative CDN locations:
 Since v2.0 this plugin is compatible with:
 
 - video.js 6.2.7 or newer
-- videojs-wavesurfer 2.x
+- videojs-wavesurfer 2.x (not compatible with v3.x yet)
 
 If you want to use this plugin with an older video.js or videojs-wavesurfer version,
 check the [archived releases](https://github.com/collab-project/videojs-record/releases)
