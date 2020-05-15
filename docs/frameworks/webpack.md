@@ -4,6 +4,15 @@ This document describes how to setup [Webpack](https://webpack.js.org/) with vid
 
 ## Installation
 
+Create a project directory, e.g. `videojs-record-webpack`.
+
+Create a sample `package.json`:
+
+```console
+cd videojs-record-webpack
+npm init --force
+```
+
 Install Webpack:
 
 ```console
@@ -13,7 +22,7 @@ npm install -D webpack webpack-dev-server webpack-cli css-loader style-loader
 Install videojs-record:
 
 ```console
-npm install videojs-record
+npm install --save videojs-record
 ```
 
 ## Configuration
