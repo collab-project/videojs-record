@@ -9,7 +9,8 @@
 | Android | Chrome / Firefox / Opera | Audio + Video + Image | |
 | Safari | Stable / Beta / Preview | Audio + Video + Image + Screen | [#332](https://github.com/collab-project/videojs-record/issues/332) |
 | Safari iOS | Stable / Beta | Audio + Image | [#332](https://github.com/collab-project/videojs-record/issues/332) |
-| Microsoft Edge | Normal Build | Audio + Image | [#178](https://github.com/collab-project/videojs-record/issues/178) |
+| Microsoft Edge | Based on Chromium | audio + video + screen | |
+| Microsoft Edge | Old deprecated versions | Audio + Image | [#178](https://github.com/collab-project/videojs-record/issues/178) |
 
 ## Browser API {docsify-ignore}
 
@@ -27,7 +28,7 @@ Current browser API support for this library:
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
 ║ Android Firefox │ ✔            │ ✖             │ ✔        │ ?               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
-║ Edge            │ ✔            │ ✖             │ ✔        │ ✔               ║
+║ Edge            │ ✔            │ ✔             │ ✔        │ ✔               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
 ║ iOS Safari      │ ✔            │ ✖             │ ✔        │ ?               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
