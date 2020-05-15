@@ -2,6 +2,7 @@
 
 ## 3.12.0 - unreleased
 
+- Add compatibility for video.js 7.7.6 and newer (#465)
 - Move documentation to website (#472)
 
 

@@ -1198,7 +1198,8 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 if (this.player.controlBar.currentTimeDisplay &&
-                    this.player.controlBar.currentTimeDisplay.contentEl()) {
+                    this.player.controlBar.currentTimeDisplay.contentEl() &&
+                    this.player.controlBar.currentTimeDisplay.contentEl().lastChild) {
                     this.streamCurrentTime = Math.min(currentTime, duration);
 
                     // update current time display component
@@ -1244,7 +1245,8 @@ class Record extends Plugin {
             case SCREEN_ONLY:
                 // update duration display component
                 if (this.player.controlBar.durationDisplay &&
-                    this.player.controlBar.durationDisplay.contentEl()) {
+                    this.player.controlBar.durationDisplay.contentEl() &&
+                    this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.msDisplayMax);
