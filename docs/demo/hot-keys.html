@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hot-keys Example - Record Plugin for Video.js</title>
+
+  <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet">
+  <link href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css" rel="stylesheet">
+  <link href="assets/examples.css" rel="stylesheet">
+
+  <script src="//vjs.zencdn.net/7.6.6/video.min.js"></script>
+  <script src="//unpkg.com/recordrtc/RecordRTC.js"></script>
+  <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
+
+  <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
+
+  <script src="browser-workarounds.js"></script>
+
+  <style>
+  /* change player background color */
+  #myVideo {
+      background-color: #DE1F85;
+  }
+  </style>
+</head>
+<body>
+
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
+
+<script>
+/* eslint-disable */
+var options = {
+    controls: true,
+    width: 320,
+    height: 240,
+    fluid: false,
+    controlBar: {
+        volumePanel: false
+    },
+    plugins: {
+        record: {
+            audio: false,
+            video: true,
+            maxLength: 10,
+            debug: true,
+            hotKeys: true
+            // or specify a custom key handler
+            //hotKeys: function(event) {
+            //    console.log('pressed key: ' + event.which);
+            //}
+        }
+    }
+};
+
+// apply some workarounds for opera browser
+applyVideoWorkaround();
+
+var player = videojs('myVideo', options, function() {
+    // print version information at startup
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ' and recordrtc ' + RecordRTC.version;
+    videojs.log(msg);
+});
+
+// error handling
+player.on('deviceError', function() {
+    console.warn('device error:', player.deviceErrorCode);
+});
+
+player.on('error', function(element, error) {
+    console.error(error);
+});
+
+// user clicked the record button and started recording
+player.on('startRecord', function() {
+    console.log('started recording!');
+});
+
+// user completed recording and stream is available
+player.on('finishRecord', function() {
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording: ', player.recordedData);
+});
+</script>
+
+</body>
+</html>
