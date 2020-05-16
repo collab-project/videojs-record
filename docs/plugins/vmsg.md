@@ -10,11 +10,16 @@ and lightweight MP3 encoder. vmsg is currently only supported when recording aud
 
 ## Usage
 
-Include the `videojs.record.vmsg.js` plugin:
+Install the library:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.vmsg.js"></script>
+```console
+npm install --save vmsg
+```
+
+Import the plugin:
+
+```javascript
+import VmsgEngine from 'videojs-record/dist/plugins/videojs.record.vmsg.js';
 ```
 
 And specify the `vmsg` `audioEngine` and `audioWorkerURL` options. Use the

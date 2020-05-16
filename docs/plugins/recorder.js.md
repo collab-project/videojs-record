@@ -13,17 +13,22 @@ Note that this plugin is deprecated because recorder.js is an unmaintained libra
 
 ## Usage
 
+Install the library:
+
+```console
+npm install --save git+https://github.com/mattdiamond/Recorderjs.git
+```
+
 Include the recorder.js script on the page:
 
 ```html
-<script src="recorder.js"></script>
+<script src="recorderjs/dist/recorder.js"></script>
 ```
 
-And include the `videojs.record.recorderjs.js` plugin:
+Import the plugin:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.recorderjs.js"></script>
+```javascript
+import RecorderjsEngine from 'videojs-record/dist/plugins/videojs.record.recorderjs.js';
 ```
 
 And specify the `recorder.js` `audioEngine` option:

@@ -13,11 +13,16 @@ builds ported to JavaScript using the Emscripten project, optimized for in-brows
 
 ## Usage
 
-Include the `videojs.record.ffmpegjs.js` plugin:
+Install the library:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.ffmpegjs.js"></script>
+```console
+npm install --save ffmpeg.js
+```
+
+Import the plugin:
+
+```javascript
+import FFmpegjsEngine from 'videojs-record/dist/plugins/videojs.record.ffmpegjs.js';
 ```
 
 And configure the `ffmpeg.js` `convertEngine`. For example:

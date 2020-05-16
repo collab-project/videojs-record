@@ -10,11 +10,10 @@ for creating seekable webm files, by injecting metadata like duration.
 
 ## Usage
 
-Include the `videojs.record.ts-ebml.js` plugin:
+Import the plugin:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.ts-ebml.js"></script>
+```javascript
+import TsEBMLEngine from 'videojs-record/dist/plugins/videojs.record.ts-ebml.js';
 ```
 
 And specify the `ts-ebml` `convertEngine` option. For example:

@@ -4,7 +4,7 @@
 Start by importing the video.js stylesheet and library:
 
 ```javascript
-import video_css from 'video.js/dist/video-js.min.css';
+import 'video.js/dist/video-js.min.css';
 import videojs from 'video.js';
 ```
 
@@ -18,7 +18,7 @@ Add the extra stylesheet for the plugin that includes a
 [custom font](font) with additional icons:
 
 ```javascript
-import record_css from 'videojs-record/dist/css/videojs.record.css';
+import 'videojs-record/dist/css/videojs.record.css';
 ```
 
 The videojs-record plugin will automatically register itself after importing
@@ -53,7 +53,7 @@ import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js
 WaveSurfer.microphone = MicrophonePlugin;
 
 // register videojs-wavesurfer plugin
-import wavesurfer_css from 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
+import 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
 import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 ```
 
