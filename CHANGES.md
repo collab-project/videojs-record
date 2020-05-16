@@ -4,6 +4,8 @@
 
 - Add compatibility for video.js 7.7.6 and newer (#465)
 - Move documentation to website (#472)
+- Bump required version for video.js to 7.0.5 or newer
+- Bump required version for videojs-wavesurfer to 3.0.4 or newer
 
 
 ## 3.11.0 - 2020/03/02
