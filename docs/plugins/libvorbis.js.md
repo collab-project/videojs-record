@@ -16,17 +16,22 @@ audio-only.
 
 ## Usage
 
-Include the libvorbis.js script and place it before any other scripts:
+Install the library:
 
-```html
-<script src="libvorbis.min.js"></script>
+```console
+npm install --save libvorbis.js
 ```
 
-Also include the `videojs.record.libvorbis.js` plugin:
+Include the libvorbis.js library and place it before any other scripts:
 
 ```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.libvorbis.js"></script>
+<script src="libvorbis.js/js/libvorbis.min.js"></script>
+```
+
+Import the plugin:
+
+```javascript
+import LibVorbisEngine from 'videojs-record/dist/plugins/videojs.record.libvorbis.js';
 ```
 
 And use `libvorbis.js` for the `audioEngine` option:

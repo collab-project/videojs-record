@@ -1,37 +1,37 @@
 # Usage
 
 ## Setup
-Start by including the video.js stylesheet and library:
+Start by importing the video.js stylesheet and library:
 
-```html
-<link href="video-js.min.css" rel="stylesheet">
-<script src="video.min.js"></script>
+```javascript
+import 'video.js/dist/video-js.min.css';
+import videojs from 'video.js';
 ```
 
-If you're going to record audio and/or video you need to include RecordRTC as well:
+If you're going to record audio and/or video you need RecordRTC as well:
 
-```html
-<script src="RecordRTC.js"></script>
-```
-
-The videojs-record plugin automatically registers itself when the script
-is included on the page:
-
-```html
-<script src="videojs.record.js"></script>
+```javascript
+import RecordRTC from 'recordrtc';
 ```
 
 Add the extra stylesheet for the plugin that includes a
 [custom font](font) with additional icons:
 
-```html
-<link href="videojs.record.css" rel="stylesheet">
+```javascript
+import 'videojs-record/dist/css/videojs.record.css';
+```
+
+The videojs-record plugin will automatically register itself after importing
+it:
+
+```javascript
+import Record from 'videojs-record/dist/videojs.record.js';
 ```
 
 ## Audio/video/image/screen
 
-When recording either audio/video, video-only, screen-only, audio/screen, animated GIF or a single image,
-include a `video` element:
+When recording either audio/video, video-only, screen-only, audio/screen,
+animated GIF or a single image, include a `video` element:
 
 ```html
 <video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
@@ -42,13 +42,19 @@ include a `video` element:
 ![Audio-only screenshot](img/audio-only.png?raw=true "Audio-only screenshot")
 
 When recording audio-only, also include the wavesurfer.js library and
-the videojs-wavesurfer and microphone plugins. Make sure to place this before
-the `videojs.record.js` script.
+the videojs-wavesurfer and microphone plugins. Make sure to import
+these libraries before videojs-record.
 
-```html
-<script src="wavesurfer.min.js"></script>
-<script src="wavesurfer.microphone.min.js"></script>
-<script src="videojs.wavesurfer.js"></script>
+```javascript
+// the following imports are only needed when you're recording
+// audio-only using the videojs-wavesurfer plugin
+import WaveSurfer from 'wavesurfer.js';
+import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
+WaveSurfer.microphone = MicrophonePlugin;
+
+// register videojs-wavesurfer plugin
+import 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
+import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 ```
 
 And define an `audio` element:
@@ -63,8 +69,8 @@ be supported in the browser) like Ogg Vorbis, MP3 and Opus.
 
 ## Configuration
 
-Define the player configuration and enable the videojs-record plugin by adding a `record` entry:
-
+Define the player configuration and enable the videojs-record plugin by adding
+a `record` entry:
 
 ```javascript
 let options = {
@@ -89,13 +95,14 @@ let options = {
 
 Finally, create the player:
 
-
 ```javascript
 let player = videojs('myVideo', options, function() {
     // print version information at startup
     const msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record');
     videojs.log(msg);
+
+    console.log("videojs-record is ready!");
 });
 ```
 

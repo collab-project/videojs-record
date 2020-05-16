@@ -11,17 +11,22 @@ opus-recorder is currently only supported when recording audio-only.
 
 ## Usage
 
+Install the library:
+
+```console
+npm install --save opus-recorder
+```
+
 Include the opus-recorder script and place it before any other scripts:
 
 ```html
-<script src="recorder.min.js"></script>
+<script src="opus-recorder/dist/recorder.min.js"></script>
 ```
 
-Include the `videojs.record.opus-recorder.js` plugin:
+Import the plugin:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.opus-recorder.js"></script>
+```javascript
+import OpusRecorderEngine from 'videojs-record/dist/plugins/videojs.record.opus-recorder.js';
 ```
 
 And specify the `opus-recorder` `audioEngine` and `audioWorkerURL` options.

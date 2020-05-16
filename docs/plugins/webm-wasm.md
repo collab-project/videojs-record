@@ -10,11 +10,17 @@ recordings in JavaScript using libwebm (compiled using WebAssembly).
 
 ## Usage
 
-Include the `videojs.record.webm-wasm.js` plugin:
+Install the library and polyfill:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.webm-wasm.js"></script>
+```console
+npm install --save webm-wasm @mattiasbuelens/web-streams-polyfill
+```
+
+Import the polyfill and plugin:
+
+```javascript
+import '@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js';
+import WebmWasmEngine from 'videojs-record/dist/plugins/videojs.record.webm-wasm.js';
 ```
 
 And specify the `webm-wasm` `videoEngine`, `videoWorkerURL` and

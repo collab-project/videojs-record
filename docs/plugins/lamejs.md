@@ -12,14 +12,19 @@ audio-only.
 
 ## Usage
 
-Include the `videojs.record.lamejs.js` plugin:
+Install the library:
 
-```html
-<script src="dist/videojs.record.js"></script>
-<script src="dist/plugins/videojs.record.lamejs.js"></script>
+```console
+npm install --save lamejs
 ```
 
-Enable lamejs by specifying the `lamejs` `audioEngine` and the
+Import the plugin:
+
+```javascript
+import LamejsEngine from 'videojs-record/dist/plugins/videojs.record.lamejs.js';
+```
+
+Enable the plugin by specifying the `lamejs` `audioEngine` and the
 `audioWorkerURL` options:
 
 ```javascript
