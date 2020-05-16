@@ -146,18 +146,6 @@ import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 import 'videojs-record/dist/css/videojs.record.css';
 import Record from 'videojs-record/dist/videojs.record.js';
 
-// Optional imports for videojs-record plugins
-/*
-// webm-wasm plugin (npm install webm-wasm @mattiasbuelens/web-streams-polyfill)
-// Make sure to copy webm-worker.js and webm-wasm.wasm from
-// node_modules/webm-wasm/dist/ to the project's public directory
-import '@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js';
-import 'videojs-record/dist/plugins/videojs.record.webm-wasm.js';
-
-// ts-ebml plugin (npm install ts-ebml)
-import 'videojs-record/dist/plugins/videojs.record.ts-ebml.js';
-*/
-
 class App extends Component {
     componentDidMount() {
         // instantiate Video.js

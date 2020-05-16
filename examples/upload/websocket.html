@@ -44,13 +44,24 @@ var options = {
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#19613C',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            plugins: [
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         record: {
             audio: true,
