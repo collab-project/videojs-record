@@ -1,11 +1,18 @@
 # videojs-record changelog
 
-## 3.12.0 - unreleased
+## 4.0.0 - unreleased
 
 - Add compatibility for video.js 7.7.6 and newer (#465)
 - Move documentation to website (#472)
 - Bump required version for video.js to 7.0.5 or newer
 - Bump required version for videojs-wavesurfer to 3.0.4 or newer
+
+**Backwards-incompatible changes** (when upgrading from a previous version):
+
+- Configuration for microphone/audio-only has changed (due to videojs-wavesurfer upgrade):
+  - Specify `backend: 'WebAudio'` instead of `src: 'live'`
+  - Enable the wavesurfer.js microphone plugin using the `plugins` object of
+    the `wavesurfer` plugin config
 
 
 ## 3.11.0 - 2020/03/02
