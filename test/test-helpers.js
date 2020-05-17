@@ -16,13 +16,25 @@ const TestHelpers = {
     TEST_WEBM: '/base/test/support/no_metadata.webm',
 
     DEFAULT_WAVESURFER_OPTIONS: {
-        src: 'live',
+        backend: 'WebAudio',
         waveColor: '#36393b',
         progressColor: 'black',
         debug: true,
         cursorWidth: 1,
         msDisplayMax: 20,
-        hideScrollbar: true
+        hideScrollbar: true,
+        plugins: [
+            // enable microphone plugin
+            WaveSurfer.microphone.create({
+                bufferSize: 4096,
+                numberOfInputChannels: 1,
+                numberOfOutputChannels: 1,
+                constraints: {
+                    video: false,
+                    audio: true
+                }
+            })
+        ]
     },
 
     applyScreenWorkaround() {
