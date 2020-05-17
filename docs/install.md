@@ -31,7 +31,7 @@ Alternative CDN locations:
 
 ## Upgrade
 
-Since v3.0 this plugin is compatible with:
+Since version 4.0.0 this plugin is compatible with:
 
 - video.js 7.0.5 or newer
 - videojs-wavesurfer 3.0.4 or newer
