@@ -4,8 +4,10 @@
 
 - Add compatibility for video.js 7.7.6 and newer (#465)
 - Move documentation to website (#472)
-- Bump required version for video.js to 7.0.5 or newer
-- Bump required version for videojs-wavesurfer to 3.0.4 or newer
+- Bump required version for:
+  - video.js (7.0.5 or newer)
+  - recordrtc (5.6.1 or newer)
+  - videojs-wavesurfer (3.0.4 or newer)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
