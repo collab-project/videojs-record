@@ -2,13 +2,13 @@
 
 ## 4.0.0 - unreleased
 
-- Add compatibility for video.js 7.7.6 and newer (#465)
-- Move documentation to website (#472)
 - Fix milliseconds in `formatTime` (#443)
+- Move documentation to website (#472)
 - Bump required version for:
   - video.js (7.0.5 or newer)
-  - videojs-wavesurfer (3.1.0 or newer)
+  - videojs-wavesurfer (3.2.0 or newer)
   - recordrtc (5.6.1 or newer)
+- Add compatibility for video.js 7.7.6 and newer (#465)
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
