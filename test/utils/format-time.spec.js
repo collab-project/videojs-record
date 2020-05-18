@@ -6,7 +6,7 @@ import formatTime from '../../src/js/utils/format-time.js';
 
 /** @test {format-time} */
 describe('utils.formatTime', () => {
-    beforeAll(function () {
+    beforeAll(() => {
         videojs.resetFormatTime();
     });
 
