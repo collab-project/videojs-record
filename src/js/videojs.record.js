@@ -1458,6 +1458,34 @@ class Record extends Plugin {
     }
 
     /**
+     * Export image data of waveform (audio-only) or current video frame.
+     *
+     * The default format is `'image/png'`. Other supported types are
+     * `'image/jpeg'` and `'image/webp'`.
+     *
+     * @param {string} format='image/png' A string indicating the image format.
+     * The default format type is `'image/png'`.
+     * @param {number} quality=1 A number between 0 and 1 indicating the image
+     * quality to use for image formats that use lossy compression such as
+     * `'image/jpeg'`` and `'image/webp'`.
+     * @return {Promise} Returns a `Promise` resolving with an
+     * array of `Blob` instances.
+     */
+    exportImage(format = 'image/png', quality = 1) {
+        if (this.getRecordType() === AUDIO_ONLY) {
+            return this.surfer.surfer.exportImage(format, quality, 'blob');
+        } else {
+            // get a frame and copy it onto the canvas
+            let recordCanvas = this.player.recordCanvas.el().firstChild;
+            this.drawCanvas(recordCanvas, this.mediaElement);
+
+            return new Promise(resolve => {
+                recordCanvas.toBlob(resolve, format, quality);
+            });
+        }
+    }
+
+    /**
      * Mute LocalMediaStream audio and video tracks.
      *
      * @param {boolean} mute - Whether or not the mute the track(s).

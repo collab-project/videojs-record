@@ -367,6 +367,49 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record#exportImage} */
+    it('exports image (video)', (done) => {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one(Event.DEVICE_READY, () => {
+             // default to png
+            player.record().exportImage().then((arrayOfBlob) => {
+                expect(arrayOfBlob instanceof Array).toBeTruthy();
+                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
+                expect(arrayOfBlob[0].type).toEqual('image/png');
+
+                done();
+            });
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#exportImage} */
+    it('exports image (audio)', (done) => {
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer();
+
+        player.one(Event.DEVICE_READY, () => {
+            // default to png
+            player.record().exportImage().then((arrayOfBlob) => {
+                // received a blob
+                expect(arrayOfBlob instanceof Array).toBeTruthy();
+                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
+                expect(arrayOfBlob[0].type).toEqual('image/png');
+
+                done();
+            });
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
     /** @test {Record#enumerateDevices} */
     it('enumerates devices', (done) => {
         // create new player

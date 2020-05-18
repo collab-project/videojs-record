@@ -2,6 +2,8 @@
 
 ## 4.0.0 - unreleased
 
+- Add ability to grab waveform (audio-only) or video frame data using
+  `exportImage` (#417)
 - Fix milliseconds in `formatTime` (#443)
 - Move documentation to website (#472)
 - Bump required version for:
