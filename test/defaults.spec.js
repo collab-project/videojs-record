@@ -22,7 +22,7 @@ describe('pluginDefaultOptions', () => {
             screen: false,
             maxLength: 10,
             maxFileSize: 0,
-            msDisplayMax: 3,
+            displayMilliseconds: false,
             frameWidth: 320,
             frameHeight: 240,
             debug: false,

@@ -21,7 +21,7 @@ const TestHelpers = {
         progressColor: 'black',
         debug: true,
         cursorWidth: 1,
-        msDisplayMax: 20,
+        displayMilliseconds: false,
         hideScrollbar: true,
         plugins: [
             // enable microphone plugin
