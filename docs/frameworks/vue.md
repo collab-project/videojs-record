@@ -95,6 +95,7 @@ Create `src/components/VideoJSRecord.vue`:
                     loop: false,
                     width: 320,
                     height: 240,
+                    bigPlayButton: false,
                     controlBar: {
                         volumePanel: false
                     },
@@ -107,7 +108,7 @@ Create `src/components/VideoJSRecord.vue`:
                             progressColor: 'black',
                             debug: true,
                             cursorWidth: 1,
-                            msDisplayMax: 20,
+                            displayMilliseconds: true,
                             hideScrollbar: true,
                             plugins: [
                                 // enable microphone plugin

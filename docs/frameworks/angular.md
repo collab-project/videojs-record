@@ -179,6 +179,7 @@ export class VideoJSRecordComponent implements OnInit, OnDestroy {
       loop: false,
       width: 320,
       height: 240,
+      bigPlayButton: false,
       controlBar: {
         volumePanel: false
       },
@@ -191,7 +192,7 @@ export class VideoJSRecordComponent implements OnInit, OnDestroy {
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
+            displayMilliseconds: true,
             hideScrollbar: true,
             plugins: [
                 // enable microphone plugin

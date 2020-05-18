@@ -57,6 +57,7 @@ class VideojsRecordPlayer extends React.Component {
 
 const videoJsOptions = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,

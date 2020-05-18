@@ -66,6 +66,11 @@ class Record extends Plugin {
         // (re)set recorder state
         this.resetState();
 
+        // use custom video.js time format
+        videojs.setFormatTime((seconds, guide) => {
+            return formatTime(seconds, guide, this.displayMilliseconds);
+        });
+
         // add device button with icon based on type
         let deviceIcon = 'av-perm';
 
@@ -171,7 +176,7 @@ class Record extends Plugin {
         this.recordScreen = recordOptions.screen;
         this.maxLength = recordOptions.maxLength;
         this.maxFileSize = recordOptions.maxFileSize;
-        this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
+        this.displayMilliseconds = recordOptions.displayMilliseconds;
         this.debug = recordOptions.debug;
         this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
@@ -268,7 +273,9 @@ class Record extends Plugin {
             case SCREEN_ONLY:
             case AUDIO_SCREEN:
                 // customize controls
-                this.player.bigPlayButton.hide();
+                if (this.player.bigPlayButton !== undefined) {
+                    this.player.bigPlayButton.hide();
+                }
 
                 // 'loadedmetadata' and 'loadstart' events reset the
                 // durationDisplay for the first time: prevent this
@@ -318,6 +325,7 @@ class Record extends Plugin {
         this.player.off(Event.DURATIONCHANGE);
         this.player.off(Event.LOADEDMETADATA);
         this.player.off(Event.LOADSTART);
+        this.player.off(Event.ENDED);
 
         // display max record time
         this.setDuration(this.maxLength);
@@ -1205,7 +1213,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1249,7 +1257,7 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                        formatTime(duration, duration, this.msDisplayMax);
+                        formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
         }

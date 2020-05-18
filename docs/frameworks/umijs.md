@@ -64,6 +64,7 @@ import Record from 'videojs-record/dist/videojs.record.js';
 
 const videoJsOptions = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
@@ -76,7 +77,7 @@ const videoJsOptions = {
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
+            displayMilliseconds: true,
             hideScrollbar: true,
             plugins: [
                 // enable microphone plugin

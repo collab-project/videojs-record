@@ -132,6 +132,7 @@ const options = {
     loop: false,
     width: 320,
     height: 240,
+    bigPlayButton: false,
     controlBar: {
         volumePanel: false
     },
@@ -144,7 +145,7 @@ const options = {
             progressColor: '#203336',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
+            displayMilliseconds: true,
             hideScrollbar: true,
             plugins: [
                 // enable microphone plugin

@@ -79,6 +79,7 @@ import * as serviceWorker from './serviceWorker';
 
 const videoJsOptions = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
@@ -93,6 +94,7 @@ const videoJsOptions = {
             cursorWidth: 1,
             msDisplayMax: 20,
             hideScrollbar: true,
+            displayMilliseconds: true,
             plugins: [
                 // enable microphone plugin
                 WaveSurfer.microphone.create({

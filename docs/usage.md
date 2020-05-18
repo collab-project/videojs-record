@@ -76,6 +76,7 @@ a `record` entry:
 let options = {
     // video.js options
     controls: true,
+    bigPlayButton: false,
     loop: false,
     fluid: false,
     width: 320,

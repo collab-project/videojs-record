@@ -39,6 +39,7 @@ var sock;
 var startedRecord = false;
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
@@ -49,7 +50,7 @@ var options = {
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
+            displayMilliseconds: true,
             hideScrollbar: true,
             plugins: [
                 WaveSurfer.microphone.create({

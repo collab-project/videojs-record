@@ -20,13 +20,9 @@ const pluginDefaultOptions = {
     // Maximum file size of the recorded clip. Works only when the timeSlice
     // option is also enabled.
     maxFileSize: 0,
-    // msDisplayMax indicates the number of seconds that is
-    // considered the boundary value for displaying milliseconds
-    // in the time controls. An audio clip with a total length of
-    // 2 seconds and a msDisplayMax of 3 will use the format
-    // M:SS:MMM. Clips longer than msDisplayMax will be displayed
-    // as M:SS or HH:MM:SS.
-    msDisplayMax: 3,
+    // Boolean indicating if milliseconds should be included,
+    // e.g. "00:00:000" vs "00:00".
+    displayMilliseconds: false,
     // Width of the recorded video frames.
     frameWidth: 320,
     // Height of the recorded video frames.

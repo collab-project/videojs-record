@@ -21,7 +21,7 @@ Additional options for this plugin are:
 | `pip` | boolean | `false` | Enables [Picture-in-Picture support](picture-in-picture.md). Enable to add Picture-in-Picture button to controlbar. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `maxFileSize` | float | `0` | Maximum file size of a recorded clip (in bytes). Recording will stop when the limit is reached. Default is 0 (no file size limit). Can only be used when `timeSlice` option is also enabled. |
-| `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
+| `displayMilliseconds` | boolean | `false` | Indicates if milliseconds should be included in time displays, e.g. `00:00:000` vs `00:00`. |
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](recorded-data#timestamps) during recording by listening for the `timestamp` event. |
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](media-constraints.md) to change the camera resolution width. |
