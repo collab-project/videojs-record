@@ -27,6 +27,7 @@ import addZero from 'add-zero';
  * @private
  */
 const formatTime = function(seconds, guide, displayMilliseconds = false) {
+    // buddy ignore:start
     seconds = seconds < 0 ? 0 : seconds;
     if (isNaN(seconds) || seconds === Infinity) {
         seconds = 0;
@@ -53,6 +54,7 @@ const formatTime = function(seconds, guide, displayMilliseconds = false) {
     }
 
     return `${min}:${sec}`;
+    // buddy ignore:end
 };
 
 export default formatTime;
