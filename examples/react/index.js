@@ -66,6 +66,7 @@ const videoJsOptions = {
             audio: true,
             video: true,
             maxLength: 10,
+            displayMilliseconds: false,
             debug: true
         }
     }

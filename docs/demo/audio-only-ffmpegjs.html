@@ -48,7 +48,6 @@ var options = {
             debug: true,
             cursorWidth: 1,
             hideScrollbar: true,
-            displayMilliseconds: true,
             plugins: [
                 // enable microphone plugin
                 WaveSurfer.microphone.create({
@@ -67,6 +66,7 @@ var options = {
             video: false,
             maxLength: 20,
             debug: true,
+            displayMilliseconds: true,
             convertEngine: 'ffmpeg.js',
             // convert recorded data to MP3
             convertOptions: ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'],
