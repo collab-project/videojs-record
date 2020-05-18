@@ -35,3 +35,9 @@ are run using:
 ```console
 npm run <command>
 ```
+
+To view a list of all available commands:
+
+```console
+npm run --list
+```
