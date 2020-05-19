@@ -1,4 +1,6 @@
 dist: bionic
+env:
+  - MOZ_FORCE_DISABLE_E10S="true"
 
 language: node_js
 node_js:
