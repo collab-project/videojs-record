@@ -226,7 +226,7 @@ const TestHelpers = {
                 recordPluginOptions.convertEngine = FFMPEGJS;
                 recordPluginOptions.convertWorkerURL = '/base/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js';
                 recordPluginOptions.convertOptions = ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'];
-                recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mp3'};
+                recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mpeg'};
                 break;
 
             default:
