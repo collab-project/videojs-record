@@ -518,10 +518,12 @@ class Record extends Plugin {
                     navigator.mediaDevices.getUserMedia({
                         audio: this.recordAudio
                     }).then((mic) => {
-                        // Join microphone track with screencast stream (order matters)
+                        // join microphone track with screencast stream (order matters)
                         screenStream.addTrack(mic.getTracks()[0]);
                         this.onDeviceReady.bind(this)(screenStream);
-                    });
+                    }).catch(
+                        this.onDeviceError.bind(this)
+                    );
                 }).catch(
                     this.onDeviceError.bind(this)
                 );

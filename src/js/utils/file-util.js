@@ -44,7 +44,7 @@ const downloadBlob = function(fileName, data) {
 /**
  * Read `Blob` as `ArrayBuffer`.
  *
- * @param {(Blob|File)} fileObj - Blob or File object to read.
+ * @param {(Blob|File)} fileObj - `Blob` or `File` object to read.
  * @returns {void}
  * @private
  */
@@ -64,7 +64,7 @@ const blobToArrayBuffer = function(fileObj) {
 /**
  * Add filename and timestamp to recorded file object.
  *
- * @param {(Blob|File)} fileObj - Blob or File object to modify.
+ * @param {(Blob|File)} fileObj - `Blob` or `File` object to modify.
  * @param {date} [now] - Optional date information, default is
  *    current timestamp.
  * @private
@@ -90,11 +90,6 @@ const addFileInfo = function(fileObj, now) {
         // any extension is valid here. Chrome also accepts extended
         // mime types like video/webm;codecs=h264,vp9,opus
         const fileExtension = '.' + getExtension(fileObj.type);
-
-        /* + fileObj.type.split('/')[1];
-        if (fileExtension.indexOf(';') > -1) {
-            fileExtension = fileExtension.split(';')[0];
-        }*/
 
         // use timestamp in filename, e.g. 1451180941326.ogg
         try {
