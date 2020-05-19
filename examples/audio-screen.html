@@ -18,7 +18,7 @@
 
   <style>
   /* change player background color */
-  #myVideo {
+  #myScreenAudio {
       background-color: #9ab87a;
   }
   </style>
@@ -42,7 +42,8 @@ var options = {
         record: {
             audio: true,
             screen: true,
-            debug: true
+            debug: true,
+            displayMilliseconds: false
         }
     }
 };
@@ -77,7 +78,7 @@ player.on('startRecord', function() {
 player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
-    console.log('screen+audio capture ready: ', player.recordedData);
+    console.log('screen+audio recording ready: ', player.recordedData);
 });
 </script>
 
