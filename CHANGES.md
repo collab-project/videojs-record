@@ -6,6 +6,8 @@
   `exportImage` (#417)
 - Fix file extension for `video/x-matroska` mime-type (#464, #469)
 - Fix milliseconds in `formatTime` (#443)
+- Ask again for device permissions in Firefox when user cleared them
+  manually (#468)
 - Move documentation to website (#472)
 - Bump required version for:
   - video.js (7.0.5 or newer)

@@ -472,7 +472,7 @@ class Record extends Plugin {
                         }
                     };
                 }
-                // open browser device selection dialog
+                // open browser device selection/permissions dialog
                 this.surfer.surfer.microphone.start();
                 break;
 
@@ -811,6 +811,12 @@ class Record extends Plugin {
      */
     start() {
         if (!this.isProcessing()) {
+            // check if user didn't revoke permissions after a previous recording
+            if (this.stream && this.stream.active === false) {
+                // ask for permissions again
+                this.getDevice();
+                return;
+            }
             this._recording = true;
 
             // hide play/pause control
