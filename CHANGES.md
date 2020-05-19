@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.0.0 - unreleased
+## 4.0.0 - 2020/05/20
 
 - Add ability to grab waveform (audio-only) or video frame data using
   `exportImage` (#417)

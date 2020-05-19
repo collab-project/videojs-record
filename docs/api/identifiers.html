@@ -91,6 +91,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-blobToArrayBuffer">blobToArrayBuffer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-downloadBlob">downloadBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getExtension">getExtension</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -206,7 +207,7 @@
           <span data-ice="kind-icon" class="kind-variable">V</span>
           
           
-          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-pluginDefaultOptions">pluginDefaultOptions</a></span></span><span class="code" data-ice="signature">: {&quot;image&quot;: <span>*</span>, &quot;audio&quot;: <span>*</span>, &quot;video&quot;: <span>*</span>, &quot;animation&quot;: <span>*</span>, &quot;screen&quot;: <span>*</span>, &quot;maxLength&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;maxFileSize&quot;: <span>*</span>, &quot;msDisplayMax&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;frameWidth&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;frameHeight&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;debug&quot;: <span>*</span>, &quot;pip&quot;: <span>*</span>, &quot;autoMuteDevice&quot;: <span>*</span>, &quot;videoBitRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;videoEngine&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;videoFrameRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;videoMimeType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;videoRecorderType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;videoWorkerURL&quot;: <span>*</span>, &quot;videoWebAssemblyURL&quot;: <span>*</span>, &quot;audioEngine&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;audioRecorderType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;audioMimeType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;audioBufferSize&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioSampleRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioBitRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioChannels&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioWorkerURL&quot;: <span>*</span>, &quot;audioWebAssemblyURL&quot;: <span>*</span>, &quot;audioBufferUpdate&quot;: <span>*</span>, &quot;animationFrameRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;animationQuality&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;imageOutputType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;imageOutputFormat&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;imageOutputQuality&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;timeSlice&quot;: <span>*</span>, &quot;convertEngine&quot;: <span>*</span>, &quot;convertWorkerURL&quot;: <span>*</span>, &quot;convertOptions&quot;: <span>*</span>, &quot;hotKeys&quot;: <span>*</span>, &quot;pluginLibraryOptions&quot;: <span>*</span>}</span>
+          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-pluginDefaultOptions">pluginDefaultOptions</a></span></span><span class="code" data-ice="signature">: {&quot;image&quot;: <span>*</span>, &quot;audio&quot;: <span>*</span>, &quot;video&quot;: <span>*</span>, &quot;animation&quot;: <span>*</span>, &quot;screen&quot;: <span>*</span>, &quot;maxLength&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;maxFileSize&quot;: <span>*</span>, &quot;displayMilliseconds&quot;: <span>*</span>, &quot;frameWidth&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;frameHeight&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;debug&quot;: <span>*</span>, &quot;pip&quot;: <span>*</span>, &quot;autoMuteDevice&quot;: <span>*</span>, &quot;videoBitRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;videoEngine&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;videoFrameRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;videoMimeType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;videoRecorderType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;videoWorkerURL&quot;: <span>*</span>, &quot;videoWebAssemblyURL&quot;: <span>*</span>, &quot;audioEngine&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;audioRecorderType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;audioMimeType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;audioBufferSize&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioSampleRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioBitRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioChannels&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;audioWorkerURL&quot;: <span>*</span>, &quot;audioWebAssemblyURL&quot;: <span>*</span>, &quot;audioBufferUpdate&quot;: <span>*</span>, &quot;animationFrameRate&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;animationQuality&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;imageOutputType&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;imageOutputFormat&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;imageOutputQuality&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, &quot;timeSlice&quot;: <span>*</span>, &quot;convertEngine&quot;: <span>*</span>, &quot;convertWorkerURL&quot;: <span>*</span>, &quot;convertOptions&quot;: <span>*</span>, &quot;hotKeys&quot;: <span>*</span>, &quot;pluginLibraryOptions&quot;: <span>*</span>}</span>
         </p>
       </div>
       <div>
@@ -1726,13 +1727,13 @@
           <span data-ice="kind-icon" class="kind-function">F</span>
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-addFileInfo">addFileInfo</a></span></span><span class="code" data-ice="signature">(fileObj: <span>Blob</span> | <span>File</span>, now: <span>date</span>)</span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-addFileInfo">addFileInfo</a></span></span><span class="code" data-ice="signature">(fileObj: <span>Blob</span> | <span>File</span>, dateObj: <span>date</span>, fileExtension: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Add filename and timestamp to recorded file object.</p>
+        <div data-ice="description"><p>Add filename and modification date to recorded file object.</p>
 </div>
       </div>
     </td>
@@ -1813,13 +1814,42 @@
           <span data-ice="kind-icon" class="kind-function">F</span>
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span><span class="code" data-ice="signature">(seconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, guide: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, msDisplayMax: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span><span class="code" data-ice="signature">(seconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, guide: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, displayMilliseconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.</p>
+        <div data-ice="description"><p>Format seconds as a duration string.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          <span data-ice="kind-icon" class="kind-function">F</span>
+          
+          
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-getExtension">getExtension</a></span></span><span class="code" data-ice="signature">(mimeType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get file extension for mime-type.</p>
 </div>
       </div>
     </td>

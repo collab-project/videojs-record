@@ -91,6 +91,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-blobToArrayBuffer">blobToArrayBuffer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-downloadBlob">downloadBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getExtension">getExtension</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -100,6 +101,8 @@
  * @file file-util.js
  * @since 3.3.0
  */
+
+import getExtension from &apos;./mime&apos;;
 
 /**
  * Download `Blob` object in browser.
@@ -140,7 +143,7 @@ const downloadBlob = function(fileName, data) {
 /**
  * Read `Blob` as `ArrayBuffer`.
  *
- * @param {(Blob|File)} fileObj - Blob or File object to read.
+ * @param {(Blob|File)} fileObj - `Blob` or `File` object to read.
  * @returns {void}
  * @private
  */
@@ -158,22 +161,25 @@ const blobToArrayBuffer = function(fileObj) {
 };
 
 /**
- * Add filename and timestamp to recorded file object.
+ * Add filename and modification date to recorded file object.
  *
- * @param {(Blob|File)} fileObj - Blob or File object to modify.
- * @param {date} [now] - Optional date information, default is
- *    current timestamp.
+ * @param {(Blob|File)} fileObj - `Blob` or `File` object to modify.
+ * @param {date} [dateObj] - Optional modification date information.
+ *     Default is `new Date()`.
+ * @param {string} [fileExtension] - Optional file extension to use.
+ *     By default the file extension is automatically determined using
+ *     the mime-type.
  * @private
  */
-const addFileInfo = function(fileObj, now) {
+const addFileInfo = function(fileObj, dateObj, fileExtension) {
     if (fileObj instanceof Blob || fileObj instanceof File) {
         // set modification date
-        if (now === undefined) {
-            now = new Date();
+        if (dateObj === undefined) {
+            dateObj = new Date();
         }
         try {
-            fileObj.lastModified = now.getTime();
-            fileObj.lastModifiedDate = now;
+            fileObj.lastModified = dateObj.getTime();
+            fileObj.lastModifiedDate = dateObj;
         } catch (e) {
             if (e instanceof TypeError) {
                 // ignore: setting getter-only property &quot;lastModifiedDate&quot;
@@ -182,17 +188,18 @@ const addFileInfo = function(fileObj, now) {
                 throw e;
             }
         }
-        // guess extension name from mime type, e.g. audio/ogg, but
-        // any extension is valid here. Chrome also accepts extended
-        // mime types like video/webm;codecs=h264,vp9,opus
-        let fileExtension = &apos;.&apos; + fileObj.type.split(&apos;/&apos;)[1];
-        if (fileExtension.indexOf(&apos;;&apos;) &gt; -1) {
-            fileExtension = fileExtension.split(&apos;;&apos;)[0];
+
+        // file extension
+        if (fileExtension === undefined) {
+            // determine file extension using mime type, e.g. audio/ogg,
+            // but any extension is valid here. Browsers also accept
+            // extended mime types like video/webm;codecs=h264,vp9,opus
+            fileExtension = &apos;.&apos; + getExtension(fileObj.type);
         }
 
         // use timestamp in filename, e.g. 1451180941326.ogg
         try {
-            fileObj.name = now.getTime() + fileExtension;
+            fileObj.name = dateObj.getTime() + fileExtension;
         } catch (e) {
             if (e instanceof TypeError) {
                 // ignore: setting getter-only property &quot;name&quot;

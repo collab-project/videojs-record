@@ -91,6 +91,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-blobToArrayBuffer">blobToArrayBuffer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-downloadBlob">downloadBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getExtension">getExtension</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -118,13 +119,9 @@ const pluginDefaultOptions = {
     // Maximum file size of the recorded clip. Works only when the timeSlice
     // option is also enabled.
     maxFileSize: 0,
-    // msDisplayMax indicates the number of seconds that is
-    // considered the boundary value for displaying milliseconds
-    // in the time controls. An audio clip with a total length of
-    // 2 seconds and a msDisplayMax of 3 will use the format
-    // M:SS:MMM. Clips longer than msDisplayMax will be displayed
-    // as M:SS or HH:MM:SS.
-    msDisplayMax: 3,
+    // Boolean indicating if milliseconds should be included,
+    // e.g. &quot;00:00:000&quot; vs &quot;00:00&quot;.
+    displayMilliseconds: false,
     // Width of the recorded video frames.
     frameWidth: 320,
     // Height of the recorded video frames.
@@ -143,7 +140,7 @@ const pluginDefaultOptions = {
     videoEngine: &apos;recordrtc&apos;,
     // The video frame rate in frames per second (only used in webm-wasm plugin).
     videoFrameRate: 30,
-    // The mime type for the video recorder. Default to &apos;video/webm&apos;.
+    // The mime type for the video recorder.
     // Use &apos;video/mp4&apos; (Firefox) or &apos;video/webm;codecs=H264&apos; (Chrome 52 and
     // newer) for MP4.
     videoMimeType: &apos;video/webm&apos;,

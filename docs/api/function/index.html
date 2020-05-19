@@ -91,6 +91,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-blobToArrayBuffer">blobToArrayBuffer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-downloadBlob">downloadBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getExtension">getExtension</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -345,13 +346,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-addFileInfo">addFileInfo</a></span></span><span class="code" data-ice="signature">(fileObj: <span>Blob</span> | <span>File</span>, now: <span>date</span>)</span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-addFileInfo">addFileInfo</a></span></span><span class="code" data-ice="signature">(fileObj: <span>Blob</span> | <span>File</span>, dateObj: <span>date</span>, fileExtension: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Add filename and timestamp to recorded file object.</p>
+        <div data-ice="description"><p>Add filename and modification date to recorded file object.</p>
 </div>
       </div>
     </td>
@@ -490,13 +491,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span><span class="code" data-ice="signature">(seconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, guide: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, msDisplayMax: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-formatTime">formatTime</a></span></span><span class="code" data-ice="signature">(seconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, guide: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, displayMilliseconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.</p>
+        <div data-ice="description"><p>Format seconds as a duration string.</p>
 </div>
       </div>
     </td>
@@ -555,6 +556,35 @@
         
         
         <div data-ice="description"><p>Get converter plugin engine class.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-getExtension">getExtension</a></span></span><span class="code" data-ice="signature">(mimeType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get file extension for mime-type.</p>
 </div>
       </div>
     </td>
@@ -1153,18 +1183,18 @@
     
     
     
-    <span class="code" data-ice="name">addFileInfo</span><span class="code" data-ice="signature">(fileObj: <span>Blob</span> | <span>File</span>, now: <span>date</span>)</span>
+    <span class="code" data-ice="name">addFileInfo</span><span class="code" data-ice="signature">(fileObj: <span>Blob</span> | <span>File</span>, dateObj: <span>date</span>, fileExtension: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/utils/file-util.js.html#lineNumber70">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/utils/file-util.js.html#lineNumber75">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {addFileInfo} from &apos;<span><a href="file/js/utils/file-util.js.html#lineNumber70">videojs-record/js/utils/file-util.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {addFileInfo} from &apos;<span><a href="file/js/utils/file-util.js.html#lineNumber75">videojs-record/js/utils/file-util.js</a></span>&apos;</code></pre></div>
   
   
-  <div data-ice="description"><p>Add filename and timestamp to recorded file object.</p>
+  <div data-ice="description"><p>Add filename and modification date to recorded file object.</p>
 </div>
 
   
@@ -1181,15 +1211,24 @@
       <td data-ice="name" class="code" data-depth="0">fileObj</td>
       <td data-ice="type" class="code"><span>Blob</span> | <span>File</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Blob or File object to modify.</p>
+      <td data-ice="description"><p><code>Blob</code> or <code>File</code> object to modify.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">now</td>
+      <td data-ice="name" class="code" data-depth="0">dateObj</td>
       <td data-ice="type" class="code"><span>date</span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>Optional date information, default is
-   current timestamp.</p>
+      <td data-ice="description"><p>Optional modification date information.
+    Default is <code>new Date()</code>.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">fileExtension</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>Optional file extension to use.
+    By default the file extension is automatically determined using
+    the mime-type.</p>
 </td>
     </tr>
 </tbody>
@@ -1226,11 +1265,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/utils/file-util.js.html#lineNumber49">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/utils/file-util.js.html#lineNumber51">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {blobToArrayBuffer} from &apos;<span><a href="file/js/utils/file-util.js.html#lineNumber49">videojs-record/js/utils/file-util.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {blobToArrayBuffer} from &apos;<span><a href="file/js/utils/file-util.js.html#lineNumber51">videojs-record/js/utils/file-util.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Read <code>Blob</code> as <code>ArrayBuffer</code>.</p>
@@ -1250,7 +1289,7 @@
       <td data-ice="name" class="code" data-depth="0">fileObj</td>
       <td data-ice="type" class="code"><span>Blob</span> | <span>File</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Blob or File object to read.</p>
+      <td data-ice="description"><p><code>Blob</code> or <code>File</code> object to read.</p>
 </td>
     </tr>
 </tbody>
@@ -1430,11 +1469,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/utils/file-util.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/utils/file-util.js.html#lineNumber16">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {downloadBlob} from &apos;<span><a href="file/js/utils/file-util.js.html#lineNumber14">videojs-record/js/utils/file-util.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {downloadBlob} from &apos;<span><a href="file/js/utils/file-util.js.html#lineNumber16">videojs-record/js/utils/file-util.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Download <code>Blob</code> object in browser.</p>
@@ -1506,18 +1545,25 @@
     
     
     
-    <span class="code" data-ice="name">formatTime</span><span class="code" data-ice="signature">(seconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, guide: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, msDisplayMax: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">formatTime</span><span class="code" data-ice="signature">(seconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, guide: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, displayMilliseconds: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/utils/format-time.js.html#lineNumber22">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/utils/format-time.js.html#lineNumber29">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import formatTime from &apos;<span><a href="file/js/utils/format-time.js.html#lineNumber22">videojs-record/js/utils/format-time.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import formatTime from &apos;<span><a href="file/js/utils/format-time.js.html#lineNumber29">videojs-record/js/utils/format-time.js</a></span>&apos;</code></pre></div>
   
   
-  <div data-ice="description"><p>Format seconds as a time string, H:MM:SS, M:SS or M:SS:MMM.</p>
+  <div data-ice="description"><p>Format seconds as a duration string.</p>
+<p>Either formatted as:</p>
+<ul>
+<li>DD:HH:MM:SS (&gt; 24 hours)</li>
+<li>HH:MM:SS (&gt; 1 hour)</li>
+<li>MM:SS:MSS (<code>displayMilliseconds = true</code>)</li>
+<li>MM:SS (<code>displayMilliseconds = false</code>)</li>
+</ul>
 <p>Supplying a guide (in seconds) will force a number of leading zeros
 to cover the length of the guide.</p>
 </div>
@@ -1544,16 +1590,14 @@ to cover the length of the guide.</p>
       <td data-ice="name" class="code" data-depth="0">guide</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Number (in seconds) to model the string
-    after.</p>
+      <td data-ice="description"><p>Number (in seconds) to model the string after.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">msDisplayMax</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">displayMilliseconds</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Number (in milliseconds) to model the string
-    after.</p>
+      <td data-ice="description"><p>Display milliseconds or not.</p>
 </td>
     </tr>
 </tbody>
@@ -1567,8 +1611,7 @@ to cover the length of the guide.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>Time formatted as H:MM:SS, M:SS or M:SS:MMM, e.g.
-    0:00:12.</p>
+          <td class="return-desc" data-ice="returnDescription"><p>Formatted duration time, e.g &apos;00:12:653&apos;.</p>
 </td>
         </tr>
       </tbody>
@@ -1717,6 +1760,80 @@ to cover the length of the guide.</p>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
           <td class="return-desc" data-ice="returnDescription"><p>Convert engine class.</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-getExtension">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">getExtension</span><span class="code" data-ice="signature">(mimeType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/utils/mime.js.html#lineNumber39">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import getExtension from &apos;<span><a href="file/js/utils/mime.js.html#lineNumber39">videojs-record/js/utils/mime.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Get file extension for mime-type.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mimeType</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Mime-type to match against.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>File extension.</p>
 </td>
         </tr>
       </tbody>

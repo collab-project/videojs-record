@@ -312,6 +312,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "videojs-record/js/utils/mime.js~getextension",
+    "function/index.html#static-function-getExtension",
+    "<span>getExtension</span> <span class=\"search-result-import-path\">videojs-record/js/utils/mime.js</span>",
+    "function"
+  ],
+  [
     "videojs-record/js/engine/record-mode.js~getrecordermode",
     "function/index.html#static-function-getRecorderMode",
     "<span>getRecorderMode</span> <span class=\"search-result-import-path\">videojs-record/js/engine/record-mode.js</span>",
@@ -1800,6 +1806,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "js/utils/mime.js",
+    "file/js/utils/mime.js.html",
+    "js/utils/mime.js",
+    "file"
+  ],
+  [
     "js/videojs.record.js",
     "file/js/videojs.record.js.html",
     "js/videojs.record.js",
@@ -1980,6 +1992,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "js/videojs.record.js~record#displaymilliseconds",
+    "class/js/videojs.record.js~Record.html#instance-member-displayMilliseconds",
+    "js/videojs.record.js~Record#displayMilliseconds",
+    "member"
+  ],
+  [
     "js/videojs.record.js~record#displaysnapshot",
     "class/js/videojs.record.js~Record.html#instance-method-displaySnapshot",
     "js/videojs.record.js~Record#displaySnapshot",
@@ -2019,6 +2037,12 @@ window.esdocSearchIndex = [
     "js/videojs.record.js~record#enumeratedevices",
     "class/js/videojs.record.js~Record.html#instance-method-enumerateDevices",
     "js/videojs.record.js~Record#enumerateDevices",
+    "method"
+  ],
+  [
+    "js/videojs.record.js~record#exportimage",
+    "class/js/videojs.record.js~Record.html#instance-method-exportImage",
+    "js/videojs.record.js~Record#exportImage",
     "method"
   ],
   [
@@ -2121,12 +2145,6 @@ window.esdocSearchIndex = [
     "js/videojs.record.js~record#mediatype",
     "class/js/videojs.record.js~Record.html#instance-member-mediaType",
     "js/videojs.record.js~Record#mediaType",
-    "member"
-  ],
-  [
-    "js/videojs.record.js~record#msdisplaymax",
-    "class/js/videojs.record.js~Record.html#instance-member-msDisplayMax",
-    "js/videojs.record.js~Record#msDisplayMax",
     "member"
   ],
   [
