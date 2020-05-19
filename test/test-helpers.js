@@ -8,21 +8,33 @@ import {Player, mergeOptions} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
-import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine.js';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine';
+import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
     TEST_WEBM: '/base/test/support/no_metadata.webm',
 
     DEFAULT_WAVESURFER_OPTIONS: {
-        src: 'live',
+        backend: 'WebAudio',
         waveColor: '#36393b',
         progressColor: 'black',
         debug: true,
         cursorWidth: 1,
-        msDisplayMax: 20,
-        hideScrollbar: true
+        displayMilliseconds: false,
+        hideScrollbar: true,
+        plugins: [
+            // enable microphone plugin
+            WaveSurfer.microphone.create({
+                bufferSize: 4096,
+                numberOfInputChannels: 1,
+                numberOfOutputChannels: 1,
+                constraints: {
+                    video: false,
+                    audio: true
+                }
+            })
+        ]
     },
 
     applyScreenWorkaround() {

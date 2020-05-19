@@ -10,6 +10,7 @@ pixels:
 ```javascript
 let options = {
     controls: true,
+    bigPlayButton: false,
     loop: false,
     // dimensions of video.js player
     fluid: false,

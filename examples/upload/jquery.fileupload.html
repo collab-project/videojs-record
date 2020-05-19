@@ -45,22 +45,35 @@
         /* eslint-disable */
         var options = {
             controls: true,
+            bigPlayButton: false,
             width: 600,
             height: 300,
             plugins: {
                 wavesurfer: {
-                    src: 'live',
+                    backend: 'WebAudio',
                     waveColor: '#f7fff7',
                     progressColor: '#ffe66d',
                     debug: true,
                     cursorWidth: 1,
-                    msDisplayMax: 20,
-                    hideScrollbar: true
+                    hideScrollbar: true,
+                    plugins: [
+                        // enable microphone plugin
+                        WaveSurfer.microphone.create({
+                            bufferSize: 4096,
+                            numberOfInputChannels: 1,
+                            numberOfOutputChannels: 1,
+                            constraints: {
+                                video: false,
+                                audio: true
+                            }
+                        })
+                    ]
                 },
                 record: {
                     audio: true,
                     video: false,
                     maxLength: 20,
+                    displayMilliseconds: true,
                     debug: true
                 }
             }

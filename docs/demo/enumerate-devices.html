@@ -5,7 +5,7 @@
   <title>Enumerate Devices Example - Record Plugin for Video.js</title>
 
   <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet">
-  <link href="//unpkg.com/videojs-wavesurfer@2.11.0/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
+  <link href="//unpkg.com/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="//unpkg.com/videojs-record/dist/css/videojs.record.css" rel="stylesheet">
   <link href="assets/examples.css" rel="stylesheet">
 
@@ -14,7 +14,7 @@
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
-  <script src="//unpkg.com/videojs-wavesurfer@2.11.0/dist/videojs.wavesurfer.min.js"></script>
+  <script src="//unpkg.com/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
 
@@ -40,22 +40,35 @@
 <script>
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 600,
     height: 300,
     plugins: {
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: 'black',
             progressColor: '#2E732D',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         record: {
             audio: true,
             video: false,
             maxLength: 20,
+            displayMilliseconds: true,
             debug: true
         }
     }

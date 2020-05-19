@@ -20,6 +20,7 @@ let fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 // http://peter.sh/experiments/chromium-command-line-switches/
 const chromeFlags = [
     '--no-sandbox',
+    '--disable-gpu',
     '--no-first-run',
     '--noerrdialogs',
     '--no-default-browser-check',
@@ -34,7 +35,8 @@ const chromeFlags = [
     '--disable-infobars',
     '--ignore-certificate-errors',
     '--allow-insecure-localhost',
-    '--enable-experimental-web-platform-features'
+    '--enable-experimental-web-platform-features',
+    '--js-flags=--max-old-space-size=8196'
 ];
 //-------------------------------------------
 // Firefox CLI options
@@ -51,7 +53,8 @@ const firefoxFlags = {
     'devtools.toolbox.host': 'right',
     'devtools.toolbox.selectedTool': 'webconsole',
     'devtools.chrome.enabled': true,
-    // disable autoplay blocking, see https://www.ghacks.net/2018/09/21/firefox-improved-autoplay-blocking/
+    // disable autoplay blocking, see:
+    // https://www.ghacks.net/2018/09/21/firefox-improved-autoplay-blocking/
     'media.autoplay.default': 1,
     'media.autoplay.ask-permission': false,
     'media.autoplay.enabled.user-gestures-needed': false,
@@ -219,7 +222,11 @@ module.exports = function(config) {
             }
         },
         captureConsole: true,
-        browserNoActivityTimeout: 50000,
+        concurrency: 1,
+        browserSocketTimeout: 20000,
+        browserDisconnectTimeout : 10000,
+        browserDisconnectTolerance : 1,
+        browserNoActivityTimeout : 60000,
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
@@ -250,7 +257,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev', 'Firefox_headless'];
+        configuration.browsers = ['Chrome_dev'], //, 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 

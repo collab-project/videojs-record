@@ -179,6 +179,7 @@ export class VideoJSRecordComponent implements OnInit, OnDestroy {
       loop: false,
       width: 320,
       height: 240,
+      bigPlayButton: false,
       controlBar: {
         volumePanel: false
       },
@@ -186,13 +187,25 @@ export class VideoJSRecordComponent implements OnInit, OnDestroy {
         /*
         // wavesurfer section is only needed when recording audio-only
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#36393b',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            displayMilliseconds: true,
+            hideScrollbar: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         */
         // configure videojs-record plugin

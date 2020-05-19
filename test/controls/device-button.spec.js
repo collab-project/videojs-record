@@ -2,10 +2,10 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
-import DeviceButton from '../../src/js/controls/device-button.js';
+import Event from '../../src/js/event';
+import DeviceButton from '../../src/js/controls/device-button';
 
 
 /** @test {device-button} */

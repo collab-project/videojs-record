@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Audio/Screen Example - Record Plugin for Video.js</title>
+  <title>Multiple players on page - Record Plugin for Video.js</title>
 
   <link href="../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
   <link href="../dist/css/videojs.record.css" rel="stylesheet">
@@ -18,41 +18,51 @@
 
   <style>
   /* change player background color */
-  #myScreenAudio {
-      background-color: #9ab87a;
+  #myVideo {
+      background-color: #6df7ab;
+  }
+  #myPlayer {
+      margin-top: 40px;
   }
   </style>
 </head>
 <body>
 
-<video id="myScreenAudio" playsinline class="video-js vjs-default-skin"></video>
+<!-- Primary videojs-record instance (video-only) -->
+<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
+
+<!-- Secondary video.js player with MP4 video and no plugins enabled -->
+<video id="myPlayer" class="video-js vjs-default-skin"
+       data-setup='{"controls": true, "autoplay": false, "preload": "auto"}'>
+  <source src="https://collab-project.github.io/videojs-wavesurfer/demo/media/example.mp4" type="video/mp4">
+</video>
 
 <script>
+/* eslint-disable */
 var options = {
     controls: true,
-    width: 800,
-    height: 450,
+    width: 320,
+    height: 240,
     fluid: false,
     bigPlayButton: false,
     controlBar: {
-        volumePanel: false,
-        fullscreenToggle: false
+        volumePanel: false
     },
     plugins: {
         record: {
-            audio: true,
-            screen: true,
-            debug: true,
-            displayMilliseconds: false
+            audio: false,
+            video: true,
+            maxLength: 10,
+            displayMilliseconds: false,
+            debug: true
         }
     }
 };
 
 // apply some workarounds for opera browser
 applyVideoWorkaround();
-applyScreenWorkaround();
 
-var player = videojs('myScreenAudio', options, function() {
+var player = videojs('myVideo', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -62,7 +72,7 @@ var player = videojs('myScreenAudio', options, function() {
 
 // error handling
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
 
 player.on('error', function(element, error) {
@@ -78,7 +88,7 @@ player.on('startRecord', function() {
 player.on('finishRecord', function() {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
-    console.log('screen+audio recording ready: ', player.recordedData);
+    console.log('finished recording: ', player.recordedData);
 });
 </script>
 

@@ -2,13 +2,13 @@
  * @since 2.2.0
  */
 
-import TestHelpers from './test-helpers.js';
+import TestHelpers from './test-helpers';
 
-import Event from '../src/js/event.js';
-import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser.js';
+import Event from '../src/js/event';
+import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser';
 
 // registers the plugin
-import Record from '../src/js/videojs.record.js';
+import Record from '../src/js/videojs.record';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
@@ -364,6 +364,49 @@ describe('Record', () => {
             expect(player.record().getDuration()).toEqual(0);
             expect(player.record().getCurrentTime()).toEqual(0);
             done();
+        });
+    });
+
+    /** @test {Record#exportImage} */
+    it('exports image (video)', (done) => {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one(Event.DEVICE_READY, () => {
+            // default to png
+            player.record().exportImage().then((arrayOfBlob) => {
+                expect(arrayOfBlob instanceof Array).toBeTruthy();
+                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
+                expect(arrayOfBlob[0].type).toEqual('image/png');
+
+                done();
+            });
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#exportImage} */
+    it('exports image (audio)', (done) => {
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer();
+
+        player.one(Event.DEVICE_READY, () => {
+            // default to png
+            player.record().exportImage().then((arrayOfBlob) => {
+                // received a blob
+                expect(arrayOfBlob instanceof Array).toBeTruthy();
+                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
+                expect(arrayOfBlob[0].type).toEqual('image/png');
+
+                done();
+            });
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
         });
     });
 

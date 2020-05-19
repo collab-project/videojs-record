@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import AnimationDisplay from '../../src/js/controls/animation-display.js';
+import AnimationDisplay from '../../src/js/controls/animation-display';
 
 
 /** @test {animation-display} */

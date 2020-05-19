@@ -2,11 +2,11 @@
  * @since 3.8.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
 // registers the plugin
-import FFmpegjsEngine from '../../src/js/plugins/ffmpegjs-plugin.js';
-import {FFMPEGJS} from '../../src/js/engine/convert-engine.js';
+import FFmpegjsEngine from '../../src/js/plugins/ffmpegjs-plugin';
+import {FFMPEGJS} from '../../src/js/engine/convert-engine';
 
 /** @test {FFmpegjsEngine} */
 describe('plugins.ffmpegjs-plugin', () => {
@@ -33,6 +33,7 @@ describe('plugins.ffmpegjs-plugin', () => {
             }).then((blob) => {
                 player.one('finishConvert', () => {
                     expect(player.convertedData instanceof Blob).toBeTruthy();
+                    expect(player.convertedData.name).toEndWith('.mp3');
                     done();
                 });
                 player.record().converter.convert(blob);

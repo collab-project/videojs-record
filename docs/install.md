@@ -31,14 +31,14 @@ Alternative CDN locations:
 
 ## Upgrade
 
-Since v2.0 this plugin is compatible with:
+Since version 4.0.0 this plugin is compatible with:
 
-- video.js 6.2.7 or newer
-- videojs-wavesurfer 2.x (not compatible with v3.x yet)
+- video.js 7.0.5 or newer
+- videojs-wavesurfer 3.2.0 or newer
 
 If you want to use this plugin with an older video.js or videojs-wavesurfer version,
 check the [archived releases](https://github.com/collab-project/videojs-record/releases)
-for a 1.7.x or older release.
+for a 3.11.x or older release.
 
 Also take a look at the [changelog](changelog.md) when upgrading from a previous
 version of videojs-record.

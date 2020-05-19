@@ -102,7 +102,7 @@ And create `src/app.js`:
 
 ```javascript
 /* eslint-disable */
-import video_css from 'video.js/dist/video-js.min.css';
+import 'video.js/dist/video-js.min.css';
 import videojs from 'video.js';
 
 import 'webrtc-adapter';
@@ -116,12 +116,12 @@ import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js
 WaveSurfer.microphone = MicrophonePlugin;
 
 // register videojs-wavesurfer plugin
-import wavesurfer_css from 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
+import 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
 import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 */
 
 // register videojs-record plugin
-import record_css from 'videojs-record/dist/css/videojs.record.css';
+import 'videojs-record/dist/css/videojs.record.css';
 import Record from 'videojs-record/dist/videojs.record.js';
 
 let player;
@@ -132,6 +132,7 @@ const options = {
     loop: false,
     width: 320,
     height: 240,
+    bigPlayButton: false,
     controlBar: {
         volumePanel: false
     },
@@ -139,19 +140,32 @@ const options = {
         /*
         // this section is only needed when recording audio-only
         wavesurfer: {
-            src: 'live',
-            waveColor: '#36393b',
-            progressColor: 'black',
+            backend: 'WebAudio',
+            waveColor: '#3cc8de',
+            progressColor: '#203336',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            displayMilliseconds: true,
+            hideScrollbar: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         */
         // configure videojs-record plugin
         record: {
             audio: false,
             video: true,
+            maxLength: 10,
             debug: true
         }
     }

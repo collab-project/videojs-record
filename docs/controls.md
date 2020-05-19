@@ -4,11 +4,26 @@ To disable and hide specific controls, use the video.js `controlBar`
 option:
 
 ```javascript
-controlBar: {
-    // hide fullscreen and volume controls
-    fullscreenToggle: false,
-    volumePanel: false
-}
+let options = {
+    controls: true,
+    bigPlayButton: false,
+    controlBar: {
+        // hide fullscreen and volume controls
+        fullscreenToggle: false,
+        volumePanel: false
+    },
+    width: 320,
+    height: 240,
+    plugins: {
+        // videojs-record plugin options
+        record: {
+            audio: false,
+            video: true,
+            maxLength: 5,
+            debug: true
+        }
+    }
+};
 ```
 
 Custom interface elements for this library that can be hidden are:

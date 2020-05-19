@@ -1,9 +1,29 @@
 # videojs-record changelog
 
-## 3.12.0 - unreleased
+## 4.0.0 - unreleased
 
-- Add compatibility for video.js 7.7.6 and newer (#465)
+- Add ability to grab waveform (audio-only) or video frame data using
+  `exportImage` (#417)
+- Fix file extension for `video/x-matroska` mime-type (#464, #469)
+- Fix milliseconds in `formatTime` (#443)
+- Ask again for device permissions in Firefox when user cleared them
+  manually (#468)
+- Fixed missing error handler for microphone permissions in audio/screen
+  mode (#463)
 - Move documentation to website (#472)
+- Bump required version for:
+  - video.js (7.0.5 or newer)
+  - videojs-wavesurfer (3.2.0 or newer)
+  - recordrtc (5.6.1 or newer)
+- Add compatibility for video.js 7.7.6 and newer (#465)
+- Fix mime-type for lamejs plugin
+
+**Backwards-incompatible changes** (when upgrading from a previous version):
+
+- Configuration for microphone/audio-only has changed (due to videojs-wavesurfer upgrade):
+  - Specify `backend: 'WebAudio'` instead of `src: 'live'`
+  - Enable the wavesurfer.js microphone plugin using the `plugins` object of
+    the `wavesurfer` plugin config
 
 
 ## 3.11.0 - 2020/03/02

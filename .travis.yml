@@ -28,7 +28,7 @@ install:
 script:
   - npm run lint || travis_terminate 1
   - npm run build || travis_terminate 1
-  - npm run test || travis_terminate 1
+  - npm run test
   - npm run docs || travis_terminate 1
 
 cache: npm

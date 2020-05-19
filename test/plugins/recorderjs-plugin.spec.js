@@ -2,13 +2,13 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
+import Event from '../../src/js/event';
 
 // registers the plugin
-import RecorderjsEngine from '../../src/js/plugins/recorderjs-plugin.js';
-import {RECORDERJS} from '../../src/js/engine/record-engine.js';
+import RecorderjsEngine from '../../src/js/plugins/recorderjs-plugin';
+import {RECORDERJS} from '../../src/js/engine/record-engine';
 
 
 /** @test {RecorderjsEngine} */

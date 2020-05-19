@@ -2,10 +2,10 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine.js';
+import Event from '../../src/js/event';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine';
 
 /** @test {record-engine} */
 describe('engine.record-engine', () => {
@@ -62,7 +62,7 @@ describe('engine.record-engine', () => {
     it('add file info', (done) => {
         let engine = new RecordEngine(player, {});
         engine.one(Event.RECORD_COMPLETE, () => {
-            let fileName = engine.recordedData.lastModified + '.ogg';
+            let fileName = engine.recordedData.lastModified + '.oga';
             expect(engine.recordedData.name).toEqual(fileName);
 
             done();

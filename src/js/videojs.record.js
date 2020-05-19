@@ -66,6 +66,11 @@ class Record extends Plugin {
         // (re)set recorder state
         this.resetState();
 
+        // use custom video.js time format
+        videojs.setFormatTime((seconds, guide) => {
+            return formatTime(seconds, guide, this.displayMilliseconds);
+        });
+
         // add device button with icon based on type
         let deviceIcon = 'av-perm';
 
@@ -171,7 +176,7 @@ class Record extends Plugin {
         this.recordScreen = recordOptions.screen;
         this.maxLength = recordOptions.maxLength;
         this.maxFileSize = recordOptions.maxFileSize;
-        this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
+        this.displayMilliseconds = recordOptions.displayMilliseconds;
         this.debug = recordOptions.debug;
         this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
@@ -268,7 +273,9 @@ class Record extends Plugin {
             case SCREEN_ONLY:
             case AUDIO_SCREEN:
                 // customize controls
-                this.player.bigPlayButton.hide();
+                if (this.player.bigPlayButton !== undefined) {
+                    this.player.bigPlayButton.hide();
+                }
 
                 // 'loadedmetadata' and 'loadstart' events reset the
                 // durationDisplay for the first time: prevent this
@@ -318,6 +325,7 @@ class Record extends Plugin {
         this.player.off(Event.DURATIONCHANGE);
         this.player.off(Event.LOADEDMETADATA);
         this.player.off(Event.LOADSTART);
+        this.player.off(Event.ENDED);
 
         // display max record time
         this.setDuration(this.maxLength);
@@ -464,7 +472,7 @@ class Record extends Plugin {
                         }
                     };
                 }
-                // open browser device selection dialog
+                // open browser device selection/permissions dialog
                 this.surfer.surfer.microphone.start();
                 break;
 
@@ -510,10 +518,12 @@ class Record extends Plugin {
                     navigator.mediaDevices.getUserMedia({
                         audio: this.recordAudio
                     }).then((mic) => {
-                        // Join microphone track with screencast stream (order matters)
+                        // join microphone track with screencast stream (order matters)
                         screenStream.addTrack(mic.getTracks()[0]);
                         this.onDeviceReady.bind(this)(screenStream);
-                    });
+                    }).catch(
+                        this.onDeviceError.bind(this)
+                    );
                 }).catch(
                     this.onDeviceError.bind(this)
                 );
@@ -803,6 +813,12 @@ class Record extends Plugin {
      */
     start() {
         if (!this.isProcessing()) {
+            // check if user didn't revoke permissions after a previous recording
+            if (this.stream && this.stream.active === false) {
+                // ask for permissions again
+                this.getDevice();
+                return;
+            }
             this._recording = true;
 
             // hide play/pause control
@@ -1205,7 +1221,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1249,7 +1265,7 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                        formatTime(duration, duration, this.msDisplayMax);
+                        formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1446,6 +1462,34 @@ class Record extends Plugin {
         if (this.mediaElement && this.mediaElement.src.startsWith('blob:') === true) {
             URL.revokeObjectURL(this.mediaElement.src);
             this.mediaElement.src = '';
+        }
+    }
+
+    /**
+     * Export image data of waveform (audio-only) or current video frame.
+     *
+     * The default format is `'image/png'`. Other supported types are
+     * `'image/jpeg'` and `'image/webp'`.
+     *
+     * @param {string} format='image/png' A string indicating the image format.
+     * The default format type is `'image/png'`.
+     * @param {number} quality=1 A number between 0 and 1 indicating the image
+     * quality to use for image formats that use lossy compression such as
+     * `'image/jpeg'`` and `'image/webp'`.
+     * @return {Promise} Returns a `Promise` resolving with an
+     * array of `Blob` instances.
+     */
+    exportImage(format = 'image/png', quality = 1) {
+        if (this.getRecordType() === AUDIO_ONLY) {
+            return this.surfer.surfer.exportImage(format, quality, 'blob');
+        } else {
+            // get a frame and copy it onto the canvas
+            let recordCanvas = this.player.recordCanvas.el().firstChild;
+            this.drawCanvas(recordCanvas, this.mediaElement);
+
+            return new Promise(resolve => {
+                recordCanvas.toBlob(resolve, format, quality);
+            });
         }
     }
 

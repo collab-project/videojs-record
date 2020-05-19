@@ -2,13 +2,13 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
+import Event from '../../src/js/event';
 
 // registers the plugin
-import LamejsEngine from '../../src/js/plugins/lamejs-plugin.js';
-import {LAMEJS} from '../../src/js/engine/record-engine.js';
+import LamejsEngine from '../../src/js/plugins/lamejs-plugin';
+import {LAMEJS} from '../../src/js/engine/record-engine';
 
 
 /** @test {LamejsEngine} */
@@ -27,6 +27,7 @@ describe('plugins.lamejs-plugin', () => {
         player.one(Event.FINISH_RECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
+            expect(player.recordedData.name).toEndWith('.mp3');
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)

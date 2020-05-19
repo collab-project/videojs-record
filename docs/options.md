@@ -21,7 +21,7 @@ Additional options for this plugin are:
 | `pip` | boolean | `false` | Enables [Picture-in-Picture support](picture-in-picture.md). Enable to add Picture-in-Picture button to controlbar. |
 | `maxLength` | float | `10` | Maximum length of the recorded clip. |
 | `maxFileSize` | float | `0` | Maximum file size of a recorded clip (in bytes). Recording will stop when the limit is reached. Default is 0 (no file size limit). Can only be used when `timeSlice` option is also enabled. |
-| `msDisplayMax` | float | `3` | Indicates the number of seconds that is considered the boundary value for displaying milliseconds in the time controls. A clip with a total length of 2 seconds and a `msDisplayMax` of 3 will use the format `M:SS:MMM`. Clips with a duration that is longer than `msDisplayMax` will be displayed as `M:SS` or `HH:MM:SS`.|
+| `displayMilliseconds` | boolean | `false` | Indicates if milliseconds should be included in time displays, e.g. `00:00:000` vs `00:00`. |
 | `timeSlice` | float | `0` | Accepts numbers in milliseconds; use this to force intervals-based blobs and receive [timestamps](recorded-data#timestamps) during recording by listening for the `timestamp` event. |
 | `autoMuteDevice` | boolean | `false` | Turns off the camera/microphone devices (and light) when audio and/or video recording stops, and turns them on again when recording resumes. |
 | `frameWidth` | float | `320` | Width of the recorded video frames. Use [media constraints](media-constraints.md) to change the camera resolution width. |
@@ -30,7 +30,7 @@ Additional options for this plugin are:
 | `imageOutputFormat` | string | `'image/png'` | Image output **format**. Only used if `imageOutputType` equals to `dataURL`. |
 | `imageOutputQuality` | float | `0.92` | Image output **quality**. Only used if `imageOutputType` equals to `dataURL`. |
 | `videoEngine` | string | `'recordrtc'` | Video recording library/plugin to use. Legal values are `recordrtc` and `webm-wasm`. |
-| `videoMimeType` | string | `'video/webm'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/blink/web_tests/fast/mediarecorder/MediaRecorder-isTypeSupported.html). |
+| `videoMimeType` | string | `'video/webm;codecs=vp8'` | The mime type for the video recorder. Use `video/mp4` (Firefox) or `video/webm;codecs=H264` (Chrome 52 and newer) for MP4. A full list of supported MediaRecorder mime-types in the Chrome browser is listed [here](https://cs.chromium.org/chromium/src/third_party/blink/web_tests/fast/mediarecorder/MediaRecorder-isTypeSupported.html) ([browser test](https://www.webrtc-experiment.com/RecordRTC/simple-demos/isTypeSupported.html)). |
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
 | `videoBitRate` | float | `1200` |  The video bitrate in kbps (only used in webm-wasm plugin). |
 | `videoFrameRate` | float | `30` |  The video frame rate in frames per second (only used in webm-wasm plugin). |

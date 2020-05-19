@@ -2,13 +2,13 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
+import Event from '../../src/js/event';
 
 // registers the plugin
-import OpusRecorderEngine from '../../src/js/plugins/opus-recorder-plugin.js';
-import {OPUSRECORDER} from '../../src/js/engine/record-engine.js';
+import OpusRecorderEngine from '../../src/js/plugins/opus-recorder-plugin';
+import {OPUSRECORDER} from '../../src/js/engine/record-engine';
 
 
 /** @test {OpusRecorderEngine} */
@@ -27,6 +27,7 @@ describe('plugins.opus-recorder-plugin', () => {
         player.one(Event.FINISH_RECORD, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
+            expect(player.recordedData.name).toEndWith('.oga');
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)

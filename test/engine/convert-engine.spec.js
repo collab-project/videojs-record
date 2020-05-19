@@ -2,9 +2,9 @@
  * @since 3.3.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import {ConvertEngine, CONVERT_PLUGINS, TSEBML, FFMPEGJS} from '../../src/js/engine/convert-engine.js';
+import {ConvertEngine, CONVERT_PLUGINS, TSEBML, FFMPEGJS} from '../../src/js/engine/convert-engine';
 
 
 /** @test {convert-engine} */

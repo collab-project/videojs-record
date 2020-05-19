@@ -79,6 +79,7 @@ import * as serviceWorker from './serviceWorker';
 
 const videoJsOptions = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
@@ -86,13 +87,26 @@ const videoJsOptions = {
         /*
         // wavesurfer section is only needed when recording audio-only
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#36393b',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
             msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            displayMilliseconds: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         */
         record: {
@@ -145,18 +159,6 @@ import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 // register videojs-record plugin with this import
 import 'videojs-record/dist/css/videojs.record.css';
 import Record from 'videojs-record/dist/videojs.record.js';
-
-// Optional imports for videojs-record plugins
-/*
-// webm-wasm plugin (npm install webm-wasm @mattiasbuelens/web-streams-polyfill)
-// Make sure to copy webm-worker.js and webm-wasm.wasm from
-// node_modules/webm-wasm/dist/ to the project's public directory
-import '@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js';
-import 'videojs-record/dist/plugins/videojs.record.webm-wasm.js';
-
-// ts-ebml plugin (npm install ts-ebml)
-import 'videojs-record/dist/plugins/videojs.record.ts-ebml.js';
-*/
 
 class App extends Component {
     componentDidMount() {

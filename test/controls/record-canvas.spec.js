@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import RecordCanvas from '../../src/js/controls/record-canvas.js';
+import RecordCanvas from '../../src/js/controls/record-canvas';
 
 
 /** @test {record-canvas} */

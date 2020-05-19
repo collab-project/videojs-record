@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>ts-ebml video-only example - Record Plugin for Video.js</title>
+  <title>Multiple players on page - Record Plugin for Video.js</title>
 
   <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet">
   <link href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css" rel="stylesheet">
@@ -13,28 +13,44 @@
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
 
   <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
-  <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.ts-ebml.js"></script>
 
   <script src="browser-workarounds.js"></script>
 
   <style>
   /* change player background color */
-  #myVideo {
-      background-color: #F5BDAB;
+  #myRecorder {
+      background-color: #6df7ab;
+  }
+  #myPlayer {
+      margin-top: 40px;
   }
   </style>
 </head>
 <body>
 
-<video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
+<!-- Primary videojs-record instance (video-only) -->
+<video id="myRecorder" playsinline class="video-js vjs-default-skin"></video>
+
+<!-- Secondary video.js player with MP4 video and no plugins enabled -->
+<video id="myPlayer" class="video-js vjs-default-skin"
+       data-setup='{"controls": true, "autoplay": false, "preload": "auto"}'>
+  <source src="https://collab-project.github.io/videojs-wavesurfer/demo/media/example.mp4" type="video/mp4">
+  <p class="vjs-no-js">
+    To view this video please enable JavaScript, or consider upgrading to a
+    web browser that
+    <a href="https://videojs.com/html5-video-support/" target="_blank">
+        supports HTML5 video.
+    </a>
+  </p>
+</video>
 
 <script>
+/* eslint-disable */
 var options = {
     controls: true,
     width: 320,
     height: 240,
     fluid: false,
-    bigPlayButton: false,
     controlBar: {
         volumePanel: false
     },
@@ -42,26 +58,27 @@ var options = {
         record: {
             audio: false,
             video: true,
-            maxLength: 20,
-            displayMilliseconds: true,
-            debug: true,
-            convertEngine: 'ts-ebml'
+            maxLength: 10,
+            displayMilliseconds: false,
+            debug: true
         }
     }
 };
 
-// apply some workarounds for certain browsers
+// apply some workarounds for opera browser
 applyVideoWorkaround();
 
-var player = videojs('myVideo', options, function() {
+var player = videojs('myRecorder', options, function() {
     // print version information at startup
-    videojs.log('Using video.js', videojs.VERSION,
-        'with videojs-record', videojs.getPluginVersion('record'),
-        'and recordrtc', RecordRTC.version);
+    var msg = 'Using video.js ' + videojs.VERSION +
+        ' with videojs-record ' + videojs.getPluginVersion('record') +
+        ' and recordrtc ' + RecordRTC.version;
+    videojs.log(msg);
 });
+
 // error handling
 player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
+    console.warn('device error:', player.deviceErrorCode);
 });
 
 player.on('error', function(element, error) {
@@ -79,13 +96,7 @@ player.on('finishRecord', function() {
     // can be downloaded by the user, stored on server etc.
     console.log('finished recording: ', player.recordedData);
 });
-
-// converter completed and stream is available
-player.on('finishConvert', function() {
-    // the convertedData object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished converting: ', player.convertedData);
-});
 </script>
+
 </body>
 </html>

@@ -5,7 +5,7 @@
   <title>Opus-recorder Audio-only Example - Record Plugin for Video.js</title>
 
   <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet">
-  <link href="//unpkg.com/videojs-wavesurfer@2.11.0/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
+  <link href="//unpkg.com/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css" rel="stylesheet">
   <link href="assets/examples.css" rel="stylesheet">
 
@@ -14,7 +14,7 @@
   <script src="lib/opus-recorder/recorder.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
-  <script src="//unpkg.com/videojs-wavesurfer@2.11.0/dist/videojs.wavesurfer.min.js"></script>
+  <script src="//unpkg.com/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
   <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.opus-recorder.min.js"></script>
@@ -33,24 +33,37 @@
 <script>
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 600,
     height: 300,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#4c4a56',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         record: {
             audio: true,
             video: false,
             maxLength: 20,
             debug: true,
+            displayMilliseconds: true,
             audioEngine: 'opus-recorder',
             audioSampleRate: 48000,
             audioChannels: 2,

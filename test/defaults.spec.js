@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import pluginDefaultOptions from '../src/js/defaults.js';
+import pluginDefaultOptions from '../src/js/defaults';
 
 /** @test {defaults} */
 describe('pluginDefaultOptions', () => {
@@ -22,7 +22,7 @@ describe('pluginDefaultOptions', () => {
             screen: false,
             maxLength: 10,
             maxFileSize: 0,
-            msDisplayMax: 3,
+            displayMilliseconds: false,
             frameWidth: 320,
             frameHeight: 240,
             debug: false,

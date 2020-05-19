@@ -35,24 +35,37 @@
 /* eslint-disable */
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 600,
     height: 300,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#eeefda',
             progressColor: '#FAFCD2',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         record: {
             audio: true,
             video: false,
             maxLength: 20,
             debug: true,
+            displayMilliseconds: true,
             audioEngine: 'vmsg',
             audioWebAssemblyURL: '../../node_modules/vmsg/vmsg.wasm'
             // use the pluginLibraryOptions option to specify optional settings for the

@@ -78,7 +78,7 @@ Create `src/components/VideoJSRecord.vue`:
     WaveSurfer.microphone = MicrophonePlugin;
 
     // register videojs-wavesurfer plugin
-    import wavesurfer_css from 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
+    import videojs_wavesurfer_css from 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
     import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
     */
 
@@ -95,6 +95,7 @@ Create `src/components/VideoJSRecord.vue`:
                     loop: false,
                     width: 320,
                     height: 240,
+                    bigPlayButton: false,
                     controlBar: {
                         volumePanel: false
                     },
@@ -102,13 +103,25 @@ Create `src/components/VideoJSRecord.vue`:
                         /*
                         // this section is only needed when recording audio-only
                         wavesurfer: {
-                            src: 'live',
+                            backend: 'WebAudio',
                             waveColor: '#36393b',
                             progressColor: 'black',
                             debug: true,
                             cursorWidth: 1,
-                            msDisplayMax: 20,
-                            hideScrollbar: true
+                            displayMilliseconds: true,
+                            hideScrollbar: true,
+                            plugins: [
+                                // enable microphone plugin
+                                WaveSurfer.microphone.create({
+                                    bufferSize: 4096,
+                                    numberOfInputChannels: 1,
+                                    numberOfOutputChannels: 1,
+                                    constraints: {
+                                        video: false,
+                                        audio: true
+                                    }
+                                })
+                            ]
                         },
                         */
                         // configure videojs-record plugin
