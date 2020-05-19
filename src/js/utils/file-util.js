@@ -3,7 +3,7 @@
  * @since 3.3.0
  */
 
-import getExtension from './mime-types';
+import getExtension from './mime';
 
 /**
  * Download `Blob` object in browser.

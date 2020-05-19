@@ -4,6 +4,7 @@
 
 - Add ability to grab waveform (audio-only) or video frame data using
   `exportImage` (#417)
+- Fix file extension for `video/x-matroska` mime-type (#464, #469)
 - Fix milliseconds in `formatTime` (#443)
 - Move documentation to website (#472)
 - Bump required version for:
@@ -11,10 +12,10 @@
   - videojs-wavesurfer (3.2.0 or newer)
   - recordrtc (5.6.1 or newer)
 - Add compatibility for video.js 7.7.6 and newer (#465)
+- Fix mime-type for lamejs plugin
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
-- Changed default value for `videoMimeType` option to `'video/webm;codecs=vp8'` (#469)
 - Configuration for microphone/audio-only has changed (due to videojs-wavesurfer upgrade):
   - Specify `backend: 'WebAudio'` instead of `src: 'live'`
   - Enable the wavesurfer.js microphone plugin using the `plugins` object of

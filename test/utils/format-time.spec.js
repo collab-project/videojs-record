@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import formatTime from '../../src/js/utils/format-time.js';
+import formatTime from '../../src/js/utils/format-time';
 
 /** @test {format-time} */
 describe('utils.formatTime', () => {

@@ -8,8 +8,8 @@ import {Player, mergeOptions} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
-import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine.js';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine';
+import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',

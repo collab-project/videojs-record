@@ -2,9 +2,9 @@
  * @since 3.3.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import {downloadBlob, blobToArrayBuffer, addFileInfo} from '../../src/js/utils/file-util.js';
+import {downloadBlob, blobToArrayBuffer, addFileInfo} from '../../src/js/utils/file-util';
 
 
 /** @test {file-util} */

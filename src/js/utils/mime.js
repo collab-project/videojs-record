@@ -1,5 +1,5 @@
 /**
- * @file mime-types.js
+ * @file mime.js
  * @since 4.0.0
  */
 

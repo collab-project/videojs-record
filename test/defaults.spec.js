@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import pluginDefaultOptions from '../src/js/defaults.js';
+import pluginDefaultOptions from '../src/js/defaults';
 
 /** @test {defaults} */
 describe('pluginDefaultOptions', () => {
@@ -31,7 +31,7 @@ describe('pluginDefaultOptions', () => {
             videoBitRate: 1200,
             videoEngine: 'recordrtc',
             videoFrameRate: 30,
-            videoMimeType: 'video/webm;codecs=vp8',
+            videoMimeType: 'video/webm',
             videoRecorderType: 'auto',
             videoWorkerURL: '',
             videoWebAssemblyURL: '',

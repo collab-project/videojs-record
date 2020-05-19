@@ -2,9 +2,9 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import RecordIndicator from '../../src/js/controls/record-indicator.js';
+import RecordIndicator from '../../src/js/controls/record-indicator';
 
 
 /** @test {record-indicator} */

@@ -4,12 +4,12 @@
 
 import TestHelpers from '../test-helpers';
 
-import getExtension from '../../src/js/utils/mime-types';
+import getExtension from '../../src/js/utils/mime';
 
-/** @test {mime-types} */
-describe('utils.mime-types', () => {
+/** @test {mime} */
+describe('utils.mime', () => {
     /** @test {getExtension} */
-    it('get correct extension', (done) => {
+    it('get correct extension', () => {
         expect(getExtension("video/x-matroska;codecs=avc1,opus")).toEqual('mkv');
         expect(getExtension("video/webm;codecs=vp8")).toEqual('webm');
         expect(getExtension("video/webm;codecs=vp9")).toEqual('webm');

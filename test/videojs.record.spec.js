@@ -2,13 +2,13 @@
  * @since 2.2.0
  */
 
-import TestHelpers from './test-helpers.js';
+import TestHelpers from './test-helpers';
 
-import Event from '../src/js/event.js';
-import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser.js';
+import Event from '../src/js/event';
+import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser';
 
 // registers the plugin
-import Record from '../src/js/videojs.record.js';
+import Record from '../src/js/videojs.record';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 

@@ -2,10 +2,10 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
-import RecordToggle from '../../src/js/controls/record-toggle.js';
+import Event from '../../src/js/event';
+import RecordToggle from '../../src/js/controls/record-toggle';
 
 
 /** @test {record-toggle} */
