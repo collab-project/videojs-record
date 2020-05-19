@@ -221,7 +221,9 @@ module.exports = function(config) {
             }
         },
         captureConsole: true,
-        browserNoActivityTimeout: 50000,
+        browserDisconnectTimeout : 10000,
+        browserDisconnectTolerance : 1,
+        browserNoActivityTimeout : 60000,
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
