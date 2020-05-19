@@ -221,6 +221,8 @@ module.exports = function(config) {
             }
         },
         captureConsole: true,
+        concurrency: 1,
+        browserSocketTimeout: 20000,
         browserDisconnectTimeout : 10000,
         browserDisconnectTolerance : 1,
         browserNoActivityTimeout : 60000,
