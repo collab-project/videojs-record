@@ -37,9 +37,9 @@ record: {
     convertEngine: 'ffmpeg.js',
     // convert recorded data to MP3
     convertOptions: ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'],
-    // specify MP3 output mime-type
+    // specify output mime-type
     pluginLibraryOptions: {
-        outputType: 'audio/mp3'
+        outputType: 'audio/mpeg'
     },
     // use MP4 encoding worker (H.264 & AAC & MP3 encoders)
     convertWorkerURL: '../../node_modules/ffmpeg.js/ffmpeg-worker-mp4.js'
@@ -56,5 +56,5 @@ Options for this plugin:
 | --- | --- | --- |
 | `convertEngine` | `ffmpeg.js` | Enables the plugin. |
 | `convertOptions` | `['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2']` | Array of arguments for FFmpeg. |
-| `pluginLibraryOptions` | `{outputType: 'audio/mp3'}` | Specify output mime-type. |
+| `pluginLibraryOptions` | `{outputType: 'audio/mpeg'}` | Specify output mime-type. |
 | `convertWorkerURL` | `/path/to/ffmpeg.js/ffmpeg-worker-mp4.js` | Specify encoding worker. |
