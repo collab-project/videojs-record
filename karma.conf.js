@@ -20,6 +20,7 @@ let fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 // http://peter.sh/experiments/chromium-command-line-switches/
 const chromeFlags = [
     '--no-sandbox',
+    '--disable-gpu',
     '--no-first-run',
     '--noerrdialogs',
     '--no-default-browser-check',
@@ -34,7 +35,8 @@ const chromeFlags = [
     '--disable-infobars',
     '--ignore-certificate-errors',
     '--allow-insecure-localhost',
-    '--enable-experimental-web-platform-features'
+    '--enable-experimental-web-platform-features',
+    '--js-flags=--max-old-space-size=8196'
 ];
 //-------------------------------------------
 // Firefox CLI options
