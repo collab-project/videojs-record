@@ -53,7 +53,8 @@ const firefoxFlags = {
     'devtools.toolbox.host': 'right',
     'devtools.toolbox.selectedTool': 'webconsole',
     'devtools.chrome.enabled': true,
-    // disable autoplay blocking, see https://www.ghacks.net/2018/09/21/firefox-improved-autoplay-blocking/
+    // disable autoplay blocking, see:
+    // https://www.ghacks.net/2018/09/21/firefox-improved-autoplay-blocking/
     'media.autoplay.default': 1,
     'media.autoplay.ask-permission': false,
     'media.autoplay.enabled.user-gestures-needed': false,
@@ -256,7 +257,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev', 'Firefox_headless'];
+        configuration.browsers = ['Chrome_dev'], //, 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
