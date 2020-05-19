@@ -14,6 +14,7 @@
 
 **Backwards-incompatible changes** (when upgrading from a previous version):
 
+- Changed default value for `videoMimeType` option to `'video/webm;codecs=vp8'` (#469)
 - Configuration for microphone/audio-only has changed (due to videojs-wavesurfer upgrade):
   - Specify `backend: 'WebAudio'` instead of `src: 'live'`
   - Enable the wavesurfer.js microphone plugin using the `plugins` object of

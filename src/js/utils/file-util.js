@@ -3,6 +3,8 @@
  * @since 3.3.0
  */
 
+import getExtension from './mime-types';
+
 /**
  * Download `Blob` object in browser.
  *
@@ -87,10 +89,12 @@ const addFileInfo = function(fileObj, now) {
         // guess extension name from mime type, e.g. audio/ogg, but
         // any extension is valid here. Chrome also accepts extended
         // mime types like video/webm;codecs=h264,vp9,opus
-        let fileExtension = '.' + fileObj.type.split('/')[1];
+        const fileExtension = '.' + getExtension(fileObj.type);
+
+        /* + fileObj.type.split('/')[1];
         if (fileExtension.indexOf(';') > -1) {
             fileExtension = fileExtension.split(';')[0];
-        }
+        }*/
 
         // use timestamp in filename, e.g. 1451180941326.ogg
         try {

@@ -41,7 +41,8 @@
     "lint:html": "htmlhint examples",
     "start": "npm run build && webpack-dev-server --config ./build-config/webpack.dev.main.js",
     "test": "karma start karma.conf.js",
-    "prepublishOnly": "not-in-install && npm run build || in-install"
+    "prepublishOnly": "not-in-install && npm run build || in-install",
+    "foo": "node mime-test.js"
   },
   "files": [
     "dist/",

@@ -62,7 +62,7 @@ describe('engine.record-engine', () => {
     it('add file info', (done) => {
         let engine = new RecordEngine(player, {});
         engine.one(Event.RECORD_COMPLETE, () => {
-            let fileName = engine.recordedData.lastModified + '.ogg';
+            let fileName = engine.recordedData.lastModified + '.oga';
             expect(engine.recordedData.name).toEqual(fileName);
 
             done();

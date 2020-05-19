@@ -31,7 +31,7 @@ describe('pluginDefaultOptions', () => {
             videoBitRate: 1200,
             videoEngine: 'recordrtc',
             videoFrameRate: 30,
-            videoMimeType: 'video/webm',
+            videoMimeType: 'video/webm;codecs=vp8',
             videoRecorderType: 'auto',
             videoWorkerURL: '',
             videoWebAssemblyURL: '',

@@ -41,10 +41,10 @@ const pluginDefaultOptions = {
     videoEngine: 'recordrtc',
     // The video frame rate in frames per second (only used in webm-wasm plugin).
     videoFrameRate: 30,
-    // The mime type for the video recorder. Default to 'video/webm'.
+    // The mime type for the video recorder.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.
-    videoMimeType: 'video/webm',
+    videoMimeType: 'video/webm;codecs=vp8',
     // Video recorder type to use. This allows you to specify an alternative
     // recorder class, e.g. WhammyRecorder from recordrtc. Defaults to 'auto'
     // which let's recordrtc specify the best available recorder type.

@@ -373,7 +373,7 @@ describe('Record', () => {
         player = TestHelpers.makePlayer();
 
         player.one(Event.DEVICE_READY, () => {
-             // default to png
+            // default to png
             player.record().exportImage().then((arrayOfBlob) => {
                 expect(arrayOfBlob instanceof Array).toBeTruthy();
                 expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
