@@ -75,7 +75,7 @@
     "recordrtc": ">=5.6.1",
     "video.js": ">=7.0.5",
     "videojs-wavesurfer": ">=3.2.0",
-    "webrtc-adapter": ">=7.6.0"
+    "webrtc-adapter": ">=7.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -95,7 +95,7 @@
     "date-fns": "^2.14.0",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^7.0.0",
+    "eslint": "^7.1.0",
     "ffmpeg.js": "^4.2.9003",
     "file-loader": "^6.0.0",
     "fine-uploader": ">=5.16",

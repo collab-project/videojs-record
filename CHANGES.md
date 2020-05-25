@@ -1,5 +1,10 @@
 # videojs-record changelog
 
+## 4.1.0 - unreleased
+
+- Bump required version for webrtc-adapter to 7.6.1
+
+
 ## 4.0.0 - 2020/05/20
 
 - Add ability to grab waveform (audio-only) or video frame data using
