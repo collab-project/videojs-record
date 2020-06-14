@@ -2,6 +2,7 @@
 
 ## 4.1.0 - unreleased
 
+- ffmpeg.js plugin: handle `abort` errors (#481)
 - Bump required version for webrtc-adapter to 7.6.1
 
 
