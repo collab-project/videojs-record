@@ -25,7 +25,7 @@ The videojs-record plugin will automatically register itself after importing
 it:
 
 ```javascript
-import Record from 'videojs-record/dist/videojs.record.js';
+import {Record} from 'videojs-record/dist/videojs.record.js';
 ```
 
 ## Audio/video/image/screen
