@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.1.0 - unreleased
+## 4.1.0 - 2020/08/11
 
 - Fixed webpack externals configuration: it's no longer needed to
   use additional webpack configuration in React/Angular/Vue projects
