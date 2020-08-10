@@ -7,112 +7,49 @@ for Angular.
 
 ## Installation
 
-Create a project directory, e.g. `angular-videojs-record`.
-
-Create a `package.json` file inside that project directory that lists the project
-dependencies:
-
-```json
-{
-    "name": "angular-videojs-record",
-    "version": "1.0.0",
-    "scripts": {
-        "start": "webpack-dev-server --mode development"
-    },
-    "dependencies": {
-        "@angular/common": "^9.1.6",
-        "@angular/compiler": "^9.1.6",
-        "@angular/core": "^9.1.6",
-        "@angular/forms": "^9.1.6",
-        "@angular/platform-browser": "^9.1.6",
-        "@angular/platform-browser-dynamic": "^9.1.6",
-        "@angular/router": "^9.1.6",
-        "core-js": "^3.6.5",
-        "rxjs": "^6.5.5",
-        "zone.js": "^0.10.3"
-    },
-    "devDependencies": {
-        "@types/node": "^13.13.5",
-        "html-webpack-plugin": "^4.3.0",
-        "raw-loader": "^4.0.1",
-        "ts-loader": "^7.0.4",
-        "typescript": "^3.8.3",
-        "webpack": "^4.43.0",
-        "webpack-cli": "^3.3.11",
-        "webpack-dev-server": "^3.11.0"
-    }
-}
-```
-
-Install the dependencies:
+Install the [Angular CLI](https://cli.angular.io) globally:
 
 ```console
-npm install
+npm install -g @angular/cli
+```
+
+Create a new application, e.g. `videojs-record-angular`:
+
+```console
+ng new videojs-record-angular
 ```
 
 Install `videojs-record` and `@types/video.js`:
 
 ```console
+cd videojs-record-angular
 npm install --save videojs-record @types/video.js
-```
-
-## Configuration
-
-Create `tsconfig.json`:
-
-```json
-{
-    "compilerOptions": {
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "ES5"
-    }
-}
-```
-
-Create a Webpack config file called `webpack.config.js`:
-
-```javascript
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-
-module.exports = {
-    entry: './src/main.ts',
-    resolve: {
-        extensions: ['.ts', '.js'],
-        alias: {
-            videojs: 'video.js',
-            WaveSurfer: 'wavesurfer.js',
-            RecordRTC: 'recordrtc'
-        }
-    },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: ['ts-loader']
-            },
-            {
-                test: /\.(html|css)$/,
-                use: 'raw-loader'
-            }
-        ]
-    },
-    plugins: [
-        new ProvidePlugin({
-            videojs: 'video.js/dist/video.cjs.js',
-            RecordRTC: 'recordrtc'
-        }),
-        new HtmlWebpackPlugin({ template: './src/index.html' })
-    ]
-}
 ```
 
 ## Application
 
+Create a new Angular component:
 
-Create the `src/app/` directories and add a new Angular component for videojs-record
-in `src/app/videojs.record.component.ts`:
+```console
+ng generate component videojs-record
+```
+
+Replace the content of `src/app/videojs-record/videojs-record.component.css` with:
+
+```css
+/* change player background color */
+.video-js video {
+    background-color: #42f489;
+}
+```
+
+Replace the content of `src/app/videojs-record/videojs-record.component.html` with:
+
+```html
+<video id="video_{{idx}}" class="video-js vjs-default-skin" playsinline></video>
+```
+
+Replace the content of `src/app/videojs-record/videojs-record.component.ts` with:
 
 ```ts
 import {
@@ -140,19 +77,11 @@ import * as Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 import * as Record from 'videojs-record/dist/videojs.record.js';
 
 @Component({
-  selector: 'videojs-record',
-  template: `
-    <style>
-    /* change player background color */
-    .video-js video {
-         background-color: #42f489;
-    }
-    </style>
-    <video id="video_{{idx}}" class="video-js vjs-default-skin" playsinline></video>
-    `
+  selector: 'app-videojs-record',
+  templateUrl: './videojs-record.component.html',
+  styleUrls: ['./videojs-record.component.css']
 })
-
-export class VideoJSRecordComponent implements OnInit, OnDestroy {
+export class VideojsRecordComponent implements OnInit, OnDestroy {
 
   // reference to the element itself: used to access events and methods
   private _elementRef: ElementRef
@@ -275,60 +204,17 @@ export class VideoJSRecordComponent implements OnInit, OnDestroy {
 }
 ```
 
-Create the Angular app module in `src/app/app.module.ts`:
-
-```ts
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { VideoJSRecordComponent } from './videojs.record.component';
-
-@NgModule({
-    imports: [BrowserModule],
-    declarations: [VideoJSRecordComponent],
-    bootstrap: [VideoJSRecordComponent]
-})
-export class AppModule { }
-```
-
-Create an Angular polyfills file in `src/polyfills.ts`:
-
-```ts
-import 'core-js/features/reflect';
-import 'zone.js/dist/zone';
-```
-
-Create the Angular main file in `src/main.ts`:
-
-```ts
-import './polyfills';
-
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
-
-platformBrowserDynamic().bootstrapModule(AppModule);
-```
-
-And finally, create the main index HTML file in `src/index.html`:
+Replace content of `src/app/app.component.html` with:
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-    <base href="/" />
-    <title>Angular videojs-record example</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- styles -->
-    <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
-    <!-- videojs.wavesurfer.css is only required when recording audio-only
-    <link href="node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css" rel="stylesheet">
-    -->
-    <link href="node_modules/videojs-record/dist/css/videojs.record.css" rel="stylesheet">
-</head>
-<body>
-    <videojs-record></videojs-record>
-</body>
-</html>
+<app-videojs-record></app-videojs-record>
+```
+
+Add the following to `src/styles.css`:
+
+```css
+@import '~video.js/dist/video-js.css';
+@import '~videojs-record/dist/css/videojs.record.css';
 ```
 
 ## Run
@@ -339,4 +225,4 @@ Start the development server:
 npm start
 ```
 
-And open http://localhost:8080/ in a browser.
+And open http://localhost:4200/ in a browser.
