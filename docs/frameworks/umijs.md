@@ -19,29 +19,6 @@ Install videojs-record:
 npm install --save videojs-record
 ```
 
-## Configuration
-
-Change `.umirc.ts`:
-
-```ts
-import { defineConfig } from 'umi';
-
-export default defineConfig({
-  chainWebpack(config) {
-      // Set alias for videojs-record
-      config.resolve.alias.set('videojs', 'video.js');
-      config.resolve.alias.set('WaveSurfer', 'wavesurfer.js');
-      config.resolve.alias.set('RecordRTC', 'recordrtc');
-  },
-  nodeModulesTransform: {
-    type: 'none',
-  },
-  routes: [
-    { path: '/', component: '@/pages/index' },
-  ],
-});
-```
-
 ## Application
 
 Edit `src/pages/index.js`:

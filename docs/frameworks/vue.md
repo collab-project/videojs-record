@@ -26,32 +26,6 @@ cd videojs-record-vue
 npm install --save videojs-record
 ```
 
-## Configuration
-
-Create `vue.config.js` with the following content:
-
-```javascript
-const webpack = require('webpack');
-
-module.exports = {
-  configureWebpack: {
-    resolve: {
-        alias: {
-            videojs: 'video.js',
-            WaveSurfer: 'wavesurfer.js',
-            RecordRTC: 'recordrtc'
-        }
-    },
-    plugins: [
-        new webpack.ProvidePlugin({
-            videojs: 'video.js/dist/video.cjs.js',
-            RecordRTC: 'recordrtc'
-        })
-    ]
-  }
-}
-```
-
 ## Application
 
 Create `src/components/VideoJSRecord.vue`:
@@ -179,7 +153,7 @@ Create `src/components/VideoJSRecord.vue`:
 </script>
 ```
 
-Change `src/App.vue` to:
+Replace the content of `src/App.vue` with:
 
 ```html
 <template>
