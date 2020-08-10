@@ -9,61 +9,17 @@ for React.
 
 ## Installation
 
-Create an example React application called `record-app`:
+Create an example React application called `videojs-record-react`:
 
 ```console
-npx create-react-app record-app
+npx create-react-app videojs-record-react
 ```
 
 Install videojs-record:
 
 ```console
-cd record-app
+cd videojs-record-react
 npm install --save videojs-record
-```
-
-Install [react-app-wired](https://github.com/timarney/react-app-rewired) used
-to configure Webpack:
-
-```console
-npm install react-app-rewired --save-dev
-```
-
-## Configuration
-
-Create a `config-overrides.js` file in the root directory:
-
-```javascript
-const webpack = require("webpack");
-
-module.exports = function override(config, env) {
-  // Extend the config to work with videojs-record without ejecting create react app.
-  // Reference: https://collab-project.github.io/videojs-record/#/react
-  const videojsPlugin = new webpack.ProvidePlugin({
-    videojs: "video.js/dist/video.cjs.js",
-    RecordRTC: "recordrtc"
-  });
-  const videojsAlias = {
-    videojs: "video.js",
-    WaveSurfer: "wavesurfer.js",
-    RecordRTC: "recordrtc"
-  };
-  config.resolve.alias = { ...config.resolve.alias, ...videojsAlias };
-  config.plugins.push(videojsPlugin);
-  return config;
-};
-```
-
-Change the existing calls to `react-scripts` in the `scripts` section of `package.json`
-for `start`, `build` and `test`:
-
-```json
-"scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
-}
 ```
 
 ## Application
