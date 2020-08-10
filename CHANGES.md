@@ -2,6 +2,9 @@
 
 ## 4.1.0 - unreleased
 
+- Fixed webpack externals configuration: it's no longer needed to
+  use additional webpack configuration in React/Angular/Vue projects
+  (#487, #493, #497)
 - ffmpeg.js plugin: handle `abort` errors (#481)
 - Bump required version for:
  - videojs-wavesurfer (3.3.0 or newer)
