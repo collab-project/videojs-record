@@ -16,6 +16,7 @@
   "scripts": {
     "start": "docsify serve .",
     "update": "npm-run-all -s update:*",
+    "update-examples": "node tools/update-videojs.js",
     "update:libvorbis": "cpx -v 'node_modules/libvorbis.js/js/libvorbis.min.js' demo/lib/libvorbis.js/",
     "update:lamejs": "cpx -v 'node_modules/lamejs/lame.*.js' demo/lib/lamejs/",
     "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' demo/lib/lamejs/worker-example/",
@@ -24,8 +25,7 @@
     "update:webm-wasm": "cpx -v 'node_modules/webm-wasm/dist/*' demo/lib/webm-wasm/",
     "update:ffmpeg": "cpx -v 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js' demo/lib/ffmpeg.js/",
     "test": "echo No tests yet!",
-    "watch": "npm-run-all -p watch:*",
-    "release:zip": "node scripts/release-zip.js"
+    "watch": "npm-run-all -p watch:*"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,7 @@
     "cpx": "^1.5.0",
     "docsify": "^4.11.5",
     "in-publish": "^2.0.1",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "replace-in-file": "^6.1.0"
   }
 }
