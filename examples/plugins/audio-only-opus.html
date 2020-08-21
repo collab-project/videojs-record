@@ -86,7 +86,8 @@ var player = videojs('myAudio', options, function() {
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
         ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ' and wavesurfer.js ' + WaveSurfer.VERSION;
+        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and opus-recorder ' +
+        Recorder.version;
     videojs.log(msg);
 });
 
