@@ -2,14 +2,15 @@
 
 ## NPM
 
-You can use [npm](https://www.npmjs.org) to install the plugin and
-[dependencies](dependencies.md):
+You can use [npm](https://www.npmjs.org) to install a compiled version of the plugin
+and [dependencies](dependencies.md):
 
 ```console
 npm install videojs-record
 ```
 
-Or [download it from Github](https://github.com/collab-project/videojs-record/releases).
+If you [download it from Github](https://github.com/collab-project/videojs-record/releases),
+you will have to [build the plugin](development.md) the plugin yourself.
 
 ## CDN
 
