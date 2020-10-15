@@ -9,6 +9,9 @@ const rootDir = path.resolve(__dirname, '..', '..');
 const pckg = require(path.join(rootDir, 'package.json'));
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+// enable logging of deprecation warnings stacktrace
+process.traceDeprecation = true;
+
 // inject JS version number
 let jsVersionPlugin = new webpack.DefinePlugin({
     '__VERSION__': JSON.stringify(pckg.version)
