@@ -33,6 +33,9 @@ module.exports = {
     performance: {
         hints: false
     },
+    stats: {
+        colors: true
+    },
     // specify dependencies for the library that are not resolved by webpack,
     // but become dependencies of the output: they are imported from the
     // environment during runtime and never directly included in the
