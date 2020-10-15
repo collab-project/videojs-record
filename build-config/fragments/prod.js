@@ -15,7 +15,6 @@ module.exports = {
             new TerserPlugin({
                 sourceMap: false,
                 parallel: true,
-                cache: './.build_cache/terser',
                 terserOptions: {
                     output: {
                         // preserve license comments
