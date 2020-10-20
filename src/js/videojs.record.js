@@ -21,10 +21,10 @@ import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import compareVersion from './utils/compare-version';
-import { detectBrowser } from './utils/detect-browser';
+import {detectBrowser} from './utils/detect-browser';
 
-import { getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine } from './engine/engine-loader';
-import { IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode } from './engine/record-mode';
+import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');
@@ -52,7 +52,7 @@ class Record extends Plugin {
             let retval = this.techGet_('play');
             // silence errors (unhandled promise from play)
             if (retval !== undefined && typeof retval.then === 'function') {
-                retval.then(null, (e) => { });
+                retval.then(null, (e) => {});
             }
             return retval;
         };
@@ -863,10 +863,6 @@ class Record extends Plugin {
                     // for animations, capture the first frame
                     // that can be displayed as soon as recording
                     // is complete
-
-                    this.cameraFeedWidth = this.mediaElement.offsetWidth;
-                    this.cameraFeedHeight = this.mediaElement.offsetHeight;
-
                     this.captureFrame().then((result) => {
                         // start video preview **after** capturing first frame
                         this.startVideoPreview();
@@ -1541,7 +1537,6 @@ class Record extends Plugin {
 
                     // display the snapshot
                     this.displaySnapshot();
-
                 });
             } else if (this.imageOutputType === 'dataURL') {
                 // turn the canvas data into base64 data
@@ -1895,12 +1890,12 @@ class Record extends Plugin {
     setVideoInput(deviceId) {
         if (this.recordVideo === Object(this.recordVideo)) {
             // already using video constraints
-            this.recordVideo.deviceId = { exact: deviceId };
+            this.recordVideo.deviceId = {exact: deviceId};
 
         } else if (this.recordVideo === true) {
             // not using video constraints already, so force it
             this.recordVideo = {
-                deviceId: { exact: deviceId }
+                deviceId: {exact: deviceId}
             };
         }
 
@@ -1919,12 +1914,12 @@ class Record extends Plugin {
     setAudioInput(deviceId) {
         if (this.recordAudio === Object(this.recordAudio)) {
             // already using audio constraints
-            this.recordAudio.deviceId = { exact: deviceId };
+            this.recordAudio.deviceId = {exact: deviceId};
 
         } else if (this.recordAudio === true) {
             // not using audio constraints already, so force it
             this.recordAudio = {
-                deviceId: { exact: deviceId }
+                deviceId: {exact: deviceId}
             };
         }
 
@@ -2015,14 +2010,9 @@ class Record extends Plugin {
         // only listen for this once; remove listener
         this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
 
-        console.log(`onStreamVisible(e) called: ${event}`);
-        console.log(event);
-
+        //captures the dimensions of the camera image.
         this.cameraFeedWidth = event.target.videoWidth;
         this.cameraFeedHeight = event.target.videoHeight;
-
-        console.log(`this.cameraFeedWidth: ${this.cameraFeedWidth}`);
-        console.log(`this.cameraFeedWidth: ${this.cameraFeedHeight}`);
 
         // reset and show camera button
         this.player.cameraButton.onStop();
@@ -2060,4 +2050,4 @@ if (videojs.getPlugin('record') === undefined) {
 }
 
 // export plugin
-export { Record };
+export {Record};
