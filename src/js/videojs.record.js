@@ -21,10 +21,10 @@ import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import compareVersion from './utils/compare-version';
-import {detectBrowser} from './utils/detect-browser';
+import { detectBrowser } from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
+import { getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine } from './engine/engine-loader';
+import { IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode } from './engine/record-mode';
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');
@@ -52,7 +52,7 @@ class Record extends Plugin {
             let retval = this.techGet_('play');
             // silence errors (unhandled promise from play)
             if (retval !== undefined && typeof retval.then === 'function') {
-                retval.then(null, (e) => {});
+                retval.then(null, (e) => { });
             }
             return retval;
         };
@@ -863,6 +863,10 @@ class Record extends Plugin {
                     // for animations, capture the first frame
                     // that can be displayed as soon as recording
                     // is complete
+
+                    this.cameraFeedWidth = this.mediaElement.offsetWidth;
+                    this.cameraFeedHeight = this.mediaElement.offsetHeight;
+
                     this.captureFrame().then((result) => {
                         // start video preview **after** capturing first frame
                         this.startVideoPreview();
@@ -1221,7 +1225,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
+                        formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1264,7 +1268,7 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl() &&
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
-                    this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
+                        this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
@@ -1529,7 +1533,7 @@ class Record extends Plugin {
      * @private
      */
     createSnapshot() {
-        this.captureFrame().then((result) => {
+        this.captureCameraFrame().then((result) => {
             if (this.imageOutputType === 'blob') {
                 // turn the canvas data into a Blob
                 result.toBlob((blob) => {
@@ -1537,6 +1541,7 @@ class Record extends Plugin {
 
                     // display the snapshot
                     this.displaySnapshot();
+
                 });
             } else if (this.imageOutputType === 'dataURL') {
                 // turn the canvas data into base64 data
@@ -1578,7 +1583,7 @@ class Record extends Plugin {
         this.player.el().firstChild.style.display = 'block';
     }
 
-    /**
+  /**
      * Capture frame from camera and copy data to canvas.
      * @private
      * @returns {void}
@@ -1627,6 +1632,127 @@ class Record extends Plugin {
         });
     }
 
+        /**
+     * Capture frame from camera and copy data to canvas.
+     * @private
+     * @returns {void}
+     */
+    captureCameraFrame() {
+        let detected = detectBrowser();
+        let recordCanvas = this.player.recordCanvas.el().firstChild;
+
+        //Reset recordCanvas dimensions to video player dimensions.
+        recordCanvas.width = this.player.width();
+        recordCanvas.height = this.player.height();
+
+        return new Promise((resolve, reject) => {
+            // MediaCapture is only supported on:
+            // - Chrome 60 and newer (see
+            // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
+            // - Firefox behind flag (https://bugzilla.mozilla.org/show_bug.cgi?id=888177)
+            //
+            // importing ImageCapture can fail when enabling chrome flag is still required.
+            // if so; ignore and continue
+      
+            var originalImageCanvas = document.createElement('canvas');
+
+            originalImageCanvas.width = this.cameraFeedWidth;
+            originalImageCanvas.height = this.cameraFeedHeight;
+
+            var cameraAspectRatio = this.cameraFeedWidth/this.cameraFeedHeight;
+            var playerAspectRatio = this.player.width()/this.player.height();
+
+            let imagePreviewHeight = null;
+            let imagePreviewWidth = null;
+            let imageXPosition = null;
+            let imageYPosition = null;
+
+            if(cameraAspectRatio >= playerAspectRatio) {
+                //image feed wider than player.
+                imagePreviewHeight = this.cameraFeedHeight * (this.player.width() / this.cameraFeedWidth);
+                imagePreviewWidth = this.player.width();
+                imageXPosition = 0;
+                imageYPosition = (this.player.height() / 2) - (imagePreviewHeight / 2);
+            } else {
+                //player wider than image feed.
+                imagePreviewHeight = this.player.height()
+                imagePreviewWidth = this.cameraFeedWidth * (this.player.height() / this.cameraFeedHeight);
+                imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
+                imageYPosition = 0;
+            }
+
+            if ((detected.browser === 'chrome' && detected.version >= 60) &&
+                (typeof ImageCapture === typeof Function)) {
+                try {
+
+                    let track = this.stream.getVideoTracks()[0];
+                    let imageCapture = new ImageCapture(track);
+
+                    // take picture
+                    imageCapture.takePhoto().then((imageBlob) => {
+            
+                            recordCanvas.width = this.player.width();
+                            recordCanvas.height = this.player.height();
+            
+                            var originalImageBlobURL = URL.createObjectURL(imageBlob);
+                            var imageToResolve = new Image();
+            
+                            imageToResolve.onload = () => {
+
+                                originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
+            
+                                this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
+            
+                                //Cleanup
+                                URL.revokeObjectURL(originalImageBlobURL);
+                                imageToResolve.onload = null;
+                                imageToResolve = null;
+            
+                                //Resolve with original captured image at full resolution.
+                                resolve(originalImageCanvas);
+                            };
+            
+                            imageToResolve.src = originalImageBlobURL;
+                    }).catch((error) => {
+                        console.log(error);
+                        // ignore, try oldskool
+                    });
+                } catch (err) {
+                    console.log(error);
+                }
+            }
+            // no ImageCapture available: do it the oldskool way
+            // get a frame and copy it onto the canvas
+
+            originalImageCanvas.getContext('2d').drawImage(
+                this.mediaElement, 0, 0);
+
+            originalImageCanvas.toBlob((imageBlob) => {
+
+                recordCanvas.width = this.player.width();
+                recordCanvas.height = this.player.height();
+
+                var originalImageBlobURL = URL.createObjectURL(imageBlob);
+                var imageToResolve = new Image();
+
+                imageToResolve.onload = () => {
+                    this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
+
+                    //Cleanup
+                    URL.revokeObjectURL(originalImageBlobURL);
+                    imageToResolve.onload = null;
+                    imageToResolve = null;
+
+                    //Resolve with original captured image at full resolution.
+                    resolve(originalImageCanvas);
+                };
+
+                imageToResolve.src = originalImageBlobURL;
+            });
+        });
+    }
+
+
     /**
      * Draw image frame on canvas element.
      * @private
@@ -1638,6 +1764,35 @@ class Record extends Plugin {
             element, 0, 0,
             canvas.width,
             canvas.height
+        );
+    }
+
+    /**
+ * Draw image frame on canvas element.
+ * @private
+ * @param {HTMLCanvasElement} canvas - Canvas to draw on.
+ * @param {HTMLElement} element - Element to draw onto the canvas.
+ * @param {int} dx - The x-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
+ * @param {int} dy - The y-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
+ */
+    drawCanvas(canvas, element, dx, dy) {
+        canvas.getContext('2d').drawImage(
+            element, dx, dy
+        );
+    }
+
+    /**
+* Draw image frame on canvas element.
+* @private
+* @param {HTMLCanvasElement} canvas - Canvas to draw on.
+* @param {HTMLElement} element - Element to draw onto the canvas.
+* @param {int} dx - The x-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
+* @param {int} dy - The y-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
+* @param {int} dWidth - The width to draw the image in the destination canvas. This allows scaling of the drawn image. If not specified, the image is not scaled in width when drawn.
+* @param {int} dHeight - The height to draw the image in the destination canvas. This allows scaling of the drawn image. If not specified, the image is not scaled in height when drawn.     */
+    drawCanvas(canvas, element, dx, dy, dWidth, dHeight) {
+        canvas.getContext('2d').drawImage(
+            element, dx, dy, dWidth, dHeight
         );
     }
 
@@ -1740,12 +1895,12 @@ class Record extends Plugin {
     setVideoInput(deviceId) {
         if (this.recordVideo === Object(this.recordVideo)) {
             // already using video constraints
-            this.recordVideo.deviceId = {exact: deviceId};
+            this.recordVideo.deviceId = { exact: deviceId };
 
         } else if (this.recordVideo === true) {
             // not using video constraints already, so force it
             this.recordVideo = {
-                deviceId: {exact: deviceId}
+                deviceId: { exact: deviceId }
             };
         }
 
@@ -1764,12 +1919,12 @@ class Record extends Plugin {
     setAudioInput(deviceId) {
         if (this.recordAudio === Object(this.recordAudio)) {
             // already using audio constraints
-            this.recordAudio.deviceId = {exact: deviceId};
+            this.recordAudio.deviceId = { exact: deviceId };
 
         } else if (this.recordAudio === true) {
             // not using audio constraints already, so force it
             this.recordAudio = {
-                deviceId: {exact: deviceId}
+                deviceId: { exact: deviceId }
             };
         }
 
@@ -1860,6 +2015,15 @@ class Record extends Plugin {
         // only listen for this once; remove listener
         this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
 
+        console.log(`onStreamVisible(e) called: ${event}`);
+        console.log(event);
+
+        this.cameraFeedWidth = event.target.videoWidth;
+        this.cameraFeedHeight = event.target.videoHeight;
+
+        console.log(`this.cameraFeedWidth: ${this.cameraFeedWidth}`);
+        console.log(`this.cameraFeedWidth: ${this.cameraFeedHeight}`);
+
         // reset and show camera button
         this.player.cameraButton.onStop();
         this.player.cameraButton.show();
@@ -1896,4 +2060,4 @@ if (videojs.getPlugin('record') === undefined) {
 }
 
 // export plugin
-export {Record};
+export { Record };
