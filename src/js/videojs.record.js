@@ -52,7 +52,7 @@ class Record extends Plugin {
             let retval = this.techGet_('play');
             // silence errors (unhandled promise from play)
             if (retval !== undefined && typeof retval.then === 'function') {
-                retval.then(null, (e) => {});
+                retval.then(null, (e) => { });
             }
             return retval;
         };
@@ -1578,11 +1578,11 @@ class Record extends Plugin {
         this.player.el().firstChild.style.display = 'block';
     }
 
-  /**
-     * Capture frame from camera and copy data to canvas.
-     * @private
-     * @returns {void}
-     */
+    /**
+       * Capture frame from camera and copy data to canvas.
+       * @private
+       * @returns {void}
+       */
     captureFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
@@ -1601,7 +1601,7 @@ class Record extends Plugin {
             // importing ImageCapture can fail when enabling chrome flag is still required.
             // if so; ignore and continue
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
-               (typeof ImageCapture === typeof Function)) {
+                (typeof ImageCapture === typeof Function)) {
                 try {
                     let track = this.stream.getVideoTracks()[0];
                     let imageCapture = new ImageCapture(track);
@@ -1627,11 +1627,11 @@ class Record extends Plugin {
         });
     }
 
-        /**
-     * Capture frame from camera and copy data to canvas.
-     * @private
-     * @returns {void}
-     */
+    /**
+ * Capture frame from camera and copy data to canvas.
+ * @private
+ * @returns {void}
+ */
     captureCameraFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
@@ -1648,21 +1648,21 @@ class Record extends Plugin {
             //
             // importing ImageCapture can fail when enabling chrome flag is still required.
             // if so; ignore and continue
-      
-            var originalImageCanvas = document.createElement('canvas');
+            const originalImageCanvas = document.createElement('canvas');
 
             originalImageCanvas.width = this.cameraFeedWidth;
             originalImageCanvas.height = this.cameraFeedHeight;
 
-            var cameraAspectRatio = this.cameraFeedWidth/this.cameraFeedHeight;
-            var playerAspectRatio = this.player.width()/this.player.height();
+            const cameraAspectRatio = this.cameraFeedWidth / this.cameraFeedHeight;
+            const playerAspectRatio = this.player.width() / this.player.height();
 
             let imagePreviewHeight = null;
             let imagePreviewWidth = null;
             let imageXPosition = null;
             let imageYPosition = null;
 
-            if(cameraAspectRatio >= playerAspectRatio) {
+            // buddy ignore:start
+            if (cameraAspectRatio >= playerAspectRatio) {
                 //image feed wider than player.
                 imagePreviewHeight = this.cameraFeedHeight * (this.player.width() / this.cameraFeedWidth);
                 imagePreviewWidth = this.player.width();
@@ -1670,11 +1670,12 @@ class Record extends Plugin {
                 imageYPosition = (this.player.height() / 2) - (imagePreviewHeight / 2);
             } else {
                 //player wider than image feed.
-                imagePreviewHeight = this.player.height()
+                imagePreviewHeight = this.player.height();
                 imagePreviewWidth = this.cameraFeedWidth * (this.player.height() / this.cameraFeedHeight);
                 imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
                 imageYPosition = 0;
             }
+            // buddy ignore:end
 
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                 (typeof ImageCapture === typeof Function)) {
@@ -1685,35 +1686,33 @@ class Record extends Plugin {
 
                     // take picture
                     imageCapture.takePhoto().then((imageBlob) => {
-            
-                            recordCanvas.width = this.player.width();
-                            recordCanvas.height = this.player.height();
-            
-                            var originalImageBlobURL = URL.createObjectURL(imageBlob);
-                            var imageToResolve = new Image();
-            
-                            imageToResolve.onload = () => {
 
-                                originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
-            
-                                this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
-            
-                                //Cleanup
-                                URL.revokeObjectURL(originalImageBlobURL);
-                                imageToResolve.onload = null;
-                                imageToResolve = null;
-            
-                                //Resolve with original captured image at full resolution.
-                                resolve(originalImageCanvas);
-                            };
-            
-                            imageToResolve.src = originalImageBlobURL;
+                        recordCanvas.width = this.player.width();
+                        recordCanvas.height = this.player.height();
+
+                        let originalImageBlobURL = URL.createObjectURL(imageBlob);
+                        let imageToResolve = new Image();
+
+                        imageToResolve.onload = () => {
+
+                            originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
+
+                            this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
+
+                            //Cleanup
+                            URL.revokeObjectURL(originalImageBlobURL);
+                            imageToResolve.onload = null;
+                            imageToResolve = null;
+
+                            //Resolve with original captured image at full resolution.
+                            resolve(originalImageCanvas);
+                        };
+
+                        imageToResolve.src = originalImageBlobURL;
                     }).catch((error) => {
-                        console.log(error);
                         // ignore, try oldskool
                     });
                 } catch (err) {
-                    console.log(error);
                 }
             }
             // no ImageCapture available: do it the oldskool way
@@ -1727,8 +1726,8 @@ class Record extends Plugin {
                 recordCanvas.width = this.player.width();
                 recordCanvas.height = this.player.height();
 
-                var originalImageBlobURL = URL.createObjectURL(imageBlob);
-                var imageToResolve = new Image();
+                let originalImageBlobURL = URL.createObjectURL(imageBlob);
+                let imageToResolve = new Image();
 
                 imageToResolve.onload = () => {
                     this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
