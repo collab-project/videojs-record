@@ -29,7 +29,7 @@ const chromeFlags = [
     '--use-file-for-fake-audio-capture=' + fakeAudioStream,
     '--use-file-for-fake-video-capture=' + fakeVideoStream,
     '--autoplay-policy=no-user-gesture-required',
-    '--user-data-dir=.chrome',
+    '--user-data-dir=' + path.resolve('.chrome'),
     '--disable-translate',
     '--disable-extensions',
     '--disable-infobars',
@@ -257,7 +257,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev'], //, 'Firefox_headless'];
+        configuration.browsers = ['Chrome_dev', 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
