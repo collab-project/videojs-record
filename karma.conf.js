@@ -29,7 +29,7 @@ const chromeFlags = [
     '--use-file-for-fake-audio-capture=' + fakeAudioStream,
     '--use-file-for-fake-video-capture=' + fakeVideoStream,
     '--autoplay-policy=no-user-gesture-required',
-    '--user-data-dir=.chrome',
+    '--user-data-dir=' + path.resolve('.chrome'),
     '--disable-translate',
     '--disable-extensions',
     '--disable-infobars',
@@ -182,9 +182,13 @@ module.exports = function(config) {
                 if (availableBrowsers.length > 1) {
                     // use custom browser launchers
                     let result = availableBrowsers;
+                    let cr = availableBrowsers.indexOf('Chrome');
+                    if (cr > -1) {
+                        availableBrowsers[cd] = 'Chrome_dev';
+                    }
                     let cd = availableBrowsers.indexOf('ChromeHeadless');
                     if (cd > -1) {
-                        availableBrowsers[cd] = 'Chrome_dev';
+                        availableBrowsers[cd] = 'Chrome_headless';
                     }
                     let fd = availableBrowsers.indexOf('FirefoxHeadless');
                     if (fd > -1) {
@@ -241,6 +245,10 @@ module.exports = function(config) {
                 flags: chromeFlags,
                 chromeDataDir: path.resolve(__dirname, '.chrome')
             },
+            Chrome_headless: {
+                base: 'ChromeHeadless',
+                flags: chromeFlags
+            },
             Chromium_dev: {
                 base: 'ChromiumHeadless',
                 flags: chromeFlags
@@ -257,7 +265,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev'], //, 'Firefox_headless'];
+        configuration.browsers = ['Chrome_headless', 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 
