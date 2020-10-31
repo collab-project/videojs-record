@@ -182,9 +182,13 @@ module.exports = function(config) {
                 if (availableBrowsers.length > 1) {
                     // use custom browser launchers
                     let result = availableBrowsers;
+                    let cr = availableBrowsers.indexOf('Chrome');
+                    if (cr > -1) {
+                        availableBrowsers[cd] = 'Chrome_dev';
+                    }
                     let cd = availableBrowsers.indexOf('ChromeHeadless');
                     if (cd > -1) {
-                        availableBrowsers[cd] = 'Chrome_dev';
+                        availableBrowsers[cd] = 'Chrome_headless';
                     }
                     let fd = availableBrowsers.indexOf('FirefoxHeadless');
                     if (fd > -1) {
@@ -240,6 +244,10 @@ module.exports = function(config) {
                 base: 'Chrome',
                 flags: chromeFlags,
                 chromeDataDir: path.resolve(__dirname, '.chrome')
+            },
+            Chrome_headless: {
+                base: 'ChromeHeadless',
+                flags: chromeFlags
             },
             Chromium_dev: {
                 base: 'ChromiumHeadless',
