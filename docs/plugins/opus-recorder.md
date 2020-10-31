@@ -42,7 +42,7 @@ record: {
     debug: true,
     audioEngine: 'opus-recorder',
     audioSampleRate: 48000,
-    audioChannels: 2,
+    audioChannels: 1,
     audioWorkerURL: '../../node_modules/opus-recorder/dist/encoderWorker.min.js'
     // use the pluginLibraryOptions option to specify optional settings for the
     // opus-recorder library. For example:
@@ -62,5 +62,5 @@ Options for this plugin:
 | `audioEngine` | `opus-recorder` | Enables the plugin. |
 | `audioWorkerURL` | `/path/to/encoderWorker.min.js` | Path to encoder WebWorker file. |
 | `audioSampleRate` | `48000` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
-| `audioChannels` | `2` | Number of audio channels. Using a single channel results in a smaller file size. |
+| `audioChannels` | `1` | Number of audio channels. Using a single channel results in a smaller file size. |
 | `pluginLibraryOptions` | `{}` | Specify optional settings for the opus-recorder library. |
