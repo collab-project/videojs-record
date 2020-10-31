@@ -40,7 +40,7 @@ class OpusRecorderEngine extends RecordEngine {
          *
          * @type {number}
          */
-        this.audioChannels = 2;
+        this.audioChannels = 1;
         /**
          * The length of the buffer that the internal `JavaScriptNode`
          * uses to capture the audio. Can be tweaked if experiencing
