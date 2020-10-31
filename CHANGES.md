@@ -2,7 +2,7 @@
 
 ## 4.2.0 - unreleased
 
-- Fix issue with opus-recorder plugin (#)
+- Fix issue with opus-recorder plugin (#519)
 
 
 ## 4.1.0 - 2020/08/11
