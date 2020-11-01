@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.2.0 - unreleased
+## 4.1.1 - 2020/11/01
 
 - Fix issue with opus-recorder plugin (#519)
 
