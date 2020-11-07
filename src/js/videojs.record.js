@@ -1703,22 +1703,14 @@ class Record extends Plugin {
                 } catch (err) {
                 }
             } else {
+                // no ImageCapture available: do it the oldskool way
+                // get a frame and copy it onto the canvas
                 originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
+                this.drawCanvas(recordCanvas, originalImageCanvas, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
 
-                let imageToResolve = new Image();
-                imageToResolve.onload = () => {
-                    this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
-                    imageToResolve.onload = null;
-                    resolve(originalImageCanvas);
-                };
-
-                originalImageCanvas.toBlob((imageBlob) => {
-                    const originalImageBlobURL = URL.createObjectURL(imageBlob);
-                    imageToResolve.src = originalImageBlobURL;
-                });
+                resolve(originalImageCanvas);
             }
-            // no ImageCapture available: do it the oldskool way
-            // get a frame and copy it onto the canvas
+
 
         });
     }
