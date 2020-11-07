@@ -52,7 +52,7 @@ class Record extends Plugin {
             let retval = this.techGet_('play');
             // silence errors (unhandled promise from play)
             if (retval !== undefined && typeof retval.then === 'function') {
-                retval.then(null, (e) => { });
+                retval.then(null, (e) => {});
             }
             return retval;
         };
@@ -863,6 +863,10 @@ class Record extends Plugin {
                     // for animations, capture the first frame
                     // that can be displayed as soon as recording
                     // is complete
+
+                    this.cameraFeedWidth = this.mediaElement.offsetWidth;
+                    this.cameraFeedHeight = this.mediaElement.offsetHeight;
+
                     this.captureFrame().then((result) => {
                         // start video preview **after** capturing first frame
                         this.startVideoPreview();
@@ -1221,7 +1225,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                        formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
+                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1264,7 +1268,7 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl() &&
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
-                        this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
+                    this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
@@ -1579,10 +1583,10 @@ class Record extends Plugin {
     }
 
     /**
-       * Capture frame from camera and copy data to canvas.
-       * @private
-       * @returns {void}
-       */
+     * Capture frame from camera and copy data to canvas.
+     * @private
+     * @returns {void}
+     */
     captureFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
@@ -1601,7 +1605,7 @@ class Record extends Plugin {
             // importing ImageCapture can fail when enabling chrome flag is still required.
             // if so; ignore and continue
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
-                (typeof ImageCapture === typeof Function)) {
+               (typeof ImageCapture === typeof Function)) {
                 try {
                     let track = this.stream.getVideoTracks()[0];
                     let imageCapture = new ImageCapture(track);
@@ -1628,10 +1632,10 @@ class Record extends Plugin {
     }
 
     /**
- * Capture frame from camera and copy data to canvas.
- * @private
- * @returns {void}
- */
+    * Capture frame from camera and copy data to canvas.
+    * @private
+    * @returns {void}
+    */
     captureCameraFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
@@ -1677,8 +1681,19 @@ class Record extends Plugin {
             }
             // buddy ignore:end
 
+            recordCanvas.width = this.player.width();
+            recordCanvas.height = this.player.height();
+
+            let imageToResolve = new Image();
+            imageToResolve.onload = () => {
+                this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
+
+                imageToResolve.onload = null;
+                resolve(originalImageCanvas);
+            };
+
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
-                (typeof ImageCapture === typeof Function)) {
+               (typeof ImageCapture === typeof Function)) {
                 try {
 
                     let track = this.stream.getVideoTracks()[0];
@@ -1686,28 +1701,7 @@ class Record extends Plugin {
 
                     // take picture
                     imageCapture.takePhoto().then((imageBlob) => {
-
-                        recordCanvas.width = this.player.width();
-                        recordCanvas.height = this.player.height();
-
-                        let originalImageBlobURL = URL.createObjectURL(imageBlob);
-                        let imageToResolve = new Image();
-
-                        imageToResolve.onload = () => {
-
-                            originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
-
-                            this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
-
-                            //Cleanup
-                            URL.revokeObjectURL(originalImageBlobURL);
-                            imageToResolve.onload = null;
-                            imageToResolve = null;
-
-                            //Resolve with original captured image at full resolution.
-                            resolve(originalImageCanvas);
-                        };
-
+                        const originalImageBlobURL = URL.createObjectURL(imageBlob);
                         imageToResolve.src = originalImageBlobURL;
                     }).catch((error) => {
                         // ignore, try oldskool
@@ -1717,30 +1711,10 @@ class Record extends Plugin {
             }
             // no ImageCapture available: do it the oldskool way
             // get a frame and copy it onto the canvas
-
-            originalImageCanvas.getContext('2d').drawImage(
-                this.mediaElement, 0, 0);
+            originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
 
             originalImageCanvas.toBlob((imageBlob) => {
-
-                recordCanvas.width = this.player.width();
-                recordCanvas.height = this.player.height();
-
-                let originalImageBlobURL = URL.createObjectURL(imageBlob);
-                let imageToResolve = new Image();
-
-                imageToResolve.onload = () => {
-                    this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
-
-                    //Cleanup
-                    URL.revokeObjectURL(originalImageBlobURL);
-                    imageToResolve.onload = null;
-                    imageToResolve = null;
-
-                    //Resolve with original captured image at full resolution.
-                    resolve(originalImageCanvas);
-                };
-
+                const originalImageBlobURL = URL.createObjectURL(imageBlob);
                 imageToResolve.src = originalImageBlobURL;
             });
         });
@@ -1762,28 +1736,15 @@ class Record extends Plugin {
     }
 
     /**
- * Draw image frame on canvas element.
- * @private
- * @param {HTMLCanvasElement} canvas - Canvas to draw on.
- * @param {HTMLElement} element - Element to draw onto the canvas.
- * @param {int} dx - The x-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
- * @param {int} dy - The y-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
- */
-    drawCanvas(canvas, element, dx, dy) {
-        canvas.getContext('2d').drawImage(
-            element, dx, dy
-        );
-    }
-
-    /**
-* Draw image frame on canvas element.
-* @private
-* @param {HTMLCanvasElement} canvas - Canvas to draw on.
-* @param {HTMLElement} element - Element to draw onto the canvas.
-* @param {int} dx - The x-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
-* @param {int} dy - The y-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
-* @param {int} dWidth - The width to draw the image in the destination canvas. This allows scaling of the drawn image. If not specified, the image is not scaled in width when drawn.
-* @param {int} dHeight - The height to draw the image in the destination canvas. This allows scaling of the drawn image. If not specified, the image is not scaled in height when drawn.     */
+    * Draw image frame on canvas element.
+    * @private
+    * @param {HTMLCanvasElement} canvas - Canvas to draw on.
+    * @param {HTMLElement} element - Element to draw onto the canvas.
+    * @param {int} dx - The x-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
+    * @param {int} dy - The y-axis coordinate in the destination canvas at which to place the top-left corner of the source image.
+    * @param {int} dWidth - The width to draw the image in the destination canvas. This allows scaling of the drawn image. If not specified, the image is not scaled in width when drawn.
+    * @param {int} dHeight - The height to draw the image in the destination canvas. This allows scaling of the drawn image. If not specified, the image is not scaled in height when drawn.
+    */
     drawCanvas(canvas, element, dx, dy, dWidth, dHeight) {
         canvas.getContext('2d').drawImage(
             element, dx, dy, dWidth, dHeight
