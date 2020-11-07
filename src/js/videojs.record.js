@@ -1708,7 +1708,6 @@ class Record extends Plugin {
                 let imageToResolve = new Image();
                 imageToResolve.onload = () => {
                     this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
-    
                     imageToResolve.onload = null;
                     resolve(originalImageCanvas);
                 };
