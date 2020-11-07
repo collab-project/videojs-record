@@ -1684,14 +1684,6 @@ class Record extends Plugin {
             recordCanvas.width = this.player.width();
             recordCanvas.height = this.player.height();
 
-            let imageToResolve = new Image();
-            imageToResolve.onload = () => {
-                this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
-
-                imageToResolve.onload = null;
-                resolve(originalImageCanvas);
-            };
-
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                (typeof ImageCapture === typeof Function)) {
                 try {
@@ -1700,23 +1692,35 @@ class Record extends Plugin {
                     let imageCapture = new ImageCapture(track);
 
                     // take picture
-                    imageCapture.takePhoto().then((imageBlob) => {
-                        const originalImageBlobURL = URL.createObjectURL(imageBlob);
-                        imageToResolve.src = originalImageBlobURL;
+                    imageCapture.grabFrame().then((imageBitmap) => {
+                        originalImageCanvas.getContext('2d').drawImage(imageBitmap, 0, 0);
+                        this.drawCanvas(recordCanvas, imageBitmap, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
+
+                        resolve(originalImageCanvas);
                     }).catch((error) => {
                         // ignore, try oldskool
                     });
                 } catch (err) {
                 }
+            } else {
+                originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
+
+                let imageToResolve = new Image();
+                imageToResolve.onload = () => {
+                    this.drawCanvas(recordCanvas, imageToResolve, imageXPosition, imageYPosition, imagePreviewWidth, imagePreviewHeight);
+    
+                    imageToResolve.onload = null;
+                    resolve(originalImageCanvas);
+                };
+
+                originalImageCanvas.toBlob((imageBlob) => {
+                    const originalImageBlobURL = URL.createObjectURL(imageBlob);
+                    imageToResolve.src = originalImageBlobURL;
+                });
             }
             // no ImageCapture available: do it the oldskool way
             // get a frame and copy it onto the canvas
-            originalImageCanvas.getContext('2d').drawImage(this.mediaElement, 0, 0);
 
-            originalImageCanvas.toBlob((imageBlob) => {
-                const originalImageBlobURL = URL.createObjectURL(imageBlob);
-                imageToResolve.src = originalImageBlobURL;
-            });
         });
     }
 
