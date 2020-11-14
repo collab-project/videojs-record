@@ -120,8 +120,8 @@ const pluginDefaultOptions = {
     imageOutputQuality: 0.92,
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
     timeSlice: 0,
-    // Media converter library to use. Legal values are 'ts-ebml' and 'ffmpeg.js'.
-    // Use an empty string '' to disable (default).
+    // Media converter library to use. Legal values are 'ts-ebml', 'ffmpeg.wasm'
+    // and 'ffmpeg.js'. Use an empty string '' to disable (default).
     convertEngine: '',
     // URL for the converter worker.
     convertWorkerURL: '',
