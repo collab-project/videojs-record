@@ -11,14 +11,17 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const rootDir = path.resolve(__dirname, '..', '..');
 
 // copy fonts to dist
-let copyFontsPlugin = new CopyWebpackPlugin([
-    {
+let copyFontsPlugin = new CopyWebpackPlugin({
+    patterns: [{
         from: 'src/fonts/*',
         to: 'fonts',
         flatten: true,
-        ignore: ['*.json', '*.md']
-    }
-]);
+        globOptions: {
+            dot: false,
+            ignore: ['**/*.json', '**/*.md']
+        }
+    }]
+});
 
 module.exports = {
     entry: {

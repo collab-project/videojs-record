@@ -20,13 +20,9 @@ const pluginDefaultOptions = {
     // Maximum file size of the recorded clip. Works only when the timeSlice
     // option is also enabled.
     maxFileSize: 0,
-    // msDisplayMax indicates the number of seconds that is
-    // considered the boundary value for displaying milliseconds
-    // in the time controls. An audio clip with a total length of
-    // 2 seconds and a msDisplayMax of 3 will use the format
-    // M:SS:MMM. Clips longer than msDisplayMax will be displayed
-    // as M:SS or HH:MM:SS.
-    msDisplayMax: 3,
+    // Boolean indicating if milliseconds should be included,
+    // e.g. "00:00:000" vs "00:00".
+    displayMilliseconds: false,
     // Width of the recorded video frames.
     frameWidth: 320,
     // Height of the recorded video frames.
@@ -45,7 +41,7 @@ const pluginDefaultOptions = {
     videoEngine: 'recordrtc',
     // The video frame rate in frames per second (only used in webm-wasm plugin).
     videoFrameRate: 30,
-    // The mime type for the video recorder. Default to 'video/webm'.
+    // The mime type for the video recorder.
     // Use 'video/mp4' (Firefox) or 'video/webm;codecs=H264' (Chrome 52 and
     // newer) for MP4.
     videoMimeType: 'video/webm',
@@ -103,6 +99,27 @@ const pluginDefaultOptions = {
     audioBufferUpdate: false,
     // Options for animated GIFs using the gifshot library.
     animationOptions: {},
+    // Frame rate in frames per second.
+    animationFrameRate: 200,
+    // Sets quality of color quantization (conversion of images to the
+    // maximum 256 colors allowed by the GIF specification).
+    // Lower values (minimum = 1) produce better colors,
+    // but slow processing significantly. 10 is the default,
+    // and produces good color mapping at reasonable speeds.
+    // Values greater than 20 do not yield significant improvements
+    // in speed.
+    animationQuality: 10,
+    // A string indicating the output type: dataURL (base64 string) or blob.
+    // The default output is dataURL.
+    imageOutputType: 'dataURL',
+    // A string indicating the image format used in image-only mode. The default
+    // format type is image/png.
+    imageOutputFormat: 'image/png',
+    // A number between 0 and 1 indicating the image quality to use for image
+    // formats that use lossy compression such as image/jpeg and image/webp.
+    // If this argument is anything else, the default value for image quality
+    // is used. The default value is 0.92.
+    imageOutputQuality: 0.92,
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
     timeSlice: 0,
     // Media converter library to use. Legal values are 'ts-ebml' and 'ffmpeg.js'.

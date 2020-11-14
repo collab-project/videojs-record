@@ -8,6 +8,7 @@ class Event {}
 // video.js
 Event.READY = 'ready';
 Event.ERROR = 'error';
+Event.PLAYING = 'playing';
 Event.LOADEDMETADATA = 'loadedmetadata';
 Event.LOADSTART = 'loadstart';
 Event.USERINACTIVE = 'userinactive';
@@ -34,6 +35,7 @@ Event.START_CONVERT = 'startConvert';
 Event.FINISH_CONVERT = 'finishConvert';
 Event.ENTER_PIP = 'enterPIP';
 Event.LEAVE_PIP = 'leavePIP';
+Event.RETRY = 'retry';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';

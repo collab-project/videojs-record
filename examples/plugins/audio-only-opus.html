@@ -36,27 +36,40 @@
 /* eslint-disable */
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 600,
     height: 300,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#4c4a56',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            plugins: [
+                // enable microphone plugin
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         record: {
             audio: true,
             video: false,
             maxLength: 20,
             debug: true,
+            displayMilliseconds: true,
             audioEngine: 'opus-recorder',
             audioSampleRate: 48000,
-            audioChannels: 2,
+            audioChannels: 1,
             audioWorkerURL: '../../node_modules/opus-recorder/dist/encoderWorker.min.js'
             // use the pluginLibraryOptions option to specify optional settings for the
             // opus-recorder library. For example:
@@ -73,7 +86,8 @@ var player = videojs('myAudio', options, function() {
     var msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
         ', videojs-wavesurfer ' + videojs.getPluginVersion('wavesurfer') +
-        ' and wavesurfer.js ' + WaveSurfer.VERSION;
+        ', wavesurfer.js ' + WaveSurfer.VERSION + ' and opus-recorder ' +
+        Recorder.version;
     videojs.log(msg);
 });
 

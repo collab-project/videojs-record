@@ -2,7 +2,7 @@
  * @since 3.8.0
  */
 
-import compareVersion from '../../src/js/utils/compare-version.js';
+import compareVersion from '../../src/js/utils/compare-version';
 
 
 /** @test {compare-version} */

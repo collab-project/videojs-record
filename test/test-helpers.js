@@ -8,21 +8,33 @@ import {Player, mergeOptions} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
-import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine.js';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine';
+import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
     TEST_WEBM: '/base/test/support/no_metadata.webm',
 
     DEFAULT_WAVESURFER_OPTIONS: {
-        src: 'live',
+        backend: 'WebAudio',
         waveColor: '#36393b',
         progressColor: 'black',
         debug: true,
         cursorWidth: 1,
-        msDisplayMax: 20,
-        hideScrollbar: true
+        displayMilliseconds: false,
+        hideScrollbar: true,
+        plugins: [
+            // enable microphone plugin
+            WaveSurfer.microphone.create({
+                bufferSize: 4096,
+                numberOfInputChannels: 1,
+                numberOfOutputChannels: 1,
+                constraints: {
+                    video: false,
+                    audio: true
+                }
+            })
+        ]
     },
 
     applyScreenWorkaround() {
@@ -137,7 +149,7 @@ const TestHelpers = {
                 recordPluginOptions.audioEngine = OPUSRECORDER;
                 recordPluginOptions.audioSampleRate = 48000;
                 recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
-                recordPluginOptions.audioChannels = 2;
+                recordPluginOptions.audioChannels = 1;
                 break;
 
             case RECORDERJS:
@@ -214,7 +226,7 @@ const TestHelpers = {
                 recordPluginOptions.convertEngine = FFMPEGJS;
                 recordPluginOptions.convertWorkerURL = '/base/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js';
                 recordPluginOptions.convertOptions = ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'];
-                recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mp3'};
+                recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mpeg'};
                 break;
 
             default:
@@ -278,9 +290,9 @@ const TestHelpers = {
         return this.makePlayer(tag, opts);
     },
 
-    makeImageOnlyPlayer() {
+    makeImageOnlyPlayer(newOptions) {
         let tag = TestHelpers.makeTag('video', 'imageOnly');
-        return this.makePlayer(tag, {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -297,7 +309,9 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        return this.makePlayer(tag, opts);
     },
 
     makeScreenOnlyPlayer(newOptions) {

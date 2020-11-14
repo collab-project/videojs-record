@@ -5,7 +5,6 @@
   <title>Audio/Video Example - Record Plugin for Video.js</title>
 
   <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
-  <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
   <link href="../../dist/css/videojs.record.css" rel="stylesheet">
   <link href="../assets/css/examples.css" rel="stylesheet">
 
@@ -30,6 +29,7 @@
 /* eslint-disable */
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
@@ -38,6 +38,7 @@ var options = {
             audio: true,
             video: true,
             maxLength: 10,
+            displayMilliseconds: false,
             debug: true
         }
     }

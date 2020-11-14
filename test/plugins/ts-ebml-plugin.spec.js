@@ -2,13 +2,13 @@
  * @since 3.3.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
+import Event from '../../src/js/event';
 
 // registers the plugin
-import TsEBMLEngine from '../../src/js/plugins/ts-ebml-plugin.js';
-import {TSEBML} from '../../src/js/engine/convert-engine.js';
+import TsEBMLEngine from '../../src/js/plugins/ts-ebml-plugin';
+import {TSEBML} from '../../src/js/engine/convert-engine';
 
 
 /** @test {TsEBMLEngine} */
@@ -33,6 +33,7 @@ describe('plugins.ts-ebml-plugin', () => {
             }).then((blob) => {
                 player.one(Event.FINISH_CONVERT, () => {
                     expect(player.convertedData instanceof Blob).toBeTruthy();
+                    expect(player.convertedData.name).toEndWith('.webm');
                     done();
                 });
                 player.record().converter.convert(blob);

@@ -31,17 +31,6 @@ const Player = videojs.getComponent('Player');
 
 const AUTO = 'auto';
 
-
-// monkey-patch play (#152)
-Player.prototype.play = function play() {
-    let retval = this.techGet_('play');
-    // silence errors (unhandled promise from play)
-    if (retval !== undefined && typeof retval.then === 'function') {
-        retval.then(null, (e) => {});
-    }
-    return retval;
-};
-
 /**
  * Record audio/video/images using the Video.js player.
  *
@@ -58,6 +47,16 @@ class Record extends Plugin {
     constructor(player, options) {
         super(player, options);
 
+        // monkey-patch play (#152)
+        Player.prototype.play = function play() {
+            let retval = this.techGet_('play');
+            // silence errors (unhandled promise from play)
+            if (retval !== undefined && typeof retval.then === 'function') {
+                retval.then(null, (e) => {});
+            }
+            return retval;
+        };
+
         // add plugin style
         player.addClass('vjs-record');
 
@@ -66,6 +65,11 @@ class Record extends Plugin {
 
         // (re)set recorder state
         this.resetState();
+
+        // use custom video.js time format
+        videojs.setFormatTime((seconds, guide) => {
+            return formatTime(seconds, guide, this.displayMilliseconds);
+        });
 
         // add device button with icon based on type
         let deviceIcon = 'av-perm';
@@ -118,13 +122,17 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
-        // add picture-in-picture toggle button for older video.js versions
-        if (videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1) {
+        // picture-in-picture
+        let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
+        if (!('exitPictureInPicture' in document)) {
+            // no support for picture-in-picture, disable pip
+            this.pictureInPicture = false;
+        } else if (oldVideoJS) {
+            // add picture-in-picture toggle button for older video.js versions
+            // in browsers that support PIP
             player.pipToggle = new PictureInPictureToggle(player, options);
             player.pipToggle.hide();
         }
-
-        // picture-in-picture
         if (this.pictureInPicture === true) {
             // define Picture-in-Picture event handlers once
             this.onEnterPiPHandler = this.onEnterPiP.bind(this);
@@ -138,6 +146,7 @@ class Record extends Plugin {
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
             }
+
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
                     this.player[element].layoutExclude = true;
@@ -167,7 +176,7 @@ class Record extends Plugin {
         this.recordScreen = recordOptions.screen;
         this.maxLength = recordOptions.maxLength;
         this.maxFileSize = recordOptions.maxFileSize;
-        this.msDisplayMax = parseFloat(recordOptions.msDisplayMax);
+        this.displayMilliseconds = recordOptions.displayMilliseconds;
         this.debug = recordOptions.debug;
         this.pictureInPicture = recordOptions.pip;
         this.recordTimeSlice = recordOptions.timeSlice;
@@ -202,6 +211,11 @@ class Record extends Plugin {
         this.audioMimeType = recordOptions.audioMimeType;
         this.audioBufferUpdate = recordOptions.audioBufferUpdate;
 
+        // image settings
+        this.imageOutputType = recordOptions.imageOutputType;
+        this.imageOutputFormat = recordOptions.imageOutputFormat;
+        this.imageOutputQuality = recordOptions.imageOutputQuality;
+
         // animation settings
         this.animationOptions = recordOptions.animationOptions;
     }
@@ -219,13 +233,18 @@ class Record extends Plugin {
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
             this.player.controlBar.el().firstChild);
-        if (this.player.controlBar.pictureInPictureToggle === undefined) {
-            // add custom PiP toggle
-            this.player.controlBar.addChild(this.player.pipToggle);
-        } else {
-            // use video.js PiP toggle
-            this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
-            this.player.pipToggle.hide();
+
+        // picture-in-picture
+        if (this.pictureInPicture === true) {
+            if (this.player.controlBar.pictureInPictureToggle === undefined &&
+                this.player.pipToggle !== undefined) {
+                // add custom PiP toggle
+                this.player.controlBar.addChild(this.player.pipToggle);
+            } else if (this.player.controlBar.pictureInPictureToggle !== undefined) {
+                // use video.js PiP toggle
+                this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
+                this.player.pipToggle.hide();
+            }
         }
 
         // get rid of unused controls
@@ -253,7 +272,9 @@ class Record extends Plugin {
             case SCREEN_ONLY:
             case AUDIO_SCREEN:
                 // customize controls
-                this.player.bigPlayButton.hide();
+                if (this.player.bigPlayButton !== undefined) {
+                    this.player.bigPlayButton.hide();
+                }
 
                 // 'loadedmetadata' and 'loadstart' events reset the
                 // durationDisplay for the first time: prevent this
@@ -303,6 +324,7 @@ class Record extends Plugin {
         this.player.off(Event.DURATIONCHANGE);
         this.player.off(Event.LOADEDMETADATA);
         this.player.off(Event.LOADSTART);
+        this.player.off(Event.ENDED);
 
         // display max record time
         this.setDuration(this.maxLength);
@@ -375,6 +397,9 @@ class Record extends Plugin {
         if (this.engineStopCallback === undefined) {
             this.engineStopCallback = this.onRecordComplete.bind(this);
         }
+        if (this.streamVisibleCallback === undefined) {
+            this.streamVisibleCallback = this.onStreamVisible.bind(this);
+        }
 
         // check for support because some browsers still do not support
         // getDisplayMedia or getUserMedia (like Chrome iOS, see:
@@ -446,12 +471,18 @@ class Record extends Plugin {
                         }
                     };
                 }
-                // open browser device selection dialog
+                // open browser device selection/permissions dialog
                 this.surfer.surfer.microphone.start();
                 break;
 
             case IMAGE_ONLY:
             case VIDEO_ONLY:
+                if (this.getRecordType() === IMAGE_ONLY) {
+                    // using player.el() here because this.mediaElement is not available yet
+                    this.player.el().firstChild.addEventListener(Event.PLAYING,
+                        this.streamVisibleCallback);
+                }
+
                 // setup camera
                 this.mediaType = {
                     audio: false,
@@ -473,14 +504,25 @@ class Record extends Plugin {
                     audio: (this.audioRecorderType === AUTO) ? true : this.audioRecorderType,
                     video: (this.videoRecorderType === AUTO) ? true : this.videoRecorderType
                 };
-                navigator.mediaDevices.getDisplayMedia({
-                    video: true // This needs to be true for Firefox to work
-                }).then(screenStream => {
-                    navigator.mediaDevices.getUserMedia({ audio:this.recordAudio }).then((mic) => {
-                        // Join microphone track with screencast stream (order matters)
+                let audioScreenConstraints = {};
+                if (this.recordScreen === true) {
+                    audioScreenConstraints = {
+                        video: true // needs to be true for it to work in Firefox
+                    };
+                } else if (typeof this.recordScreen === 'object' &&
+                    this.recordScreen.constructor === Object) {
+                    audioScreenConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(audioScreenConstraints).then(screenStream => {
+                    navigator.mediaDevices.getUserMedia({
+                        audio: this.recordAudio
+                    }).then((mic) => {
+                        // join microphone track with screencast stream (order matters)
                         screenStream.addTrack(mic.getTracks()[0]);
                         this.onDeviceReady.bind(this)(screenStream);
-                    });
+                    }).catch(
+                        this.onDeviceError.bind(this)
+                    );
                 }).catch(
                     this.onDeviceError.bind(this)
                 );
@@ -529,9 +571,16 @@ class Record extends Plugin {
                     screen: true,
                     gif: false
                 };
-                navigator.mediaDevices.getDisplayMedia({
-                    video: true
-                }).then(
+                let screenOnlyConstraints = {};
+                if (this.recordScreen === true) {
+                    screenOnlyConstraints = {
+                        video: true
+                    };
+                } else if (typeof this.recordScreen === 'object' &&
+                    this.recordScreen.constructor === Object) {
+                    screenOnlyConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(screenOnlyConstraints).then(
                     this.onDeviceReady.bind(this)
                 ).catch(
                     this.onDeviceError.bind(this)
@@ -699,9 +748,7 @@ class Record extends Plugin {
             // used)
             this.retrySnapshot();
 
-            // reset and show camera button
-            this.player.cameraButton.onStop();
-            this.player.cameraButton.show();
+            // camera button will be displayed as soon as this.onStreamVisible fires
         }
 
         // setup preview
@@ -772,6 +819,12 @@ class Record extends Plugin {
      */
     start() {
         if (!this.isProcessing()) {
+            // check if user didn't revoke permissions after a previous recording
+            if (this.stream && this.stream.active === false) {
+                // ask for permissions again
+                this.getDevice();
+                return;
+            }
             this._recording = true;
 
             // hide play/pause control
@@ -1164,13 +1217,14 @@ class Record extends Plugin {
             case ANIMATION:
             case SCREEN_ONLY:
                 if (this.player.controlBar.currentTimeDisplay &&
-                    this.player.controlBar.currentTimeDisplay.contentEl()) {
+                    this.player.controlBar.currentTimeDisplay.contentEl() &&
+                    this.player.controlBar.currentTimeDisplay.contentEl().lastChild) {
                     this.streamCurrentTime = Math.min(currentTime, duration);
 
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.msDisplayMax);
+                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1210,10 +1264,11 @@ class Record extends Plugin {
             case SCREEN_ONLY:
                 // update duration display component
                 if (this.player.controlBar.durationDisplay &&
-                    this.player.controlBar.durationDisplay.contentEl()) {
+                    this.player.controlBar.durationDisplay.contentEl() &&
+                    this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                        formatTime(duration, duration, this.msDisplayMax);
+                        formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1303,6 +1358,12 @@ class Record extends Plugin {
             if (this.surfer) {
                 // also disposes player
                 this.surfer.destroy();
+            }
+        } else if (this.getRecordType() === IMAGE_ONLY) {
+            if (this.mediaElement && this.streamVisibleCallback) {
+                // cleanup listeners
+                this.mediaElement.removeEventListener(Event.PLAYING,
+                    this.streamVisibleCallback);
             }
         }
 
@@ -1409,6 +1470,34 @@ class Record extends Plugin {
     }
 
     /**
+     * Export image data of waveform (audio-only) or current video frame.
+     *
+     * The default format is `'image/png'`. Other supported types are
+     * `'image/jpeg'` and `'image/webp'`.
+     *
+     * @param {string} format='image/png' A string indicating the image format.
+     * The default format type is `'image/png'`.
+     * @param {number} quality=1 A number between 0 and 1 indicating the image
+     * quality to use for image formats that use lossy compression such as
+     * `'image/jpeg'`` and `'image/webp'`.
+     * @return {Promise} Returns a `Promise` resolving with an
+     * array of `Blob` instances.
+     */
+    exportImage(format = 'image/png', quality = 1) {
+        if (this.getRecordType() === AUDIO_ONLY) {
+            return this.surfer.surfer.exportImage(format, quality, 'blob');
+        } else {
+            // get a frame and copy it onto the canvas
+            let recordCanvas = this.player.recordCanvas.el().firstChild;
+            this.drawCanvas(recordCanvas, this.mediaElement);
+
+            return new Promise(resolve => {
+                recordCanvas.toBlob(resolve, format, quality);
+            });
+        }
+    }
+
+    /**
      * Mute LocalMediaStream audio and video tracks.
      *
      * @param {boolean} mute - Whether or not the mute the track(s).
@@ -1445,18 +1534,38 @@ class Record extends Plugin {
      */
     createSnapshot() {
         this.captureFrame().then((result) => {
-            // turn the canvas data into base64 data with a PNG header
-            this.player.recordedData = result.toDataURL('image/png');
+            if (this.imageOutputType === 'blob') {
+                // turn the canvas data into a Blob
+                result.toBlob((blob) => {
+                    this.player.recordedData = blob;
 
-            // hide preview video
-            this.mediaElement.style.display = 'none';
+                    // display the snapshot
+                    this.displaySnapshot();
+                });
+            } else if (this.imageOutputType === 'dataURL') {
+                // turn the canvas data into base64 data
+                this.player.recordedData = result.toDataURL(
+                    this.imageOutputFormat, this.imageOutputQuality);
 
-            // show the snapshot
-            this.player.recordCanvas.show();
+                // display the snapshot
+                this.displaySnapshot();
+            }
+        }, this.imageOutputFormat, this.imageOutputQuality);
+    }
 
-            // stop recording
-            this.stop();
-        });
+    /**
+     * Display snapshot image.
+     * @private
+     */
+    displaySnapshot() {
+        // hide preview video
+        this.mediaElement.style.display = 'none';
+
+        // show the snapshot
+        this.player.recordCanvas.show();
+
+        // stop recording
+        this.stop();
     }
 
     /**
@@ -1732,7 +1841,23 @@ class Record extends Plugin {
     }
 
     /**
+     * Invoked when the video device is ready and stream is visible.
+     *
+     * @private
+     * @param {Event} event - `playing` event
+     */
+    onStreamVisible(event) {
+        // only listen for this once; remove listener
+        this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
+
+        // reset and show camera button
+        this.player.cameraButton.onStop();
+        this.player.cameraButton.show();
+    }
+
+    /**
      * Invoked when entering picture-in-picture mode.
+     *
      * @private
      * @param {object} event - Event data.
      */
@@ -1742,6 +1867,7 @@ class Record extends Plugin {
 
     /**
      * Invoked when leaving picture-in-picture mode.
+     *
      * @private
      * @param {object} event - Event data.
      */

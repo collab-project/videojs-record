@@ -242,7 +242,7 @@ class RecordRTCEngine extends RecordEngine {
 
         // automatically stop when max file size was reached
         if (maxFileSizeReached) {
-            this.player().stop();
+            this.player().record().stop();
         }
     }
 }

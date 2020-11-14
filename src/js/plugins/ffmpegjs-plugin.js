@@ -164,7 +164,8 @@ class FFmpegjsEngine extends ConvertEngine {
             case 'exit':
                 break;
 
-            // error occured
+            // FFmpeg terminated abnormally (e.g. out of memory, wasm error)
+            case 'abort':
             case 'error':
                 this.player().trigger('error', msg.data);
                 break;

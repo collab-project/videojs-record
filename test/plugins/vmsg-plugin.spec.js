@@ -2,13 +2,13 @@
  * @since 3.3.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
+import Event from '../../src/js/event';
 
 // registers the plugin
-import VmsgEngine from '../../src/js/plugins/vmsg-plugin.js';
-import {VMSG} from '../../src/js/engine/record-engine.js';
+import VmsgEngine from '../../src/js/plugins/vmsg-plugin';
+import {VMSG} from '../../src/js/engine/record-engine';
 
 
 /** @test {VmsgEngine} */
@@ -30,6 +30,7 @@ describe('plugins.vmsg-plugin', () => {
         player.one(Event.FINISH_CONVERT, () => {
             // received a blob file
             expect(player.recordedData instanceof Blob).toBeTruthy();
+            expect(player.recordedData.name).toEndWith('.mp3');
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)

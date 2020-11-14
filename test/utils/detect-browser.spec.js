@@ -4,11 +4,11 @@
 
 import window from 'global/window';
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
 import host from 'host-environment';
 
-import * as detectBrowser from '../../src/js/utils/detect-browser.js';
+import * as detectBrowser from '../../src/js/utils/detect-browser';
 
 
 /** @test {detect-browser} */

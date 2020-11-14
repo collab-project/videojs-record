@@ -2,13 +2,13 @@
  * @since 2.2.0
  */
 
-import TestHelpers from './test-helpers.js';
+import TestHelpers from './test-helpers';
 
-import Event from '../src/js/event.js';
-import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser.js';
+import Event from '../src/js/event';
+import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser';
 
 // registers the plugin
-import Record from '../src/js/videojs.record.js';
+import Record from '../src/js/videojs.record';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
@@ -103,6 +103,45 @@ describe('Record', () => {
             setTimeout(() => {
                 done();
             }, 2000);
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            // create snapshot
+            player.record().start();
+        });
+
+        player.one(Event.READY, () => {
+            // correct device button icon
+            expect(player.deviceButton.buildCSSClass().endsWith(
+                'video-perm')).toBeTrue();
+
+            // start device
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record} */
+    it('change image output from dataURL to blob', (done) => {
+        // create new player
+        let opts = {
+            plugins: {
+                record: {
+                    imageOutputType: 'blob',
+                }
+            }
+        };
+
+        player = TestHelpers.makeImageOnlyPlayer(opts);
+
+        player.recordCanvas.el().firstChild.videoWidth = 320;
+        player.recordCanvas.el().firstChild.videoHeight = 240;
+
+        expect(player.record().imageOutputType).toEqual('blob');
+
+        player.one(Event.FINISH_RECORD, () => {
+            expect(player.recordedData instanceof Blob).toBeTruthy();
+
+            setTimeout(done, 2000);
         });
 
         player.one(Event.DEVICE_READY, () => {
@@ -223,6 +262,21 @@ describe('Record', () => {
                 player.record().start();
             });
 
+            player.one(Event.DEVICE_ERROR, () => {
+                if (isFirefox()) {
+                    // requires a user gesture in firefox
+                    // see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#Usage_notes
+                    // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
+                    expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
+                    expect(player.deviceErrorCode.message).toEqual(
+                        'getDisplayMedia must be called from a user gesture handler.'
+                    );
+                }
+
+                //console.error(player.deviceErrorCode);
+                done();
+            });
+
             player.one(Event.READY, () => {
                 // start device
                 player.record().getDevice();
@@ -236,6 +290,7 @@ describe('Record', () => {
     it('runs as screen-only plugin', (done) => {
         // create screen-only plugin
         player = TestHelpers.makeScreenOnlyPlayer();
+
         // correct device button icon
         expect(player.deviceButton.buildCSSClass().endsWith(
             'screen-perm')).toBeTrue();
@@ -258,6 +313,21 @@ describe('Record', () => {
                     // stop recording
                     player.record().stop();
                 }, 2000);
+            });
+
+            player.one(Event.DEVICE_ERROR, () => {
+                if (isFirefox()) {
+                    // requires a user gesture in firefox
+                    // see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#Usage_notes
+                    // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
+                    expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
+                    expect(player.deviceErrorCode.message).toEqual(
+                        'getDisplayMedia must be called from a user gesture handler.'
+                    );
+                }
+
+                //console.error(player.deviceErrorCode);
+                done();
             });
 
             player.one(Event.READY, () => {
@@ -294,6 +364,49 @@ describe('Record', () => {
             expect(player.record().getDuration()).toEqual(0);
             expect(player.record().getCurrentTime()).toEqual(0);
             done();
+        });
+    });
+
+    /** @test {Record#exportImage} */
+    it('exports image (video)', (done) => {
+        // create new player
+        player = TestHelpers.makePlayer();
+
+        player.one(Event.DEVICE_READY, () => {
+            // default to png
+            player.record().exportImage().then((arrayOfBlob) => {
+                expect(arrayOfBlob instanceof Array).toBeTruthy();
+                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
+                expect(arrayOfBlob[0].type).toEqual('image/png');
+
+                done();
+            });
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#exportImage} */
+    it('exports image (audio)', (done) => {
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer();
+
+        player.one(Event.DEVICE_READY, () => {
+            // default to png
+            player.record().exportImage().then((arrayOfBlob) => {
+                // received a blob
+                expect(arrayOfBlob instanceof Array).toBeTruthy();
+                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
+                expect(arrayOfBlob[0].type).toEqual('image/png');
+
+                done();
+            });
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
         });
     });
 
@@ -643,18 +756,24 @@ describe('Record', () => {
 
     /** @test {Record} */
     it('picture-in-picture', (done) => {
+        let pipEnabled = true;
+        if (isFirefox()) {
+            pipEnabled = false;
+        }
         // create new player
         let opts = {
             plugins: {
                 record: {
-                    pip: true
+                    pip: pipEnabled
                 }
             }
         };
         player = TestHelpers.makeVideoOnlyPlayer(opts);
 
         player.one(Event.READY, () => {
-            expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            if (pipEnabled) {
+                expect(player.pipToggle.el().nodeName).toEqual('BUTTON');
+            }
             done();
         });
     });

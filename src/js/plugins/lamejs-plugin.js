@@ -55,7 +55,7 @@ class LamejsEngine extends RecordEngine {
          *
          * @type {string}
          */
-        this.audioType = 'audio/mp3';
+        this.audioType = 'audio/mpeg';
     }
 
     /**
