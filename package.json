@@ -82,6 +82,8 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/register": "^7.12.1",
+    "@ffmpeg/core": "^0.8.3",
+    "@ffmpeg/ffmpeg": "^0.9.4",
     "@mattiasbuelens/web-streams-polyfill": "^0.3.2",
     "add-zero": "^1.0.0",
     "babel-loader": "^8.2.1",
