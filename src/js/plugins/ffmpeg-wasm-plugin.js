@@ -75,11 +75,11 @@ class FFmpegWasmEngine extends ConvertEngine {
         // load and convert blob
         await ffmpeg.load();
         ffmpeg.FS('writeFile', name, await fetchFile(data));
-        await ffmpeg.run('-i', name,  'output.mp4');
+        await ffmpeg.run('-i', name, 'output.mp4');
         const output = ffmpeg.FS('readFile', 'output.mp4');
 
         // create new blob
-        let result = new Blob([output.buffer], { type: 'video/mp4' })
+        let result = new Blob([output.buffer], {type: 'video/mp4'});
 
         // add existing file info
         this.addFileInfo(result, timestamp);
