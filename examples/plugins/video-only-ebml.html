@@ -35,6 +35,7 @@ var options = {
     width: 320,
     height: 240,
     fluid: false,
+    bigPlayButton: false,
     controlBar: {
         volumePanel: false
     },
@@ -44,6 +45,7 @@ var options = {
             video: true,
             maxLength: 20,
             debug: true,
+            displayMilliseconds: false,
             convertEngine: 'ts-ebml'
         }
     }
@@ -69,6 +71,11 @@ player.on('error', function(element, error) {
 // user clicked the record button and started recording
 player.on('startRecord', function() {
     console.log('started recording!');
+});
+
+// converter started processing
+player.on('startConvert', function() {
+    console.log('started converting!');
 });
 
 // user completed recording and stream is available

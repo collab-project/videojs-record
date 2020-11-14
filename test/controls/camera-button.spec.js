@@ -2,10 +2,10 @@
  * @since 2.2.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import Event from '../../src/js/event.js';
-import CameraButton from '../../src/js/controls/camera-button.js';
+import Event from '../../src/js/event';
+import CameraButton from '../../src/js/controls/camera-button';
 
 
 /** @test {camera-button} */

@@ -79,8 +79,11 @@ class CameraButton extends Button {
             // retry
             recorder.retrySnapshot();
 
-            // reset camera button
+            // reset camera button appearance
             this.onStop();
+
+            // trigger replay event
+            this.player_.trigger(Event.RETRY);
         }
     }
 

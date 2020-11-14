@@ -1,0 +1,44 @@
+- Getting started
+  - [Installation](install.md)
+  - [Usage](usage.md)
+  - [Examples](examples.md)
+
+- Guide
+  - [Dependencies](dependencies.md)
+  - [Browser support](browser-support.md)
+  - [Options](options.md)
+  - [Methods](methods.md)
+  - [Events](events.md)
+  - [Plugins](plugins.md)
+  - [Get recorded data](recorded-data.md)
+  - [Media constraints](media-constraints.md)
+  - [Customizing controls](controls.md)
+  - [Reponsive layout](responsive.md)
+  - [Hotkeys](hotkeys.md)
+  - [Change input/output device](change-device.md)
+  - [Picture-in-Picture](picture-in-picture.md)
+  - [Localization](localization.md)
+  - [Font](font)
+  - [API documentation](https://collab-project.github.io/videojs-record/api/)
+
+- [Development](development.md)
+- [Changelog](/changelog)
+- [Github](https://github.com/collab-project/videojs-record)
+- [License](https://github.com/collab-project/videojs-record/blob/master/LICENSE)
+
+- Frameworks
+  - [Webpack](frameworks/webpack.md)
+  - [React](frameworks/react.md)
+  - [Angular](frameworks/angular.md)
+  - [Vue](frameworks/vue.md)
+  - [UmiJS](frameworks/umijs.md)
+
+- Plugins
+  - [ffmpeg.js](plugins/ffmpeg.js.md)
+  - [ts-ebml](plugins/ts-ebml.md)
+  - [webm-wasm](plugins/webm-wasm.md)
+  - [vmsg](plugins/vmsg.md)
+  - [opus-recorder](plugins/opus-recorder.md)
+  - [libvorbis.js](plugins/libvorbis.js.md)
+  - [lamejs](plugins/lamejs.md)
+  - [recorder.js](plugins/recorder.js.md)

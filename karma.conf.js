@@ -8,15 +8,19 @@ process.env.BABEL_ENV = 'test';
 const path = require('path');
 require('@babel/register');
 
-var webpackConfig = require('./build-config/webpack.prod.main.js');
-var support_dir = path.resolve(__dirname, 'test', 'support');
-var fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
-var fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
+let ci = process.env.TRAVIS || process.env.APPVEYOR;
+let webpackConfig = require('./build-config/webpack.prod.main.js');
+let support_dir = path.resolve(__dirname, 'test', 'support');
+let fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
+let fakeVideoStream = path.join(support_dir, 'bus_qcif_7.5fps.y4m');
 
+//-------------------------------------------
 // Chrome CLI options
+//-------------------------------------------
 // http://peter.sh/experiments/chromium-command-line-switches/
-var chromeFlags = [
+const chromeFlags = [
     '--no-sandbox',
+    '--disable-gpu',
     '--no-first-run',
     '--noerrdialogs',
     '--no-default-browser-check',
@@ -25,23 +29,46 @@ var chromeFlags = [
     '--use-file-for-fake-audio-capture=' + fakeAudioStream,
     '--use-file-for-fake-video-capture=' + fakeVideoStream,
     '--autoplay-policy=no-user-gesture-required',
-    '--user-data-dir=.chrome',
+    '--user-data-dir=' + path.resolve('.chrome'),
     '--disable-translate',
     '--disable-extensions',
     '--disable-infobars',
     '--ignore-certificate-errors',
     '--allow-insecure-localhost',
-    '--enable-experimental-web-platform-features'
+    '--enable-experimental-web-platform-features',
+    '--js-flags=--max-old-space-size=8196'
 ];
-var firefoxFlags = {
+//-------------------------------------------
+// Firefox CLI options
+//-------------------------------------------
+const firefoxFlags = {
     'media.navigator.permission.disabled': true,
     'media.navigator.streams.fake': true,
-    'javascript.options.streams': true
+    'media.getusermedia.screensharing.enabled': true,
+    'media.setsinkid.enabled': true,
+    'javascript.options.streams': true,
+    // devtools
+    'devtools.theme': 'dark',
+    'devtools.webconsole.timestampMessages': true,
+    'devtools.toolbox.host': 'right',
+    'devtools.toolbox.selectedTool': 'webconsole',
+    'devtools.chrome.enabled': true,
+    // disable autoplay blocking, see:
+    // https://www.ghacks.net/2018/09/21/firefox-improved-autoplay-blocking/
+    'media.autoplay.default': 1,
+    'media.autoplay.ask-permission': false,
+    'media.autoplay.enabled.user-gestures-needed': false,
+    'media.autoplay.block-webaudio': false,
+    // disable update and startup
+    'extensions.update.enabled': false,
+    'app.update.enabled': false,
+    'browser.startup.page': 0,
+    'startup.homepage_welcome_url': '',
+    'browser.shell.checkDefaultBrowser': false
 };
-var ci = process.env.TRAVIS || process.env.APPVEYOR;
 
 module.exports = function(config) {
-    var configuration = {
+    let configuration = {
         basePath: '',
         frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers'],
         hostname: 'localhost',
@@ -50,7 +77,9 @@ module.exports = function(config) {
         singleRun: true, // enable for headless testing
         autoWatch: false,
         files: [
+            // -------------------------------------------
             // demo files
+            // -------------------------------------------
             {
                 pattern: 'test/support/*',
                 included: false,
@@ -60,20 +89,29 @@ module.exports = function(config) {
             // style
             'node_modules/video.js/dist/video-js.css',
             'node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.css',
-            'dist/css/videojs.record.css',
 
             // library dependencies
             'node_modules/video.js/dist/video.js',
             'node_modules/webrtc-adapter/out/adapter.js',
             'node_modules/recordrtc/RecordRTC.js',
+
+            // -------------------------------------------
+            // third-party dependencies for audio-only
+            // -------------------------------------------
+            // wavesurfer.js
             'node_modules/wavesurfer.js/dist/wavesurfer.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
+            // videojs-wavesurfer
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
 
-            // web streams API polyfill to support Firefox (for webm-wasm)
-            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
+            // -------------------------------------------
+            // plugin style
+            // -------------------------------------------
+            'dist/css/videojs.record.css',
 
-            // optional library dependencies for plugins
+            // -----------------------------------------------
+            // third-party dependencies for (optional) plugins
+            // -----------------------------------------------
             // recorder.js
             'node_modules/recorderjs/dist/recorder.js',
             // libvorbis.js
@@ -87,19 +125,25 @@ module.exports = function(config) {
             'node_modules/opus-recorder/dist/recorder.min.js',
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
+            // web streams API polyfill to support Firefox (for webm-wasm)
+            'node_modules/@mattiasbuelens/web-streams-polyfill/dist/polyfill.min.js',
             // webm-wasm
             {pattern: 'node_modules/webm-wasm/dist/webm-worker.js', included: false, served: true},
             {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
+            // ffmpeg.js
+            {pattern: 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js', included: false, served: true},
             // gif-recorder: only available on CDN
             'http://cdn.webrtc-experiment.com/gif-recorder.js',
 
+            // -------------------------------------------
             // specs
+            // -------------------------------------------
             {pattern: 'test/**/*.spec.js', watched: false}
         ],
         // for CDN scripts
         crossOriginAttribute: false,
         proxies: {
-            // lame workaround for opus-recorder
+            // necessary workaround for opus-recorder plugin
             '/encoderWorker.min.js': '/base/node_modules/opus-recorder/dist/encoderWorker.min.js',
             '/encoderWorker.min.wasm': '/base/node_modules/opus-recorder/dist/encoderWorker.min.wasm'
         },
@@ -122,7 +166,6 @@ module.exports = function(config) {
             'karma-jasmine-matchers',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-safari-launcher',
             'karma-edge-launcher',
             'karma-coverage',
             'karma-coveralls',
@@ -138,14 +181,18 @@ module.exports = function(config) {
             postDetection: function(availableBrowsers) {
                 if (availableBrowsers.length > 1) {
                     // use custom browser launchers
-                    var result = availableBrowsers;
+                    let result = availableBrowsers;
+                    let cr = availableBrowsers.indexOf('Chrome');
+                    if (cr > -1) {
+                        availableBrowsers[cd] = 'Chrome_dev';
+                    }
                     let cd = availableBrowsers.indexOf('ChromeHeadless');
                     if (cd > -1) {
-                        availableBrowsers[cd] = 'Chrome_dev';
+                        availableBrowsers[cd] = 'Chrome_headless';
                     }
                     let fd = availableBrowsers.indexOf('FirefoxHeadless');
                     if (fd > -1) {
-                        availableBrowsers[fd] = 'Firefox_dev';
+                        availableBrowsers[fd] = 'Firefox_headless';
                     }
                     let fh = availableBrowsers.indexOf('Firefox');
                     if (fh > -1) {
@@ -164,12 +211,26 @@ module.exports = function(config) {
                     if (ie > -1) {
                         availableBrowsers.splice(ie, 1);
                     }
+                    // ignore Safari (until it's supported...)
+                    let safariTechPreview = availableBrowsers.indexOf('SafariTechPreview');
+                    if (safariTechPreview > -1) {
+                        availableBrowsers.splice(safariTechPreview, 1);
+                    }
+                    let safari = availableBrowsers.indexOf('Safari');
+                    if (safari > -1) {
+                        availableBrowsers.splice(safari, 1);
+                    }
+
                     return result;
                 }
             }
         },
         captureConsole: true,
-        browserNoActivityTimeout: 50000,
+        concurrency: 1,
+        browserSocketTimeout: 20000,
+        browserDisconnectTimeout : 10000,
+        browserDisconnectTolerance : 1,
+        browserNoActivityTimeout : 60000,
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
@@ -184,11 +245,19 @@ module.exports = function(config) {
                 flags: chromeFlags,
                 chromeDataDir: path.resolve(__dirname, '.chrome')
             },
+            Chrome_headless: {
+                base: 'ChromeHeadless',
+                flags: chromeFlags
+            },
             Chromium_dev: {
                 base: 'ChromiumHeadless',
                 flags: chromeFlags
             },
             Firefox_dev: {
+                base: 'Firefox',
+                prefs: firefoxFlags
+            },
+            Firefox_headless: {
                 base: 'FirefoxHeadless',
                 prefs: firefoxFlags
             }
@@ -196,7 +265,7 @@ module.exports = function(config) {
     };
 
     if (ci) {
-        configuration.browsers = ['Chrome_dev', 'Firefox_dev'];
+        configuration.browsers = ['Chrome_headless', 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
 

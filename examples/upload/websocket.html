@@ -39,24 +39,36 @@ var sock;
 var startedRecord = false;
 var options = {
     controls: true,
+    bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
     plugins: {
         wavesurfer: {
-            src: 'live',
+            backend: 'WebAudio',
             waveColor: '#19613C',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true
+            hideScrollbar: true,
+            plugins: [
+                WaveSurfer.microphone.create({
+                    bufferSize: 4096,
+                    numberOfInputChannels: 1,
+                    numberOfOutputChannels: 1,
+                    constraints: {
+                        video: false,
+                        audio: true
+                    }
+                })
+            ]
         },
         record: {
             audio: true,
             video: false,
             maxLength: 10,
             audioBufferUpdate: true,
+            displayMilliseconds: true,
             debug: true
         }
     }
@@ -75,7 +87,7 @@ var player = videojs('myAudio', options, function() {
 
     // connect to websocket server
     var sockjs_url = 'http://0.0.0.0:9999/upload-socket';
-    console.log('connecting to ' + sockjs_url);
+    console.log('connecting to websocket: ' + sockjs_url);
     sock = new SockJS(sockjs_url);
 
     // websocket event handlers

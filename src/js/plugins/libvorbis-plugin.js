@@ -3,6 +3,8 @@
  * @since 1.1.0
  */
 
+import videojs from 'video.js';
+
 const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
@@ -12,6 +14,31 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  * @augments RecordEngine
  */
 class LibVorbisEngine extends RecordEngine {
+    /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Enables console logging for debugging purposes.
+         *
+         * @type {boolean}
+         */
+        this.debug = false;
+        /**
+         * Specifies the sample rate to encode at.
+         *
+         * @type {number}
+         */
+        this.sampleRate = 32000;
+    }
     /**
      * Setup recording engine.
      *

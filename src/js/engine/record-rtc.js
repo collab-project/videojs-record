@@ -10,7 +10,7 @@ import RecordRTC from 'recordrtc';
 import Event from '../event';
 import {RecordEngine} from './record-engine';
 import {isChrome} from '../utils/detect-browser';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY} from './record-mode';
+import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, AUDIO_SCREEN} from './record-mode';
 
 const Component = videojs.getComponent('Component');
 
@@ -59,13 +59,16 @@ class RecordRTCEngine extends RecordEngine {
         // video/canvas settings
         this.engine.video = this.video;
         this.engine.canvas = this.canvas;
+        this.engine.bitrate = this.bitRate;
 
         // animated gif settings
         this.engine.quality = this.quality;
         this.engine.frameRate = this.frameRate;
-        if (this.onTimeStamp !== undefined) {
+
+        // timeSlice option
+        if (this.timeSlice !== undefined) {
             this.engine.timeSlice = this.timeSlice;
-            this.engine.onTimeStamp = this.onTimeStamp;
+            this.engine.onTimeStamp = this.onTimeStamp.bind(this);
         }
 
         // worker
@@ -165,6 +168,7 @@ class RecordRTCEngine extends RecordEngine {
 
                 case VIDEO_ONLY:
                 case AUDIO_VIDEO:
+                case AUDIO_SCREEN:
                 case SCREEN_ONLY:
                     // recordrtc returns a single blob that includes both audio
                     // and video data
@@ -185,6 +189,61 @@ class RecordRTCEngine extends RecordEngine {
             // notify listeners
             this.trigger(Event.RECORD_COMPLETE);
         });
+    }
+
+    /**
+     * Received new timestamp (when timeSlice option is enabled).
+     * @private
+     * @param {float} current - Current timestamp.
+     * @param {array} all - List of timestamps so far.
+     */
+    onTimeStamp(current, all) {
+        this.player().currentTimestamp = current;
+        this.player().allTimestamps = all;
+
+        // get blob (only for MediaStreamRecorder)
+        let internal;
+        switch (this.player().record().getRecordType()) {
+            case AUDIO_ONLY:
+                internal = this.engine.audioRecorder;
+                break;
+
+            case ANIMATION:
+                internal = this.engine.gifRecorder;
+                break;
+
+            default:
+                internal = this.engine.videoRecorder;
+        }
+
+        let maxFileSizeReached = false;
+        if (internal) {
+            internal = internal.getInternalRecorder();
+        }
+
+        if ((internal instanceof RecordRTC.MediaStreamRecorder) === true) {
+            this.player().recordedData = internal.getArrayOfBlobs();
+
+            // inject file info for newest blob
+            this.addFileInfo(
+                this.player().recordedData[this.player_.recordedData.length - 1]);
+
+            // check max file size
+            if (this.maxFileSize > 0) {
+                let currentSize = new Blob(this.player().recordedData).size;
+                if (currentSize >= this.maxFileSize) {
+                    maxFileSizeReached = true;
+                }
+            }
+        }
+
+        // notify others
+        this.player().trigger(Event.TIMESTAMP);
+
+        // automatically stop when max file size was reached
+        if (maxFileSizeReached) {
+            this.player().record().stop();
+        }
     }
 }
 

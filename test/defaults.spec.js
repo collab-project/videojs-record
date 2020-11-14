@@ -2,7 +2,7 @@
  * @since 2.2.0
  */
 
-import pluginDefaultOptions from '../src/js/defaults.js';
+import pluginDefaultOptions from '../src/js/defaults';
 
 /** @test {defaults} */
 describe('pluginDefaultOptions', () => {
@@ -22,13 +22,15 @@ describe('pluginDefaultOptions', () => {
             screen: false,
             maxLength: 10,
             maxFileSize: 0,
-            msDisplayMax: 3,
+            displayMilliseconds: false,
             frameWidth: 320,
             frameHeight: 240,
             debug: false,
             pip: false,
             autoMuteDevice: false,
+            videoBitRate: 1200,
             videoEngine: 'recordrtc',
+            videoFrameRate: 30,
             videoMimeType: 'video/webm',
             videoRecorderType: 'auto',
             videoWorkerURL: '',
@@ -45,9 +47,15 @@ describe('pluginDefaultOptions', () => {
             audioBufferUpdate: false,
             animationFrameRate: 200,
             animationQuality: 10,
+            imageOutputType: 'dataURL',
+            imageOutputFormat: 'image/png',
+            imageOutputQuality: 0.92,
             timeSlice: 0,
             convertEngine: '',
-            hotKeys: false
+            convertWorkerURL: '',
+            convertOptions: [],
+            hotKeys: false,
+            pluginLibraryOptions: {}
         });
     });
 });

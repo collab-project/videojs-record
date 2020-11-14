@@ -1,0 +1,30 @@
+:root {
+  --theme-color: #661a8f;
+}
+
+.markdown-section code {
+    color: #6d2991;
+    background-color: #f2fffd;
+}
+
+.content {
+    padding-top: 0px;
+}
+
+.markdown-section h2 {
+    margin: 25px 0 .8rem;
+}
+
+.markdown-section h3 {
+    margin: 25px 0 .6rem;
+}
+
+.markdown-section pre, .markdown-section pre > code {
+    background-color: #f5fcfb;
+    color: #525252;
+}
+
+.sidebar-toggle {
+    bottom: unset;
+    top: 0;
+}

@@ -8,21 +8,41 @@ import {Player, mergeOptions} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine.js';
-import {TSEBML} from '../src/js/engine/convert-engine.js';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine';
+import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
     TEST_WEBM: '/base/test/support/no_metadata.webm',
 
     DEFAULT_WAVESURFER_OPTIONS: {
-        src: 'live',
+        backend: 'WebAudio',
         waveColor: '#36393b',
         progressColor: 'black',
         debug: true,
         cursorWidth: 1,
-        msDisplayMax: 20,
-        hideScrollbar: true
+        displayMilliseconds: false,
+        hideScrollbar: true,
+        plugins: [
+            // enable microphone plugin
+            WaveSurfer.microphone.create({
+                bufferSize: 4096,
+                numberOfInputChannels: 1,
+                numberOfOutputChannels: 1,
+                constraints: {
+                    video: false,
+                    audio: true
+                }
+            })
+        ]
+    },
+
+    applyScreenWorkaround() {
+        // use polyfill in Firefox for now, see:
+        // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
+        if (adapter.browserDetails.browser === 'firefox') {
+            adapter.browserShim.shimGetDisplayMedia(window, 'screen');
+        }
     },
 
     /**
@@ -68,6 +88,7 @@ const TestHelpers = {
                 wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
                     audio: true,
+                    screen: false,
                     video: false,
                     maxLength: 20,
                     pip: false,
@@ -128,7 +149,7 @@ const TestHelpers = {
                 recordPluginOptions.audioEngine = OPUSRECORDER;
                 recordPluginOptions.audioSampleRate = 48000;
                 recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
-                recordPluginOptions.audioChannels = 2;
+                recordPluginOptions.audioChannels = 1;
                 break;
 
             case RECORDERJS:
@@ -195,10 +216,17 @@ const TestHelpers = {
             maxLength: 50,
             debug: true
         };
-        // setup audio plugin
+        // setup convert plugin
         switch (pluginName) {
             case TSEBML:
                 recordPluginOptions.convertEngine = TSEBML;
+                break;
+
+            case FFMPEGJS:
+                recordPluginOptions.convertEngine = FFMPEGJS;
+                recordPluginOptions.convertWorkerURL = '/base/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js';
+                recordPluginOptions.convertOptions = ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'];
+                recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mpeg'};
                 break;
 
             default:
@@ -262,9 +290,9 @@ const TestHelpers = {
         return this.makePlayer(tag, opts);
     },
 
-    makeImageOnlyPlayer() {
+    makeImageOnlyPlayer(newOptions) {
         let tag = TestHelpers.makeTag('video', 'imageOnly');
-        return this.makePlayer(tag, {
+        let opts = {
             controls: true,
             autoplay: false,
             fluid: false,
@@ -281,15 +309,13 @@ const TestHelpers = {
                     debug: true
                 }
             }
-        });
+        };
+        opts = mergeOptions(opts, newOptions);
+        return this.makePlayer(tag, opts);
     },
 
     makeScreenOnlyPlayer(newOptions) {
-        // use polyfill in Firefox for now, see:
-        // https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-        if (adapter.browserDetails.browser === 'firefox') {
-            adapter.browserShim.shimGetDisplayMedia(window, 'screen');
-        }
+        TestHelpers.applyScreenWorkaround();
         let opts = {
             controls: true,
             autoplay: false,
@@ -311,6 +337,31 @@ const TestHelpers = {
         let tag = TestHelpers.makeTag('video', 'screenOnly');
         return this.makePlayer(tag, opts);
     },
+
+    makeAudioScreenPlayer(newOptions) {
+        TestHelpers.applyScreenWorkaround();
+        let opts = {
+            controls: true,
+            autoplay: false,
+            fluid: false,
+            loop: false,
+            width: 500,
+            height: 400,
+            plugins: {
+                record: {
+                    audio: true,
+                    screen: true,
+                    maxLength: 50,
+                    debug: true
+                }
+            }
+        };
+
+        opts = mergeOptions(opts, newOptions);
+        let tag = TestHelpers.makeTag('video', 'audioScreen');
+        return this.makePlayer(tag, opts);
+    },
+
 
     makeAnimatedPlayer() {
         let tag = TestHelpers.makeTag('video', 'animationOnly');

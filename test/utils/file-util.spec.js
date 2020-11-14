@@ -2,9 +2,9 @@
  * @since 3.3.0
  */
 
-import TestHelpers from '../test-helpers.js';
+import TestHelpers from '../test-helpers';
 
-import {downloadBlob, blobToArrayBuffer, addFileInfo} from '../../src/js/utils/file-util.js';
+import {downloadBlob, blobToArrayBuffer, addFileInfo} from '../../src/js/utils/file-util';
 
 
 /** @test {file-util} */
@@ -30,6 +30,20 @@ describe('utils.file-util', () => {
             return response.blob();
         }).then((blob) => {
             addFileInfo(blob);
+            expect(blob.name).toEndWith('oga');
+
+            done();
+        });
+    });
+
+    /** @test {addFileInfo} */
+    it('adds file info with custom file extension', (done) => {
+        let req = new Request(TestHelpers.TEST_OGG);
+        fetch(req).then((response) => {
+            return response.blob();
+        }).then((blob) => {
+            addFileInfo(blob, new Date(), '.banana');
+            expect(blob.name).toEndWith('banana');
 
             done();
         });

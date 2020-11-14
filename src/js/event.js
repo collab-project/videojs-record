@@ -8,6 +8,7 @@ class Event {}
 // video.js
 Event.READY = 'ready';
 Event.ERROR = 'error';
+Event.PLAYING = 'playing';
 Event.LOADEDMETADATA = 'loadedmetadata';
 Event.LOADSTART = 'loadstart';
 Event.USERINACTIVE = 'userinactive';
@@ -30,9 +31,11 @@ Event.ENUMERATE_READY = 'enumerateReady';
 Event.ENUMERATE_ERROR = 'enumerateError';
 Event.AUDIO_BUFFER_UPDATE = 'audioBufferUpdate';
 Event.AUDIO_OUTPUT_READY = 'audioOutputReady';
+Event.START_CONVERT = 'startConvert';
 Event.FINISH_CONVERT = 'finishConvert';
 Event.ENTER_PIP = 'enterPIP';
 Event.LEAVE_PIP = 'leavePIP';
+Event.RETRY = 'retry';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';
