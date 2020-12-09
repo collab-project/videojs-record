@@ -15,28 +15,36 @@ const contentBase = path.resolve(__dirname, '..', '..');
 module.exports = {
     mode: 'development',
     devServer: {
-        contentBase: [contentBase],
-        publicPath: '/',
-        watchContentBase: true,
-        watchOptions: {
-            ignored: [
-                /.build_cache/,
-                /.chrome/,
-                /docs/,
-                /node_modules/,
-                /bower_components/,
-                /coverage/,
-                /build-config/,
-                /test/,
-                /vendor/
-            ]
-        },
+        host: '0.0.0.0',
+        port: 8080,
+        static: [
+          {
+            directory: contentBase,
+            staticOptions: {},
+            publicPath: '/',
+            // serveIndex: {} (options for the `serveIndex` option you can find https://github.com/expressjs/serve-index)
+            serveIndex: true,
+            watch: {
+                ignored: [
+                    /.build_cache/,
+                    /.chrome/,
+                    /docs/,
+                    /node_modules/,
+                    /bower_components/,
+                    /coverage/,
+                    /build-config/,
+                    /test/,
+                    /vendor/
+                ]
+            }
+          }
+        ],
         // webpack-dev-server middleware
-        before(app) {
+        onBeforeSetupMiddleware(app, compiler) {
             // =============================================
             // use proper mime-type for wasm files
             // =============================================
-            app.get('*.wasm', (req, res, next) => {
+            app.get('*.wasm', (req, res) => {
                 let options = {
                     root: contentBase,
                     dotfiles: 'deny',
@@ -47,7 +55,7 @@ module.exports = {
 
                 res.sendFile(req.url, options, (err) => {
                     if (err) {
-                        next(err);
+                        console.error(err);
                     }
                 });
             });

@@ -11,6 +11,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // enable logging of deprecation warnings stacktrace
 process.traceDeprecation = true;
+process.on('warning', (warning) => {
+    console.log(warning.stack);
+});
 
 // inject JS version number
 let jsVersionPlugin = new webpack.DefinePlugin({
