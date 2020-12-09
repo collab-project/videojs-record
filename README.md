@@ -11,7 +11,7 @@ The documentation and examples can be found on: https://collab-project.github.io
 [![npm version](https://img.shields.io/npm/v/videojs-record.svg?style=flat)](https://www.npmjs.com/package/videojs-record)
 [![npm](https://img.shields.io/npm/dm/videojs-record.svg)](https://github.com/collab-project/videojs-record/releases)
 [![License](https://img.shields.io/npm/l/videojs-record.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/collab-project/videojs-record.svg?branch=master)](https://travis-ci.org/collab-project/videojs-record)
+[![Build Status](https://github.com/collab-project/videojs-record/workflows/videojs-record/badge.svg?branch=master)](https://github.com/collab-project/videojs-record/actions?workflow=videojs-record)
 [![Coverage Status](https://coveralls.io/repos/github/collab-project/videojs-record/badge.svg?branch=master)](https://coveralls.io/github/collab-project/videojs-record?branch=master)
 ![Size](https://img.shields.io/bundlephobia/minzip/videojs-record.svg?style=flat)
 [![Financial Contributors on Open Collective](https://opencollective.com/collab/all/badge.svg?label=financial+contributors)](https://opencollective.com/collab)
