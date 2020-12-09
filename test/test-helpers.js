@@ -149,7 +149,7 @@ const TestHelpers = {
                 recordPluginOptions.audioEngine = OPUSRECORDER;
                 recordPluginOptions.audioSampleRate = 48000;
                 recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
-                recordPluginOptions.audioChannels = 2;
+                recordPluginOptions.audioChannels = 1;
                 break;
 
             case RECORDERJS:

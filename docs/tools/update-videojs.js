@@ -1,13 +1,11 @@
 /**
  * Update video.js version in demo files.
- *
- * @since 4.2.0
  */
 
 const replace = require('replace-in-file');
 
-const OLD_VERSION = "7.6.6";
-const NEW_VERSION = "7.8.4";
+const OLD_VERSION = "7.8.4";
+const NEW_VERSION = "7.10.1";
 
 const options = {
   files: 'demo/**/*.html',

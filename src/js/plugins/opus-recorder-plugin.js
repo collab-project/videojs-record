@@ -40,7 +40,7 @@ class OpusRecorderEngine extends RecordEngine {
          *
          * @type {number}
          */
-        this.audioChannels = 2;
+        this.audioChannels = 1;
         /**
          * The length of the buffer that the internal `JavaScriptNode`
          * uses to capture the audio. Can be tweaked if experiencing
@@ -92,13 +92,19 @@ class OpusRecorderEngine extends RecordEngine {
         this.mediaType = mediaType;
         this.debug = debug;
 
+        // create new AudioContext
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.audioContext = new AudioContext();
+        this.audioSourceNode = this.audioContext.createMediaStreamSource(
+            this.inputStream);
+
         // minimal default config
         this.config = {
-            leaveStreamOpen: true,
             numberOfChannels: this.audioChannels,
             bufferLength: this.bufferSize,
             encoderSampleRate: this.sampleRate,
-            encoderPath: this.audioWorkerURL
+            encoderPath: this.audioWorkerURL,
+            sourceNode: this.audioSourceNode
         };
 
         // extend config with optional options
@@ -107,19 +113,13 @@ class OpusRecorderEngine extends RecordEngine {
         // create Recorder engine
         this.engine = new Recorder(this.config);
         this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
-
-        // create new AudioContext
-        let AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.audioContext = new AudioContext();
-        this.audioSourceNode = this.audioContext.createMediaStreamSource(
-            this.inputStream);
     }
 
     /**
      * Start recording.
      */
     start() {
-        this.engine.start(this.audioSourceNode).then(() => {
+        this.engine.start().then(() => {
             // recording started ok
         }).catch((err) => {
             // can't start playback
