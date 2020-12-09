@@ -118,7 +118,7 @@
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-matchers": "^4.0.2",
     "karma-verbose-reporter": "0.0.6",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "ryanclark/karma-webpack#next",
     "lamejs": ">=1.2.0",
     "libvorbis.js": ">=1.1.2",
     "log-timestamp": "^0.3.0",
