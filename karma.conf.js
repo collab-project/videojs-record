@@ -233,9 +233,11 @@ module.exports = function(config) {
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
-            type: 'html',
-            // specify a common output directory
-            dir: 'coverage'
+            dir: 'coverage',
+            reporters: [
+                { type: 'html', subdir: 'html' },
+                { type: 'lcov', subdir: 'lcov' }
+            ]
         },
         webpack: webpackConfig,
         customLaunchers: {
