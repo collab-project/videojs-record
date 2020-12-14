@@ -168,7 +168,6 @@ module.exports = function(config) {
             'karma-firefox-launcher',
             'karma-edge-launcher',
             'karma-coverage',
-            'karma-coveralls',
             'karma-verbose-reporter',
             'karma-host-environment',
             'karma-detect-browsers'
