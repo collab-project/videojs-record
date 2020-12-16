@@ -40,11 +40,11 @@ module.exports = {
           }
         ],
         // webpack-dev-server middleware
-        onBeforeSetupMiddleware(app, compiler) {
+        onBeforeSetupMiddleware(args) {
             // =============================================
             // use proper mime-type for wasm files
             // =============================================
-            app.get('*.wasm', (req, res) => {
+            args.app.get('*.wasm', (req, res) => {
                 let options = {
                     root: contentBase,
                     dotfiles: 'deny',
@@ -73,7 +73,7 @@ module.exports = {
             fs.ensureDirSync(targetDir);
 
             // file upload handler for examples
-            app.post('/upload', (req, res) => {
+            args.app.post('/upload', (req, res) => {
                 // save uploaded file
                 let form = new formidable.IncomingForm();
                 form.uploadDir = targetDir;

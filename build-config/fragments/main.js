@@ -14,8 +14,7 @@ const rootDir = path.resolve(__dirname, '..', '..');
 let copyFontsPlugin = new CopyWebpackPlugin({
     patterns: [{
         from: 'src/fonts/*',
-        to: 'fonts',
-        flatten: true,
+        to: 'fonts/[name].[ext]',
         globOptions: {
             dot: false,
             ignore: ['**/*.json', '**/*.md']
