@@ -15,7 +15,6 @@ const contentBase = path.resolve(__dirname, '..', '..');
 module.exports = {
     mode: 'development',
     devServer: {
-        host: '0.0.0.0',
         port: 8080,
         static: [
           {
@@ -44,7 +43,7 @@ module.exports = {
             // =============================================
             // use proper mime-type for wasm files
             // =============================================
-            args.app.get('*.wasm', (req, res) => {
+            args.app.get('*.wasm', (req, res, next) => {
                 let options = {
                     root: contentBase,
                     dotfiles: 'deny',
@@ -55,7 +54,7 @@ module.exports = {
 
                 res.sendFile(req.url, options, (err) => {
                     if (err) {
-                        console.error(err);
+                        next(err);
                     }
                 });
             });
