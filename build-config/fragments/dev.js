@@ -17,26 +17,26 @@ module.exports = {
     devServer: {
         port: 8080,
         static: [
-          {
-            directory: contentBase,
-            staticOptions: {},
-            publicPath: '/',
-            // serveIndex: {} (options for the `serveIndex` option you can find https://github.com/expressjs/serve-index)
-            serveIndex: true,
-            watch: {
-                ignored: [
-                    /.build_cache/,
-                    /.chrome/,
-                    /docs/,
-                    /node_modules/,
-                    /bower_components/,
-                    /coverage/,
-                    /build-config/,
-                    /test/,
-                    /vendor/
-                ]
+            {
+                directory: contentBase,
+                staticOptions: {},
+                publicPath: '/',
+                // serveIndex: {} (options for the `serveIndex` option you can find https://github.com/expressjs/serve-index)
+                serveIndex: true,
+                watch: {
+                    ignored: [
+                        /.build_cache/,
+                        /.chrome/,
+                        /docs/,
+                        /node_modules/,
+                        /bower_components/,
+                        /coverage/,
+                        /build-config/,
+                        /test/,
+                        /vendor/
+                    ]
+                }
             }
-          }
         ],
         // webpack-dev-server middleware
         onBeforeSetupMiddleware(args) {
