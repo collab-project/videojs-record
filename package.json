@@ -80,7 +80,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-runtime": "^7.12.10",
-    "@babel/preset-env": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
     "@mattiasbuelens/web-streams-polyfill": "^0.3.2",
     "add-zero": "^1.0.0",
@@ -96,7 +96,7 @@
     "date-fns": "^2.16.1",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^7.15.0",
+    "eslint": "^7.16.0",
     "ffmpeg.js": "^4.2.9003",
     "file-loader": "^6.2.0",
     "fine-uploader": ">=5.16",
