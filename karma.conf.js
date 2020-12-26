@@ -8,7 +8,7 @@ process.env.BABEL_ENV = 'test';
 const path = require('path');
 require('@babel/register');
 
-let ci = process.env.TRAVIS || process.env.APPVEYOR;
+let ci = process.env.CI || process.env.APPVEYOR;
 let webpackConfig = require('./build-config/webpack.prod.main.js');
 let support_dir = path.resolve(__dirname, 'test', 'support');
 let fakeAudioStream = path.join(support_dir, 'Front_Center.wav');
@@ -170,7 +170,6 @@ module.exports = function(config) {
             'karma-firefox-launcher',
             'karma-edge-launcher',
             'karma-coverage',
-            'karma-coveralls',
             'karma-verbose-reporter',
             'karma-host-environment',
             'karma-detect-browsers'
@@ -236,11 +235,10 @@ module.exports = function(config) {
         colors: true,
         reporters: ['verbose', 'progress', 'coverage'],
         coverageReporter: {
-            // specify a common output directory
             dir: 'coverage',
             reporters: [
-                {type: 'html'},
-                {type: 'text-summary'}
+                { type: 'html', subdir: 'html' },
+                { type: 'lcov', subdir: 'lcov' }
             ]
         },
         customLaunchers: {
@@ -272,13 +270,6 @@ module.exports = function(config) {
         configuration.browsers = ['Chrome_headless', 'Firefox_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
-
-        if (process.env.TRAVIS) {
-            // enable coveralls
-            configuration.reporters.push('coveralls');
-            // lcov or lcovonly are required for generating lcov.info files
-            configuration.coverageReporter.type = 'lcov';
-        }
     }
 
     config.set(configuration);
