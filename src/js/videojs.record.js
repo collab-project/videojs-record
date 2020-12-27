@@ -21,10 +21,10 @@ import pluginDefaultOptions from './defaults';
 import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import compareVersion from './utils/compare-version';
-import {detectBrowser} from './utils/detect-browser';
+import { detectBrowser } from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
-import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
+import { getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine } from './engine/engine-loader';
+import { IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode, SCREEN_ANIMATION } from './engine/record-mode';
 
 const Plugin = videojs.getPlugin('plugin');
 const Player = videojs.getComponent('Player');
@@ -84,6 +84,7 @@ class Record extends Plugin {
                 deviceIcon = 'audio-perm';
                 break;
             case SCREEN_ONLY:
+            case SCREEN_ANIMATION:
                 deviceIcon = 'screen-perm';
                 break;
             case AUDIO_SCREEN:
@@ -142,7 +143,8 @@ class Record extends Plugin {
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
             let customUIElements = ['deviceButton', 'recordIndicator',
-                'cameraButton', 'recordToggle'];
+                'cameraButton', 'recordToggle'
+            ];
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
             }
@@ -271,6 +273,7 @@ class Record extends Plugin {
             case AUDIO_VIDEO:
             case ANIMATION:
             case SCREEN_ONLY:
+            case SCREEN_ANIMATION:
             case AUDIO_SCREEN:
                 // customize controls
                 if (this.player.bigPlayButton !== undefined) {
@@ -405,7 +408,7 @@ class Record extends Plugin {
         // check for support because some browsers still do not support
         // getDisplayMedia or getUserMedia (like Chrome iOS, see:
         // https://bugs.chromium.org/p/chromium/issues/detail?id=752458)
-        if (this.getRecordType() === SCREEN_ONLY || this.getRecordType() === AUDIO_SCREEN) {
+        if (this.getRecordType() === SCREEN_ONLY || this.getRecordType() === AUDIO_SCREEN || this.getRecordType() === SCREEN_ANIMATION) {
             if (navigator.mediaDevices === undefined ||
                 navigator.mediaDevices.getDisplayMedia === undefined) {
                 this.player.trigger(Event.ERROR,
@@ -587,6 +590,30 @@ class Record extends Plugin {
                     this.onDeviceError.bind(this)
                 );
                 break;
+            case SCREEN_ANIMATION:
+                // setup screen
+                this.mediaType = {
+                    // screen capture
+                    audio: false,
+                    video: false,
+                    screen: true,
+                    gif: true
+                };
+                let screenAnimConstraints = {};
+                if (this.recordScreen === true) {
+                    screenAnimConstraints = {
+                        video: true
+                    };
+                } else if (typeof this.recordScreen === 'object' &&
+                    this.recordScreen.constructor === Object) {
+                    screenAnimConstraints = this.recordScreen;
+                }
+                navigator.mediaDevices.getDisplayMedia(screenAnimConstraints).then(
+                    this.onDeviceReady.bind(this)
+                ).catch(
+                    this.onDeviceError.bind(this)
+                );
+                break;
         }
     }
 
@@ -706,8 +733,7 @@ class Record extends Plugin {
                 try {
                     this.converter = new ConvertEngineClass(this.player,
                         this.player.options_);
-                }
-                catch (err) {
+                } catch (err) {
                     throw new Error('Could not load ' + this.convertEngine +
                         ' plugin');
                 }
@@ -850,6 +876,7 @@ class Record extends Plugin {
                     this.startVideoPreview();
                     break;
 
+                case SCREEN_ANIMATION:
                 case ANIMATION:
                     // hide the first frame
                     this.player.recordCanvas.hide();
@@ -890,6 +917,7 @@ class Record extends Plugin {
                 case AUDIO_SCREEN:
                 case ANIMATION:
                 case SCREEN_ONLY:
+                case SCREEN_ANIMATION:
                     // wait for media stream on video element to actually load
                     this.player.one(Event.LOADEDMETADATA, () => {
                         // start actually recording process
@@ -1115,6 +1143,7 @@ class Record extends Plugin {
                 break;
 
             case ANIMATION:
+            case SCREEN_ANIMATION:
                 // animation data is ready
                 this._processing = false;
 
@@ -1213,6 +1242,7 @@ class Record extends Plugin {
             case AUDIO_SCREEN:
             case ANIMATION:
             case SCREEN_ONLY:
+            case SCREEN_ANIMATION:
                 if (this.player.controlBar.currentTimeDisplay &&
                     this.player.controlBar.currentTimeDisplay.contentEl() &&
                     this.player.controlBar.currentTimeDisplay.contentEl().lastChild) {
@@ -1221,7 +1251,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
+                        formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1259,12 +1289,13 @@ class Record extends Plugin {
             case AUDIO_SCREEN:
             case ANIMATION:
             case SCREEN_ONLY:
+            case SCREEN_ANIMATION:
                 // update duration display component
                 if (this.player.controlBar.durationDisplay &&
                     this.player.controlBar.durationDisplay.contentEl() &&
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
-                    this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
+                        this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
                         formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
@@ -1290,6 +1321,7 @@ class Record extends Plugin {
             case AUDIO_SCREEN:
             case ANIMATION:
             case SCREEN_ONLY:
+            case SCREEN_ANIMATION:
                 if (url instanceof Blob || url instanceof File) {
                     // make sure to reset it (#312)
                     this.mediaElement.srcObject = null;
@@ -1500,8 +1532,8 @@ class Record extends Plugin {
      */
     muteTracks(mute) {
         if ((this.getRecordType() === AUDIO_ONLY ||
-            this.getRecordType() === AUDIO_SCREEN ||
-            this.getRecordType() === AUDIO_VIDEO) &&
+                this.getRecordType() === AUDIO_SCREEN ||
+                this.getRecordType() === AUDIO_VIDEO) &&
             this.stream.getAudioTracks().length > 0) {
             this.stream.getAudioTracks()[0].enabled = !mute;
         }
@@ -1601,7 +1633,7 @@ class Record extends Plugin {
             // importing ImageCapture can fail when enabling chrome flag is still required.
             // if so; ignore and continue
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
-               (typeof ImageCapture === typeof Function)) {
+                (typeof ImageCapture === typeof Function)) {
                 try {
                     let track = this.stream.getVideoTracks()[0];
                     let imageCapture = new ImageCapture(track);
@@ -1740,12 +1772,12 @@ class Record extends Plugin {
     setVideoInput(deviceId) {
         if (this.recordVideo === Object(this.recordVideo)) {
             // already using video constraints
-            this.recordVideo.deviceId = {exact: deviceId};
+            this.recordVideo.deviceId = { exact: deviceId };
 
         } else if (this.recordVideo === true) {
             // not using video constraints already, so force it
             this.recordVideo = {
-                deviceId: {exact: deviceId}
+                deviceId: { exact: deviceId }
             };
         }
 
@@ -1764,12 +1796,12 @@ class Record extends Plugin {
     setAudioInput(deviceId) {
         if (this.recordAudio === Object(this.recordAudio)) {
             // already using audio constraints
-            this.recordAudio.deviceId = {exact: deviceId};
+            this.recordAudio.deviceId = { exact: deviceId };
 
         } else if (this.recordAudio === true) {
             // not using audio constraints already, so force it
             this.recordAudio = {
-                deviceId: {exact: deviceId}
+                deviceId: { exact: deviceId }
             };
         }
 
@@ -1896,4 +1928,4 @@ if (videojs.getPlugin('record') === undefined) {
 }
 
 // export plugin
-export {Record};
+export { Record };

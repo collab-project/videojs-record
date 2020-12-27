@@ -1,6 +1,7 @@
 /**
  * @file record-mode.js
- * @since 2.0.0
+ * @since 4.1.1
+ * added a new record mode
  */
 
 // recorder modes
@@ -11,6 +12,7 @@ const AUDIO_VIDEO = 'audio_video';
 const AUDIO_SCREEN = 'audio_screen';
 const ANIMATION = 'animation';
 const SCREEN_ONLY = 'screen_only';
+const SCREEN_ANIMATION = 'screen_animation';
 
 
 const getRecorderMode = function(image, audio, video, animation, screen) {
@@ -18,7 +20,7 @@ const getRecorderMode = function(image, audio, video, animation, screen) {
         return IMAGE_ONLY;
 
     } else if (isModeEnabled(animation)) {
-        return ANIMATION;
+        return isModeEnabled(screen) ? SCREEN_ANIMATION : ANIMATION;
 
     } else if (isModeEnabled(audio) && isModeEnabled(video)) {
         return AUDIO_VIDEO;
@@ -50,5 +52,12 @@ const isModeEnabled = function(mode) {
 
 export {
     getRecorderMode,
-    IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, ANIMATION, SCREEN_ONLY, AUDIO_SCREEN
+    IMAGE_ONLY,
+    AUDIO_ONLY,
+    VIDEO_ONLY,
+    AUDIO_VIDEO,
+    ANIMATION,
+    SCREEN_ONLY,
+    SCREEN_ANIMATION,
+    AUDIO_SCREEN
 };
