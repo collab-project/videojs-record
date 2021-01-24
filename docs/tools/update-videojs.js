@@ -2,13 +2,14 @@
  * Update video.js version in demo files.
  */
 
+const path = require('path');
 const replace = require('replace-in-file');
 
-const OLD_VERSION = "7.8.4";
-const NEW_VERSION = "7.10.1";
+const OLD_VERSION = "7.10.1";
+const NEW_VERSION = "7.10.2";
 
 const options = {
-  files: 'demo/**/*.html',
+  files: path.resolve(__dirname, '..', 'demo') + '/**/*.html',
   from: new RegExp(OLD_VERSION, 'g'),
   to: NEW_VERSION,
   dry: false
