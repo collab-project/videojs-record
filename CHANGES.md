@@ -1,5 +1,11 @@
 # videojs-record changelog
 
+## 4.2.0 - unreleased
+
+- New opus-media-recorder plugin: provides cross-browser Opus codec support with
+  various audio formats such as Ogg and WebM (#355)
+
+
 ## 4.1.1 - 2020/11/01
 
 - Fix issue with opus-recorder plugin (#519)
@@ -44,7 +50,7 @@
 
 ## 3.11.0 - 2020/03/02
 
-- Fix autostop error when max file size was reached (#448 by @Eduardo-Lpz) 
+- Fix autostop error when max file size was reached (#448 by @Eduardo-Lpz)
 - Bump required version for recordrtc to 5.5.9
 
 
