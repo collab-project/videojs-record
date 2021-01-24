@@ -3,7 +3,7 @@
  * @since 4.2.0
  */
 
-import OpusMediaRecorder from 'opus-media-recorder';
+import MediaRecorder from 'opus-media-recorder';
 
 const RecordEngine = videojs.getComponent('RecordEngine');
 
@@ -18,6 +18,28 @@ const RecordEngine = videojs.getComponent('RecordEngine');
  * @augments RecordEngine
  */
 class OpusMediaRecorderEngine extends RecordEngine {
+    /**
+     * Creates an instance of this class.
+     *
+     * @param  {Player} player
+     *         The `Player` that this class should be attached to.
+     *
+     * @param  {Object} [options]
+     *         The key/value store of player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        /**
+         * Mime-type for audio output.
+         *
+         * Choose desired format like `audio/webm`. Default is `audio/ogg`.
+         *
+         * @type {string}
+         */
+        this.audioType = 'audio/ogg';
+    }
+
     /**
      * Setup recording engine.
      *
@@ -37,22 +59,20 @@ class OpusMediaRecorderEngine extends RecordEngine {
             return new Worker(this.audioWorkerURL);
         };
 
-        // Existing MediaRecorder is replaced
-        //window.MediaRecorder = OpusMediaRecorder;
+        this.recAvailableCallback = this.onRecordingAvailable.bind(this);
 
-        this.engine = new OpusMediaRecorder(this.inputStream, {}, workerOptions);
+        const recOptions = {mimeType: this.audioType};
+        this.engine = new MediaRecorder(stream, recOptions, workerOptions);
+        this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
     }
 
     /**
      * Start recording.
      */
     start() {
-        this.engine.start(this.audioSourceNode).then(() => {
-            // recording started ok
-        }).catch((err) => {
-            // can't start playback
-            this.player().trigger('error', err);
-        });
+        this.engine.addEventListener('dataavailable', this.recAvailableCallback);
+
+        this.engine.start();
     }
 
     /**
@@ -63,26 +83,13 @@ class OpusMediaRecorderEngine extends RecordEngine {
     }
 
     /**
-     * Pause recording.
-     */
-    pause() {
-        this.engine.pause();
-    }
-
-    /**
-     * Resume recording.
-     */
-    resume() {
-        this.engine.resume();
-    }
-
-    /**
      * @private
-     * @param {Object} data - Audio data returned by opus-recorder.
+     * @param {Object} event - Audio data returned by opus-media-recorder.
      */
-    onRecordingAvailable(data) {
-        // Opus format stored in an Ogg container
-        let blob = new Blob([data], {type: this.audioType});
+    onRecordingAvailable(event) {
+        this.engine.removeEventListener('dataavailable', this.recAvailableCallback);
+
+        let blob = new Blob([event.data], {type: this.audioType});
 
         this.onStopRecording(blob);
     }
