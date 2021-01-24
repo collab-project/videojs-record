@@ -33,4 +33,4 @@ let pluginBanner = new webpack.BannerPlugin({
     test: /\.js$/
 });
 
-module.exports = { libBanner, pluginBanner };
+module.exports = {libBanner, pluginBanner};

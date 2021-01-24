@@ -42,6 +42,7 @@
       "requireReturn": false,
       "requireReturnType": false
     }],
+    "object-curly-spacing": ["error", "never"],
     "require-jsdoc": 2,
     "no-console": 2,
     "no-dupe-args": 2,
