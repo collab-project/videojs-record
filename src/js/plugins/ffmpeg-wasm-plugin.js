@@ -58,7 +58,7 @@ class FFmpegWasmEngine extends ConvertEngine {
      * @param {Blob} data - Recorded data that needs to be converted.
      */
     async convert(data) {
-        const { createFFmpeg, fetchFile } = FFmpeg;
+        const {createFFmpeg, fetchFile} = FFmpeg;
         const ffmpeg = createFFmpeg({
             corePath: this.convertWorkerURL,
             log: this.debug
