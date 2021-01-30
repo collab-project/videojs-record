@@ -1,8 +1,8 @@
 # opus-media-recorder plugin
 
-[opus-media-recorder](https://github.com/chris-rudmin/Recorderjs) provides a Javascript
-implementation of PCM to Opus encoder and exports it into an Ogg container.
-opus-recorder is currently only supported when recording audio-only.
+[opus-media-recorder](https://github.com/chris-rudmin/Recorderjs) provides a MediaRecorder API polyfill written in ES6 and WebAssembly. It aims for cross-browser Opus codec support with various audio formats such as Ogg and WebM. opus-media-recorder uses WebAssembly compiled from popular libraries (e.g libopus, libogg, libwebm, and speexdsp) to ensure good performance and standards-compliance.
+
+The opus-media-recorder plugin is currently only supported when recording audio-only.
 
 ## Example
 
@@ -20,7 +20,7 @@ npm install --save opus-media-recorder
 Include the opus-media-recorder script and place it before any other scripts:
 
 ```html
-<script src="opus-recorder/dist/recorder.min.js"></script>
+<script src="opus-media-recorder/OpusMediaRecorder.umd.js"></script>
 ```
 
 Import the plugin:
@@ -29,8 +29,8 @@ Import the plugin:
 import OpusMediaRecorderEngine from 'videojs-record/dist/plugins/videojs.record.opus-media-recorder.js';
 ```
 
-And specify the `opus-media-recorder` `audioEngine` and `audioWorkerURL` options.
-Use the `pluginLibraryOptions` option to specify optional settings for the opus-media-recorder library.
+And specify the `opus-media-recorder` `audioEngine`, `audioWorkerURL` and
+`audioWebAssemblyURL` options. Use the `pluginLibraryOptions` option to specify optional settings for the opus-media-recorder library.
 
 For example:
 
@@ -40,16 +40,12 @@ record: {
     video: false,
     maxLength: 20,
     debug: true,
-    audioEngine: 'opus-recorder',
-    audioSampleRate: 48000,
-    audioChannels: 1,
+    audioEngine: 'opus-media-recorder',
     audioWorkerURL: '../../node_modules/opus-media-recorder/encoderWorker.umd.js'
-    // use the pluginLibraryOptions option to specify optional settings for the
-    // opus-recorder library. For example:
-    // pluginLibraryOptions: {
-    //    monitorGain: 0.4,
-    //    originalSampleRateOverride: 16000
-    // }
+    audioWebAssemblyURL: {
+        OggOpusEncoderWasmPath: '../../node_modules/opus-media-recorder/OggOpusEncoder.wasm',
+        WebMOpusEncoderWasmPath: '../../node_modules/opus-media-recorder/WebMOpusEncoder.wasm'
+    }
 }
 ```
 
@@ -61,6 +57,4 @@ Options for this plugin:
 | --- | --- | --- |
 | `audioEngine` | `opus-media-recorder` | Enables the plugin. |
 | `audioWorkerURL` | `/path/to/encoderWorker.umd.js` | Path to encoder WebWorker file. |
-| `audioSampleRate` | `48000` | The audio sample rate (in sample-frames per second) at which the `AudioContext` handles audio. Legal values are in the range of 22050 to 96000. |
-| `audioChannels` | `1` | Number of audio channels. Using a single channel results in a smaller file size. |
-| `pluginLibraryOptions` | `{}` | Specify optional settings for the opus-recorder library. |
+| `audioWebAssemblyURL` | `{OggOpusEncoderWasmPath: '/path/to/OggOpusEncoder.wasm', WebMOpusEncoderWasmPath: '/path/to/WebMOpusEncoder.wasm'}` | Paths to Ogg and WebM encoder WASM files. |
