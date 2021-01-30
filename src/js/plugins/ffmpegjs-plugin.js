@@ -46,7 +46,7 @@ class FFmpegjsEngine extends ConvertEngine {
          */
         this.outputType = null;
         /**
-         * Additional configuration options for the opus-recorder library.
+         * Additional configuration options for the ffmpeg.js library.
          *
          * @type {object}
          */
