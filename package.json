@@ -78,10 +78,6 @@
     "webrtc-adapter": ">=7.7.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/register": "^7.12.1",
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
@@ -131,6 +127,7 @@
     "node-fs-extra": "^0.8.2",
     "node-static": "^0.7.11",
     "npm-run-all": "^4.1.5",
+    "opus-media-recorder": ">=0.8.0",
     "opus-recorder": ">=8.0.3",
     "parse-ms": "^2.1.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",

@@ -1,6 +1,6 @@
 # opus-recorder plugin
 
-[opus-recorder](https://github.com/chris-rudmin/Recorderjs) provides a Javascript
+[opus-recorder](https://github.com/chris-rudmin/opus-recorder) provides a Javascript
 implementation of PCM to Opus encoder and exports it into an Ogg container.
 opus-recorder is currently only supported when recording audio-only.
 

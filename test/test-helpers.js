@@ -8,7 +8,7 @@ import {Player, mergeOptions} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
-import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM} from '../src/js/engine/record-engine';
+import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, OPUSMEDIARECORDER} from '../src/js/engine/record-engine';
 import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine';
 
 const TestHelpers = {
@@ -150,6 +150,15 @@ const TestHelpers = {
                 recordPluginOptions.audioSampleRate = 48000;
                 recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-recorder/dist/encoderWorker.min.js';
                 recordPluginOptions.audioChannels = 1;
+                break;
+
+            case OPUSMEDIARECORDER:
+                recordPluginOptions.audioEngine = OPUSMEDIARECORDER;
+                recordPluginOptions.audioWorkerURL = '/base/node_modules/opus-media-recorder/encoderWorker.umd.js';
+                recordPluginOptions.audioWebAssemblyURL = {
+                    OggOpusEncoderWasmPath: '/base/node_modules/opus-media-recorder/OggOpusEncoder.wasm',
+                    WebMOpusEncoderWasmPath: '/base/node_modules/opus-media-recorder/WebMOpusEncoder.wasm'
+                };
                 break;
 
             case RECORDERJS:
