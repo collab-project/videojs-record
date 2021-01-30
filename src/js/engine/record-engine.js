@@ -19,13 +19,16 @@ const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
+const OPUSMEDIARECORDER = 'opus-media-recorder';
 const VMSG = 'vmsg';
 
 // video
 const WEBMWASM = 'webm-wasm';
 
 // all audio plugins
-const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
+const AUDIO_PLUGINS = [
+    LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, OPUSMEDIARECORDER, VMSG
+];
 
 // all video plugins
 const VIDEO_PLUGINS = [WEBMWASM];
@@ -127,5 +130,6 @@ Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
     RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM
+    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER,
+    OPUSMEDIARECORDER, VMSG, WEBMWASM
 };

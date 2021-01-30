@@ -123,6 +123,9 @@ module.exports = function(config) {
             {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false, served: true},
             {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
             'node_modules/opus-recorder/dist/recorder.min.js',
+            // opus-media-recorder
+            {pattern: 'node_modules/opus-media-recorder/encoderWorker.umd.js', included: false, served: true},
+            {pattern: 'node_modules/opus-media-recorder/*.wasm', included: false, served: true, type: 'wasm'},
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
             // web streams API polyfill to support Firefox (for webm-wasm)

@@ -20,7 +20,9 @@
     "update:libvorbis": "cpx -v 'node_modules/libvorbis.js/js/libvorbis.min.js' demo/lib/libvorbis.js/",
     "update:lamejs": "cpx -v 'node_modules/lamejs/lame.*.js' demo/lib/lamejs/",
     "update:lamejs-worker": "cpx -v 'node_modules/lamejs/worker-example/*.js' demo/lib/lamejs/worker-example/",
-    "update:opus": "cpx -v 'node_modules/opus-recorder/dist/*' demo/lib/opus-recorder/",
+    "update:opus-recorder": "cpx -v 'node_modules/opus-recorder/dist/*' demo/lib/opus-recorder/",
+    "update:opus-media-recorder": "cpx -v 'node_modules/opus-media-recorder/*.js' demo/lib/opus-media-recorder/",
+    "update:opus-media-recorder-wasm": "cpx -v 'node_modules/opus-media-recorder/*.wasm' demo/lib/opus-media-recorder/",
     "update:vmsg": "cpx -v 'node_modules/vmsg/*.wasm' demo/lib/vmsg/",
     "update:webm-wasm": "cpx -v 'node_modules/webm-wasm/dist/*' demo/lib/webm-wasm/",
     "update:ffmpeg": "cpx -v 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js' demo/lib/ffmpeg.js/",
@@ -35,6 +37,7 @@
     "ffmpeg.js": "^4.2.9003",
     "lamejs": "^1.2.0",
     "libvorbis.js": "^1.1.2",
+    "opus-media-recorder": "^0.8.0",
     "opus-recorder": "^8.0.3",
     "vmsg": "^0.3.6",
     "webm-wasm": "^0.4.1"
