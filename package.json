@@ -133,6 +133,7 @@
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
     "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^5.1.1",
     "ts-ebml": "^2.0.2",
     "url-loader": "^4.1.1",
     "videojs-languages": "^2.0.0",
