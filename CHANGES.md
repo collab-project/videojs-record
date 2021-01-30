@@ -4,6 +4,7 @@
 
 - New opus-media-recorder plugin: provides cross-browser Opus codec support with
   various audio formats such as Ogg and WebM (#355)
+- Bump required version for videojs-wavesurfer (3.4.0 or newer)
 
 
 ## 4.1.1 - 2020/11/01
