@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Recorder.js Audio-only Example - Record Plugin for Video.js</title>
+  <title>opus-media-recorder Audio-only Example - Record Plugin for Video.js</title>
 
   <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
   <link href="//unpkg.com/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
@@ -11,18 +11,18 @@
 
   <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.js"></script>
+  <script src="lib/opus-media-recorder/OpusMediaRecorder.umd.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
   <script src="//unpkg.com/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
   <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
-  <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.recorderjs.min.js"></script>
+  <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.opus-media-recorder.min.js"></script>
 
   <style>
   /* change player background color */
   #myAudio {
-      background-color: #3a506b;
+      background-color: #96d6d6;
   }
   </style>
 </head>
@@ -31,6 +31,9 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
+// Polyfill MediaRecorder
+window.MediaRecorder = OpusMediaRecorder;
+
 var options = {
     controls: true,
     bigPlayButton: false,
@@ -40,7 +43,7 @@ var options = {
     plugins: {
         wavesurfer: {
             backend: 'WebAudio',
-            waveColor: '#6fffe9',
+            waveColor: '#4c4a56',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
@@ -62,9 +65,14 @@ var options = {
             audio: true,
             video: false,
             maxLength: 20,
-            displayMilliseconds: true,
             debug: true,
-            audioEngine: 'recorder.js'
+            displayMilliseconds: true,
+            audioEngine: 'opus-media-recorder',
+            audioWorkerURL: 'lib/opus-media-recorder/encoderWorker.umd.js',
+            audioWebAssemblyURL: {
+                OggOpusEncoderWasmPath: 'lib/opus-media-recorder/OggOpusEncoder.wasm',
+                WebMOpusEncoderWasmPath: 'lib/opus-media-recorder/WebMOpusEncoder.wasm'
+            }
         }
     }
 };

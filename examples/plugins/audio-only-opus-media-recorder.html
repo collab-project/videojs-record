@@ -2,27 +2,29 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Recorder.js Audio-only Example - Record Plugin for Video.js</title>
+  <title>opus-media-recorder Audio-only Example - Record Plugin for Video.js</title>
 
-  <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
-  <link href="//unpkg.com/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
-  <link href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css" rel="stylesheet">
-  <link href="assets/examples.css" rel="stylesheet">
+  <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+  <link href="../../node_modules/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
+  <link href="../../dist/css/videojs.record.css" rel="stylesheet">
+  <link href="../assets/css/examples.css" rel="stylesheet">
 
-  <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
-  <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.js"></script>
-  <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
-  <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
-  <script src="//unpkg.com/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
+  <script src="../../node_modules/video.js/dist/video.min.js"></script>
+  <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
+  <script src="../../node_modules/opus-media-recorder/OpusMediaRecorder.umd.js"></script>
+  <script src="../../node_modules/wavesurfer.js/dist/wavesurfer.min.js"></script>
+  <script src="../../node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
+  <script src="../../node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
 
-  <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
-  <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.recorderjs.min.js"></script>
+  <script src="../../dist/videojs.record.js"></script>
+  <script src="../../dist/plugins/videojs.record.opus-media-recorder.js"></script>
+
+  <script src="../browser-workarounds.js"></script>
 
   <style>
   /* change player background color */
   #myAudio {
-      background-color: #3a506b;
+      background-color: #96d6d6;
   }
   </style>
 </head>
@@ -31,6 +33,10 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
+/* eslint-disable */
+// Polyfill MediaRecorder
+window.MediaRecorder = OpusMediaRecorder;
+
 var options = {
     controls: true,
     bigPlayButton: false,
@@ -40,7 +46,7 @@ var options = {
     plugins: {
         wavesurfer: {
             backend: 'WebAudio',
-            waveColor: '#6fffe9',
+            waveColor: '#4c4a56',
             progressColor: 'black',
             debug: true,
             cursorWidth: 1,
@@ -62,12 +68,18 @@ var options = {
             audio: true,
             video: false,
             maxLength: 20,
-            displayMilliseconds: true,
             debug: true,
-            audioEngine: 'recorder.js'
+            displayMilliseconds: true,
+            audioEngine: 'opus-media-recorder',
+            audioWorkerURL: '../../node_modules/opus-media-recorder/encoderWorker.umd.js',
+            audioWebAssemblyURL: {
+                OggOpusEncoderWasmPath: '../../node_modules/opus-media-recorder/OggOpusEncoder.wasm',
+                WebMOpusEncoderWasmPath: '../../node_modules/opus-media-recorder/WebMOpusEncoder.wasm'
+            }
         }
     }
 };
+
 var player = videojs('myAudio', options, function() {
     // print version information at startup
     var msg = 'Using video.js ' + videojs.VERSION +

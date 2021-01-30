@@ -39,6 +39,7 @@
   - [webm-wasm](plugins/webm-wasm.md)
   - [vmsg](plugins/vmsg.md)
   - [opus-recorder](plugins/opus-recorder.md)
+  - [opus-media-recorder](plugins/opus-media-recorder.md)
   - [libvorbis.js](plugins/libvorbis.js.md)
   - [lamejs](plugins/lamejs.md)
   - [recorder.js](plugins/recorder.js.md)
