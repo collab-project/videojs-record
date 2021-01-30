@@ -17,10 +17,17 @@ Install the library:
 npm install --save opus-media-recorder
 ```
 
-Include the opus-media-recorder script and place it before any other scripts:
+Include the opus-media-recorder scripts and place them before any other scripts:
 
 ```html
 <script src="opus-media-recorder/OpusMediaRecorder.umd.js"></script>
+```
+
+Enable the polyfill:
+
+```javascript
+// Polyfill MediaRecorder
+window.MediaRecorder = OpusMediaRecorder;
 ```
 
 Import the plugin:

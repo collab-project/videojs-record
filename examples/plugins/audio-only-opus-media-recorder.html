@@ -34,6 +34,9 @@
 
 <script>
 /* eslint-disable */
+// Polyfill MediaRecorder
+window.MediaRecorder = OpusMediaRecorder;
+
 var options = {
     controls: true,
     bigPlayButton: false,

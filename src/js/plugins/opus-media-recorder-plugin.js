@@ -3,8 +3,6 @@
  * @since 4.2.0
  */
 
-import MediaRecorder from 'opus-media-recorder';
-
 const RecordEngine = videojs.getComponent('RecordEngine');
 
 /**
@@ -53,26 +51,28 @@ class OpusMediaRecorderEngine extends RecordEngine {
         this.inputStream = stream;
         this.mediaType = mediaType;
         this.debug = debug;
+        this.chunks = [];
 
         const workerOptions = this.audioWebAssemblyURL;
         workerOptions.encoderWorkerFactory = () => {
             return new Worker(this.audioWorkerURL);
         };
 
-        this.recAvailableCallback = this.onRecordingAvailable.bind(this);
+        this.recAvailableCallback = this.onData.bind(this);
 
         const recOptions = {mimeType: this.audioType};
         this.engine = new MediaRecorder(stream, recOptions, workerOptions);
-        this.engine.ondataavailable = this.onRecordingAvailable.bind(this);
+        this.engine.onstop = this.onRecordingAvailable.bind(this);
     }
 
     /**
      * Start recording.
      */
     start() {
+        this.chunks = [];
         this.engine.addEventListener('dataavailable', this.recAvailableCallback);
-
-        this.engine.start();
+        
+        this.engine.start(60000); // in msec
     }
 
     /**
@@ -84,12 +84,21 @@ class OpusMediaRecorderEngine extends RecordEngine {
 
     /**
      * @private
+     * @param {Object} event - ondataavailable responded with data object.
+     */
+    onData(event) {
+        this.chunks.push(event.data);
+    }
+
+    /**
+     * @private
      * @param {Object} event - Audio data returned by opus-media-recorder.
      */
     onRecordingAvailable(event) {
         this.engine.removeEventListener('dataavailable', this.recAvailableCallback);
 
-        let blob = new Blob([event.data], {type: this.audioType});
+        let blob = new Blob(this.chunks, {type: this.engine.mimeType});
+        this.chunks = [];
 
         this.onStopRecording(blob);
     }

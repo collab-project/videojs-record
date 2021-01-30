@@ -31,6 +31,9 @@
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 
 <script>
+// Polyfill MediaRecorder
+window.MediaRecorder = OpusMediaRecorder;
+
 var options = {
     controls: true,
     bigPlayButton: false,
@@ -65,10 +68,10 @@ var options = {
             debug: true,
             displayMilliseconds: true,
             audioEngine: 'opus-media-recorder',
-            audioWorkerURL: '../../node_modules/opus-media-recorder/encoderWorker.umd.js',
+            audioWorkerURL: 'lib/opus-media-recorder/encoderWorker.umd.js',
             audioWebAssemblyURL: {
-                OggOpusEncoderWasmPath: '../../node_modules/opus-media-recorder/OggOpusEncoder.wasm',
-                WebMOpusEncoderWasmPath: '../../node_modules/opus-media-recorder/WebMOpusEncoder.wasm'
+                OggOpusEncoderWasmPath: 'lib/opus-media-recorder/OggOpusEncoder.wasm',
+                WebMOpusEncoderWasmPath: 'lib/opus-media-recorder/WebMOpusEncoder.wasm'
             }
         }
     }
