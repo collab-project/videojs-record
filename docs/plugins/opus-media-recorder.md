@@ -1,6 +1,6 @@
 # opus-media-recorder plugin
 
-[opus-media-recorder](https://github.com/chris-rudmin/Recorderjs) provides a MediaRecorder API polyfill written in ES6 and WebAssembly. It aims for cross-browser Opus codec support with various audio formats such as Ogg and WebM. opus-media-recorder uses WebAssembly compiled from popular libraries (e.g libopus, libogg, libwebm, and speexdsp) to ensure good performance and standards-compliance.
+[opus-media-recorder](https://github.com/kbumsik/opus-media-recorder) provides a MediaRecorder API polyfill written in ES6 and WebAssembly. It aims for cross-browser Opus codec support with various audio formats such as Ogg and WebM. opus-media-recorder uses WebAssembly compiled from popular libraries (e.g libopus, libogg, libwebm, and speexdsp) to ensure good performance and standards-compliance.
 
 The opus-media-recorder plugin is currently only supported when recording audio-only.
 
@@ -30,7 +30,7 @@ import OpusMediaRecorderEngine from 'videojs-record/dist/plugins/videojs.record.
 ```
 
 And specify the `opus-media-recorder` `audioEngine`, `audioWorkerURL` and
-`audioWebAssemblyURL` options. Use the `pluginLibraryOptions` option to specify optional settings for the opus-media-recorder library.
+`audioWebAssemblyURL` options.
 
 For example:
 
