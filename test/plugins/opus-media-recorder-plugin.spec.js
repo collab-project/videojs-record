@@ -14,8 +14,17 @@ import {OPUSMEDIARECORDER} from '../../src/js/engine/record-engine';
 /** @test {OpusMediaRecorderEngine} */
 describe('plugins.opus-media-recorder-plugin', () => {
     let player;
+    let original = window.MediaRecorder;
+
+    beforeEach(() => {
+        // enable polyfill MediaRecorder
+        window.MediaRecorder = OpusMediaRecorder;
+    });
 
     afterEach(() => {
+        // remove polyfill MediaRecorder
+        window.MediaRecorder = original;
+
         player.dispose();
     });
 
