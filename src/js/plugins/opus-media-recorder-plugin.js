@@ -71,8 +71,9 @@ class OpusMediaRecorderEngine extends RecordEngine {
     start() {
         this.chunks = [];
         this.engine.addEventListener('dataavailable', this.recAvailableCallback);
-        
-        this.engine.start(60000); // in msec
+
+        const timeSliceMs = 60000;
+        this.engine.start(timeSliceMs);
     }
 
     /**
