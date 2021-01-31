@@ -40,4 +40,5 @@ Optional dependencies when using other [video plugins](plugins#video):
 Optional dependencies when using [converter plugins](plugins#converter):
 
 - [ts-ebml](plugins/ts-ebml.md) - Creates seekable WebM files, by injecting metadata like duration.
-- [ffmpeg.js](plugins/ffmpeg.js.md) - Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data.
+- [ffmpeg.wasm](plugins/ffmpeg.wasm.md) - Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data.
+- [ffmpeg.js](plugins/ffmpeg.js.md) - Deprecated FFmpeg plugin.

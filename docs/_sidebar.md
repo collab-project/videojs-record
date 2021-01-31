@@ -34,6 +34,7 @@
   - [UmiJS](frameworks/umijs.md)
 
 - Plugins
+  - [ffmpeg.wasm](plugins/ffmpeg.wasm.md)
   - [ffmpeg.js](plugins/ffmpeg.js.md)
   - [ts-ebml](plugins/ts-ebml.md)
   - [webm-wasm](plugins/webm-wasm.md)
