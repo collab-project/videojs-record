@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   <title>ffmpeg.wasm video-only example - Record Plugin for Video.js</title>
 
-  <link href="../../node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
-  <link href="../../dist/css/videojs.record.css" rel="stylesheet">
-  <link href="../assets/css/examples.css" rel="stylesheet">
+  <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
+  <link href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css" rel="stylesheet">
+  <link href="assets/examples.css" rel="stylesheet">
 
-  <script src="../../node_modules/video.js/dist/video.min.js"></script>
-  <script src="../../node_modules/recordrtc/RecordRTC.js"></script>
-  <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
-  <script src="../../node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
+  <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
+  <script src="//unpkg.com/recordrtc/RecordRTC.js"></script>
+  <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
+  <script src="lib/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
 
-  <script src="../../dist/videojs.record.js"></script>
-  <script src="../../dist/plugins/videojs.record.ffmpeg-wasm.js"></script>
+  <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
+  <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.js"></script>
 
-  <script src="../browser-workarounds.js"></script>
+  <script src="browser-workarounds.js"></script>
 
   <style>
   /* change player background color */
@@ -30,7 +30,6 @@
 <video id="myVideo" playsinline class="video-js vjs-default-skin"></video>
 
 <script>
-/* eslint-disable */
 var options = {
     controls: true,
     width: 320,
@@ -45,10 +44,10 @@ var options = {
             audio: false,
             video: true,
             maxLength: 20,
+            displayMilliseconds: true,
             debug: true,
-            displayMilliseconds: false,
             convertEngine: 'ffmpeg.wasm',
-            convertWorkerURL: '../../node_modules/@ffmpeg/core/dist/ffmpeg-core.js',
+            convertWorkerURL: 'lib/@ffmpeg/core/dist/ffmpeg-core.js',
             // convert recorded data to MP4 (and copy over audio data without encoding)
             convertOptions: ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
             // specify output mime-type
@@ -59,7 +58,7 @@ var options = {
     }
 };
 
-// apply some workarounds for opera browser
+// apply some workarounds for certain browsers
 applyVideoWorkaround();
 
 var player = videojs('myVideo', options, function() {
@@ -72,6 +71,7 @@ var player = videojs('myVideo', options, function() {
 player.on('deviceError', function() {
     console.log('device error:', player.deviceErrorCode);
 });
+
 player.on('error', function(element, error) {
     console.error(error);
 });
@@ -79,11 +79,6 @@ player.on('error', function(element, error) {
 // user clicked the record button and started recording
 player.on('startRecord', function() {
     console.log('started recording!');
-});
-
-// converter started processing
-player.on('startConvert', function() {
-    console.log('started converting!');
 });
 
 // user completed recording and stream is available
