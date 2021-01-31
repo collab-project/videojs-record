@@ -19,6 +19,12 @@ Install the library:
 npm install --save @ffmpeg/ffmpeg @ffmpeg/core
 ```
 
+Include the opus-recorder script and place it before any other scripts:
+
+```html
+<script src="@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
+```
+
 Import the plugin:
 
 ```javascript
