@@ -23,8 +23,8 @@ let options = {
             audio: false,
             video: {
                 // video media constraints: set resolution of camera
-                width: 640,
-                height: 480
+                width: { min: 640, ideal: 640, max: 1280 },
+                height: { min: 480, ideal: 480, max: 920 }
             },
             // dimensions of captured video frames
             frameWidth: 640,
