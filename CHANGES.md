@@ -6,6 +6,7 @@
   audio/video/image file formats (#522)
 - New opus-media-recorder plugin: provides cross-browser Opus codec
   support for various audio formats such as Ogg and WebM (#355)
+- Add support for downloading converted data using `saveAs` (#506)
 - ffmpeg.js plugin is deprecated; use new ffmpeg.wasm plugin instead
 - Bump required version for videojs-wavesurfer (3.4.0 or newer)
 

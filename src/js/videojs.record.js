@@ -1304,20 +1304,61 @@ class Record extends Plugin {
     }
 
     /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
+     * Show save as dialog in browser so the user can store the recorded or
+     * converted media locally.
+     *
+     * @param {Object} name - Object with names for the particular blob(s)
+     *     you want to save. File extensions are added automatically. For
+     *     example: {'video': 'name-of-video-file'}. Supported keys are
+     *     'audio', 'video' and 'gif'.
+     * @param {String} type - Type of media to save. Legal values are 'record'
+     *     (default) and 'convert'.
+     * @example
+     * // save recorded video file as 'foo.webm'
+     * player.record().saveAs({'video': 'foo'});
+     *
+     * // save converted video file as 'bar.mp4'
+     * player.record().saveAs({'video': 'bar'}, 'convert');
+     * @returns {void}
+     */
+    saveAs(name, type = 'record') {
+        let fileName = name[Object.keys(name)[0]];
+
+        // download file
+        if (type === 'record') {
+            downloadBlob(fileName, this.recordedData);
+        } else if (type === 'convert') {
+            downloadBlob(fileName, this.recordedData);
+        }
+
+    }
+
+    /**
+     * Show save as dialog in browser so the user can store the media
+     * locally (e.g. `player.recordedData` or `player.convertedData`) .
      *
      * @param {object} name - Object with one or more names for the particular
      *     blob(s) you want to save. File extensions are added automatically.
      *     For example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
+     * @param {String} type - Type of media to save. Legal values are 'record'
+     *     (default) and 'convert'.
      * @example
      * // save video file as 'foo.webm'
      * player.record().saveAs({'video': 'foo'});
+     *
+     * // save converted video file as 'bar.mp4'
+     * player.record().saveAs({'video': 'bar'}, 'convert');
      */
-    saveAs(name) {
-        if (this.engine && name !== undefined) {
-            this.engine.saveAs(name);
+    saveAs(name, type = 'record') {
+        if (type === 'record') {
+            if (this.engine && name !== undefined) {
+                this.engine.saveAs(name);
+            }
+        } else if (type === 'convert') {
+            if (this.converter && name !== undefined) {
+                this.converter.saveAs(name);
+            }
         }
     }
 

@@ -59,6 +59,16 @@ player.on('finishConvert', function() {
 });
 ```
 
+If you need to show a 'Save as' browser dialog where the user can download
+the converted data, pass `'convert'` to the `saveAs` method:
+
+```javascript
+player.on('finishConvert', function() {
+    // show save as dialog
+    player.record().saveAs({'video': 'my-video-file-name.mp4'}, 'convert');
+});
+```
+
 ## Timestamps
 
 It's also possible to get data during recording with specific time-intervals. This could
