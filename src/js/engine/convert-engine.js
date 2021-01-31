@@ -5,7 +5,7 @@
 
 import videojs from 'video.js';
 
-import {blobToArrayBuffer, addFileInfo} from '../utils/file-util';
+import {blobToArrayBuffer, addFileInfo, downloadBlob} from '../utils/file-util';
 
 const Component = videojs.getComponent('Component');
 
@@ -69,6 +69,22 @@ class ConvertEngine extends Component {
      */
     addFileInfo(fileObj, now) {
         addFileInfo(fileObj, now);
+    }
+
+    /**
+     * Show save as dialog in browser so the user can store the converted
+     * media locally.
+     *
+     * @param {Object} name - Object with names for the particular blob(s)
+     *     you want to save. File extensions are added automatically. For
+     *     example: {'video': 'name-of-video-file'}. Supported keys are
+     *     'audio', 'video' and 'gif'.
+     */
+    saveAs(name) {
+        let fileName = name[Object.keys(name)[0]];
+
+        // download converted file
+        downloadBlob(fileName, this.player().convertedData);
     }
 }
 
