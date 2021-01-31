@@ -9,7 +9,7 @@ import {Player, mergeOptions} from 'video.js';
 import adapter from 'webrtc-adapter';
 
 import {LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, OPUSMEDIARECORDER} from '../src/js/engine/record-engine';
-import {TSEBML, FFMPEGJS} from '../src/js/engine/convert-engine';
+import {TSEBML, FFMPEGJS, FFMPEGWASM} from '../src/js/engine/convert-engine';
 
 const TestHelpers = {
     TEST_OGG: '/base/test/support/audio.ogg',
@@ -236,6 +236,13 @@ const TestHelpers = {
                 recordPluginOptions.convertWorkerURL = '/base/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js';
                 recordPluginOptions.convertOptions = ['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2'];
                 recordPluginOptions.pluginLibraryOptions = {outputType: 'audio/mpeg'};
+                break;
+
+            case FFMPEGWASM:
+                recordPluginOptions.convertEngine = FFMPEGWASM;
+                recordPluginOptions.convertWorkerURL = '/base/node_modules/@ffmpeg/core/dist/ffmpeg-core.js';
+                recordPluginOptions.convertOptions = ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'];
+                recordPluginOptions.pluginLibraryOptions = {outputType: 'video/mp4'};
                 break;
 
             default:

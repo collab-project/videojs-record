@@ -10,6 +10,8 @@ const ConvertEngine = videojs.getComponent('ConvertEngine');
 /**
  * Converter engine using the ffmpeg.js library.
  *
+ * Deprecated. Use the ffmpeg.wasm plugin instead.
+ *
  * @class
  * @augments videojs.ConvertEngine
  */
