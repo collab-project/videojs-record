@@ -58,28 +58,41 @@ class FFmpegWasmEngine extends ConvertEngine {
      * @param {Blob} data - Recorded data that needs to be converted.
      */
     async convert(data) {
-        const {createFFmpeg, fetchFile} = FFmpeg;
+        // set output mime type
+        if (this.pluginLibraryOptions.outputType === undefined) {
+            throw new Error('no outputType specified!');
+        }
+        this.outputType = this.pluginLibraryOptions.outputType;
+
+        const {version, createFFmpeg, fetchFile} = FFmpeg;
         const ffmpeg = createFFmpeg({
             corePath: this.convertWorkerURL,
             log: this.debug
         });
-        const name = "foo";
-
         // save timestamp
         const timestamp = new Date();
         timestamp.setTime(data.lastModified);
+
+        // use temporary filenames
+        const tempInputName = 'input_' + timestamp.getTime();
+        const tempOutputName = 'output_' + timestamp.getTime();
+
+        // add ffmpeg options
+        let opts = ['-i', tempInputName];
+        opts = opts.concat(this.convertOptions);
+        opts.push(tempOutputName);
 
         // notify listeners
         this.player().trigger('startConvert');
 
         // load and convert blob
         await ffmpeg.load();
-        ffmpeg.FS('writeFile', name, await fetchFile(data));
-        await ffmpeg.run('-i', name, 'output.mp4');
-        const output = ffmpeg.FS('readFile', 'output.mp4');
+        ffmpeg.FS('writeFile', tempInputName, await fetchFile(data));
+        await ffmpeg.run(...opts);
+        const output = ffmpeg.FS('readFile', tempOutputName);
 
         // create new blob
-        let result = new Blob([output.buffer], {type: 'video/mp4'});
+        let result = new Blob([output.buffer], {type: this.outputType});
 
         // add existing file info
         this.addFileInfo(result, timestamp);

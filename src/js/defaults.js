@@ -131,7 +131,7 @@ const pluginDefaultOptions = {
     // Enable keyboard hotkeys.
     hotKeys: false,
     // Use this object to specify additional settings for the library used by the
-    // plugin (only used in opus-recorder and vmsg plugins).
+    // plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).
     pluginLibraryOptions: {}
 };
 
