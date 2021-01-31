@@ -1,5 +1,7 @@
 # ffmpeg.js plugin
 
+Note: this plugin is deprecated, use the [ffmpeg.wasm](ffmpeg.wasm.md) plugin instead.
+
 [FFmpeg](https://ffmpeg.org) is the Swiss-army knife of media transcoding. This plugin allows
 you to run FFmpeg in the browser and perform on-the-fly transcoding of recorded data.
 

@@ -56,6 +56,16 @@ module.exports = {
             console.log(colors.green(' [examples] wasm mime-type handler ready'));
             console.log('');
 
+            // ========================================================
+            // use proper headers for SharedArrayBuffer on Firefox
+            // see https://github.com/ffmpegwasm/ffmpeg.wasm/issues/102
+            // ========================================================
+            app.use((req, res, next) => {
+                res.header('Cross-Origin-Opener-Policy', 'same-origin');
+                res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+                next();
+            });
+
             // =============================================
             // file upload handler for simple upload example
             // =============================================
