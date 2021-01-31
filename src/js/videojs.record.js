@@ -1322,15 +1322,15 @@ class Record extends Plugin {
      * @returns {void}
      */
     saveAs(name, type = 'record') {
-        let fileName = name[Object.keys(name)[0]];
-
-        // download file
         if (type === 'record') {
-            downloadBlob(fileName, this.recordedData);
+            if (this.engine && name !== undefined) {
+                this.engine.saveAs(name);
+            }
         } else if (type === 'convert') {
-            downloadBlob(fileName, this.recordedData);
+            if (this.converter && name !== undefined) {
+                this.converter.saveAs(name);
+            }
         }
-
     }
 
     /**
