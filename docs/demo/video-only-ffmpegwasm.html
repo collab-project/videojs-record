@@ -11,7 +11,7 @@
   <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
   <script src="//unpkg.com/recordrtc/RecordRTC.js"></script>
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
-  <script src="lib/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
+  <script src="//unpkg.com/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
 
   <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
   <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.js"></script>
@@ -47,7 +47,7 @@ var options = {
             displayMilliseconds: true,
             debug: true,
             convertEngine: 'ffmpeg.wasm',
-            convertWorkerURL: 'lib/@ffmpeg/core/dist/ffmpeg-core.js',
+            convertWorkerURL: '//unpkg.com/@ffmpeg/core/dist/ffmpeg-core.js',
             // convert recorded data to MP4 (and copy over audio data without encoding)
             convertOptions: ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
             // specify output mime-type
