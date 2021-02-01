@@ -8,7 +8,7 @@ import videojs from 'video.js';
 const ConvertEngine = videojs.getComponent('ConvertEngine');
 
 // see https://github.com/legokichi/ts-ebml/issues/25
-import { Buffer } from 'buffer';
+import {Buffer} from 'buffer';
 window.Buffer = Buffer;
 
 import {Decoder, Encoder, tools, Reader} from 'ts-ebml';
