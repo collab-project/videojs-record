@@ -31,6 +31,7 @@ let cssBannerPlugin = new webpack.BannerPlugin({
 });
 
 module.exports = {
+    devtool: false,
     context: rootDir,
     output: {
         libraryTarget: 'umd',
