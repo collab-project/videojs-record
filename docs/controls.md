@@ -22,8 +22,8 @@ let options = {
             audio: false,
             video: true,
             maxLength: 5,
-            displayMilliseconds: true,
-            debug: true
+            debug: true,
+            displayMilliseconds: true
         }
     }
 };
@@ -55,7 +55,6 @@ let options = {
             audio: false,
             video: true,
             maxLength: 5,
-            displayMilliseconds: true,
             formatTime: (seconds, guide) => `bar:${seconds}:${guide}`,
             debug: true
         }
