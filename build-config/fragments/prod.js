@@ -22,12 +22,15 @@ module.exports = {
                 },
                 extractComments: false
             }),
-            new CssMinimizerPlugin()
+            new CssMinimizerPlugin({
+                test: 'css/videojs.record.min.css'
+            })
         ]
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'css/[name].min.css'
+            filename: 'css/videojs.record.min.css',
+            chunkFilename: 'css/[id].css'
         })
     ]
 };

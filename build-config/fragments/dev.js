@@ -67,7 +67,7 @@ module.exports = {
             // use proper headers for SharedArrayBuffer on Firefox
             // see https://github.com/ffmpegwasm/ffmpeg.wasm/issues/102
             // ========================================================
-            app.use((req, res, next) => {
+            args.app.use((req, res, next) => {
                 res.header('Cross-Origin-Opener-Policy', 'same-origin');
                 res.header('Cross-Origin-Embedder-Policy', 'require-corp');
                 next();
@@ -121,7 +121,8 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'css/[name].css'
+            filename: 'css/videojs.record.css',
+            chunkFilename: 'css/[id].css'
         })
     ]
 };

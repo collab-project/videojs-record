@@ -131,6 +131,7 @@
     "opus-recorder": ">=8.0.3",
     "parse-ms": "^2.1.0",
     "recorderjs": "git+https://github.com/mattdiamond/Recorderjs.git",
+    "remove-files-webpack-plugin": "^1.4.4",
     "rimraf": "^3.0.2",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
