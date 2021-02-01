@@ -24,6 +24,7 @@ Optional dependencies when using other [audio plugins](plugins#audio) (note that
 
 - [vmsg](plugins/vmsg.md) - Converts PCM audio data to compressed MP3 audio. Uses WebAssembly version of LAME encoder.
 - [opus-recorder](plugins/opus-recorder.md) - Converts the output of Web Audio API nodes as Opus and exports it into an Ogg container.
+- [opus-media-recorder](plugins/opus-media-recorder.md) - Converts PCM audio data with the Opus codec, providing support for various audio formats such as Ogg and WebM.
 - [libvorbis.js](plugins/libvorbis.js.md) - Converts PCM audio data to compressed Ogg Vorbis audio, resulting a smaller audio files with similar quality.
 - [lamejs](plugins/lamejs.md) - Converts PCM audio data to compressed MP3 audio. Written in JavaScript so not very fast.
 - [recorder.js](plugins/recorder.js.md) - A plugin for recording the PCM output of Web Audio API nodes (unmaintained and not recommended).
@@ -39,4 +40,5 @@ Optional dependencies when using other [video plugins](plugins#video):
 Optional dependencies when using [converter plugins](plugins#converter):
 
 - [ts-ebml](plugins/ts-ebml.md) - Creates seekable WebM files, by injecting metadata like duration.
-- [ffmpeg.js](plugins/ffmpeg.js.md) - Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data.
+- [ffmpeg.wasm](plugins/ffmpeg.wasm.md) - Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data.
+- [ffmpeg.js](plugins/ffmpeg.js.md) - Deprecated FFmpeg plugin.

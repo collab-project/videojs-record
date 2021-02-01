@@ -71,7 +71,7 @@ const firefoxFlags = {
 module.exports = function(config) {
     let configuration = {
         basePath: '',
-        frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers'],
+        frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers', 'webpack'],
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,
@@ -124,8 +124,9 @@ module.exports = function(config) {
             {pattern: 'node_modules/opus-recorder/dist/*Worker.min.js', included: false, served: true},
             {pattern: 'node_modules/opus-recorder/dist/*.wasm', included: false, served: true, type: 'wasm'},
             'node_modules/opus-recorder/dist/recorder.min.js',
-            // gifshot
-            'node_modules/gifshot/dist/gifshot.min.js',
+            // opus-media-recorder
+            {pattern: 'node_modules/opus-media-recorder/encoderWorker.umd.js', included: false, served: true},
+            {pattern: 'node_modules/opus-media-recorder/*.wasm', included: false, served: true, type: 'wasm'},
             // vmsg
             {pattern: 'node_modules/vmsg/*.wasm', included: false, served: true, type: 'wasm'},
             // web streams API polyfill to support Firefox (for webm-wasm)
@@ -135,6 +136,11 @@ module.exports = function(config) {
             {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
             // ffmpeg.js
             {pattern: 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js', included: false, served: true},
+            // ffmpeg.wasm
+            {pattern: 'node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js', included: false, served: true},
+            {pattern: 'node_modules/@ffmpeg/core/dist/ffmpeg-core.js', included: false, served: true},
+            // gifshot
+            'node_modules/gifshot/dist/gifshot.min.js',
 
             // -------------------------------------------
             // specs

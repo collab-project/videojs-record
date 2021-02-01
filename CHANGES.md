@@ -1,7 +1,6 @@
 # videojs-record changelog
 
-x.x.x - unreleased
-------------------
+## x.x.x - unreleased
 
 - New gifshot plugin: improved animated GIF support (#291)
 
@@ -9,6 +8,20 @@ x.x.x - unreleased
 
 - Support for animated GIF recording using RecordRTC was removed and replaced
   with a new plugin using the Gifshot library (#291)
+
+
+## 4.2.0 - unreleased
+
+- New ffmpeg.wasm converter plugin: convert recorded data into other
+  audio/video/image file formats (#522)
+- New opus-media-recorder plugin: provides cross-browser Opus codec
+  support for various audio formats such as Ogg and WebM (#355)
+- ffmpeg.js plugin is deprecated; use new ffmpeg.wasm plugin instead (#522)
+- Add support for downloading converted data using `saveAs` (#506)
+- Add `formatTime` option and `setFormatTime(impl)` for replacing the default
+  `formatTime` implementation (#483)
+- Build using Webpack 5 (#514)
+- Bump required version for videojs-wavesurfer (3.5.0 or newer)
 
 
 ## 4.1.1 - 2020/11/01

@@ -25,6 +25,7 @@ describe('pluginDefaultOptions', () => {
             displayMilliseconds: false,
             frameWidth: 320,
             frameHeight: 240,
+            formatTime: undefined,
             debug: false,
             pip: false,
             autoMuteDevice: false,

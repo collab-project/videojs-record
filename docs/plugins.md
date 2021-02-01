@@ -9,7 +9,8 @@ following plugins:
 
 | Plugin | Description |
 | --- | --- |
-| [ffmpeg.js](plugins/ffmpeg.js.md) | Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data. |
+| [ffmpeg.wasm](plugins/ffmpeg.wasm.md) | Run [FFmpeg](https://ffmpeg.org) in the browser and perform on-the-fly transcoding of recorded data. |
+| [ffmpeg.js](plugins/ffmpeg.js.md) | Deprecated FFmpeg plugin. |
 | [ts-ebml](plugins/ts-ebml.md) | Creates seekable WebM files, by injecting metadata like duration. |
 
 ## Video
@@ -30,6 +31,7 @@ for other audio libraries:
 | --- | --- |
 | [vmsg](plugins/vmsg.md) | Record MP3 audio using a WebAssembly version of LAME. |
 | [opus-recorder](plugins/opus-recorder.md) | Record Opus audio and export it into an Ogg container. |
+| [opus-media-recorder](plugins/opus-media-recorder.md) | Provides cross-browser Opus codec support with various audio formats such as Ogg and WebM. |
 | [libvorbis.js](plugins/libvorbis.js.md) | Record Ogg Vorbis audio, resulting a smaller audio files with similar quality. |
 | [lamejs](plugins/lamejs.md) | Record MP3 audio. Written in JavaScript so not very fast (use [vmsg](plugins/vmsg.md) plugin instead). |
 | [recorder.js](plugins/recorder.js.md) | Record PCM audio (library unmaintained and not recommended). |

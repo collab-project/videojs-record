@@ -10,12 +10,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const rootDir = path.resolve(__dirname, '..', '..');
 
-// copy fonts to dist
+// copy fonts to dist directory
 let copyFontsPlugin = new CopyWebpackPlugin({
     patterns: [{
         from: 'src/fonts/*',
-        to: 'fonts',
-        flatten: true,
+        to: 'fonts/[name].[ext]',
         globOptions: {
             dot: false,
             ignore: ['**/*.json', '**/*.md']
@@ -25,16 +24,16 @@ let copyFontsPlugin = new CopyWebpackPlugin({
 
 module.exports = {
     entry: {
-        'videojs.record': [
-            // JS
-            path.join(rootDir, 'src', 'js', 'videojs.record.js'),
-            // SCSS
-            path.join(rootDir, 'src', 'css', 'videojs.record.scss')
-        ]
+        code: {
+            import: path.join(rootDir, 'src', 'js', 'videojs.record.js'),
+            filename: 'videojs.record.js'
+        },
+        style: {
+            import: path.join(rootDir, 'src', 'css', 'videojs.record.scss')
+        }
     },
     output: {
         path: path.join(rootDir, 'dist'),
-        filename: '[name].js',
         library: 'VideojsRecord'
     },
     plugins: [

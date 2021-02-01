@@ -19,6 +19,7 @@ const LIBVORBISJS = 'libvorbis.js';
 const RECORDERJS = 'recorder.js';
 const LAMEJS = 'lamejs';
 const OPUSRECORDER = 'opus-recorder';
+const OPUSMEDIARECORDER = 'opus-media-recorder';
 const VMSG = 'vmsg';
 // animation
 const GIFSHOT = 'gifshot';
@@ -26,7 +27,9 @@ const GIFSHOT = 'gifshot';
 const WEBMWASM = 'webm-wasm';
 
 // all audio plugins
-const AUDIO_PLUGINS = [LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG];
+const AUDIO_PLUGINS = [
+    LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, OPUSMEDIARECORDER, VMSG
+];
 
 // all video plugins
 const VIDEO_PLUGINS = [WEBMWASM];
@@ -104,15 +107,15 @@ class RecordEngine extends Component {
     }
 
     /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
+     * Show save as dialog in browser so the user can store the recorded
+     * media locally.
      *
      * @param {Object} name - Object with names for the particular blob(s)
      *     you want to save. File extensions are added automatically. For
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
      * @example
-     * // save video file as 'foo.webm'
+     * // save recorded video file as 'foo.webm'
      * player.record().saveAs({'video': 'foo'});
      * @returns {void}
      */
@@ -129,6 +132,7 @@ videojs.RecordEngine = RecordEngine;
 Component.registerComponent('RecordEngine', RecordEngine);
 
 export {
-    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, ANIMATION_PLUGINS,
-    RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, VMSG, WEBMWASM, GIFSHOT
+    RecordEngine, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS,
+    ANIMATION_PLUGINS, RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS,
+    OPUSRECORDER, OPUSMEDIARECORDER, VMSG, WEBMWASM, GIFSHOT
 };

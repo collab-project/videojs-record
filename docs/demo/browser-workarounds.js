@@ -5,11 +5,18 @@ var isEdge = /Edge/.test(navigator.userAgent);
 
 function applyAudioWorkaround() {
     if (isSafari || isEdge) {
-        // see https://github.com/collab-project/videojs-record/issues/295
-        options.plugins.record.audioRecorderType = StereoAudioRecorder;
-        options.plugins.record.audioSampleRate = 44100;
-        options.plugins.record.audioBufferSize = 4096;
-        options.plugins.record.audioChannels = 2;
+        if (isSafari && window.MediaRecorder !== undefined) {
+            // this version of Safari has MediaRecorder
+            // but use the only supported mime type
+            options.plugins.record.audioMimeType = 'audio/mp4';
+        } else {
+            // support recording in safari 11/12
+            // see https://github.com/collab-project/videojs-record/issues/295
+            options.plugins.record.audioRecorderType = StereoAudioRecorder;
+            options.plugins.record.audioSampleRate = 44100;
+            options.plugins.record.audioBufferSize = 4096;
+            options.plugins.record.audioChannels = 2;
+        }
     }
 }
 
