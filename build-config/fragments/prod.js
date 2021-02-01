@@ -6,6 +6,7 @@
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 module.exports = {
     mode: 'production',
@@ -22,12 +23,11 @@ module.exports = {
                 },
                 extractComments: false
             }),
-            new CssMinimizerPlugin({
-                test: 'css/videojs.record.min.css'
-            })
+            new CssMinimizerPlugin()
         ]
     },
     plugins: [
+        new RemoveEmptyScriptsPlugin(),
         new MiniCssExtractPlugin({
             filename: 'css/videojs.record.min.css',
             chunkFilename: 'css/[id].css'

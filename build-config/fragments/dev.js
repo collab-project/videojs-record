@@ -9,6 +9,7 @@ const fs = require('fs-extra');
 const colors = require('colors/safe');
 const formidable = require('formidable');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 const contentBase = path.resolve(__dirname, '..', '..');
 
@@ -120,6 +121,7 @@ module.exports = {
         }
     },
     plugins: [
+        new RemoveEmptyScriptsPlugin(),
         new MiniCssExtractPlugin({
             filename: 'css/videojs.record.css',
             chunkFilename: 'css/[id].css'

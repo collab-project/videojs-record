@@ -7,7 +7,6 @@ const path = require('path');
 const webpack = require('webpack');
 const banner = require('./banner');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const RemovePlugin = require('remove-files-webpack-plugin');
 
 const rootDir = path.resolve(__dirname, '..', '..');
 
@@ -30,8 +29,7 @@ module.exports = {
             filename: 'videojs.record.js'
         },
         style: {
-            import: path.join(rootDir, 'src', 'css', 'videojs.record.scss'),
-            filename: 'videojs.record.css'
+            import: path.join(rootDir, 'src', 'css', 'videojs.record.scss')
         }
     },
     output: {
@@ -40,15 +38,6 @@ module.exports = {
     },
     plugins: [
         banner.libBanner,
-        copyFontsPlugin,
-        new RemovePlugin({
-            after: {
-                include: [
-                    path.join(rootDir, 'dist', 'videojs.record.css')
-                ],
-                logError: true,
-                log: false
-            }
-        })
+        copyFontsPlugin
     ]
 };
