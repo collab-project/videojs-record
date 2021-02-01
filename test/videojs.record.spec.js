@@ -785,6 +785,7 @@ describe('Record', () => {
         player = TestHelpers.makeAudioOnlyPlayer({
             plugins: {
                 record: {
+                    maxLength: 7,
                     formatTime: formatFunc
                 }
             }
@@ -792,7 +793,7 @@ describe('Record', () => {
 
         player.one(Event.DEVICE_READY, () => {
             expect(player.controlBar.currentTimeDisplay.formattedTime_).toEqual('foo:0:0');
-            expect(player.controlBar.durationDisplay.formattedTime_.substring(0, 5)).toEqual('foo:0');
+            expect(player.controlBar.durationDisplay.formattedTime_.substring(0, 5)).toEqual('foo:7');
             done();
         });
 
