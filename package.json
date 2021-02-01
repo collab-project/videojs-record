@@ -91,6 +91,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "browserslist": "^4.16.3",
     "buddy.js": "^0.9.3",
+    "buffer": "^6.0.3",
     "colors": "^1.4.0",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^5.0.1",

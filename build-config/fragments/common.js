@@ -43,6 +43,13 @@ module.exports = {
     stats: {
         colors: true
     },
+    resolve: {
+        // webpack < 5 used to include polyfills for node.js core modules by default.
+        // This is no longer the case; enable required polyfills here.
+        fallback: {
+            'buffer': require.resolve('buffer/')
+        }
+    },
     // specify dependencies for the library that are not resolved by webpack,
     // but become dependencies of the output: they are imported from the
     // environment during runtime and never directly included in the
