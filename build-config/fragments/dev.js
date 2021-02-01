@@ -9,34 +9,42 @@ const fs = require('fs-extra');
 const colors = require('colors/safe');
 const formidable = require('formidable');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 const contentBase = path.resolve(__dirname, '..', '..');
 
 module.exports = {
     mode: 'development',
     devServer: {
-        contentBase: [contentBase],
-        publicPath: '/',
-        watchContentBase: true,
-        watchOptions: {
-            ignored: [
-                /.build_cache/,
-                /.chrome/,
-                /docs/,
-                /node_modules/,
-                /bower_components/,
-                /coverage/,
-                /build-config/,
-                /test/,
-                /vendor/
-            ]
-        },
+        port: 8080,
+        static: [
+            {
+                directory: contentBase,
+                staticOptions: {},
+                publicPath: '/',
+                // serveIndex: {} (options for the `serveIndex` option you can find https://github.com/expressjs/serve-index)
+                serveIndex: true,
+                watch: {
+                    ignored: [
+                        /.build_cache/,
+                        /.chrome/,
+                        /docs/,
+                        /node_modules/,
+                        /bower_components/,
+                        /coverage/,
+                        /build-config/,
+                        /test/,
+                        /vendor/
+                    ]
+                }
+            }
+        ],
         // webpack-dev-server middleware
-        before(app) {
+        onBeforeSetupMiddleware(args) {
             // =============================================
             // use proper mime-type for wasm files
             // =============================================
-            app.get('*.wasm', (req, res, next) => {
+            args.app.get('*.wasm', (req, res, next) => {
                 let options = {
                     root: contentBase,
                     dotfiles: 'deny',
@@ -60,7 +68,7 @@ module.exports = {
             // use proper headers for SharedArrayBuffer on Firefox
             // see https://github.com/ffmpegwasm/ffmpeg.wasm/issues/102
             // ========================================================
-            app.use((req, res, next) => {
+            args.app.use((req, res, next) => {
                 res.header('Cross-Origin-Opener-Policy', 'same-origin');
                 res.header('Cross-Origin-Embedder-Policy', 'require-corp');
                 next();
@@ -75,7 +83,7 @@ module.exports = {
             fs.ensureDirSync(targetDir);
 
             // file upload handler for examples
-            app.post('/upload', (req, res) => {
+            args.app.post('/upload', (req, res) => {
                 // save uploaded file
                 let form = new formidable.IncomingForm();
                 form.uploadDir = targetDir;
@@ -113,8 +121,10 @@ module.exports = {
         }
     },
     plugins: [
+        new RemoveEmptyScriptsPlugin(),
         new MiniCssExtractPlugin({
-            filename: 'css/[name].css'
+            filename: 'css/videojs.record.css',
+            chunkFilename: 'css/[id].css'
         })
     ]
 };

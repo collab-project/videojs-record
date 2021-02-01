@@ -70,7 +70,7 @@ const firefoxFlags = {
 module.exports = function(config) {
     let configuration = {
         basePath: '',
-        frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers'],
+        frameworks: ['jasmine', 'jasmine-matchers', 'host-environment', 'detectBrowsers', 'webpack'],
         hostname: 'localhost',
         port: 9876,
         logLevel: config.LOG_INFO,

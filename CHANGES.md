@@ -8,6 +8,7 @@
   support for various audio formats such as Ogg and WebM (#355)
 - Add support for downloading converted data using `saveAs` (#506)
 - ffmpeg.js plugin is deprecated; use new ffmpeg.wasm plugin instead
+- Build using Webpack 5 (#514)
 - Bump required version for videojs-wavesurfer (3.4.0 or newer)
 
 
