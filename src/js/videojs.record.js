@@ -66,14 +66,19 @@ class Record extends Plugin {
         // (re)set recorder state
         this.resetState();
 
-        // use custom video.js time format
-        videojs.setFormatTime((seconds, guide) => {
-            return formatTime(seconds, guide, this.displayMilliseconds);
-        });
+        // use custom time format for video.js player
+        if (options.formatTime && typeof options.formatTime === 'function') {
+            // user-supplied formatTime
+            this.setFormatTime(options.formatTime);
+        } else {
+            // plugin's default formatTime
+            this.setFormatTime((seconds, guide) => {
+                return formatTime(seconds, guide, this.displayMilliseconds);
+            });
+        }
 
         // add device button with icon based on type
         let deviceIcon = 'av-perm';
-
         switch (this.getRecordType()) {
             case IMAGE_ONLY:
             case VIDEO_ONLY:
@@ -264,6 +269,9 @@ class Record extends Plugin {
             case AUDIO_ONLY:
                 // reference to videojs-wavesurfer plugin
                 this.surfer = this.player.wavesurfer();
+
+                // use same time format as this plugin
+                this.surfer.setFormatTime(this._formatTime);
                 break;
 
             case IMAGE_ONLY:
@@ -1221,7 +1229,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
+                            this._formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1265,7 +1273,7 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                        formatTime(duration, duration, this.displayMilliseconds);
+                        this._formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1843,6 +1851,25 @@ class Record extends Plugin {
 
         // error if we get here: notify listeners
         this.player.trigger(Event.ERROR, errorMessage);
+    }
+
+    /**
+     * Replaces the default `formatTime` implementation with a custom implementation.
+     *
+     * @param {function} customImplementation - A function which will be used in place
+     *     of the default `formatTime` implementation. Will receive the current time
+     *     in seconds and the guide (in seconds) as arguments.
+     */
+    setFormatTime(customImplementation) {
+        this._formatTime = customImplementation;
+
+        videojs.setFormatTime(this._formatTime);
+
+        // audio-only
+        if (this.surfer) {
+            // use same time format as this plugin
+            this.surfer.setFormatTime(this._formatTime);
+        }
     }
 
     /**
