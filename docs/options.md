@@ -34,7 +34,7 @@ Additional options for this plugin are:
 | `videoRecorderType` | string or function | `'auto'` | Video recorder type to use. This allows you to specify an alternative recorder class, e.g. `WhammyRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. |
 | `videoBitRate` | float | `1200` |  The video bitrate in kbps (only used in webm-wasm plugin). |
 | `videoFrameRate` | float | `30` |  The video frame rate in frames per second (only used in webm-wasm plugin). |
-| `videoWorkerURL` | string | `''` | URL for the video worker, for example: `../node_modules/webm-wasm/dist/webm-worker.js`. Currently only used for webm-wasm plugin. Use an empty string '' to disable (default). |
+| `videoWorkerURL` | string | `''` | URL for the video worker, for example: `../node_modules/webm-wasm/dist/webm-worker.js`. Currently only used for the webm-wasm plugin. Use an empty string '' to disable (default). |
 | `videoWebAssemblyURL` | string | `''` | URL for the video worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the webm-wasm plugin. |
 | `audioEngine` | string | `'recordrtc'` | Audio recording library/plugin to use. Legal values are `recordrtc`, `libvorbis.js`, `vmsg`, `opus-recorder`,  `opus-media-recorder`, `lamejs` and `recorder.js`. |
 | `audioRecorderType` | string or function | `'auto'` | Audio recorder type to use. This allows you to specify an alternative recorder class, e.g. `StereoAudioRecorder`. Defaults to `auto` which let's recordrtc specify the best available recorder type. Currently this setting is only used with the `recordrtc` `audioEngine`. |
@@ -48,8 +48,8 @@ Additional options for this plugin are:
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
-| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml` and `ffmpeg.js`. Use an empty string `''` to disable (default). Inspect the [player.convertedData](recorded-data#convert-data) object for the converted data. |
-| `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.js plugin. Use an empty string '' to disable (default). |
+| `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml`, `ffmpeg.wasm` and `ffmpeg.js`. Use an empty string `''` to disable (default). Inspect the [player.convertedData](recorded-data#convert-data) object for the converted data. |
+| `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.wasm and ffmpeg.js plugins. Use an empty string '' to disable (default). |
 | `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
 | `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](hotkeys.md). Disabled by default. |
-| `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used in the opus-recorder and vmsg plugins. |
+| `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used for the ffmpeg.wasm, ffmpeg.js, opus-recorder and vmsg plugins. |

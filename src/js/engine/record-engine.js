@@ -104,15 +104,15 @@ class RecordEngine extends Component {
     }
 
     /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
+     * Show save as dialog in browser so the user can store the recorded
+     * media locally.
      *
      * @param {Object} name - Object with names for the particular blob(s)
      *     you want to save. File extensions are added automatically. For
      *     example: {'video': 'name-of-video-file'}. Supported keys are
      *     'audio', 'video' and 'gif'.
      * @example
-     * // save video file as 'foo.webm'
+     * // save recorded video file as 'foo.webm'
      * player.record().saveAs({'video': 'foo'});
      * @returns {void}
      */

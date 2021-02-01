@@ -10,6 +10,8 @@ const ConvertEngine = videojs.getComponent('ConvertEngine');
 /**
  * Converter engine using the ffmpeg.js library.
  *
+ * Deprecated. Use the ffmpeg.wasm plugin instead.
+ *
  * @class
  * @augments videojs.ConvertEngine
  */
@@ -46,7 +48,7 @@ class FFmpegjsEngine extends ConvertEngine {
          */
         this.outputType = null;
         /**
-         * Additional configuration options for the opus-recorder library.
+         * Additional configuration options for the ffmpeg.js library.
          *
          * @type {object}
          */

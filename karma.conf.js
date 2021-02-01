@@ -135,6 +135,9 @@ module.exports = function(config) {
             {pattern: 'node_modules/webm-wasm/dist/webm-wasm.wasm', included: false, served: true, type: 'wasm'},
             // ffmpeg.js
             {pattern: 'node_modules/ffmpeg.js/ffmpeg-worker-mp4.js', included: false, served: true},
+            // ffmpeg.wasm
+            {pattern: 'node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js', included: false, served: true},
+            {pattern: 'node_modules/@ffmpeg/core/dist/ffmpeg-core.js', included: false, served: true},
             // gif-recorder: only available on CDN
             'http://cdn.webrtc-experiment.com/gif-recorder.js',
 

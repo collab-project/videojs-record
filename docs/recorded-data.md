@@ -15,7 +15,7 @@ player.on('finishRecord', function() {
 ## Save data
 
 Use the `saveAs` method to show a 'Save as' browser dialog where the user can
-choose the storage location for the recorded data. It accepts a `name` object that
+choose the storage location for the recorded data. It accepts an object that
 contains a mapping between the media type and the filename. For example:
 
 ```javascript
@@ -48,7 +48,7 @@ record: {
 }
 ```
 
-And listen for the `finishConvert` event. For example:
+And listen for the `finishConvert` event:
 
 ```javascript
 // converter ready and stream is available
@@ -56,6 +56,16 @@ player.on('finishConvert', function() {
     // the convertedData object contains the converted data that
     // can be downloaded by the user, stored on server etc.
     console.log('finished converting: ', player.convertedData);
+});
+```
+
+If you need to show a 'Save as' browser dialog where the user can download
+the converted data, pass `'convert'` to the `saveAs` method:
+
+```javascript
+player.on('finishConvert', function() {
+    // show save as dialog
+    player.record().saveAs({'video': 'my-video-file-name.mp4'}, 'convert');
 });
 ```
 

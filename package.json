@@ -74,7 +74,7 @@
   "dependencies": {
     "recordrtc": ">=5.6.1",
     "video.js": ">=7.0.5",
-    "videojs-wavesurfer": ">=3.3.0",
+    "videojs-wavesurfer": ">=3.4.0",
     "webrtc-adapter": ">=7.7.0"
   },
   "devDependencies": {
@@ -82,6 +82,8 @@
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
+    "@ffmpeg/core": "^0.8.5",
+    "@ffmpeg/ffmpeg": "^0.9.7",
     "@mattiasbuelens/web-streams-polyfill": "^0.3.2",
     "add-zero": "^1.0.0",
     "babel-loader": "^8.2.2",
