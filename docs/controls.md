@@ -22,6 +22,7 @@ let options = {
             audio: false,
             video: true,
             maxLength: 5,
+            displayMilliseconds: true,
             debug: true
         }
     }
@@ -41,4 +42,31 @@ For more information, see the video.js [component options](https://github.com/vi
 
 ## Time format
 
+The default time format is `HH:MM` or `MM:SS`. Set the `displayMilliseconds` to `true` to change
+the format to `MM:SS:MMM`.
 
+Use the `formatTime` option if you need more control over the format. For example:
+
+```javascript
+let options = {
+    // ...
+    plugins: {
+        record: {
+            audio: false,
+            video: true,
+            maxLength: 5,
+            displayMilliseconds: true,
+            formatTime: (seconds, guide) => `bar:${seconds}:${guide}`,
+            debug: true
+        }
+    }
+};
+```
+
+Use `setFormatTime(func)` if you want to change the time format during runtime:
+
+```javascript
+player.record().setFormatTime(
+    (seconds, guide) => `bar:${seconds}:${guide}`
+);
+```

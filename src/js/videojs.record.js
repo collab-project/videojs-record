@@ -1864,6 +1864,12 @@ class Record extends Plugin {
         this._formatTime = customImplementation;
 
         videojs.setFormatTime(this._formatTime);
+
+        // audio-only
+        if (this.surfer) {
+            // use same time format as this plugin
+            this.surfer.setFormatTime(this._formatTime);
+        }
     }
 
     /**
