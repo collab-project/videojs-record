@@ -23,6 +23,8 @@ const pluginDefaultOptions = {
     // Boolean indicating if milliseconds should be included,
     // e.g. "00:00:000" vs "00:00".
     displayMilliseconds: false,
+    // Use a custom time format function, for example: (seconds, guide) => `test:${seconds}:${guide}`
+    formatTime: undefined,
     // Width of the recorded video frames.
     frameWidth: 320,
     // Height of the recorded video frames.

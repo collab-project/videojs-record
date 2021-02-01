@@ -777,4 +777,29 @@ describe('Record', () => {
             done();
         });
     });
+
+    /** @test {Record} */
+    it('accepts formatTime option', (done) => {
+        let formatFunc = (seconds, guide) => `foo:${seconds}:${guide}`;
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer({
+            plugins: {
+                record: {
+                    formatTime: formatFunc
+                }
+            }
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            expect(player.controlBar.currentTimeDisplay.formattedTime_).toEqual('foo:0:0');
+            expect(player.controlBar.durationDisplay.formattedTime_.substring(0, 5)).toEqual('foo:0');
+            done();
+        });
+
+        player.one(Event.READY, () => {
+            // start device
+            player.record().getDevice();
+        });
+    });
+
 });
