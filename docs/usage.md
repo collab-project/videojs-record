@@ -88,6 +88,7 @@ let options = {
             audio: false,
             video: true,
             maxLength: 5,
+            displayMilliseconds: true,
             debug: true
         }
     }
