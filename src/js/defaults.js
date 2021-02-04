@@ -11,7 +11,7 @@ const pluginDefaultOptions = {
     audio: false,
     // Include video in the recorded clip.
     video: false,
-    // Animated GIF.
+    // Animated GIF using the gifshot library.
     animation: false,
     // Screen capture.
     screen: false,
@@ -100,6 +100,8 @@ const pluginDefaultOptions = {
     // Enables the audioBufferUpdate event that provides realtime AudioBuffer
     // instances from the input audio device.
     audioBufferUpdate: false,
+    // Options for animated GIFs using the gifshot library.
+    animationOptions: {},
     // Frame rate in frames per second.
     animationFrameRate: 200,
     // Sets quality of color quantization (conversion of images to the

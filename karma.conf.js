@@ -38,6 +38,7 @@ const chromeFlags = [
     '--enable-experimental-web-platform-features',
     '--js-flags=--max-old-space-size=8196'
 ];
+
 //-------------------------------------------
 // Firefox CLI options
 //-------------------------------------------
@@ -138,8 +139,8 @@ module.exports = function(config) {
             // ffmpeg.wasm
             {pattern: 'node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js', included: false, served: true},
             {pattern: 'node_modules/@ffmpeg/core/dist/ffmpeg-core.js', included: false, served: true},
-            // gif-recorder: only available on CDN
-            'http://cdn.webrtc-experiment.com/gif-recorder.js',
+            // gifshot
+            'node_modules/gifshot/dist/gifshot.min.js',
 
             // -------------------------------------------
             // specs
@@ -163,6 +164,7 @@ module.exports = function(config) {
             // do not include tests or libraries
             'src/js/**/*.js': ['coverage']
         },
+        webpack: webpackConfig,
         webpackMiddleware: {
             stats: 'errors-only'
         },
@@ -245,7 +247,6 @@ module.exports = function(config) {
                 { type: 'lcov', subdir: 'lcov' }
             ]
         },
-        webpack: webpackConfig,
         customLaunchers: {
             Chrome_dev: {
                 base: 'Chrome',

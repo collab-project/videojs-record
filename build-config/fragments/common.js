@@ -72,6 +72,13 @@ module.exports = {
             commonjs2: 'recordrtc',
             amd: 'recordrtc',
             root: 'RecordRTC' // indicates global variable
+        },
+        // plugins
+        'gifshot': {
+            commonjs: 'gifshot',
+            commonjs2: 'gifshot',
+            amd: 'gifshot',
+            root: 'gifshot' // indicates global variable
         }
     },
     module: {

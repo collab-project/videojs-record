@@ -46,6 +46,7 @@ describe('pluginDefaultOptions', () => {
             audioWorkerURL: '',
             audioWebAssemblyURL: '',
             audioBufferUpdate: false,
+            animationOptions: {},
             animationFrameRate: 200,
             animationQuality: 10,
             imageOutputType: 'dataURL',

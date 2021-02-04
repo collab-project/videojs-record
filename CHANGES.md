@@ -1,5 +1,15 @@
 # videojs-record changelog
 
+## x.x.x - unreleased
+
+- New gifshot plugin: improved animated GIF support (#291)
+
+**Backwards-incompatible changes** (when upgrading from a previous version):
+
+- Support for animated GIF recording using RecordRTC was removed and replaced
+  with a new plugin using the Gifshot library (#291)
+
+
 ## 4.2.0 - unreleased
 
 - New ffmpeg.wasm converter plugin: convert recorded data into other

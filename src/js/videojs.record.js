@@ -23,7 +23,7 @@ import setSrcObject from './utils/browser-shim';
 import compareVersion from './utils/compare-version';
 import {detectBrowser} from './utils/detect-browser';
 
-import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
+import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine, getAnimationEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
 
 const Plugin = videojs.getPlugin('plugin');
@@ -222,8 +222,7 @@ class Record extends Plugin {
         this.imageOutputQuality = recordOptions.imageOutputQuality;
 
         // animation settings
-        this.animationFrameRate = recordOptions.animationFrameRate;
-        this.animationQuality = recordOptions.animationQuality;
+        this.animationOptions = recordOptions.animationOptions;
     }
 
     /**
@@ -629,7 +628,9 @@ class Record extends Plugin {
         // setup recording engine
         if (this.getRecordType() !== IMAGE_ONLY) {
             // currently record plugins are only supported in audio-only mode
-            if (this.getRecordType() !== AUDIO_ONLY && isAudioPluginActive(this.audioEngine)) {
+            if (this.getRecordType() !== AUDIO_ONLY &&
+                isAudioPluginActive(this.audioEngine)
+            ) {
                 throw new Error('Currently ' + this.audioEngine +
                     ' is only supported in audio-only mode.');
             }
@@ -641,6 +642,12 @@ class Record extends Plugin {
                     // get audio plugin engine class (or default recordrtc engine)
                     EngineClass = getAudioEngine(this.audioEngine);
                     engineType = this.audioEngine;
+                    break;
+
+                case ANIMATION:
+                    // get animation plugin engine class
+                    EngineClass = getAnimationEngine();
+                    engineType = ANIMATION;
                     break;
 
                 default:
@@ -693,8 +700,7 @@ class Record extends Plugin {
             };
 
             // animated GIF settings
-            this.engine.quality = this.animationQuality;
-            this.engine.frameRate = this.animationFrameRate;
+            this.engine.animationOptions = this.animationOptions;
 
             // timeSlice
             if (this.recordTimeSlice && this.recordTimeSlice > 0) {
@@ -859,7 +865,8 @@ class Record extends Plugin {
                     break;
 
                 case ANIMATION:
-                    // hide the first frame
+                    // clear and hide the first frame
+                    this.player.recordCanvas.clear();
                     this.player.recordCanvas.hide();
 
                     // hide the animation
@@ -868,13 +875,8 @@ class Record extends Plugin {
                     // show preview video
                     this.mediaElement.style.display = 'block';
 
-                    // for animations, capture the first frame
-                    // that can be displayed as soon as recording
-                    // is complete
-                    this.captureFrame().then((result) => {
-                        // start video preview **after** capturing first frame
-                        this.startVideoPreview();
-                    });
+                    // preview video stream in video element
+                    this.startVideoPreview();
                     break;
             }
 
@@ -1136,6 +1138,7 @@ class Record extends Plugin {
                 this.mediaElement.style.display = 'none';
 
                 // show the first frame
+                this.player.recordCanvas.drawFrame(this.engine.recordedFrames[0]);
                 this.player.recordCanvas.show();
 
                 // pause player so user can start playback
@@ -1440,6 +1443,7 @@ class Record extends Plugin {
             case ANIMATION:
                 // reset UI
                 this.player.recordCanvas.hide();
+                this.player.animationDisplay.hide();
                 this.player.cameraButton.hide();
                 break;
         }
@@ -1628,7 +1632,7 @@ class Record extends Plugin {
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
-                        this.drawCanvas(recordCanvas, imageBitmap);
+                        this.player.recordCanvas.drawImage(imageBitmap);
 
                         // notify others
                         resolve(recordCanvas);
@@ -1640,25 +1644,11 @@ class Record extends Plugin {
             // no ImageCapture available: do it the oldskool way
 
             // get a frame and copy it onto the canvas
-            this.drawCanvas(recordCanvas, this.mediaElement);
+            this.player.recordCanvas.drawImage(this.mediaElement);
 
             // notify others
             resolve(recordCanvas);
         });
-    }
-
-    /**
-     * Draw image frame on canvas element.
-     * @private
-     * @param {HTMLCanvasElement} canvas - Canvas to draw on.
-     * @param {HTMLElement} element - Element to draw onto the canvas.
-     */
-    drawCanvas(canvas, element) {
-        canvas.getContext('2d').drawImage(
-            element, 0, 0,
-            canvas.width,
-            canvas.height
-        );
     }
 
     /**
@@ -1701,7 +1691,7 @@ class Record extends Plugin {
         this.player.recordCanvas.hide();
 
         // show the animation
-        setSrcObject(this.player.recordedData, animationDisplay);
+        this.player.animationDisplay.load(this.player.recordedData);
         this.player.animationDisplay.show();
     }
 

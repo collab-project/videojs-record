@@ -3,7 +3,7 @@
  */
 import TestHelpers from '../test-helpers';
 import Event from '../../src/js/event';
-import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, OPUSMEDIARECORDER, VMSG, WEBMWASM, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine';
+import {RECORDRTC, LIBVORBISJS, RECORDERJS, LAMEJS, OPUSRECORDER, OPUSMEDIARECORDER, VMSG, WEBMWASM, GIFSHOT, RECORD_PLUGINS, AUDIO_PLUGINS, VIDEO_PLUGINS, ANIMATION_PLUGINS, RecordEngine} from '../../src/js/engine/record-engine';
 
 /** @test {record-engine} */
 describe('engine.record-engine', () => {
@@ -39,6 +39,10 @@ describe('engine.record-engine', () => {
         expect(OPUSMEDIARECORDER).toEqual('opus-media-recorder');
         expect(VMSG).toEqual('vmsg');
         expect(AUDIO_PLUGINS.length).toEqual(6);
+
+        // animation
+        expect(GIFSHOT).toEqual('gifshot');
+        expect(ANIMATION_PLUGINS.length).toEqual(1);
 
         // video
         expect(WEBMWASM).toEqual('webm-wasm');
