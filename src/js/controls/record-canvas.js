@@ -22,10 +22,14 @@ class RecordCanvas extends Component {
      *         The dom element that gets created.
      */
     createEl() {
-        return super.createEl('div', {
+        const canvasElement = videojs.dom.createEl('canvas');
+        const el = super.createEl('div', {
             className: 'vjs-record-canvas',
-            innerHTML: '<canvas></canvas>'
+            dir: 'ltr'
         });
+        el.appendChild(canvasElement);
+
+        return el;
     }
 }
 

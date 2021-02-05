@@ -139,7 +139,7 @@ module.exports = function(config) {
             {pattern: 'node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js', included: false, served: true},
             {pattern: 'node_modules/@ffmpeg/core/dist/ffmpeg-core.js', included: false, served: true},
             // gif-recorder: only available on CDN
-            'http://cdn.webrtc-experiment.com/gif-recorder.js',
+            'https://cdn.webrtc-experiment.com/gif-recorder.js',
 
             // -------------------------------------------
             // specs

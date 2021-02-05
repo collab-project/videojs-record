@@ -22,10 +22,14 @@ class AnimationDisplay extends Component {
      *         The dom element that gets created.
      */
     createEl() {
-        return super.createEl('div', {
+        const imgElement = videojs.dom.createEl('img');
+        const el = super.createEl('div', {
             className: 'vjs-animation-display',
-            innerHTML: '<img />'
+            dir: 'ltr'
         });
+        el.appendChild(imgElement);
+
+        return el;
     }
 }
 
