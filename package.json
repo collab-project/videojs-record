@@ -1,6 +1,6 @@
 {
   "name": "videojs-record",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "A video.js plugin for recording audio/video/image files.",
   "author": "Collab",
   "license": "MIT",
@@ -78,10 +78,10 @@
     "webrtc-adapter": ">=7.7.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-transform-runtime": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/register": "^7.12.10",
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/register": "^7.12.13",
     "@ffmpeg/core": "^0.8.5",
     "@ffmpeg/ffmpeg": "^0.9.7",
     "@mattiasbuelens/web-streams-polyfill": "^0.3.2",
@@ -142,7 +142,7 @@
     "videojs-languages": "^2.0.0",
     "vmsg": ">=0.3.6",
     "webm-wasm": ">=0.4.1",
-    "webpack": "^5.19.0",
+    "webpack": "^5.20.2",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^4.0.0-beta.0",
     "webpack-merge": "^5.7.3",
