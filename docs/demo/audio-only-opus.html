@@ -11,7 +11,7 @@
 
   <script src="//vjs.zencdn.net/7.11.4/video.min.js"></script>
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
-  <script src="lib/opus-recorder/recorder.min.js"></script>
+  <script src="//unpkg.com/opus-recorder/dist/recorder.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
   <script src="//unpkg.com/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
@@ -68,7 +68,7 @@ var options = {
             audioEngine: 'opus-recorder',
             audioSampleRate: 48000,
             audioChannels: 1,
-            audioWorkerURL: 'lib/opus-recorder/encoderWorker.min.js'
+            audioWorkerURL: 'https://unpkg.com/opus-recorder/dist/encoderWorker.min.js'
         }
     }
 };
