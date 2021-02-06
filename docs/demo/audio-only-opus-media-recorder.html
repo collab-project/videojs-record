@@ -11,7 +11,7 @@
 
   <script src="//vjs.zencdn.net/7.11.4/video.min.js"></script>
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
-  <script src="lib/opus-media-recorder/OpusMediaRecorder.umd.js"></script>
+  <script src="//unpkg.com/opus-media-recorder/OpusMediaRecorder.umd.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/wavesurfer.min.js"></script>
   <script src="//unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js"></script>
   <script src="//unpkg.com/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
@@ -69,10 +69,10 @@ var options = {
             debug: true,
             displayMilliseconds: true,
             audioEngine: 'opus-media-recorder',
-            audioWorkerURL: 'lib/opus-media-recorder/encoderWorker.umd.js',
+            audioWorkerURL: 'https://unpkg.com/opus-media-recorder/encoderWorker.umd.js',
             audioWebAssemblyURL: {
-                OggOpusEncoderWasmPath: 'lib/opus-media-recorder/OggOpusEncoder.wasm',
-                WebMOpusEncoderWasmPath: 'lib/opus-media-recorder/WebMOpusEncoder.wasm'
+                OggOpusEncoderWasmPath: 'https://unpkg.com/opus-media-recorder/OggOpusEncoder.wasm',
+                WebMOpusEncoderWasmPath: 'https://unpkg.com/opus-media-recorder/WebMOpusEncoder.wasm'
             }
         }
     }
