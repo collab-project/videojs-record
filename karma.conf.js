@@ -99,7 +99,7 @@ module.exports = function(config) {
             // third-party dependencies for audio-only
             // -------------------------------------------
             // wavesurfer.js
-            'node_modules/wavesurfer.js/dist/wavesurfer.js',
+            'node_modules/wavesurfer.js/dist/wavesurfer.min.js',
             'node_modules/wavesurfer.js/dist/plugin/wavesurfer.microphone.js',
             // videojs-wavesurfer
             'node_modules/videojs-wavesurfer/dist/videojs.wavesurfer.js',
