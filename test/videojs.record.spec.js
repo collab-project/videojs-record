@@ -370,14 +370,13 @@ describe('Record', () => {
     /** @test {Record#exportImage} */
     it('exports image (video)', (done) => {
         // create new player
-        player = TestHelpers.makePlayer();
+        player = TestHelpers.makeVideoOnlyPlayer();
 
         player.one(Event.DEVICE_READY, () => {
             // default to png
-            player.record().exportImage().then((arrayOfBlob) => {
-                expect(arrayOfBlob instanceof Array).toBeTruthy();
-                expect(arrayOfBlob[0] instanceof Blob).toBeTruthy();
-                expect(arrayOfBlob[0].type).toEqual('image/png');
+            player.record().exportImage().then((blob) => {
+                expect(blob instanceof Blob).toBeTruthy();
+                expect(blob.type).toEqual('image/png');
 
                 done();
             });
