@@ -802,4 +802,30 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record#setFormatTime} */
+    it('setFormatTime replaces the default formatTime implementation', (done) => {
+        // create new player
+        player = TestHelpers.makeAudioOnlyPlayer({
+            plugins: {
+                record: {
+                    maxLength: 9
+                }
+            }
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            // change implementation
+            let formatFunc = (seconds, guide) => `bar:${seconds}:${guide}`;
+            player.record().setFormatTime(formatFunc);
+
+            expect(player.record()._formatTime).toEqual(formatFunc);
+            done();
+        });
+
+        player.one(Event.READY, () => {
+            // start device
+            player.record().getDevice();
+        });
+    });
+
 });
