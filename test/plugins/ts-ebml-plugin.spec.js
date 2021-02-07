@@ -34,6 +34,13 @@ describe('plugins.ts-ebml-plugin', () => {
                 player.one(Event.FINISH_CONVERT, () => {
                     expect(player.convertedData instanceof Blob).toBeTruthy();
                     expect(player.convertedData.name).toEndWith('.webm');
+
+                    let fileName = 'foo';
+                    player.record().saveAs({'video': fileName}, 'convert');
+
+                    let element = document.getElementsByTagName('a')[0];
+                    expect(element.download).toEqual(fileName);
+
                     done();
                 });
                 player.record().converter.convert(blob);
