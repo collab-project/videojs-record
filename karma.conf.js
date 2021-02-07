@@ -271,11 +271,11 @@ module.exports = function(config) {
         }
     };
 
-    //if (ci) {
+    if (ci) {
         configuration.browsers = ['Firefox_headless', 'Chrome_headless'];
         configuration.singleRun = true;
         configuration.detectBrowsers.enabled = false;
-    //}
+    }
 
     config.set(configuration);
 };
