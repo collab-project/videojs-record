@@ -21,8 +21,6 @@ module.exports = {
             {
                 directory: contentBase,
                 staticOptions: {},
-                publicPath: '/',
-                // serveIndex: {} (options for the `serveIndex` option you can find https://github.com/expressjs/serve-index)
                 serveIndex: true,
                 watch: {
                     ignored: [
