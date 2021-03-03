@@ -1,15 +1,15 @@
 # Browser support
 
-| Browser | Version | Features | Related ticket(s) |
-|-------------|-------------|-------------|-------------|
-| Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen + Screen w/ Audio | |
-| Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + Screen + Screen w/ Audio | |
-| Chrome iOS | Not supported | Not supported: missing `getUserMedia` | |
-| Opera | Stable / NEXT | Audio + Video + Image + Screen | |
-| Android | Chrome / Firefox / Opera | Audio + Video + Image | |
-| Safari | Stable / Beta / Preview | Audio + Video + Image + Screen | [#332](https://github.com/collab-project/videojs-record/issues/332) |
-| Safari iOS | Stable (iOS 14.4 or newer) | Audio + Video + Image | [#332](https://github.com/collab-project/videojs-record/issues/332) |
-| Microsoft Edge | Based on Chromium (Windows 7/8/10 and MacOS) | audio + video + screen | |
+| Browser | Version | Features |
+|-------------|-------------|-------------|
+| Firefox | Stable / Aurora / Nightly | Audio + Video + Image + Screen + Screen w/ Audio |
+| Chrome | Stable / Canary / Beta / Dev | Audio + Video + Image + Screen + Screen w/ Audio |
+| Chrome iOS | Not supported | Not supported: missing `getUserMedia` |
+| Opera | Stable / NEXT | Audio + Video + Image + Screen |
+| Android | Chrome / Firefox / Opera | Audio + Video + Image |
+| Safari | Stable / Beta / Preview | Audio + Video + Image + Screen |
+| Safari iOS | Stable (iOS 14.4 or newer) | Audio + Video + Image |
+| Microsoft Edge | Based on Chromium (Windows 7/8/10 and MacOS) | audio + video + screen |
 
 ## Browser API {docsify-ignore}
 
@@ -25,15 +25,15 @@ Current browser API support for this library:
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
 ║ Firefox Desktop │ ✔            │ ✔             │ ✔        │ ✔               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
-║ Android Firefox │ ✔            │ ✖             │ ✔        │ ?               ║
+║ Android Firefox │ ✔            │ ✔             │ ✔        │ ✔               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
 ║ Edge            │ ✔            │ ✔             │ ✔        │ ✔               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
-║ iOS Safari      │ ✔            │ ✖             │ ✔        │ ?               ║
+║ iOS Safari      │ ✔            │ ✔             │ ✔        │ ?               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
-║ Safari Desktop  │ ✔            │ ✖             │ ✔        │ ?               ║
+║ Safari Desktop  │ ✔            │ ✔             │ ✔        │ ?               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
-║ Opera Mobile    │ ✔            │ ✖             │ ✔        │ ?               ║
+║ Opera Mobile    │ ✔            │ ✔             │ ✔        │ ?               ║
 ╟─────────────────┼──────────────┼───────────────┼──────────┼─────────────────╢
 ║ Opera Desktop   │ ✔            │ ✔             │ ✔        │ ?               ║
 ╚═════════════════╧══════════════╧═══════════════╧══════════╧═════════════════╝
