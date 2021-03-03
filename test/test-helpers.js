@@ -84,6 +84,7 @@ const TestHelpers = {
             loop: false,
             width: 600,
             height: 300,
+            bigPlayButton: false,
             plugins: {
                 wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
@@ -108,6 +109,7 @@ const TestHelpers = {
             loop: false,
             width: 500,
             height: 400,
+            bigPlayButton: false,
             plugins: {
                 wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: {
@@ -181,6 +183,7 @@ const TestHelpers = {
             loop: false,
             width: 600,
             height: 350,
+            bigPlayButton: false,
             plugins: {
                 wavesurfer: this.DEFAULT_WAVESURFER_OPTIONS,
                 record: recordPluginOptions
@@ -211,6 +214,7 @@ const TestHelpers = {
             loop: false,
             width: 320,
             height: 240,
+            bigPlayButton: false,
             plugins: {
                 record: recordPluginOptions
             }
@@ -256,6 +260,7 @@ const TestHelpers = {
             loop: false,
             width: 320,
             height: 240,
+            bigPlayButton: false,
             plugins: {
                 record: recordPluginOptions
             }
@@ -270,6 +275,7 @@ const TestHelpers = {
             loop: false,
             width: 500,
             height: 400,
+            bigPlayButton: false,
             plugins: {
                 record: {
                     audio: true,
@@ -292,6 +298,7 @@ const TestHelpers = {
             loop: false,
             width: 500,
             height: 400,
+            bigPlayButton: false,
             plugins: {
                 record: {
                     audio: false,
@@ -315,6 +322,7 @@ const TestHelpers = {
             loop: false,
             width: 500,
             height: 400,
+            bigPlayButton: false,
             controlBar: {
                 volumePanel: false,
                 fullscreenToggle: false

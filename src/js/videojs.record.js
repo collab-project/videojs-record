@@ -1611,29 +1611,33 @@ class Record extends Plugin {
     captureFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
+        let track = this.stream.getVideoTracks()[0];
+        let settings = track.getSettings();
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
-        recordCanvas.width = this.cameraFeedWidth;
-        recordCanvas.height = this.cameraFeedHeight;
+        recordCanvas.width = settings.width;
+        recordCanvas.height = settings.height;
 
         return new Promise((resolve, reject) => {
-            const cameraAspectRatio = this.cameraFeedWidth / this.cameraFeedHeight;
+            const cameraAspectRatio = settings.width / settings.height;
             const playerAspectRatio = this.player.width() / this.player.height();
-            // buddy ignore:start
             let imagePreviewHeight = 0;
             let imagePreviewWidth = 0;
             let imageXPosition = 0;
             let imageYPosition = 0;
+
+            // determine orientation
+            // buddy ignore:start
             if (cameraAspectRatio >= playerAspectRatio) {
-                // image feed wider than player
-                imagePreviewHeight = this.cameraFeedHeight * (this.player.width() / this.cameraFeedWidth);
+                // camera feed wider than player
+                imagePreviewHeight = settings.height * (this.player.width() / settings.width);
                 imagePreviewWidth = this.player.width();
                 imageYPosition = (this.player.height() / 2) - (imagePreviewHeight / 2);
             } else {
-                // player wider than image feed
+                // player wider than camera feed
                 imagePreviewHeight = this.player.height();
-                imagePreviewWidth = this.cameraFeedWidth * (this.player.height() / this.cameraFeedHeight);
+                imagePreviewWidth = settings.width * (this.player.height() / settings.height);
                 imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
             }
             // buddy ignore:end
@@ -1648,7 +1652,6 @@ class Record extends Plugin {
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                (typeof ImageCapture === typeof Function)) {
                 try {
-                    let track = this.stream.getVideoTracks()[0];
                     let imageCapture = new ImageCapture(track);
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
@@ -1931,10 +1934,6 @@ class Record extends Plugin {
     onStreamVisible(event) {
         // only listen for this once; remove listener
         this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
-
-        // store the dimensions of the camera image
-        this.cameraFeedWidth = event.target.videoWidth;
-        this.cameraFeedHeight = event.target.videoHeight;
 
         // reset and show camera button
         this.player.cameraButton.onStop();

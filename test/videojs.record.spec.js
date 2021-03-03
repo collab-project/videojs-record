@@ -90,19 +90,16 @@ describe('Record', () => {
     it('runs as image-only plugin', (done) => {
         // create image-only plugin
         player = TestHelpers.makeImageOnlyPlayer();
-        // XXX: workaround weird error during test
-        // TypeError: Cannot read property 'videoWidth' of null tech error
-        player.recordCanvas.el().firstChild.videoWidth = 320;
-        player.recordCanvas.el().firstChild.videoHeight = 240;
 
         player.one(Event.FINISH_RECORD, () => {
             // received a base-64 encoded PNG string
-            expect(player.recordedData.startsWith(
-                'data:image/png;base64,i')).toBeTrue();
+            expect(
+                player.recordedData.startsWith('data:image/png;base64,i')
+            ).withContext(
+                'expected recordedData to be a base-64 encoded PNG string'
+            ).toBeTrue();
 
-            setTimeout(() => {
-                done();
-            }, 2000);
+            setTimeout(done, 2000);
         });
 
         player.one(Event.DEVICE_READY, () => {
@@ -126,20 +123,21 @@ describe('Record', () => {
         let opts = {
             plugins: {
                 record: {
-                    imageOutputType: 'blob',
+                    imageOutputType: 'blob'
                 }
             }
         };
 
         player = TestHelpers.makeImageOnlyPlayer(opts);
 
-        player.recordCanvas.el().firstChild.videoWidth = 320;
-        player.recordCanvas.el().firstChild.videoHeight = 240;
-
         expect(player.record().imageOutputType).toEqual('blob');
 
         player.one(Event.FINISH_RECORD, () => {
-            expect(player.recordedData instanceof Blob).toBeTruthy();
+            expect(
+                player.recordedData instanceof Blob
+            ).withContext(
+                'expected recordedData to be a Blob instance'
+            ).toBeTruthy();
 
             setTimeout(done, 2000);
         });
