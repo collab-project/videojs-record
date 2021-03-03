@@ -1611,13 +1611,37 @@ class Record extends Plugin {
     captureFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
+        let track = this.stream.getVideoTracks()[0];
+        let settings = track.getSettings();
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
-        recordCanvas.width = this.player.width();
-        recordCanvas.height = this.player.height();
+        recordCanvas.width = settings.width;
+        recordCanvas.height = settings.height;
 
         return new Promise((resolve, reject) => {
+            const cameraAspectRatio = settings.width / settings.height;
+            const playerAspectRatio = this.player.width() / this.player.height();
+            let imagePreviewHeight = 0;
+            let imagePreviewWidth = 0;
+            let imageXPosition = 0;
+            let imageYPosition = 0;
+
+            // determine orientation
+            // buddy ignore:start
+            if (cameraAspectRatio >= playerAspectRatio) {
+                // camera feed wider than player
+                imagePreviewHeight = settings.height * (this.player.width() / settings.width);
+                imagePreviewWidth = this.player.width();
+                imageYPosition = (this.player.height() / 2) - (imagePreviewHeight / 2);
+            } else {
+                // player wider than camera feed
+                imagePreviewHeight = this.player.height();
+                imagePreviewWidth = settings.width * (this.player.height() / settings.height);
+                imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
+            }
+            // buddy ignore:end
+
             // MediaCapture is only supported on:
             // - Chrome 60 and newer (see
             // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
@@ -1628,12 +1652,12 @@ class Record extends Plugin {
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
                (typeof ImageCapture === typeof Function)) {
                 try {
-                    let track = this.stream.getVideoTracks()[0];
                     let imageCapture = new ImageCapture(track);
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
-                        this.drawCanvas(recordCanvas, imageBitmap);
+                        this.drawCanvas(recordCanvas, imageBitmap, imagePreviewWidth,
+                            imagePreviewHeight, imageXPosition, imageYPosition);
 
                         // notify others
                         resolve(recordCanvas);
@@ -1645,7 +1669,8 @@ class Record extends Plugin {
             // no ImageCapture available: do it the oldskool way
 
             // get a frame and copy it onto the canvas
-            this.drawCanvas(recordCanvas, this.mediaElement);
+            this.drawCanvas(recordCanvas, this.mediaElement, imagePreviewWidth,
+                imagePreviewHeight, imageXPosition, imageYPosition);
 
             // notify others
             resolve(recordCanvas);
@@ -1657,13 +1682,19 @@ class Record extends Plugin {
      * @private
      * @param {HTMLCanvasElement} canvas - Canvas to draw on.
      * @param {HTMLElement} element - Element to draw onto the canvas.
+     * @param {Number} width - Width of drawing on canvas.
+     * @param {Number} height - Height of drawing on canvas.
+     * @param {Number} x - X position on canvas where drawing starts.
+     * @param {Number} y - Y position on canvas where drawing starts.
      */
-    drawCanvas(canvas, element) {
-        canvas.getContext('2d').drawImage(
-            element, 0, 0,
-            canvas.width,
-            canvas.height
-        );
+    drawCanvas(canvas, element, width, height, x = 0, y = 0) {
+        if (width === undefined) {
+            width = canvas.width;
+        }
+        if (height === undefined) {
+            height = canvas.height;
+        }
+        canvas.getContext('2d').drawImage(element, x, y, width, height);
     }
 
     /**

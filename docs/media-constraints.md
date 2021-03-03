@@ -12,8 +12,8 @@ let options = {
     controls: true,
     bigPlayButton: false,
     loop: false,
-    // dimensions of video.js player
     fluid: false,
+    // dimensions of the video.js player
     width: 640,
     height: 480,
     plugins: {
