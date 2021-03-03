@@ -4,6 +4,8 @@
 
 - Fix controlbar flickering in Mobile Safari (#413)
 - Fix hiding picture-in-picture button (#486)
+- Fix stretched output for image-only mode when aspect ratio
+  of player is not the same as camera media constraints (#511)
 
 
 ## 4.2.0 - 2021/02/05
@@ -27,7 +29,7 @@
 
 ## 4.1.0 - 2020/08/11
 
-- Fixed webpack externals configuration: it's no longer needed to
+- Fix webpack externals configuration: it's no longer needed to
   use additional webpack configuration in React/Angular/Vue projects
   (#487, #493, #497)
 - ffmpeg.js plugin: handle `abort` errors (#481)
@@ -44,7 +46,7 @@
 - Fix milliseconds in `formatTime` (#443)
 - Ask again for device permissions in Firefox when user cleared them
   manually (#468)
-- Fixed missing error handler for microphone permissions in audio/screen
+- Fix missing error handler for microphone permissions in audio/screen
   mode (#463)
 - Move documentation to website (#472)
 - Bump required version for:

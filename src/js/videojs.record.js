@@ -1614,10 +1614,29 @@ class Record extends Plugin {
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
-        recordCanvas.width = this.player.width();
-        recordCanvas.height = this.player.height();
+        recordCanvas.width = this.cameraFeedWidth;
+        recordCanvas.height = this.cameraFeedHeight;
 
         return new Promise((resolve, reject) => {
+            const cameraAspectRatio = this.cameraFeedWidth / this.cameraFeedHeight;
+            const playerAspectRatio = this.player.width() / this.player.height();
+            let imagePreviewHeight = 0;
+            let imagePreviewWidth = 0;
+            let imageXPosition = 0;
+            let imageYPosition = 0;
+
+            if (cameraAspectRatio >= playerAspectRatio) {
+                // image feed wider than player
+                imagePreviewHeight = this.cameraFeedHeight * (this.player.width() / this.cameraFeedWidth);
+                imagePreviewWidth = this.player.width();
+                imageYPosition = (this.player.height() / 2) - (imagePreviewHeight / 2);
+            } else {
+                // player wider than image feed
+                imagePreviewHeight = this.player.height();
+                imagePreviewWidth = this.cameraFeedWidth * (this.player.height() / this.cameraFeedHeight);
+                imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
+            }
+
             // MediaCapture is only supported on:
             // - Chrome 60 and newer (see
             // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
@@ -1633,7 +1652,8 @@ class Record extends Plugin {
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) => {
                         // get a frame and copy it onto the canvas
-                        this.drawCanvas(recordCanvas, imageBitmap);
+                        this.drawCanvas(recordCanvas, imageBitmap, imagePreviewWidth,
+                            imagePreviewHeight, imageXPosition, imageYPosition);
 
                         // notify others
                         resolve(recordCanvas);
@@ -1645,7 +1665,8 @@ class Record extends Plugin {
             // no ImageCapture available: do it the oldskool way
 
             // get a frame and copy it onto the canvas
-            this.drawCanvas(recordCanvas, this.mediaElement);
+            this.drawCanvas(recordCanvas, this.mediaElement, imagePreviewWidth,
+                imagePreviewHeight, imageXPosition, imageYPosition);
 
             // notify others
             resolve(recordCanvas);
@@ -1657,13 +1678,19 @@ class Record extends Plugin {
      * @private
      * @param {HTMLCanvasElement} canvas - Canvas to draw on.
      * @param {HTMLElement} element - Element to draw onto the canvas.
+     * @param {Number} width - Width of drawing on canvas.
+     * @param {Number} height - Height of drawing on canvas.
+     * @param {Number} x - X position on canvas where drawing starts.
+     * @param {Number} y - Y position on canvas where drawing starts.
      */
-    drawCanvas(canvas, element) {
-        canvas.getContext('2d').drawImage(
-            element, 0, 0,
-            canvas.width,
-            canvas.height
-        );
+    drawCanvas(canvas, element, width, height, x = 0, y = 0) {
+        if (width === undefined) {
+            width = canvas.width;
+        }
+        if (height === undefined) {
+            height = canvas.height;
+        }
+        canvas.getContext('2d').drawImage(element, x, y, width, height);
     }
 
     /**
@@ -1903,6 +1930,10 @@ class Record extends Plugin {
     onStreamVisible(event) {
         // only listen for this once; remove listener
         this.mediaElement.removeEventListener(Event.PLAYING, this.streamVisibleCallback);
+
+        // store the dimensions of the camera image
+        this.cameraFeedWidth = event.target.videoWidth;
+        this.cameraFeedHeight = event.target.videoHeight;
 
         // reset and show camera button
         this.player.cameraButton.onStop();

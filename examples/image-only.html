@@ -28,21 +28,29 @@
 /* eslint-disable */
 var options = {
     controls: true,
-    width: 320,
-    height: 240,
     fluid: false,
     bigPlayButton: false,
     controlBar: {
         volumePanel: false,
         fullscreenToggle: false
     },
+    // dimensions of the video.js player
+    width: 640,
+    height: 480,
     plugins: {
         record: {
-            image: true,
             debug: true,
             imageOutputType: 'dataURL',
             imageOutputFormat: 'image/png',
-            imageOutputQuality: 0.92
+            imageOutputQuality: 0.92,
+            image: {
+              // image media constraints: set resolution of camera
+              width: { min: 640, ideal: 640, max: 1280 },
+              height: { min: 480, ideal: 480, max: 920 }
+            },
+            // dimensions of captured video frames
+            frameWidth: 640,
+            frameHeight: 480
         }
     }
 };
