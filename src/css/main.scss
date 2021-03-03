@@ -21,3 +21,11 @@
 .vjs-record .vjs-using-native-controls .vjs-control-bar {
     display: flex !important;
 }
+
+/* Add workaround for controlbar flickering in Safari, see
+   https://github.com/collab-project/videojs-record/issues/413
+--------------------------------------------------------------------------------
+*/
+.vjs-record.video-js .vjs-tech {
+    -webkit-perspective: 1000;
+}
