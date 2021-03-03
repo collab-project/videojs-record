@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.2.0 - unreleased
+## 4.2.0 - 2021/02/05
 
 - New ffmpeg.wasm converter plugin: convert recorded data into other
   audio/video/image file formats (#522)
