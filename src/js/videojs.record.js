@@ -1620,11 +1620,11 @@ class Record extends Plugin {
         return new Promise((resolve, reject) => {
             const cameraAspectRatio = this.cameraFeedWidth / this.cameraFeedHeight;
             const playerAspectRatio = this.player.width() / this.player.height();
+            // buddy ignore:start
             let imagePreviewHeight = 0;
             let imagePreviewWidth = 0;
             let imageXPosition = 0;
             let imageYPosition = 0;
-
             if (cameraAspectRatio >= playerAspectRatio) {
                 // image feed wider than player
                 imagePreviewHeight = this.cameraFeedHeight * (this.player.width() / this.cameraFeedWidth);
@@ -1636,6 +1636,7 @@ class Record extends Plugin {
                 imagePreviewWidth = this.cameraFeedWidth * (this.player.height() / this.cameraFeedHeight);
                 imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
             }
+            // buddy ignore:end
 
             // MediaCapture is only supported on:
             // - Chrome 60 and newer (see
