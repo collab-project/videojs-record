@@ -129,16 +129,17 @@ class Record extends Plugin {
 
         // picture-in-picture
         let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
-        if (!('exitPictureInPicture' in document)) {
+        if (!('pictureInPictureEnabled' in document)) {
             // no support for picture-in-picture, disable pip
             this.pictureInPicture = false;
-        } else if (oldVideoJS) {
-            // add picture-in-picture toggle button for older video.js versions
-            // in browsers that support PIP
-            player.pipToggle = new PictureInPictureToggle(player, options);
-            player.pipToggle.hide();
         }
         if (this.pictureInPicture === true) {
+            if (oldVideoJS) {
+                // add picture-in-picture toggle button for older video.js versions
+                // in browsers that support PIP
+                player.pipToggle = new PictureInPictureToggle(player, options);
+                player.pipToggle.hide();
+            }
             // define Picture-in-Picture event handlers once
             this.onEnterPiPHandler = this.onEnterPiP.bind(this);
             this.onLeavePiPHandler = this.onLeavePiP.bind(this);
@@ -251,6 +252,10 @@ class Record extends Plugin {
                 this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
                 this.player.pipToggle.hide();
             }
+        } else if (
+            this.pictureInPicture === false &&
+            this.player.controlBar.pictureInPictureToggle !== undefined) {
+            this.player.controlBar.pictureInPictureToggle.hide();
         }
 
         // get rid of unused controls

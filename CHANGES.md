@@ -3,6 +3,7 @@
 ## 4.3.0 - unreleased
 
 - Fix controlbar flickering in Mobile Safari (#413)
+- Fix hiding picture-in-picture button (#486)
 
 
 ## 4.2.0 - 2021/02/05
