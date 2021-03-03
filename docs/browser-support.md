@@ -8,9 +8,8 @@
 | Opera | Stable / NEXT | Audio + Video + Image + Screen | |
 | Android | Chrome / Firefox / Opera | Audio + Video + Image | |
 | Safari | Stable / Beta / Preview | Audio + Video + Image + Screen | [#332](https://github.com/collab-project/videojs-record/issues/332) |
-| Safari iOS | Stable / Beta | Audio + Image | [#332](https://github.com/collab-project/videojs-record/issues/332) |
+| Safari iOS | Stable (iOS 14.4 or newer) | Audio + Video + Image | [#332](https://github.com/collab-project/videojs-record/issues/332) |
 | Microsoft Edge | Based on Chromium (Windows 7/8/10 and MacOS) | audio + video + screen | |
-| Microsoft Edge | Old deprecated versions | Audio + Image | [#178](https://github.com/collab-project/videojs-record/issues/178) |
 
 ## Browser API {docsify-ignore}
 
