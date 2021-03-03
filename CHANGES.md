@@ -1,5 +1,10 @@
 # videojs-record changelog
 
+## 4.3.0 - unreleased
+
+- Fix controlbar flickering in Mobile Safari (#413)
+
+
 ## 4.2.0 - 2021/02/05
 
 - New ffmpeg.wasm converter plugin: convert recorded data into other
@@ -26,8 +31,8 @@
   (#487, #493, #497)
 - ffmpeg.js plugin: handle `abort` errors (#481)
 - Bump required version for:
- - videojs-wavesurfer (3.3.0 or newer)
- - webrtc-adapter (7.7.0 or newer)
+  - videojs-wavesurfer (3.3.0 or newer)
+  - webrtc-adapter (7.7.0 or newer)
 
 
 ## 4.0.0 - 2020/05/20
