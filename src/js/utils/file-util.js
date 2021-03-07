@@ -14,6 +14,10 @@ import getExtension from './mime';
  * @private
  */
 const downloadBlob = function(fileName, data) {
+    let extension = fileName.split('.').pop();
+    if (fileName === extension) {
+        fileName += '.' + getExtension(data.type);
+    }
     if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
         return navigator.msSaveOrOpenBlob(data, fileName);
     } else if (typeof navigator.msSaveBlob !== 'undefined') {

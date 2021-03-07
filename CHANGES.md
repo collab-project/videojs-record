@@ -6,6 +6,7 @@
 - Fix hiding picture-in-picture button (#486)
 - Fix stretched output for image-only mode when aspect ratio
   of player is not the same as camera media constraints (#511)
+- Fix `saveAs` file-extension for extended mimetypes (#553)
 - Bump required version for videojs-wavesurfer (3.6.0 or newer)
 
 
