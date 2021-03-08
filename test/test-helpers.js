@@ -456,16 +456,22 @@ const TestHelpers = {
      * @param  {String} fileName
      */
     assertDownloadLinkExists(expectedFileName) {
-        // ignore edge browser
-        if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
-            let element = document.querySelectorAll('a[download]')[0];
-            let actualFileName = element.download;
+        let actualFileName;
+        let element = document.querySelectorAll('a[download^="' + expectedFileName + '"]')[0];
 
-            // remove now so test failure doesn't mess with the DOM
-            element.remove();
-
-            expect(expectedFileName).toEqual(actualFileName);
+        if (element) {
+            actualFileName = element.download;
+        } else {
+            // element not found
+            actualFileName = 'element not found';
         }
+
+        // remove now so test failure doesn't mess with the DOM
+        document.querySelectorAll('a[download]').forEach((element) => {
+            element.remove();
+        });
+
+        expect(actualFileName).toEqual(expectedFileName);
     }
 };
 
