@@ -487,7 +487,17 @@ describe('Record', () => {
         player = TestHelpers.makePlayer();
 
         player.one(Event.FINISH_RECORD, () => {
-            player.record().saveAs({'video': 'name-of-video-file'});
+            const fileName = 'name-of-video-file';
+            player.record().saveAs({'video': fileName});
+
+            // ignore edge browser
+            if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
+                let element = document.getElementsByTagName('a')[0];
+                expect(element.download).toEqual(fileName);
+
+                // cleanup element
+                element.remove();
+            }
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)
