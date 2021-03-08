@@ -53,10 +53,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRecorderMode">getRecorderMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CONVERT_PLUGINS">CONVERT_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGJS">FFMPEGJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGWASM">FFMPEGWASM</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TSEBML">TSEBML</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_PLUGINS">AUDIO_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LAMEJS">LAMEJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LIBVORBISJS">LIBVORBISJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSMEDIARECORDER">OPUSMEDIARECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSRECORDER">OPUSRECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDERJS">RECORDERJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDRTC">RECORDRTC</a></span></span></li>
@@ -71,9 +73,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IMAGE_ONLY">IMAGE_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SCREEN_ONLY">SCREEN_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIDEO_ONLY">VIDEO_ONLY</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html">FFmpegWasmEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html">OpusMediaRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ts-ebml-plugin.js~TsEBMLEngine.html">TsEBMLEngine</a></span></span></li>
@@ -122,6 +126,8 @@ const pluginDefaultOptions = {
     // Boolean indicating if milliseconds should be included,
     // e.g. &quot;00:00:000&quot; vs &quot;00:00&quot;.
     displayMilliseconds: false,
+    // Use a custom time format function, for example: (seconds, guide) =&gt; `test:${seconds}:${guide}`
+    formatTime: undefined,
     // Width of the recorded video frames.
     frameWidth: 320,
     // Height of the recorded video frames.
@@ -154,7 +160,8 @@ const pluginDefaultOptions = {
     // disable (default).
     videoWebAssemblyURL: &apos;&apos;,
     // Audio recording library to use. Legal values are &apos;recordrtc&apos; (default),
-    // &apos;libvorbis.js&apos;, &apos;opus-recorder&apos;, &apos;lamejs&apos;, &apos;vmsg&apos; and &apos;recorder.js&apos;.
+    // &apos;libvorbis.js&apos;, &apos;opus-recorder&apos;, &apos;opus-media-recorder&apos;, &apos;lamejs&apos;, &apos;vmsg&apos;
+    // and &apos;recorder.js&apos;.
     audioEngine: &apos;recordrtc&apos;,
     // Audio recorder type to use. This allows you to specify an alternative
     // recorder class, e.g. StereoAudioRecorder. Defaults to &apos;auto&apos; which let&apos;s
@@ -219,8 +226,8 @@ const pluginDefaultOptions = {
     imageOutputQuality: 0.92,
     // Accepts numbers in milliseconds; use this to force intervals-based blobs.
     timeSlice: 0,
-    // Media converter library to use. Legal values are &apos;ts-ebml&apos; and &apos;ffmpeg.js&apos;.
-    // Use an empty string &apos;&apos; to disable (default).
+    // Media converter library to use. Legal values are &apos;ts-ebml&apos;, &apos;ffmpeg.wasm&apos;
+    // and &apos;ffmpeg.js&apos;. Use an empty string &apos;&apos; to disable (default).
     convertEngine: &apos;&apos;,
     // URL for the converter worker.
     convertWorkerURL: &apos;&apos;,
@@ -229,7 +236,7 @@ const pluginDefaultOptions = {
     // Enable keyboard hotkeys.
     hotKeys: false,
     // Use this object to specify additional settings for the library used by the
-    // plugin (only used in opus-recorder and vmsg plugins).
+    // plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).
     pluginLibraryOptions: {}
 };
 

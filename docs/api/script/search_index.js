@@ -84,6 +84,18 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "videojs-record/js/engine/convert-engine.js~ffmpegwasm",
+    "variable/index.html#static-variable-FFMPEGWASM",
+    "<span>FFMPEGWASM</span> <span class=\"search-result-import-path\">videojs-record/js/engine/convert-engine.js</span>",
+    "variable"
+  ],
+  [
+    "videojs-record/js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html",
+    "<span>FFmpegWasmEngine</span> <span class=\"search-result-import-path\">videojs-record/js/plugins/ffmpeg-wasm-plugin.js</span>",
+    "class"
+  ],
+  [
     "videojs-record/js/plugins/ffmpegjs-plugin.js~ffmpegjsengine",
     "class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html",
     "<span>FFmpegjsEngine</span> <span class=\"search-result-import-path\">videojs-record/js/plugins/ffmpegjs-plugin.js</span>",
@@ -120,10 +132,22 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "videojs-record/js/engine/record-engine.js~opusmediarecorder",
+    "variable/index.html#static-variable-OPUSMEDIARECORDER",
+    "<span>OPUSMEDIARECORDER</span> <span class=\"search-result-import-path\">videojs-record/js/engine/record-engine.js</span>",
+    "variable"
+  ],
+  [
     "videojs-record/js/engine/record-engine.js~opusrecorder",
     "variable/index.html#static-variable-OPUSRECORDER",
     "<span>OPUSRECORDER</span> <span class=\"search-result-import-path\">videojs-record/js/engine/record-engine.js</span>",
     "variable"
+  ],
+  [
+    "videojs-record/js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html",
+    "<span>OpusMediaRecorderEngine</span> <span class=\"search-result-import-path\">videojs-record/js/plugins/opus-media-recorder-plugin.js</span>",
+    "class"
   ],
   [
     "videojs-record/js/plugins/opus-recorder-plugin.js~opusrecorderengine",
@@ -918,6 +942,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "js/engine/convert-engine.js~convertengine#saveas",
+    "class/js/engine/convert-engine.js~ConvertEngine.html#instance-method-saveAs",
+    "js/engine/convert-engine.js~ConvertEngine#saveAs",
+    "method"
+  ],
+  [
     "js/engine/convert-engine.js~convertengine#setup",
     "class/js/engine/convert-engine.js~ConvertEngine.html#instance-method-setup",
     "js/engine/convert-engine.js~ConvertEngine#setup",
@@ -1090,6 +1120,48 @@ window.esdocSearchIndex = [
     "file/js/hot-keys.js.html",
     "js/hot-keys.js",
     "file"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js",
+    "file/js/plugins/ffmpeg-wasm-plugin.js.html",
+    "js/plugins/ffmpeg-wasm-plugin.js",
+    "file"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#constructor",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-constructor-constructor",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#constructor",
+    "method"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#convert",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-method-convert",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#convert",
+    "method"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#convertworkerurl",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-convertWorkerURL",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#convertWorkerURL",
+    "member"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#debug",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-debug",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#debug",
+    "member"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#outputtype",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-outputType",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#outputType",
+    "member"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#pluginlibraryoptions",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-pluginLibraryOptions",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#pluginLibraryOptions",
+    "member"
   ],
   [
     "js/plugins/ffmpegjs-plugin.js",
@@ -1371,6 +1443,90 @@ window.esdocSearchIndex = [
     "js/plugins/libvorbis-plugin.js~libvorbisengine#stop",
     "class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html#instance-method-stop",
     "js/plugins/libvorbis-plugin.js~LibVorbisEngine#stop",
+    "method"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js",
+    "file/js/plugins/opus-media-recorder-plugin.js.html",
+    "js/plugins/opus-media-recorder-plugin.js",
+    "file"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#audiotype",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-audioType",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#audioType",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#chunks",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-chunks",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#chunks",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#constructor",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-constructor-constructor",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#constructor",
+    "method"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#debug",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-debug",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#debug",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#engine",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-engine",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#engine",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#inputstream",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-inputStream",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#inputStream",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#mediatype",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-mediaType",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#mediaType",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#ondata",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-method-onData",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#onData",
+    "method"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#onrecordingavailable",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-method-onRecordingAvailable",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#onRecordingAvailable",
+    "method"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#recavailablecallback",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-member-recAvailableCallback",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#recAvailableCallback",
+    "member"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#setup",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-method-setup",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#setup",
+    "method"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#start",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-method-start",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#start",
+    "method"
+  ],
+  [
+    "js/plugins/opus-media-recorder-plugin.js~opusmediarecorderengine#stop",
+    "class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html#instance-method-stop",
+    "js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine#stop",
     "method"
   ],
   [
@@ -1821,6 +1977,12 @@ window.esdocSearchIndex = [
     "js/videojs.record.js~record#_deviceactive",
     "class/js/videojs.record.js~Record.html#instance-member-_deviceActive",
     "js/videojs.record.js~Record#_deviceActive",
+    "member"
+  ],
+  [
+    "js/videojs.record.js~record#_formattime",
+    "class/js/videojs.record.js~Record.html#instance-member-_formatTime",
+    "js/videojs.record.js~Record#_formatTime",
     "member"
   ],
   [
@@ -2343,6 +2505,12 @@ window.esdocSearchIndex = [
     "js/videojs.record.js~record#setduration",
     "class/js/videojs.record.js~Record.html#instance-method-setDuration",
     "js/videojs.record.js~Record#setDuration",
+    "method"
+  ],
+  [
+    "js/videojs.record.js~record#setformattime",
+    "class/js/videojs.record.js~Record.html#instance-method-setFormatTime",
+    "js/videojs.record.js~Record#setFormatTime",
     "method"
   ],
   [

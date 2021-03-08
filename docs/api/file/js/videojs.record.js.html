@@ -53,10 +53,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRecorderMode">getRecorderMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CONVERT_PLUGINS">CONVERT_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGJS">FFMPEGJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGWASM">FFMPEGWASM</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TSEBML">TSEBML</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_PLUGINS">AUDIO_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LAMEJS">LAMEJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LIBVORBISJS">LIBVORBISJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSMEDIARECORDER">OPUSMEDIARECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSRECORDER">OPUSRECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDERJS">RECORDERJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDRTC">RECORDRTC</a></span></span></li>
@@ -71,9 +73,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IMAGE_ONLY">IMAGE_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SCREEN_ONLY">SCREEN_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIDEO_ONLY">VIDEO_ONLY</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html">FFmpegWasmEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html">OpusMediaRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ts-ebml-plugin.js~TsEBMLEngine.html">TsEBMLEngine</a></span></span></li>
@@ -165,14 +169,19 @@ class Record extends Plugin {
         // (re)set recorder state
         this.resetState();
 
-        // use custom video.js time format
-        videojs.setFormatTime((seconds, guide) =&gt; {
-            return formatTime(seconds, guide, this.displayMilliseconds);
-        });
+        // use custom time format for video.js player
+        if (options.formatTime &amp;&amp; typeof options.formatTime === &apos;function&apos;) {
+            // user-supplied formatTime
+            this.setFormatTime(options.formatTime);
+        } else {
+            // plugin&apos;s default formatTime
+            this.setFormatTime((seconds, guide) =&gt; {
+                return formatTime(seconds, guide, this.displayMilliseconds);
+            });
+        }
 
         // add device button with icon based on type
         let deviceIcon = &apos;av-perm&apos;;
-
         switch (this.getRecordType()) {
             case IMAGE_ONLY:
             case VIDEO_ONLY:
@@ -223,16 +232,17 @@ class Record extends Plugin {
 
         // picture-in-picture
         let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, &apos;7.6.0&apos;) === -1;
-        if (!(&apos;exitPictureInPicture&apos; in document)) {
+        if (!(&apos;pictureInPictureEnabled&apos; in document)) {
             // no support for picture-in-picture, disable pip
             this.pictureInPicture = false;
-        } else if (oldVideoJS) {
-            // add picture-in-picture toggle button for older video.js versions
-            // in browsers that support PIP
-            player.pipToggle = new PictureInPictureToggle(player, options);
-            player.pipToggle.hide();
         }
         if (this.pictureInPicture === true) {
+            if (oldVideoJS) {
+                // add picture-in-picture toggle button for older video.js versions
+                // in browsers that support PIP
+                player.pipToggle = new PictureInPictureToggle(player, options);
+                player.pipToggle.hide();
+            }
             // define Picture-in-Picture event handlers once
             this.onEnterPiPHandler = this.onEnterPiP.bind(this);
             this.onLeavePiPHandler = this.onLeavePiP.bind(this);
@@ -345,6 +355,10 @@ class Record extends Plugin {
                 this.player.pipToggle = this.player.controlBar.pictureInPictureToggle;
                 this.player.pipToggle.hide();
             }
+        } else if (
+            this.pictureInPicture === false &amp;&amp;
+            this.player.controlBar.pictureInPictureToggle !== undefined) {
+            this.player.controlBar.pictureInPictureToggle.hide();
         }
 
         // get rid of unused controls
@@ -363,6 +377,9 @@ class Record extends Plugin {
             case AUDIO_ONLY:
                 // reference to videojs-wavesurfer plugin
                 this.surfer = this.player.wavesurfer();
+
+                // use same time format as this plugin
+                this.surfer.setFormatTime(this._formatTime);
                 break;
 
             case IMAGE_ONLY:
@@ -1320,7 +1337,7 @@ class Record extends Plugin {
                     // update current time display component
                     this.player.controlBar.currentTimeDisplay.formattedTime_ =
                         this.player.controlBar.currentTimeDisplay.contentEl().lastChild.textContent =
-                            formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
+                            this._formatTime(this.streamCurrentTime, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1364,7 +1381,7 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
                     this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                        formatTime(duration, duration, this.displayMilliseconds);
+                        this._formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1403,20 +1420,32 @@ class Record extends Plugin {
     }
 
     /**
-     * Show save as dialog in browser so the user can store the recorded media
-     * locally.
+     * Show save as dialog in browser so the user can store the recorded or
+     * converted media locally.
      *
-     * @param {object} name - Object with one or more names for the particular
-     *     blob(s) you want to save. File extensions are added automatically.
-     *     For example: {&apos;video&apos;: &apos;name-of-video-file&apos;}. Supported keys are
+     * @param {Object} name - Object with names for the particular blob(s)
+     *     you want to save. File extensions are added automatically. For
+     *     example: {&apos;video&apos;: &apos;name-of-video-file&apos;}. Supported keys are
      *     &apos;audio&apos;, &apos;video&apos; and &apos;gif&apos;.
+     * @param {String} type - Type of media to save. Legal values are &apos;record&apos;
+     *     (default) and &apos;convert&apos;.
      * @example
-     * // save video file as &apos;foo.webm&apos;
+     * // save recorded video file as &apos;foo.webm&apos;
      * player.record().saveAs({&apos;video&apos;: &apos;foo&apos;});
+     *
+     * // save converted video file as &apos;bar.mp4&apos;
+     * player.record().saveAs({&apos;video&apos;: &apos;bar&apos;}, &apos;convert&apos;);
+     * @returns {void}
      */
-    saveAs(name) {
-        if (this.engine &amp;&amp; name !== undefined) {
-            this.engine.saveAs(name);
+    saveAs(name, type = &apos;record&apos;) {
+        if (type === &apos;record&apos;) {
+            if (this.engine &amp;&amp; name !== undefined) {
+                this.engine.saveAs(name);
+            }
+        } else if (type === &apos;convert&apos;) {
+            if (this.converter &amp;&amp; name !== undefined) {
+                this.converter.saveAs(name);
+            }
         }
     }
 
@@ -1685,13 +1714,37 @@ class Record extends Plugin {
     captureFrame() {
         let detected = detectBrowser();
         let recordCanvas = this.player.recordCanvas.el().firstChild;
+        let track = this.stream.getVideoTracks()[0];
+        let settings = track.getSettings();
 
         // set the canvas size to the dimensions of the camera,
         // which also wipes the content of the canvas
-        recordCanvas.width = this.player.width();
-        recordCanvas.height = this.player.height();
+        recordCanvas.width = settings.width;
+        recordCanvas.height = settings.height;
 
         return new Promise((resolve, reject) =&gt; {
+            const cameraAspectRatio = settings.width / settings.height;
+            const playerAspectRatio = this.player.width() / this.player.height();
+            let imagePreviewHeight = 0;
+            let imagePreviewWidth = 0;
+            let imageXPosition = 0;
+            let imageYPosition = 0;
+
+            // determine orientation
+            // buddy ignore:start
+            if (cameraAspectRatio &gt;= playerAspectRatio) {
+                // camera feed wider than player
+                imagePreviewHeight = settings.height * (this.player.width() / settings.width);
+                imagePreviewWidth = this.player.width();
+                imageYPosition = (this.player.height() / 2) - (imagePreviewHeight / 2);
+            } else {
+                // player wider than camera feed
+                imagePreviewHeight = this.player.height();
+                imagePreviewWidth = settings.width * (this.player.height() / settings.height);
+                imageXPosition = (this.player.width() / 2) - (imagePreviewWidth / 2);
+            }
+            // buddy ignore:end
+
             // MediaCapture is only supported on:
             // - Chrome 60 and newer (see
             // https://github.com/w3c/mediacapture-image/blob/gh-pages/implementation-status.md)
@@ -1702,12 +1755,12 @@ class Record extends Plugin {
             if ((detected.browser === &apos;chrome&apos; &amp;&amp; detected.version &gt;= 60) &amp;&amp;
                (typeof ImageCapture === typeof Function)) {
                 try {
-                    let track = this.stream.getVideoTracks()[0];
                     let imageCapture = new ImageCapture(track);
                     // take picture
                     imageCapture.grabFrame().then((imageBitmap) =&gt; {
                         // get a frame and copy it onto the canvas
-                        this.drawCanvas(recordCanvas, imageBitmap);
+                        this.drawCanvas(recordCanvas, imageBitmap, imagePreviewWidth,
+                            imagePreviewHeight, imageXPosition, imageYPosition);
 
                         // notify others
                         resolve(recordCanvas);
@@ -1719,7 +1772,8 @@ class Record extends Plugin {
             // no ImageCapture available: do it the oldskool way
 
             // get a frame and copy it onto the canvas
-            this.drawCanvas(recordCanvas, this.mediaElement);
+            this.drawCanvas(recordCanvas, this.mediaElement, imagePreviewWidth,
+                imagePreviewHeight, imageXPosition, imageYPosition);
 
             // notify others
             resolve(recordCanvas);
@@ -1731,13 +1785,19 @@ class Record extends Plugin {
      * @private
      * @param {HTMLCanvasElement} canvas - Canvas to draw on.
      * @param {HTMLElement} element - Element to draw onto the canvas.
+     * @param {Number} width - Width of drawing on canvas.
+     * @param {Number} height - Height of drawing on canvas.
+     * @param {Number} x - X position on canvas where drawing starts.
+     * @param {Number} y - Y position on canvas where drawing starts.
      */
-    drawCanvas(canvas, element) {
-        canvas.getContext(&apos;2d&apos;).drawImage(
-            element, 0, 0,
-            canvas.width,
-            canvas.height
-        );
+    drawCanvas(canvas, element, width, height, x = 0, y = 0) {
+        if (width === undefined) {
+            width = canvas.width;
+        }
+        if (height === undefined) {
+            height = canvas.height;
+        }
+        canvas.getContext(&apos;2d&apos;).drawImage(element, x, y, width, height);
     }
 
     /**
@@ -1930,6 +1990,25 @@ class Record extends Plugin {
 
         // error if we get here: notify listeners
         this.player.trigger(Event.ERROR, errorMessage);
+    }
+
+    /**
+     * Replaces the default `formatTime` implementation with a custom implementation.
+     *
+     * @param {function} customImplementation - A function which will be used in place
+     *     of the default `formatTime` implementation. Will receive the current time
+     *     in seconds and the guide (in seconds) as arguments.
+     */
+    setFormatTime(customImplementation) {
+        this._formatTime = customImplementation;
+
+        videojs.setFormatTime(this._formatTime);
+
+        // audio-only
+        if (this.surfer) {
+            // use same time format as this plugin
+            this.surfer.setFormatTime(this._formatTime);
+        }
     }
 
     /**

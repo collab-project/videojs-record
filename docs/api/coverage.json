@@ -1,7 +1,7 @@
 {
-  "coverage": "55.58%",
-  "expectCount": 367,
-  "actualCount": 204,
+  "coverage": "55.94%",
+  "expectCount": 395,
+  "actualCount": 221,
   "files": {
     "js/controls/animation-display.js": {
       "expectCount": 3,
@@ -62,15 +62,16 @@
       "undocumentLines": []
     },
     "js/engine/convert-engine.js": {
-      "expectCount": 11,
-      "actualCount": 5,
+      "expectCount": 13,
+      "actualCount": 6,
       "undocumentLines": [
         10,
-        48,
         49,
-        17,
+        50,
+        18,
         13,
-        14
+        14,
+        15
       ]
     },
     "js/engine/engine-loader.js": {
@@ -79,21 +80,22 @@
       "undocumentLines": []
     },
     "js/engine/record-engine.js": {
-      "expectCount": 19,
+      "expectCount": 20,
       "actualCount": 7,
       "undocumentLines": [
         11,
-        91,
+        94,
+        37,
+        29,
         34,
-        28,
-        31,
         15,
         18,
         19,
         20,
         21,
         22,
-        25
+        23,
+        26
       ]
     },
     "js/engine/record-mode.js": {
@@ -135,16 +137,23 @@
         11
       ]
     },
+    "js/plugins/ffmpeg-wasm-plugin.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        8
+      ]
+    },
     "js/plugins/ffmpegjs-plugin.js": {
       "expectCount": 15,
       "actualCount": 9,
       "undocumentLines": [
         8,
-        65,
         67,
-        76,
-        88,
-        160
+        69,
+        78,
+        90,
+        162
       ]
     },
     "js/plugins/lamejs-plugin.js": {
@@ -171,6 +180,19 @@
         57,
         66,
         67
+      ]
+    },
+    "js/plugins/opus-media-recorder-plugin.js": {
+      "expectCount": 15,
+      "actualCount": 8,
+      "undocumentLines": [
+        8,
+        53,
+        54,
+        55,
+        56,
+        63,
+        66
       ]
     },
     "js/plugins/opus-recorder-plugin.js": {
@@ -202,7 +224,7 @@
       "expectCount": 3,
       "actualCount": 2,
       "undocumentLines": [
-        10
+        8
       ]
     },
     "js/plugins/vmsg-plugin.js": {
@@ -267,75 +289,76 @@
       "undocumentLines": []
     },
     "js/videojs.record.js": {
-      "expectCount": 116,
-      "actualCount": 50,
+      "expectCount": 118,
+      "actualCount": 51,
       "undocumentLines": [
         29,
         30,
         32,
-        129,
-        138,
-        139,
-        172,
-        173,
-        174,
-        175,
-        176,
-        177,
+        134,
+        144,
+        145,
         178,
         179,
         180,
+        181,
         182,
         183,
         184,
-        187,
+        185,
+        186,
         188,
         189,
         190,
-        191,
-        192,
         193,
         194,
         195,
+        196,
+        197,
         198,
         199,
         200,
-        203,
+        201,
         204,
         205,
         206,
-        207,
-        208,
         209,
         210,
         211,
         212,
+        213,
+        214,
         215,
         216,
         217,
-        220,
+        218,
         221,
-        266,
-        393,
-        396,
-        399,
-        402,
-        429,
-        600,
-        603,
-        647,
-        707,
-        751,
-        822,
-        914,
-        915,
-        916,
-        920,
-        941,
-        1021,
-        1156,
-        1219,
-        1454
+        222,
+        223,
+        226,
+        227,
+        276,
+        406,
+        409,
+        412,
+        415,
+        442,
+        613,
+        616,
+        660,
+        720,
+        764,
+        835,
+        927,
+        928,
+        929,
+        933,
+        954,
+        1034,
+        1169,
+        1232,
+        1479,
+        1900
       ]
     }
   }

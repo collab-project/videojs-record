@@ -53,10 +53,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRecorderMode">getRecorderMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CONVERT_PLUGINS">CONVERT_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGJS">FFMPEGJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGWASM">FFMPEGWASM</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TSEBML">TSEBML</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_PLUGINS">AUDIO_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LAMEJS">LAMEJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LIBVORBISJS">LIBVORBISJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSMEDIARECORDER">OPUSMEDIARECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSRECORDER">OPUSRECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDERJS">RECORDERJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDRTC">RECORDRTC</a></span></span></li>
@@ -71,9 +73,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IMAGE_ONLY">IMAGE_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SCREEN_ONLY">SCREEN_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIDEO_ONLY">VIDEO_ONLY</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html">FFmpegWasmEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html">OpusMediaRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ts-ebml-plugin.js~TsEBMLEngine.html">TsEBMLEngine</a></span></span></li>
@@ -97,13 +101,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import FFmpegjsEngine from &apos;<span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber16">videojs-record/js/plugins/ffmpegjs-plugin.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import FFmpegjsEngine from &apos;<span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber18">videojs-record/js/plugins/ffmpegjs-plugin.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber16">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber18">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -124,6 +128,7 @@
   
   
   <div class="description" data-ice="description"><p>Converter engine using the ffmpeg.js library.</p>
+<p>Deprecated. Use the ffmpeg.wasm plugin instead.</p>
 </div>
   
 
@@ -342,7 +347,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
       <div>
         
         
-        <div data-ice="description"><p>Additional configuration options for the opus-recorder library.</p>
+        <div data-ice="description"><p>Additional configuration options for the ffmpeg.js library.</p>
 </div>
       </div>
     </td>
@@ -671,6 +676,36 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/js/engine/convert-engine.js~ConvertEngine.html#instance-method-saveAs">saveAs</a></span></span><span class="code" data-ice="signature">(name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Show save as dialog in browser so the user can store the converted
+media locally.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/js/engine/convert-engine.js~ConvertEngine.html#instance-method-setup">setup</a></span></span><span class="code" data-ice="signature">(mediaType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, debug: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span>)</span>
         </p>
       </div>
@@ -706,7 +741,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber26">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber28">source</a></span></span>
     </span>
   </h3>
 
@@ -777,7 +812,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber41">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber43">source</a></span></span>
     </span>
   </h3>
 
@@ -822,7 +857,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber34">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber36">source</a></span></span>
     </span>
   </h3>
 
@@ -866,7 +901,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber76">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber78">source</a></span></span>
     </span>
   </h3>
 
@@ -909,7 +944,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber65">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber67">source</a></span></span>
     </span>
   </h3>
 
@@ -952,7 +987,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber47">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
@@ -996,14 +1031,14 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber53">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber55">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Additional configuration options for the opus-recorder library.</p>
+  <div data-ice="description"><p>Additional configuration options for the ffmpeg.js library.</p>
 </div>
 
   
@@ -1040,7 +1075,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber160">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber162">source</a></span></span>
     </span>
   </h3>
 
@@ -1083,7 +1118,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber67">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber69">source</a></span></span>
     </span>
   </h3>
 
@@ -1126,7 +1161,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber88">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber90">source</a></span></span>
     </span>
   </h3>
 
@@ -1172,7 +1207,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber86">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber88">source</a></span></span>
     </span>
   </h3>
 
@@ -1234,7 +1269,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber64">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 
@@ -1306,7 +1341,7 @@ or <code>ffmpeg-worker-webm.js</code> (VP8 &amp; Opus encoders).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber117">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/plugins/ffmpegjs-plugin.js.html#lineNumber119">source</a></span></span>
     </span>
   </h3>
 

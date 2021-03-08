@@ -53,10 +53,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRecorderMode">getRecorderMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CONVERT_PLUGINS">CONVERT_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGJS">FFMPEGJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FFMPEGWASM">FFMPEGWASM</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TSEBML">TSEBML</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AUDIO_PLUGINS">AUDIO_PLUGINS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LAMEJS">LAMEJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LIBVORBISJS">LIBVORBISJS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSMEDIARECORDER">OPUSMEDIARECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPUSRECORDER">OPUSRECORDER</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDERJS">RECORDERJS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RECORDRTC">RECORDRTC</a></span></span></li>
@@ -71,9 +73,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IMAGE_ONLY">IMAGE_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SCREEN_ONLY">SCREEN_ONLY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIDEO_ONLY">VIDEO_ONLY</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugins">plugins</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html">FFmpegWasmEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ffmpegjs-plugin.js~FFmpegjsEngine.html">FFmpegjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html">OpusMediaRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/plugins/ts-ebml-plugin.js~TsEBMLEngine.html">TsEBMLEngine</a></span></span></li>
@@ -97,13 +101,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {RecordEngine} from &apos;<span><a href="file/js/engine/record-engine.js.html#lineNumber42">videojs-record/js/engine/record-engine.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {RecordEngine} from &apos;<span><a href="file/js/engine/record-engine.js.html#lineNumber45">videojs-record/js/engine/record-engine.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/js/engine/record-engine.js.html#lineNumber42">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/js/engine/record-engine.js.html#lineNumber45">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -114,7 +118,7 @@
   
   
   <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="variable/index.html#static-variable-Component">Component</a></span> &#x2192; RecordEngine</div></div>
-  <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4><div><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span>, <span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span>, <span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span>, <span><a href="class/js/engine/record-rtc.js~RecordRTCEngine.html">RecordRTCEngine</a></span>, <span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span>, <span><a href="class/js/plugins/vmsg-plugin.js~VmsgEngine.html">VmsgEngine</a></span></div></div>
+  <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4><div><span><a href="class/js/plugins/lamejs-plugin.js~LamejsEngine.html">LamejsEngine</a></span>, <span><a href="class/js/plugins/libvorbis-plugin.js~LibVorbisEngine.html">LibVorbisEngine</a></span>, <span><a href="class/js/plugins/opus-media-recorder-plugin.js~OpusMediaRecorderEngine.html">OpusMediaRecorderEngine</a></span>, <span><a href="class/js/plugins/opus-recorder-plugin.js~OpusRecorderEngine.html">OpusRecorderEngine</a></span>, <span><a href="class/js/engine/record-rtc.js~RecordRTCEngine.html">RecordRTCEngine</a></span>, <span><a href="class/js/plugins/recorderjs-plugin.js~RecorderjsEngine.html">RecorderjsEngine</a></span>, <span><a href="class/js/plugins/vmsg-plugin.js~VmsgEngine.html">VmsgEngine</a></span></div></div>
   <div class="flat-list" data-ice="indirectSubclass"><h4>Indirect Subclass:</h4><div><span><a href="class/js/plugins/webm-wasm-plugin.js~WebmWasmEngine.html">WebmWasmEngine</a></span></div></div>
   
   
@@ -291,8 +295,8 @@
       <div>
         
         
-        <div data-ice="description"><p>Show save as dialog in browser so the user can store the recorded media
-locally.</p>
+        <div data-ice="description"><p>Show save as dialog in browser so the user can store the recorded
+media locally.</p>
 </div>
       </div>
     </td>
@@ -387,7 +391,7 @@ locally.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber52">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber55">source</a></span></span>
     </span>
   </h3>
 
@@ -458,7 +462,7 @@ locally.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber91">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber94">source</a></span></span>
     </span>
   </h3>
 
@@ -504,7 +508,7 @@ locally.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber80">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber83">source</a></span></span>
     </span>
   </h3>
 
@@ -565,7 +569,7 @@ locally.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber73">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -609,15 +613,15 @@ locally.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber116">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber119">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Show save as dialog in browser so the user can store the recorded media
-locally.</p>
+  <div data-ice="description"><p>Show save as dialog in browser so the user can store the recorded
+media locally.</p>
 </div>
 
   
@@ -672,7 +676,7 @@ locally.</p>
     
   <div class="example-doc" data-ice="exampleDoc">
       
-      <pre class="prettyprint source-code"><code data-ice="exampleCode">// save video file as &apos;foo.webm&apos;
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">// save recorded video file as &apos;foo.webm&apos;
 player.record().saveAs({&apos;video&apos;: &apos;foo&apos;});</code></pre>
     </div>
 </div>
@@ -696,7 +700,7 @@ player.record().saveAs({&apos;video&apos;: &apos;foo&apos;});</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber63">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 
@@ -740,7 +744,7 @@ player.record().saveAs({&apos;video&apos;: &apos;foo&apos;});</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber90">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/engine/record-engine.js.html#lineNumber93">source</a></span></span>
     </span>
   </h3>
 
