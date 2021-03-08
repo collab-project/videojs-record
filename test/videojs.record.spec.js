@@ -490,14 +490,7 @@ describe('Record', () => {
             const fileName = 'name-of-video-file';
             player.record().saveAs({'video': fileName});
 
-            // ignore edge browser
-            if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
-                let element = document.getElementsByTagName('a')[0];
-                expect(element.download).toEqual(fileName);
-
-                // cleanup element
-                element.remove();
-            }
+            TestHelpers.assertDownloadLinkExists(fileName);
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)

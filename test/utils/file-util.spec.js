@@ -17,8 +17,11 @@ describe('utils.file-util', () => {
             return response.blob();
         }).then((blob) => {
             // download file
-            let fileName = 'foo';
+            let fileName = 'name-of-blob';
             downloadBlob(fileName, blob);
+
+            TestHelpers.assertDownloadLinkExists(fileName);
+
             done();
         });
     });

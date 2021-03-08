@@ -80,17 +80,10 @@ describe('engine.record-engine', () => {
     it('save as', (done) => {
         let engine = new RecordEngine(player, {});
         engine.one(Event.RECORD_COMPLETE, () => {
-            const fileName = 'foo';
+            const fileName = 'name-of-audio-file';
             engine.saveAs({'audio': fileName});
 
-            // ignore edge browser
-            if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
-                let element = document.getElementsByTagName('a')[0];
-                expect(element.download).toEqual(fileName);
-
-                // cleanup
-                element.remove();
-            }
+            TestHelpers.assertDownloadLinkExists(fileName);
             done();
         });
 

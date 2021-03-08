@@ -448,6 +448,24 @@ const TestHelpers = {
         } else {
             element.fireEvent('on' + event.eventType, event);
         }
+    },
+
+    /**
+     * Check for and remove <a download="..."></a> element.
+     *
+     * @param  {String} fileName
+     */
+    assertDownloadLinkExists(expectedFileName) {
+        // ignore edge browser
+        if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
+            let element = document.querySelectorAll('a[download]')[0];
+            let actualFileName = element.download;
+
+            // remove now so test failure doesn't mess with the DOM
+            element.remove();
+
+            expect(expectedFileName).toEqual(actualFileName);
+        }
     }
 };
 
