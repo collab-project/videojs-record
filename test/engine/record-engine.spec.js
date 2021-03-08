@@ -63,7 +63,7 @@ describe('engine.record-engine', () => {
     it('add file info', (done) => {
         let engine = new RecordEngine(player, {});
         engine.one(Event.RECORD_COMPLETE, () => {
-            let fileName = engine.recordedData.lastModified + '.oga';
+            const fileName = engine.recordedData.lastModified + '.oga';
             expect(engine.recordedData.name).toEqual(fileName);
 
             done();
@@ -80,14 +80,10 @@ describe('engine.record-engine', () => {
     it('save as', (done) => {
         let engine = new RecordEngine(player, {});
         engine.one(Event.RECORD_COMPLETE, () => {
-            let fileName = 'foo';
+            const fileName = 'name-of-audio-file';
             engine.saveAs({'audio': fileName});
 
-            // ignore edge browser
-            if (typeof navigator.msSaveOrOpenBlob === 'undefined') {
-                let element = document.getElementsByTagName('a')[0];
-                expect(element.download).toEqual(fileName);
-            }
+            TestHelpers.assertDownloadLinkExists(fileName);
             done();
         });
 

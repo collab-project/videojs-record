@@ -484,10 +484,13 @@ describe('Record', () => {
     /** @test {Record#saveAs} */
     it('saves as', (done) => {
         // create new player
-        player = TestHelpers.makePlayer();
+        player = TestHelpers.makeVideoOnlyPlayer();
 
         player.one(Event.FINISH_RECORD, () => {
-            player.record().saveAs({'video': 'name-of-video-file'});
+            const fileName = 'name-of-video-file.webm';
+            player.record().saveAs({'video': fileName});
+
+            TestHelpers.assertDownloadLinkExists(fileName);
 
             // wait till it's loaded before destroying
             // (XXX: create new event for this)

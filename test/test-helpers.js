@@ -448,6 +448,30 @@ const TestHelpers = {
         } else {
             element.fireEvent('on' + event.eventType, event);
         }
+    },
+
+    /**
+     * Check for and remove <a download="..."></a> element.
+     *
+     * @param  {String} fileName
+     */
+    assertDownloadLinkExists(expectedFileName) {
+        let actualFileName;
+        let element = document.querySelectorAll('a[download^="' + expectedFileName + '"]')[0];
+
+        if (element) {
+            actualFileName = element.download;
+        } else {
+            // element not found
+            actualFileName = 'element not found';
+        }
+
+        // remove now so test failure doesn't mess with the DOM
+        document.querySelectorAll('a[download]').forEach((element) => {
+            element.remove();
+        });
+
+        expect(actualFileName).toEqual(expectedFileName);
     }
 };
 
