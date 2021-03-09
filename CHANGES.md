@@ -1,5 +1,10 @@
 # videojs-record changelog
 
+## 4.4.0 - unreleased
+
+- Bump required version for recordrtc to 5.6.2 or newer (#553)
+
+
 ## 4.3.0 - 2021/03/08
 
 - Fix controlbar flickering in Mobile Safari (#413)
