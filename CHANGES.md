@@ -2,7 +2,9 @@
 
 ## 4.4.0 - unreleased
 
-- Bump required version for recordrtc to 5.6.2 or newer (#553)
+- Bump required version for:
+  - recordrtc (5.6.2 or newer) (#553)
+  - webrtc-adapter (7.7.1 or newer)
 
 
 ## 4.3.0 - 2021/03/08
