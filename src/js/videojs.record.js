@@ -615,7 +615,7 @@ class Record extends Plugin {
         // stop previous stream if it is active
         if (this.stream !== undefined && this.stream.active) {
             this.stream.stop();
-        }        
+        }
 
         // store reference to stream for stopping etc.
         this.stream = stream;
