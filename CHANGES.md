@@ -2,6 +2,7 @@
 
 ## 4.4.0 - unreleased
 
+- Fix stopping stream if it is active when using `getDevice` (#561)
 - Bump required version for:
   - recordrtc (5.6.2 or newer) (#553)
   - webrtc-adapter (7.7.1 or newer)
