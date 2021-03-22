@@ -34,6 +34,7 @@ const path = require('path');
 const basePath = path.resolve(__dirname);
 
 module.exports = {
+    mode: 'development',
     context: path.join(basePath, 'src'),
     entry: {
         app: './app.js'
@@ -201,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 Start the Webpack development server:
 
 ```console
-./node_modules/.bin/webpack-dev-server --mode=development
+./node_modules/.bin/webpack serve --config=webpack.config.js
 ```
 
 And open http://localhost:8080/src/index.html in a browser.
