@@ -5,6 +5,7 @@
 - Fix stopping stream if it is active when using `getDevice` (#561)
 - Bump required version for:
   - recordrtc (5.6.2 or newer) (#553)
+  - videojs-wavesurfer (3.7.0 or newer)
   - webrtc-adapter (7.7.1 or newer)
 
 
