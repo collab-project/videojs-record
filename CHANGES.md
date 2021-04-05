@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.4.0 - unreleased
+## 4.4.0 - 2021/04/05
 
 - Fix stopping stream if it is active when using `getDevice` (#561)
 - Bump required version for:
