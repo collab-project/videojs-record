@@ -62,12 +62,16 @@ class FFmpegWasmEngine extends ConvertEngine {
         if (this.pluginLibraryOptions.outputType === undefined) {
             throw new Error('no outputType specified!');
         }
+        if (this.pluginLibraryOptions.progress !== undefined && typeof(this.pluginLibraryOptions.progress) !=='function') { /*validate progess value*/
+            throw new Error('progress should be a function!');
+        }
         this.outputType = this.pluginLibraryOptions.outputType;
 
         const {version, createFFmpeg, fetchFile} = FFmpeg;
         const ffmpeg = createFFmpeg({
             corePath: this.convertWorkerURL,
-            log: this.debug
+            log: this.debug,
+            progress: this.pluginLibraryOptions.progress /*include this to show encoding progress for client*/
         });
         // save timestamp
         const timestamp = new Date();
