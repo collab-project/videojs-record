@@ -159,10 +159,12 @@ class RecordRTCEngine extends RecordEngine {
         // store reference to recorded stream data
         let recordType = this.player().record().getRecordType();
         this.engine.getBlob((recording) => {
+            let seekable=false;
             switch (recordType) {
                 case AUDIO_ONLY:
                     if (recording.audio !== undefined) {
                         this.recordedData = recording.audio;
+                        seekable=true;
                     }
                     break;
 
@@ -174,6 +176,7 @@ class RecordRTCEngine extends RecordEngine {
                     // and video data
                     if (recording.video !== undefined) {
                         this.recordedData = recording.video;
+                        seekable=true;
                     }
                     break;
 
@@ -183,11 +186,21 @@ class RecordRTCEngine extends RecordEngine {
                     }
                     break;
             }
-            // inject file info
-            this.addFileInfo(this.recordedData);
-
-            // notify listeners
-            this.trigger(Event.RECORD_COMPLETE);
+            if(seekable){
+                getSeekableBlob(this.recordedData,(seekableRecording)=>{            
+                    this.recordedData=seekableRecording;
+                    // inject file info
+                    this.addFileInfo(this.recordedData);
+    
+                    // notify listeners
+                    this.trigger(Event.RECORD_COMPLETE);
+                });   
+            }else{
+                // inject file info
+                this.addFileInfo(this.recordedData);
+                // notify listeners
+                this.trigger(Event.RECORD_COMPLETE);
+            }
         });
     }
 
