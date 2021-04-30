@@ -1489,7 +1489,10 @@ class Record extends Plugin {
      * @private
      */
     removeRecording() {
-        if (this.mediaElement && this.mediaElement.src.startsWith('blob:') === true) {
+        if (this.mediaElement &&
+            this.mediaElement.src &&
+            this.mediaElement.src.startsWith('blob:') === true
+        ) {
             URL.revokeObjectURL(this.mediaElement.src);
             this.mediaElement.src = '';
         }

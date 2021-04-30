@@ -1,5 +1,10 @@
 # videojs-record changelog
 
+## 4.5.0 - unreleased
+
+- Improve check in `removeRecording` (#575)
+
+
 ## 4.4.0 - 2021/04/05
 
 - Fix stopping stream if it is active when using `getDevice` (#561)
