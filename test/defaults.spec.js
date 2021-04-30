@@ -55,6 +55,7 @@ describe('pluginDefaultOptions', () => {
             convertEngine: '',
             convertWorkerURL: '',
             convertOptions: [],
+            convertAuto: true,
             hotKeys: false,
             pluginLibraryOptions: {}
         });

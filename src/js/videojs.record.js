@@ -1058,10 +1058,8 @@ class Record extends Plugin {
             this.player.controlBar.playToggle.show();
         }
 
-        // notify converter
-        if (this.converter !== undefined) {
-            this.converter.convert(this.player.recordedData);
-        }
+        // start converter
+        this.convert();
 
         // notify listeners that data is available
         this.player.trigger(Event.FINISH_RECORD);
@@ -1555,6 +1553,15 @@ class Record extends Plugin {
     getRecordType() {
         return getRecorderMode(this.recordImage, this.recordAudio,
             this.recordVideo, this.recordAnimation, this.recordScreen);
+    }
+
+    /**
+     * Start converter.
+     */
+    convert() {
+        if (this.converter !== undefined) {
+            this.converter.convert(this.player.recordedData);
+        }
     }
 
     /**

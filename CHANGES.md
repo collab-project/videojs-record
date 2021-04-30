@@ -2,6 +2,8 @@
 
 ## 4.5.0 - unreleased
 
+- Add `convert` method and `convertAuto` option, allowing user
+  to control start of converter process (#568)
 - Improve check in `removeRecording` (#575)
 
 
