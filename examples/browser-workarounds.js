@@ -5,9 +5,6 @@ var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 var isEdge = /Edge/.test(navigator.userAgent);
 var isOpera = !!window.opera || navigator.userAgent.indexOf('OPR/') !== -1;
 
-if (typeof MediaRecorder === 'undefined') {
-}
-
 function applyAudioWorkaround() {
     if (isSafari || isEdge) {
         if (isSafari && window.MediaRecorder !== undefined) {
