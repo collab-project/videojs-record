@@ -69,6 +69,9 @@ player.on('finishConvert', function() {
 });
 ```
 
+If you do not want to convert the data automatically when the user stops recording,
+set the `convertAuto` option to false and call `player.record().convert()` manually instead.
+
 ## Timestamps
 
 It's also possible to get data during recording with specific time-intervals. This could
