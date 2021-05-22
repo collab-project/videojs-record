@@ -202,6 +202,7 @@ class Record extends Plugin {
 
         // convert settings
         this.convertEngine = recordOptions.convertEngine;
+        this.convertAuto = recordOptions.convertAuto;
         this.convertWorkerURL = recordOptions.convertWorkerURL;
         this.convertOptions = recordOptions.convertOptions;
 
@@ -731,6 +732,7 @@ class Record extends Plugin {
                 }
 
                 // convert settings
+                this.converter.convertAuto = this.convertAuto;
                 this.converter.convertWorkerURL = this.convertWorkerURL;
                 this.converter.convertOptions = this.convertOptions;
                 this.converter.pluginLibraryOptions = this.pluginLibraryOptions;
@@ -1059,7 +1061,9 @@ class Record extends Plugin {
         }
 
         // start converter
-        this.convert();
+        if (this.convertAuto === true) {
+            this.convert();
+        }
 
         // notify listeners that data is available
         this.player.trigger(Event.FINISH_RECORD);
