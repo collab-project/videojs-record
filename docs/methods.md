@@ -26,6 +26,7 @@ player.record().destroy();
 | `setAudioOutput(deviceId)` | Change the audio output device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
 | `setAudioInput(deviceId)` | Change the audio input device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
 | `setVideoInput(deviceId)` | Change the video input device using its [deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId). |
+| `convert` | Start converter manually (used with the `convertAuto: false` option) |
 | `start` | Start recording. |
 | `stop` | Stop recording. |
 | `pause` | Pause recording. |

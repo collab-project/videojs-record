@@ -130,6 +130,9 @@ const pluginDefaultOptions = {
     convertWorkerURL: '',
     // List of string options to pass to the convert engine.
     convertOptions: [],
+    // If the converter should automatically start after recording (default),
+    // or manually by calling `convert()`
+    convertAuto: true,
     // Enable keyboard hotkeys.
     hotKeys: false,
     // Use this object to specify additional settings for the library used by the
