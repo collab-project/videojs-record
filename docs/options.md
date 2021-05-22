@@ -52,5 +52,6 @@ Additional options for this plugin are:
 | `convertEngine` | string | `''` | Media converter library to use. Legal values are `ts-ebml`, `ffmpeg.wasm` and `ffmpeg.js`. Use an empty string `''` to disable (default). Inspect the [player.convertedData](recorded-data#convert-data) object for the converted data. |
 | `convertWorkerURL` | string | `''` | URL for the converter worker, for example: `/node_modules/ffmpeg.js/ffmpeg-worker-mp4.js`. Currently only used for ffmpeg.wasm and ffmpeg.js plugins. Use an empty string '' to disable (default). |
 | `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
+| `convertAuto` | boolean | `true` | By default the converter automatically starts once recording completed. Use `false` to disable this behavior, allowing you to start the converter manually instead. |
 | `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](hotkeys.md). Disabled by default. |
 | `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used for the ffmpeg.wasm, ffmpeg.js, opus-recorder and vmsg plugins. |
