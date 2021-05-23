@@ -1,10 +1,9 @@
 {
-  "name": "videojs-record",
-  "version": "4.4.0",
+  "name": "@e10in/videojs-record",
+  "version": "4.4.1",
   "description": "A video.js plugin for recording audio/video/image files.",
   "author": "Collab",
   "license": "MIT",
-  "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/collab-project/videojs-record/issues"
   },
@@ -13,14 +12,13 @@
   "style": "dist/css/videojs.record.css",
   "sass": "src/css/videojs.record.scss",
   "directories": {
-    "doc": "./docs",
-    "lib": "./src",
-    "example": "./examples",
-    "test": "./test"
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/collab-project/videojs-record.git"
+    "url": "git+https://github.com/collab-project/videojs-record.git"
   },
   "scripts": {
     "clean": "rimraf dist",
