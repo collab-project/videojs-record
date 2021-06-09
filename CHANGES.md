@@ -6,6 +6,7 @@
   to control start of converter process (#568)
 - Improve check in `removeRecording` (#575)
 - Bump required version for webrtc-adapter (8.0.0 or newer)
+- Stop screen sharing on a microphone permissions error in the AUDIO_SCREEN mode (#585)
 
 
 ## 4.4.0 - 2021/04/05
