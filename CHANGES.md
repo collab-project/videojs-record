@@ -1,12 +1,13 @@
 # videojs-record changelog
 
-## 4.5.0 - unreleased
+## 4.5.0 - 2021/06/14
 
 - Add `convert` method and `convertAuto` option, allowing user
   to control start of converter process (#568)
 - Improve check in `removeRecording` (#575)
 - Bump required version for webrtc-adapter (8.0.0 or newer)
-- Stop screen sharing on a microphone permissions error in the AUDIO_SCREEN mode (#585)
+- Stop screen sharing on a microphone permissions error in
+  `AUDIO_SCREEN` mode (#585)
 
 
 ## 4.4.0 - 2021/04/05

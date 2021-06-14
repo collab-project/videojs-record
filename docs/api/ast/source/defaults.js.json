@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 6478,
+  "end": 6621,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 141,
+      "line": 144,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 6478,
+    "end": 6621,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 141,
+        "line": 144,
         "column": 0
       }
     },
@@ -31,14 +31,14 @@
       {
         "type": "Identifier",
         "start": 65,
-        "end": 6439,
+        "end": 6582,
         "loc": {
           "start": {
             "line": 7,
             "column": 0
           },
           "end": {
-            "line": 138,
+            "line": 141,
             "column": 2
           }
         },
@@ -46,14 +46,14 @@
           {
             "type": "VariableDeclarator",
             "start": 71,
-            "end": 6438,
+            "end": 6581,
             "loc": {
               "start": {
                 "line": 7,
                 "column": 6
               },
               "end": {
-                "line": 138,
+                "line": 141,
                 "column": 1
               }
             },
@@ -78,14 +78,14 @@
             "init": {
               "type": "ObjectExpression",
               "start": 94,
-              "end": 6438,
+              "end": 6581,
               "loc": {
                 "start": {
                   "line": 7,
                   "column": 29
                 },
                 "end": {
-                  "line": 138,
+                  "line": 141,
                   "column": 1
                 }
               },
@@ -3725,15 +3725,101 @@
                 },
                 {
                   "type": "ObjectProperty",
-                  "start": 6225,
-                  "end": 6239,
+                  "start": 6313,
+                  "end": 6330,
                   "loc": {
                     "start": {
-                      "line": 134,
+                      "line": 135,
                       "column": 4
                     },
                     "end": {
-                      "line": 134,
+                      "line": 135,
+                      "column": 21
+                    }
+                  },
+                  "method": false,
+                  "shorthand": false,
+                  "computed": false,
+                  "key": {
+                    "type": "Identifier",
+                    "start": 6313,
+                    "end": 6324,
+                    "loc": {
+                      "start": {
+                        "line": 135,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 135,
+                        "column": 15
+                      },
+                      "identifierName": "convertAuto"
+                    },
+                    "name": "convertAuto",
+                    "leadingComments": null
+                  },
+                  "value": {
+                    "type": "BooleanLiteral",
+                    "start": 6326,
+                    "end": 6330,
+                    "loc": {
+                      "start": {
+                        "line": 135,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 135,
+                        "column": 21
+                      }
+                    },
+                    "value": true
+                  },
+                  "leadingComments": [
+                    {
+                      "type": "CommentLine",
+                      "value": " If the converter should automatically start after recording (default),",
+                      "start": 6193,
+                      "end": 6266,
+                      "loc": {
+                        "start": {
+                          "line": 133,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 133,
+                          "column": 77
+                        }
+                      }
+                    },
+                    {
+                      "type": "CommentLine",
+                      "value": " or manually by calling `convert()`",
+                      "start": 6271,
+                      "end": 6308,
+                      "loc": {
+                        "start": {
+                          "line": 134,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 134,
+                          "column": 41
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "ObjectProperty",
+                  "start": 6368,
+                  "end": 6382,
+                  "loc": {
+                    "start": {
+                      "line": 137,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 137,
                       "column": 18
                     }
                   },
@@ -3742,15 +3828,15 @@
                   "computed": false,
                   "key": {
                     "type": "Identifier",
-                    "start": 6225,
-                    "end": 6232,
+                    "start": 6368,
+                    "end": 6375,
                     "loc": {
                       "start": {
-                        "line": 134,
+                        "line": 137,
                         "column": 4
                       },
                       "end": {
-                        "line": 134,
+                        "line": 137,
                         "column": 11
                       },
                       "identifierName": "hotKeys"
@@ -3760,15 +3846,15 @@
                   },
                   "value": {
                     "type": "BooleanLiteral",
-                    "start": 6234,
-                    "end": 6239,
+                    "start": 6377,
+                    "end": 6382,
                     "loc": {
                       "start": {
-                        "line": 134,
+                        "line": 137,
                         "column": 13
                       },
                       "end": {
-                        "line": 134,
+                        "line": 137,
                         "column": 18
                       }
                     },
@@ -3778,15 +3864,15 @@
                     {
                       "type": "CommentLine",
                       "value": " Enable keyboard hotkeys.",
-                      "start": 6193,
-                      "end": 6220,
+                      "start": 6336,
+                      "end": 6363,
                       "loc": {
                         "start": {
-                          "line": 133,
+                          "line": 136,
                           "column": 4
                         },
                         "end": {
-                          "line": 133,
+                          "line": 136,
                           "column": 31
                         }
                       }
@@ -3795,15 +3881,15 @@
                 },
                 {
                   "type": "ObjectProperty",
-                  "start": 6412,
-                  "end": 6436,
+                  "start": 6555,
+                  "end": 6579,
                   "loc": {
                     "start": {
-                      "line": 137,
+                      "line": 140,
                       "column": 4
                     },
                     "end": {
-                      "line": 137,
+                      "line": 140,
                       "column": 28
                     }
                   },
@@ -3812,15 +3898,15 @@
                   "computed": false,
                   "key": {
                     "type": "Identifier",
-                    "start": 6412,
-                    "end": 6432,
+                    "start": 6555,
+                    "end": 6575,
                     "loc": {
                       "start": {
-                        "line": 137,
+                        "line": 140,
                         "column": 4
                       },
                       "end": {
-                        "line": 137,
+                        "line": 140,
                         "column": 24
                       },
                       "identifierName": "pluginLibraryOptions"
@@ -3830,15 +3916,15 @@
                   },
                   "value": {
                     "type": "ObjectExpression",
-                    "start": 6434,
-                    "end": 6436,
+                    "start": 6577,
+                    "end": 6579,
                     "loc": {
                       "start": {
-                        "line": 137,
+                        "line": 140,
                         "column": 26
                       },
                       "end": {
-                        "line": 137,
+                        "line": 140,
                         "column": 28
                       }
                     },
@@ -3848,15 +3934,15 @@
                     {
                       "type": "CommentLine",
                       "value": " Use this object to specify additional settings for the library used by the",
-                      "start": 6245,
-                      "end": 6322,
+                      "start": 6388,
+                      "end": 6465,
                       "loc": {
                         "start": {
-                          "line": 135,
+                          "line": 138,
                           "column": 4
                         },
                         "end": {
-                          "line": 135,
+                          "line": 138,
                           "column": 81
                         }
                       }
@@ -3864,15 +3950,15 @@
                     {
                       "type": "CommentLine",
                       "value": " plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).",
-                      "start": 6327,
-                      "end": 6407,
+                      "start": 6470,
+                      "end": 6550,
                       "loc": {
                         "start": {
-                          "line": 136,
+                          "line": 139,
                           "column": 4
                         },
                         "end": {
-                          "line": 136,
+                          "line": 139,
                           "column": 84
                         }
                       }
@@ -3891,29 +3977,29 @@
       },
       {
         "type": "Identifier",
-        "start": 6441,
-        "end": 6477,
+        "start": 6584,
+        "end": 6620,
         "loc": {
           "start": {
-            "line": 140,
+            "line": 143,
             "column": 0
           },
           "end": {
-            "line": 140,
+            "line": 143,
             "column": 36
           }
         },
         "declaration": {
           "type": "Identifier",
-          "start": 6456,
-          "end": 6476,
+          "start": 6599,
+          "end": 6619,
           "loc": {
             "start": {
-              "line": 140,
+              "line": 143,
               "column": 15
             },
             "end": {
-              "line": 140,
+              "line": 143,
               "column": 35
             },
             "identifierName": "pluginDefaultOptions"
@@ -3926,29 +4012,29 @@
       },
       {
         "type": "ExportDefaultDeclaration",
-        "start": 6441,
-        "end": 6477,
+        "start": 6584,
+        "end": 6620,
         "loc": {
           "start": {
-            "line": 140,
+            "line": 143,
             "column": 0
           },
           "end": {
-            "line": 140,
+            "line": 143,
             "column": 36
           }
         },
         "declaration": {
           "type": "VariableDeclaration",
           "start": 65,
-          "end": 6439,
+          "end": 6582,
           "loc": {
             "start": {
               "line": 7,
               "column": 0
             },
             "end": {
-              "line": 138,
+              "line": 141,
               "column": 2
             }
           },
@@ -3956,14 +4042,14 @@
             {
               "type": "VariableDeclarator",
               "start": 71,
-              "end": 6438,
+              "end": 6581,
               "loc": {
                 "start": {
                   "line": 7,
                   "column": 6
                 },
                 "end": {
-                  "line": 138,
+                  "line": 141,
                   "column": 1
                 }
               },
@@ -3988,14 +4074,14 @@
               "init": {
                 "type": "ObjectExpression",
                 "start": 94,
-                "end": 6438,
+                "end": 6581,
                 "loc": {
                   "start": {
                     "line": 7,
                     "column": 29
                   },
                   "end": {
-                    "line": 138,
+                    "line": 141,
                     "column": 1
                   }
                 },
@@ -7635,15 +7721,101 @@
                   },
                   {
                     "type": "ObjectProperty",
-                    "start": 6225,
-                    "end": 6239,
+                    "start": 6313,
+                    "end": 6330,
                     "loc": {
                       "start": {
-                        "line": 134,
+                        "line": 135,
                         "column": 4
                       },
                       "end": {
-                        "line": 134,
+                        "line": 135,
+                        "column": 21
+                      }
+                    },
+                    "method": false,
+                    "shorthand": false,
+                    "computed": false,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 6313,
+                      "end": 6324,
+                      "loc": {
+                        "start": {
+                          "line": 135,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 135,
+                          "column": 15
+                        },
+                        "identifierName": "convertAuto"
+                      },
+                      "name": "convertAuto",
+                      "leadingComments": null
+                    },
+                    "value": {
+                      "type": "BooleanLiteral",
+                      "start": 6326,
+                      "end": 6330,
+                      "loc": {
+                        "start": {
+                          "line": 135,
+                          "column": 17
+                        },
+                        "end": {
+                          "line": 135,
+                          "column": 21
+                        }
+                      },
+                      "value": true
+                    },
+                    "leadingComments": [
+                      {
+                        "type": "CommentLine",
+                        "value": " If the converter should automatically start after recording (default),",
+                        "start": 6193,
+                        "end": 6266,
+                        "loc": {
+                          "start": {
+                            "line": 133,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 133,
+                            "column": 77
+                          }
+                        }
+                      },
+                      {
+                        "type": "CommentLine",
+                        "value": " or manually by calling `convert()`",
+                        "start": 6271,
+                        "end": 6308,
+                        "loc": {
+                          "start": {
+                            "line": 134,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 134,
+                            "column": 41
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ObjectProperty",
+                    "start": 6368,
+                    "end": 6382,
+                    "loc": {
+                      "start": {
+                        "line": 137,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 137,
                         "column": 18
                       }
                     },
@@ -7652,15 +7824,15 @@
                     "computed": false,
                     "key": {
                       "type": "Identifier",
-                      "start": 6225,
-                      "end": 6232,
+                      "start": 6368,
+                      "end": 6375,
                       "loc": {
                         "start": {
-                          "line": 134,
+                          "line": 137,
                           "column": 4
                         },
                         "end": {
-                          "line": 134,
+                          "line": 137,
                           "column": 11
                         },
                         "identifierName": "hotKeys"
@@ -7670,15 +7842,15 @@
                     },
                     "value": {
                       "type": "BooleanLiteral",
-                      "start": 6234,
-                      "end": 6239,
+                      "start": 6377,
+                      "end": 6382,
                       "loc": {
                         "start": {
-                          "line": 134,
+                          "line": 137,
                           "column": 13
                         },
                         "end": {
-                          "line": 134,
+                          "line": 137,
                           "column": 18
                         }
                       },
@@ -7688,15 +7860,15 @@
                       {
                         "type": "CommentLine",
                         "value": " Enable keyboard hotkeys.",
-                        "start": 6193,
-                        "end": 6220,
+                        "start": 6336,
+                        "end": 6363,
                         "loc": {
                           "start": {
-                            "line": 133,
+                            "line": 136,
                             "column": 4
                           },
                           "end": {
-                            "line": 133,
+                            "line": 136,
                             "column": 31
                           }
                         }
@@ -7705,15 +7877,15 @@
                   },
                   {
                     "type": "ObjectProperty",
-                    "start": 6412,
-                    "end": 6436,
+                    "start": 6555,
+                    "end": 6579,
                     "loc": {
                       "start": {
-                        "line": 137,
+                        "line": 140,
                         "column": 4
                       },
                       "end": {
-                        "line": 137,
+                        "line": 140,
                         "column": 28
                       }
                     },
@@ -7722,15 +7894,15 @@
                     "computed": false,
                     "key": {
                       "type": "Identifier",
-                      "start": 6412,
-                      "end": 6432,
+                      "start": 6555,
+                      "end": 6575,
                       "loc": {
                         "start": {
-                          "line": 137,
+                          "line": 140,
                           "column": 4
                         },
                         "end": {
-                          "line": 137,
+                          "line": 140,
                           "column": 24
                         },
                         "identifierName": "pluginLibraryOptions"
@@ -7740,15 +7912,15 @@
                     },
                     "value": {
                       "type": "ObjectExpression",
-                      "start": 6434,
-                      "end": 6436,
+                      "start": 6577,
+                      "end": 6579,
                       "loc": {
                         "start": {
-                          "line": 137,
+                          "line": 140,
                           "column": 26
                         },
                         "end": {
-                          "line": 137,
+                          "line": 140,
                           "column": 28
                         }
                       },
@@ -7758,15 +7930,15 @@
                       {
                         "type": "CommentLine",
                         "value": " Use this object to specify additional settings for the library used by the",
-                        "start": 6245,
-                        "end": 6322,
+                        "start": 6388,
+                        "end": 6465,
                         "loc": {
                           "start": {
-                            "line": 135,
+                            "line": 138,
                             "column": 4
                           },
                           "end": {
-                            "line": 135,
+                            "line": 138,
                             "column": 81
                           }
                         }
@@ -7774,15 +7946,15 @@
                       {
                         "type": "CommentLine",
                         "value": " plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).",
-                        "start": 6327,
-                        "end": 6407,
+                        "start": 6470,
+                        "end": 6550,
                         "loc": {
                           "start": {
-                            "line": 136,
+                            "line": 139,
                             "column": 4
                           },
                           "end": {
-                            "line": 136,
+                            "line": 139,
                             "column": 84
                           }
                         }
@@ -9230,9 +9402,9 @@
     },
     {
       "type": "CommentLine",
-      "value": " Enable keyboard hotkeys.",
+      "value": " If the converter should automatically start after recording (default),",
       "start": 6193,
-      "end": 6220,
+      "end": 6266,
       "loc": {
         "start": {
           "line": 133,
@@ -9240,6 +9412,38 @@
         },
         "end": {
           "line": 133,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " or manually by calling `convert()`",
+      "start": 6271,
+      "end": 6308,
+      "loc": {
+        "start": {
+          "line": 134,
+          "column": 4
+        },
+        "end": {
+          "line": 134,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " Enable keyboard hotkeys.",
+      "start": 6336,
+      "end": 6363,
+      "loc": {
+        "start": {
+          "line": 136,
+          "column": 4
+        },
+        "end": {
+          "line": 136,
           "column": 31
         }
       }
@@ -9247,15 +9451,15 @@
     {
       "type": "CommentLine",
       "value": " Use this object to specify additional settings for the library used by the",
-      "start": 6245,
-      "end": 6322,
+      "start": 6388,
+      "end": 6465,
       "loc": {
         "start": {
-          "line": 135,
+          "line": 138,
           "column": 4
         },
         "end": {
-          "line": 135,
+          "line": 138,
           "column": 81
         }
       }
@@ -9263,15 +9467,15 @@
     {
       "type": "CommentLine",
       "value": " plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).",
-      "start": 6327,
-      "end": 6407,
+      "start": 6470,
+      "end": 6550,
       "loc": {
         "start": {
-          "line": 136,
+          "line": 139,
           "column": 4
         },
         "end": {
-          "line": 136,
+          "line": 139,
           "column": 84
         }
       }
@@ -15012,9 +15216,9 @@
     },
     {
       "type": "CommentLine",
-      "value": " Enable keyboard hotkeys.",
+      "value": " If the converter should automatically start after recording (default),",
       "start": 6193,
-      "end": 6220,
+      "end": 6266,
       "loc": {
         "start": {
           "line": 133,
@@ -15022,6 +15226,144 @@
         },
         "end": {
           "line": 133,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " or manually by calling `convert()`",
+      "start": 6271,
+      "end": 6308,
+      "loc": {
+        "start": {
+          "line": 134,
+          "column": 4
+        },
+        "end": {
+          "line": 134,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "convertAuto",
+      "start": 6313,
+      "end": 6324,
+      "loc": {
+        "start": {
+          "line": 135,
+          "column": 4
+        },
+        "end": {
+          "line": 135,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ":",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 6324,
+      "end": 6325,
+      "loc": {
+        "start": {
+          "line": 135,
+          "column": 15
+        },
+        "end": {
+          "line": 135,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "true",
+        "keyword": "true",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "true",
+      "start": 6326,
+      "end": 6330,
+      "loc": {
+        "start": {
+          "line": 135,
+          "column": 17
+        },
+        "end": {
+          "line": 135,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 6330,
+      "end": 6331,
+      "loc": {
+        "start": {
+          "line": 135,
+          "column": 21
+        },
+        "end": {
+          "line": 135,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " Enable keyboard hotkeys.",
+      "start": 6336,
+      "end": 6363,
+      "loc": {
+        "start": {
+          "line": 136,
+          "column": 4
+        },
+        "end": {
+          "line": 136,
           "column": 31
         }
       }
@@ -15039,15 +15381,15 @@
         "binop": null
       },
       "value": "hotKeys",
-      "start": 6225,
-      "end": 6232,
+      "start": 6368,
+      "end": 6375,
       "loc": {
         "start": {
-          "line": 134,
+          "line": 137,
           "column": 4
         },
         "end": {
-          "line": 134,
+          "line": 137,
           "column": 11
         }
       }
@@ -15065,15 +15407,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6232,
-      "end": 6233,
+      "start": 6375,
+      "end": 6376,
       "loc": {
         "start": {
-          "line": 134,
+          "line": 137,
           "column": 11
         },
         "end": {
-          "line": 134,
+          "line": 137,
           "column": 12
         }
       }
@@ -15093,15 +15435,15 @@
         "updateContext": null
       },
       "value": "false",
-      "start": 6234,
-      "end": 6239,
+      "start": 6377,
+      "end": 6382,
       "loc": {
         "start": {
-          "line": 134,
+          "line": 137,
           "column": 13
         },
         "end": {
-          "line": 134,
+          "line": 137,
           "column": 18
         }
       }
@@ -15119,15 +15461,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6239,
-      "end": 6240,
+      "start": 6382,
+      "end": 6383,
       "loc": {
         "start": {
-          "line": 134,
+          "line": 137,
           "column": 18
         },
         "end": {
-          "line": 134,
+          "line": 137,
           "column": 19
         }
       }
@@ -15135,15 +15477,15 @@
     {
       "type": "CommentLine",
       "value": " Use this object to specify additional settings for the library used by the",
-      "start": 6245,
-      "end": 6322,
+      "start": 6388,
+      "end": 6465,
       "loc": {
         "start": {
-          "line": 135,
+          "line": 138,
           "column": 4
         },
         "end": {
-          "line": 135,
+          "line": 138,
           "column": 81
         }
       }
@@ -15151,15 +15493,15 @@
     {
       "type": "CommentLine",
       "value": " plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).",
-      "start": 6327,
-      "end": 6407,
+      "start": 6470,
+      "end": 6550,
       "loc": {
         "start": {
-          "line": 136,
+          "line": 139,
           "column": 4
         },
         "end": {
-          "line": 136,
+          "line": 139,
           "column": 84
         }
       }
@@ -15177,15 +15519,15 @@
         "binop": null
       },
       "value": "pluginLibraryOptions",
-      "start": 6412,
-      "end": 6432,
+      "start": 6555,
+      "end": 6575,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 140,
           "column": 4
         },
         "end": {
-          "line": 137,
+          "line": 140,
           "column": 24
         }
       }
@@ -15203,15 +15545,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6432,
-      "end": 6433,
+      "start": 6575,
+      "end": 6576,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 140,
           "column": 24
         },
         "end": {
-          "line": 137,
+          "line": 140,
           "column": 25
         }
       }
@@ -15228,15 +15570,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6434,
-      "end": 6435,
+      "start": 6577,
+      "end": 6578,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 140,
           "column": 26
         },
         "end": {
-          "line": 137,
+          "line": 140,
           "column": 27
         }
       }
@@ -15253,15 +15595,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6435,
-      "end": 6436,
+      "start": 6578,
+      "end": 6579,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 140,
           "column": 27
         },
         "end": {
-          "line": 137,
+          "line": 140,
           "column": 28
         }
       }
@@ -15278,15 +15620,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6437,
-      "end": 6438,
+      "start": 6580,
+      "end": 6581,
       "loc": {
         "start": {
-          "line": 138,
+          "line": 141,
           "column": 0
         },
         "end": {
-          "line": 138,
+          "line": 141,
           "column": 1
         }
       }
@@ -15304,15 +15646,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6438,
-      "end": 6439,
+      "start": 6581,
+      "end": 6582,
       "loc": {
         "start": {
-          "line": 138,
+          "line": 141,
           "column": 1
         },
         "end": {
-          "line": 138,
+          "line": 141,
           "column": 2
         }
       }
@@ -15332,15 +15674,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 6441,
-      "end": 6447,
+      "start": 6584,
+      "end": 6590,
       "loc": {
         "start": {
-          "line": 140,
+          "line": 143,
           "column": 0
         },
         "end": {
-          "line": 140,
+          "line": 143,
           "column": 6
         }
       }
@@ -15360,15 +15702,15 @@
         "updateContext": null
       },
       "value": "default",
-      "start": 6448,
-      "end": 6455,
+      "start": 6591,
+      "end": 6598,
       "loc": {
         "start": {
-          "line": 140,
+          "line": 143,
           "column": 7
         },
         "end": {
-          "line": 140,
+          "line": 143,
           "column": 14
         }
       }
@@ -15386,15 +15728,15 @@
         "binop": null
       },
       "value": "pluginDefaultOptions",
-      "start": 6456,
-      "end": 6476,
+      "start": 6599,
+      "end": 6619,
       "loc": {
         "start": {
-          "line": 140,
+          "line": 143,
           "column": 15
         },
         "end": {
-          "line": 140,
+          "line": 143,
           "column": 35
         }
       }
@@ -15412,15 +15754,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6476,
-      "end": 6477,
+      "start": 6619,
+      "end": 6620,
       "loc": {
         "start": {
-          "line": 140,
+          "line": 143,
           "column": 35
         },
         "end": {
-          "line": 140,
+          "line": 143,
           "column": 36
         }
       }
@@ -15438,15 +15780,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6478,
-      "end": 6478,
+      "start": 6621,
+      "end": 6621,
       "loc": {
         "start": {
-          "line": 141,
+          "line": 144,
           "column": 0
         },
         "end": {
-          "line": 141,
+          "line": 144,
           "column": 0
         }
       }

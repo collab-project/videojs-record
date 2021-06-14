@@ -2088,6 +2088,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "js/videojs.record.js~record#convert",
+    "class/js/videojs.record.js~Record.html#instance-method-convert",
+    "js/videojs.record.js~Record#convert",
+    "method"
+  ],
+  [
+    "js/videojs.record.js~record#convertauto",
+    "class/js/videojs.record.js~Record.html#instance-member-convertAuto",
+    "js/videojs.record.js~Record#convertAuto",
+    "member"
+  ],
+  [
     "js/videojs.record.js~record#convertengine",
     "class/js/videojs.record.js~Record.html#instance-member-convertEngine",
     "js/videojs.record.js~Record#convertEngine",
