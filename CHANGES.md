@@ -1,5 +1,10 @@
 # videojs-record changelog
 
+## 4.6.0 - unreleased
+
+- Bump required version for videojs-wavesurfer (3.8.0 or newer)
+
+
 ## 4.5.0 - 2021/06/14
 
 - Add `convert` method and `convertAuto` option, allowing user
