@@ -36,7 +36,7 @@
     "lamejs": "^1.2.0",
     "libvorbis.js": "^1.1.2",
     "opus-media-recorder": "^0.8.0",
-    "opus-recorder": "^8.0.3",
+    "opus-recorder": "^8.0.4",
     "vmsg": "^0.4.0",
     "webm-wasm": "^0.4.1"
   },
