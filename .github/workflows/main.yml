@@ -43,7 +43,6 @@ jobs:
     - name: Test
       run: npm run test
     - name: Coveralls
-      if: always()
       uses: coverallsapp/github-action@master
       with:
         path-to-lcov: ${{ github.workspace }}/coverage/lcov/lcov.info
