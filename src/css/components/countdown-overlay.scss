@@ -1,0 +1,19 @@
+/* Countdown Overlay (3-2-1 countdown when start recording)
+--------------------------------------------------------------------------------
+*/
+
+.vjs-record-countdown {
+  position: absolute;
+  bottom: 3em;
+  left: 0;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+
+  // make the font bigger
+  font-size: 6em;
+}
