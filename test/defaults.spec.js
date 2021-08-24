@@ -57,7 +57,8 @@ describe('pluginDefaultOptions', () => {
             convertOptions: [],
             convertAuto: true,
             hotKeys: false,
-            pluginLibraryOptions: {}
+            pluginLibraryOptions: {},
+            deviceButton: true
         });
     });
 });

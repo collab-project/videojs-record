@@ -74,22 +74,26 @@ class RecordToggle extends Button {
     handleClick(event) {
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
-            let countdown = 3;
-            let down = () => {
-                if (countdown <= 0) {
-                    this.player_.countdownOverlay.hide();
-                    recorder.start();
-                } else {
-                    countdown--;
-                    this.player_.countdownOverlay.setCountdownValue(countdown);
-                    setTimeout(down, COUNTDOWN_INTERVAL);
-                }
-            };
+            if (recorder.deviceButton) {
+                recorder.start();
+            } else {
+                let countdown = 3;
+                let down = () => {
+                    if (countdown <= 0) {
+                        this.player_.countdownOverlay.hide();
+                        recorder.start();
+                    } else {
+                        countdown--;
+                        this.player_.countdownOverlay.setCountdownValue(countdown);
+                        setTimeout(down, COUNTDOWN_INTERVAL);
+                    }
+                };
 
-            this.player_.countdownOverlay.show();
-            this.player_.countdownOverlay.setCountdownValue(countdown);
+                this.player_.countdownOverlay.show();
+                this.player_.countdownOverlay.setCountdownValue(countdown);
 
-            down();
+                down();
+            }
         } else {
             recorder.stop();
         }
