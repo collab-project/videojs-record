@@ -10,6 +10,8 @@ import Event from '../event';
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
 
+const COUNTDOWN_INTERVAL = 1000;
+
 /**
  * Button to toggle between start and stop recording.
  *
@@ -72,19 +74,22 @@ class RecordToggle extends Button {
     handleClick(event) {
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
+            let countdown = 3;
+            let down = () => {
+                if (countdown <= 0) {
+                    this.player_.countdownOverlay.hide();
+                    recorder.start();
+                } else {
+                    countdown--;
+                    this.player_.countdownOverlay.setCountdownValue(countdown);
+                    setTimeout(down, COUNTDOWN_INTERVAL);
+                }
+            };
+
             this.player_.countdownOverlay.show();
-            this.player_.countdownOverlay.setCountdownValue(3);
-            setTimeout(() => {
-                this.player_.countdownOverlay.setCountdownValue(2);
-                setTimeout(() => {
-                    this.player_.countdownOverlay.setCountdownValue(1);
-                    setTimeout(() => {
-                        this.player_.countdownOverlay.setCountdownValue(0);
-                        this.player_.countdownOverlay.hide();
-                        recorder.start();
-                    }, 1000);
-                }, 1000);
-            }, 1000);
+            this.player_.countdownOverlay.setCountdownValue(countdown);
+
+            down();
         } else {
             recorder.stop();
         }
