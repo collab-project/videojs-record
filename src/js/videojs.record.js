@@ -98,12 +98,14 @@ class Record extends Plugin {
         }
 
         // add custom interface elements
-        DeviceButton.prototype.buildCSSClass = () => {
-            // use dynamic icon class
-            return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
-        };
-        player.deviceButton = new DeviceButton(player, options);
-        player.addChild(player.deviceButton);
+        if (this.deviceButton) {
+            DeviceButton.prototype.buildCSSClass = () => {
+                // use dynamic icon class
+                return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+            };
+            player.deviceButton = new DeviceButton(player, options);
+            player.addChild(player.deviceButton);
+        }
 
         // add blinking record indicator
         player.recordIndicator = new RecordIndicator(player, options);
@@ -153,8 +155,12 @@ class Record extends Plugin {
 
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
-            let customUIElements = ['deviceButton', 'recordIndicator',
+            let customUIElements = ['recordIndicator',
                 'cameraButton', 'recordToggle', 'countdownOverlay'];
+            window.console.log('device button');
+            if (this.deviceButton) {
+                customUIElements.unshift('deviceButton');
+            }
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
             }
@@ -165,6 +171,11 @@ class Record extends Plugin {
                     this.player[element].hide();
                 }
             });
+        }
+
+        if (!this.deviceButton) {
+            // immediately ask for device
+            this.getDevice();
         }
 
         // wait until player ui is ready
@@ -232,6 +243,9 @@ class Record extends Plugin {
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
+
+        // cuc settings
+        this.deviceButton = recordOptions.deviceButton;
     }
 
     /**
@@ -635,8 +649,10 @@ class Record extends Plugin {
         // hide countdown overlay
         this.player.countdownOverlay.hide();
 
-        // hide device selection button
-        this.player.deviceButton.hide();
+        if (this.deviceButton) {
+            // hide device selection button
+            this.player.deviceButton.hide();
+        }
 
         // reset time (e.g. when stopDevice was used)
         this.setDuration(this.maxLength);
@@ -1478,8 +1494,13 @@ class Record extends Plugin {
         // hide countdown overlay
         this.player.countdownOverlay.hide();
 
-        // show device selection button
-        this.player.deviceButton.show();
+        if (this.deviceButton) {
+            // show device selection button
+            this.player.deviceButton.show();
+        } else {
+            // ask for device
+            this.getDevice();
+        }
 
         // hide record button
         this.player.recordToggle.hide();

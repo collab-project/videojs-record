@@ -137,7 +137,9 @@ const pluginDefaultOptions = {
     hotKeys: false,
     // Use this object to specify additional settings for the library used by the
     // plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).
-    pluginLibraryOptions: {}
+    pluginLibraryOptions: {},
+    // Display "Device" button if true, or request a media device on init if false
+    deviceButton: true
 };
 
 export default pluginDefaultOptions;
