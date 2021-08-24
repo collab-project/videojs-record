@@ -51,6 +51,7 @@ class RecordIndicator extends Component {
      */
     enable() {
         this.on(this.player_, Event.START_RECORD, this.show);
+        this.on(this.player_, Event.PROGRESS_RECORD, this.onProgress);
         this.on(this.player_, Event.STOP_RECORD, this.hide);
     }
 
@@ -59,6 +60,7 @@ class RecordIndicator extends Component {
      */
     disable() {
         this.off(this.player_, Event.START_RECORD, this.show);
+        this.off(this.player_, Event.PROGRESS_RECORD, this.onProgress);
         this.off(this.player_, Event.STOP_RECORD, this.hide);
     }
 
@@ -72,6 +74,27 @@ class RecordIndicator extends Component {
             return;
         }
         super.show();
+    }
+
+    /**
+     * Displays current recording time instead of REC
+     * @param {Object} label - formatted time.
+     */
+    setProgressValue(label) {
+        this.el().dataset.label = label;
+    }
+
+    /**
+     * Invoked during recording and displays the remaining time.
+     */
+    onProgress() {
+        let recorder = this.player_.record();
+        let now = performance.now();
+        let duration = recorder.maxLength;
+        let currentTime = (now - (recorder.startTime +
+            recorder.pausedTime)) / 1000; // buddy ignore:line
+
+        this.setProgressValue(recorder._formatTime(Math.min(currentTime, duration), duration, recorder.displayMilliseconds));
     }
 }
 
