@@ -11,9 +11,10 @@
   pointer-events: none;
 
   display: flex;
-  justify-content: center; /* align horizontal */
-  align-items: center; /* align vertical */
+  justify-content: center;
+  align-items: center;
 
-  // make the font bigger
-  font-size: 6em;
+  span {
+    font-size: 6em;
+  }
 }

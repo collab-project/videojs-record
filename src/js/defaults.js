@@ -135,11 +135,15 @@ const pluginDefaultOptions = {
     convertAuto: true,
     // Enable keyboard hotkeys.
     hotKeys: false,
+    // Enable the 3-2-1 countdown before the recording
+    countdownOverlay: false,
+    // Time interval in milliseconds after which it decreases the countdown
+    countdownTimeBetweenSteps: 1000,
+    // Countdown start value
+    countdownSteps: 3,
     // Use this object to specify additional settings for the library used by the
     // plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).
-    pluginLibraryOptions: {},
-    // Display "Device" button if true, or request a media device on init if false
-    deviceButton: true
+    pluginLibraryOptions: {}
 };
 
 export default pluginDefaultOptions;

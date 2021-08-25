@@ -10,8 +10,6 @@ import Event from '../event';
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
 
-const COUNTDOWN_INTERVAL = 1000;
-
 /**
  * Button to toggle between start and stop recording.
  *
@@ -74,29 +72,42 @@ class RecordToggle extends Button {
     handleClick(event) {
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
-            if (recorder.deviceButton) {
-                recorder.start();
+            if (recorder.countdownOverlay) {
+                this.startWithCountdown(recorder);
             } else {
-                let countdown = 3;
-                let down = () => {
-                    if (countdown <= 0) {
-                        this.player_.countdownOverlay.hide();
-                        recorder.start();
-                    } else {
-                        countdown--;
-                        this.player_.countdownOverlay.setCountdownValue(countdown);
-                        setTimeout(down, COUNTDOWN_INTERVAL);
-                    }
-                };
-
-                this.player_.countdownOverlay.show();
-                this.player_.countdownOverlay.setCountdownValue(countdown);
-
-                down();
+                recorder.start();
             }
         } else {
             recorder.stop();
         }
+    }
+
+    /**
+     * Display the countdown and start the recording when 0 is reached
+     *
+     * @param {Record} recorder
+     *        Instance of the Record plugin.
+     */
+    startWithCountdown(recorder) {
+        let currentValue = recorder.countdownSteps;
+        let interval = recorder.countdownTimeBetweenSteps;
+        let startOrDown = () => {
+            if (currentValue <= 0) {
+                this.player_.countdownOverlay.hide();
+                recorder.start();
+            } else {
+                this.player_.countdownOverlay.setCountdownValue(currentValue);
+                currentValue--;
+                setTimeout(startOrDown, interval);
+            }
+        };
+
+        this.player_.countdownOverlay.show();
+        this.player_.countdownOverlay.setCountdownValue(currentValue);
+
+        // @todo hide the record button while countdown is displaying
+
+        startOrDown();
     }
 
     /**

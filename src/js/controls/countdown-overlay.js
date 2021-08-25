@@ -21,14 +21,14 @@ class CountdownOverlay extends Component {
      *         The dom element that gets created.
      */
     createEl() {
-        let props = {
+        const spanElement = videojs.dom.createEl('span');
+        const el = super.createEl('div', {
             className: 'vjs-record-countdown',
             dir: 'ltr'
-        };
-        let attr = {
-        };
+        });
+        el.appendChild(spanElement);
 
-        return super.createEl('div', props, attr);
+        return el;
     }
 
     /**
@@ -44,7 +44,7 @@ class CountdownOverlay extends Component {
     }
 
     setCountdownValue(value) {
-        this.el().innerHTML = value;
+        this.el().firstChild.innerText = value;
     }
 }
 

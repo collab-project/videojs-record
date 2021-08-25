@@ -98,14 +98,12 @@ class Record extends Plugin {
         }
 
         // add custom interface elements
-        if (this.deviceButton) {
-            DeviceButton.prototype.buildCSSClass = () => {
-                // use dynamic icon class
-                return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
-            };
-            player.deviceButton = new DeviceButton(player, options);
-            player.addChild(player.deviceButton);
-        }
+        DeviceButton.prototype.buildCSSClass = () => {
+            // use dynamic icon class
+            return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+        };
+        player.deviceButton = new DeviceButton(player, options);
+        player.addChild(player.deviceButton);
 
         // add blinking record indicator
         player.recordIndicator = new RecordIndicator(player, options);
@@ -130,10 +128,12 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
-        // add countdown overlay
-        player.countdownOverlay = new CountdownOverlay(player, options);
-        player.addChild(player.countdownOverlay);
-        player.countdownOverlay.hide();
+        if (this.countdownOverlay) {
+            // add countdown overlay
+            player.countdownOverlay = new CountdownOverlay(player, options);
+            player.addChild(player.countdownOverlay);
+            player.countdownOverlay.hide();
+        }
 
         // picture-in-picture
         let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
@@ -155,14 +155,13 @@ class Record extends Plugin {
 
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
-            let customUIElements = ['recordIndicator',
-                'cameraButton', 'recordToggle', 'countdownOverlay'];
-            window.console.log('device button');
-            if (this.deviceButton) {
-                customUIElements.unshift('deviceButton');
-            }
+            let customUIElements = ['deviceButton', 'recordIndicator',
+                'cameraButton', 'recordToggle'];
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
+            }
+            if (player.countdownOverlay) {
+                customUIElements.push('countdownOverlay');
             }
 
             customUIElements.forEach((element) => {
@@ -171,11 +170,6 @@ class Record extends Plugin {
                     this.player[element].hide();
                 }
             });
-        }
-
-        if (!this.deviceButton) {
-            // immediately ask for device
-            this.getDevice();
         }
 
         // wait until player ui is ready
@@ -244,8 +238,10 @@ class Record extends Plugin {
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
 
-        // cuc settings
-        this.deviceButton = recordOptions.deviceButton;
+        // countdown settings
+        this.countdownOverlay = recordOptions.countdownOverlay;
+        this.countdownTimeBetweenSteps = recordOptions.countdownTimeBetweenSteps;
+        this.countdownSteps = recordOptions.countdownSteps;
     }
 
     /**
@@ -646,13 +642,8 @@ class Record extends Plugin {
         // store reference to stream for stopping etc.
         this.stream = stream;
 
-        // hide countdown overlay
-        this.player.countdownOverlay.hide();
-
-        if (this.deviceButton) {
-            // hide device selection button
-            this.player.deviceButton.hide();
-        }
+        // hide device selection button
+        this.player.deviceButton.hide();
 
         // reset time (e.g. when stopDevice was used)
         this.setDuration(this.maxLength);
@@ -1314,8 +1305,8 @@ class Record extends Plugin {
                     this.player.controlBar.durationDisplay.contentEl() &&
                     this.player.controlBar.durationDisplay.contentEl().lastChild) {
                     this.player.controlBar.durationDisplay.formattedTime_ =
-                        this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
-                            this._formatTime(duration, duration, this.displayMilliseconds);
+                    this.player.controlBar.durationDisplay.contentEl().lastChild.textContent =
+                        this._formatTime(duration, duration, this.displayMilliseconds);
                 }
                 break;
         }
@@ -1491,16 +1482,13 @@ class Record extends Plugin {
             this.player.controlBar.playToggle.hide();
         }
 
-        // hide countdown overlay
-        this.player.countdownOverlay.hide();
-
-        if (this.deviceButton) {
-            // show device selection button
-            this.player.deviceButton.show();
-        } else {
-            // ask for device
-            this.getDevice();
+        if (this.player.countdownOverlay) {
+            // hide countdown overlay
+            this.player.countdownOverlay.hide();
         }
+
+        // show device selection button
+        this.player.deviceButton.show();
 
         // hide record button
         this.player.recordToggle.hide();
@@ -1707,7 +1695,7 @@ class Record extends Plugin {
             // importing ImageCapture can fail when enabling chrome flag is still required.
             // if so; ignore and continue
             if ((detected.browser === 'chrome' && detected.version >= 60) &&
-                (typeof ImageCapture === typeof Function)) {
+               (typeof ImageCapture === typeof Function)) {
                 try {
                     let imageCapture = new ImageCapture(track);
                     // take picture
