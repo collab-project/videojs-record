@@ -84,4 +84,45 @@ describe('controls.RecordToggle', () => {
             player.record().getDevice();
         });
     });
+
+    it('record button is locked while the countdown is running', (done) => {
+        // create an instance of a player with the countdown
+        player.dispose();
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    countdownOverlay: true,
+                    countdownSteps: 2,
+                    countdownTimeBetweenSteps: 1000
+                }
+            }
+        });
+
+        let toggle = new RecordToggle(player);
+
+        player.one(Event.DEVICE_READY, () => {
+            // start
+            toggle.trigger('click');
+
+            setTimeout(() => {
+                // countdown is running, record button is locked
+                expect(toggle.el().hasAttribute('disabled')).toBeTrue();
+            }, 1000);
+
+            setTimeout(() => {
+                // stop recording
+                player.record().stop();
+            }, 3000);
+        });
+
+        player.one(Event.FINISH_RECORD, () => {
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
 });

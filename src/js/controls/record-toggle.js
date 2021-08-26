@@ -73,6 +73,7 @@ class RecordToggle extends Button {
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
             if (recorder.countdownOverlay) {
+                // @todo move to recorder
                 this.startWithCountdown(recorder);
             } else {
                 recorder.start();
@@ -94,6 +95,7 @@ class RecordToggle extends Button {
         let startOrDown = () => {
             if (currentValue <= 0) {
                 this.player_.countdownOverlay.hide();
+                this.enable();
                 recorder.start();
             } else {
                 this.player_.countdownOverlay.setCountdownValue(currentValue);
@@ -102,10 +104,9 @@ class RecordToggle extends Button {
             }
         };
 
+        this.disable();
         this.player_.countdownOverlay.show();
         this.player_.countdownOverlay.setCountdownValue(currentValue);
-
-        // @todo hide the record button while countdown is displaying
 
         startOrDown();
     }
