@@ -54,4 +54,7 @@ Additional options for this plugin are:
 | `convertOptions` | array | `[]` | List of string options to pass to the convert engine. |
 | `convertAuto` | boolean | `true` | By default the converter automatically starts once recording completed. Use `false` to disable this behavior, allowing you to start the converter manually instead. |
 | `hotKeys` | boolean or function | `false` | Enable [keyboard hotkeys](hotkeys.md). Disabled by default. |
+| `countdownOverlay` | boolean | `false` | Adds the countdown overlay after clicking on the record button. The recording starts once the countdown reaches 0. |
+| `countdownSteps` | float | `3` | Amount of countdown steps (Initial value). |
+| `countdownTimeBetweenSteps` | float | `1000` | Time interval in milliseconds after which it decreases the countdown value by 1. |
 | `pluginLibraryOptions` | object | `{}` | Use this object to specify additional settings for the library used by the plugin. Currently only used for the ffmpeg.wasm, ffmpeg.js, opus-recorder and vmsg plugins. |
