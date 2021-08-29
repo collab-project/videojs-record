@@ -18,9 +18,10 @@ describe('controls.CountdownOverlay', () => {
         player = TestHelpers.makeAudioVideoPlayer({
             plugins: {
                 record: {
-                    countdownOverlay: true,
-                    countdownSteps: 2,
-                    countdownTimeBetweenSteps: 1000
+                    countdown: [
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ],
                 }
             }
         });

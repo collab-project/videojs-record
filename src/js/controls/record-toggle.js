@@ -72,7 +72,7 @@ class RecordToggle extends Button {
     handleClick(event) {
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
-            if (recorder.countdownOverlay) {
+            if (recorder.countdown.length) {
                 // @todo move to recorder
                 this.startWithCountdown(recorder);
             } else {
@@ -84,29 +84,29 @@ class RecordToggle extends Button {
     }
 
     /**
-     * Display the countdown and start the recording when 0 is reached
+     * Display the countdown and start the recording when the last countdown step is reached
      *
      * @param {Record} recorder
      *        Instance of the Record plugin.
      */
     startWithCountdown(recorder) {
-        let currentValue = recorder.countdownSteps;
-        let interval = recorder.countdownTimeBetweenSteps;
+        let countdownSteps = [...recorder.countdown];
         let startOrDown = () => {
-            if (currentValue <= 0) {
+            if (countdownSteps.length === 0) {
                 this.player_.countdownOverlay.hide();
                 this.enable();
                 recorder.start();
             } else {
-                this.player_.countdownOverlay.setCountdownValue(currentValue);
-                currentValue--;
-                setTimeout(startOrDown, interval);
+                let value, time;
+                // @todo validation?
+                ({value, time} = countdownSteps.shift());
+                this.player_.countdownOverlay.setCountdownValue(value);
+                setTimeout(startOrDown, time);
             }
         };
 
         this.disable();
         this.player_.countdownOverlay.show();
-        this.player_.countdownOverlay.setCountdownValue(currentValue);
 
         startOrDown();
     }

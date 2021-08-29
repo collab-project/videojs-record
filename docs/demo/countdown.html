@@ -47,9 +47,14 @@ var options = {
             video: true,
             maxLength: 10,
             countdownOverlay: true,
-            countdownSteps: 5,
-            countdownTimeBetweenSteps: 500,
-            displayMilliseconds: false,
+            countdown: [
+              {value: 'Five!', time: 1000},
+              {value: 'Four!', time: 1000},
+              {value: 'Three', time: 1000},
+              {value: '2', time: 1000},
+              {value: '1', time: 500},
+              {value: 'Go!', time: 500},
+            ],
             debug: true
         }
     }

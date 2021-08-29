@@ -128,7 +128,7 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
-        if (this.countdownOverlay) {
+        if (this.countdown.length) {
             // add countdown overlay
             player.countdownOverlay = new CountdownOverlay(player, options);
             player.addChild(player.countdownOverlay);
@@ -239,9 +239,7 @@ class Record extends Plugin {
         this.animationQuality = recordOptions.animationQuality;
 
         // countdown settings
-        this.countdownOverlay = recordOptions.countdownOverlay;
-        this.countdownTimeBetweenSteps = recordOptions.countdownTimeBetweenSteps;
-        this.countdownSteps = recordOptions.countdownSteps;
+        this.countdown = recordOptions.countdown;
     }
 
     /**

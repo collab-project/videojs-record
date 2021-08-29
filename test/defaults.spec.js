@@ -57,9 +57,7 @@ describe('pluginDefaultOptions', () => {
             convertOptions: [],
             convertAuto: true,
             hotKeys: false,
-            countdownOverlay: false,
-            countdownSteps: 3,
-            countdownTimeBetweenSteps: 1000,
+            countdown: [],
             pluginLibraryOptions: {}
         });
     });
