@@ -43,7 +43,12 @@ class TsEBMLEngine extends ConvertEngine {
         // load and convert blob
         this.loadBlob(data).then((buffer) => {
             // decode
-            const elms = decoder.decode(buffer);
+            let elms = decoder.decode(buffer);
+
+            // see https://github.com/legokichi/ts-ebml/issues/33#issuecomment-888800828
+            const validEmlType = ['m', 'u', 'i', 'f', 's', '8', 'b', 'd'];
+            elms = elms.filter((elm) => validEmlType.includes(elm.type));
+
             elms.forEach((elm) => {
                 reader.read(elm);
             });

@@ -2,6 +2,7 @@
 
 ## 4.6.0 - unreleased
 
+- ts-ebml plugin: fix Safari issue with ts-ebml (#595, #581)
 - Bump required version for videojs-wavesurfer (3.8.0 or newer)
 
 
