@@ -1994,5 +1994,20 @@ if (videojs.getPlugin('record') === undefined) {
     videojs.registerPlugin('record', Record);
 }
 
+// register for videojs imported instance
+/**
+ * register for videojs imported instance.
+ *
+ * @public
+ * @param {object} _videojs - videojs isntace.
+ */
+function register(_videojs) {
+    const instance = _videojs || videojs || window.videojs;
+    instance.Record = Record;
+    if (instance.getPlugin('record') === undefined) {
+        instance.registerPlugin('record', Record);
+    }
+}
+
 // export plugin
-export {Record};
+export {Record, register};
