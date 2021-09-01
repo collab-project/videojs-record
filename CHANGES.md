@@ -3,6 +3,7 @@
 ## 4.6.0 - unreleased
 
 - Bump required version for videojs-wavesurfer (3.8.0 or newer)
+- Add `countdown` option for displaying 3-2-1 countdown before the recording.
 
 
 ## 4.5.0 - 2021/06/14
