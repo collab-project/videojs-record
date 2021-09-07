@@ -6,6 +6,7 @@
 import videojs from 'video.js';
 
 import Event from '../event';
+import validateCountdownSteps from '../utils/validate-countdown-steps';
 
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
@@ -71,8 +72,12 @@ class RecordToggle extends Button {
      */
     handleClick(event) {
         let recorder = this.player_.record();
+        let countdownStepsAreValid = validateCountdownSteps(recorder.countdown);
+        if (!countdownStepsAreValid) {
+            window.console.log('videojs-record countdown option is not valid. Check out the reference https://collab-project.github.io/videojs-record/#/options');
+        }
         if (!recorder.isRecording()) {
-            if (recorder.countdown.length) {
+            if (countdownStepsAreValid && recorder.countdown.length) {
                 // @todo move to recorder
                 this.startWithCountdown(recorder);
             } else {
@@ -98,7 +103,6 @@ class RecordToggle extends Button {
                 recorder.start();
             } else {
                 let value, time;
-                // @todo validation?
                 ({value, time} = countdownSteps.shift());
                 this.player_.countdownOverlay.setCountdownValue(value);
                 setTimeout(startOrDown, time);
