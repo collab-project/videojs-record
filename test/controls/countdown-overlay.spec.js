@@ -45,12 +45,42 @@ describe('controls.CountdownOverlay', () => {
         player.one(Event.DEVICE_READY, () => {
             // start
             toggle.trigger('click');
+
+            setTimeout(() => {
+                // recording is started after the countdown
+                expect(player.record().isRecording()).toBeTrue();
+            }, 3000);
+
+            setTimeout(() => {
+                // stop recording
+                player.record().stop();
+            }, 4000);
+        });
+
+        player.one(Event.FINISH_RECORD, () => {
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    it('no record during the countdown', (done) => {
+        let toggle = new RecordToggle(player);
+
+        player.one(Event.DEVICE_READY, () => {
+            // start
+            toggle.trigger('click');
+
             expect(player.record().isRecording()).toBeFalse();
 
             setTimeout(() => {
-                // started after 2 seconds
-                expect(player.record().isRecording()).toBeTrue();
-            }, 3000);
+                // recording is not started during the countdown
+                expect(player.record().isRecording()).toBeFalse();
+            }, 1000);
 
             setTimeout(() => {
                 // stop recording
