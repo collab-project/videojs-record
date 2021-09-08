@@ -44,7 +44,11 @@ class CountdownOverlay extends Component {
     }
 
     setCountdownValue(value) {
-        this.el().firstChild.innerText = value;
+        if (this.el().firstChild) {
+            this.el().firstChild.innerText = value;
+        } else {
+            window.console.error('videojs-record countdown overlay is missing');
+        }
     }
 }
 
