@@ -6,7 +6,6 @@
 import videojs from 'video.js';
 
 import Event from '../event';
-import validateCountdownSteps from '../utils/validate-countdown-steps';
 
 const Button = videojs.getComponent('Button');
 const Component = videojs.getComponent('Component');
@@ -72,47 +71,15 @@ class RecordToggle extends Button {
      */
     handleClick(event) {
         let recorder = this.player_.record();
-        let countdownStepsAreValid = validateCountdownSteps(recorder.countdown);
-        if (!countdownStepsAreValid) {
-            window.console.log('videojs-record countdown option is not valid. Check out the reference https://collab-project.github.io/videojs-record/#/options');
+        if (recorder.isPrerecording()) {
+            // @todo do not disable the record button? stop the countdown when click record button?
+            return;
         }
         if (!recorder.isRecording()) {
-            if (countdownStepsAreValid && recorder.countdown.length) {
-                // @todo move to recorder
-                this.startWithCountdown(recorder);
-            } else {
-                recorder.start();
-            }
+            recorder.start();
         } else {
             recorder.stop();
         }
-    }
-
-    /**
-     * Display the countdown and start the recording when the last countdown step is reached
-     *
-     * @param {Record} recorder
-     *        Instance of the Record plugin.
-     */
-    startWithCountdown(recorder) {
-        let countdownSteps = [...recorder.countdown];
-        let startOrDown = () => {
-            if (countdownSteps.length === 0) {
-                this.player_.countdownOverlay.hide();
-                this.enable();
-                recorder.start();
-            } else {
-                let value, time;
-                ({value, time} = countdownSteps.shift());
-                this.player_.countdownOverlay.setCountdownValue(value);
-                setTimeout(startOrDown, time);
-            }
-        };
-
-        this.disable();
-        this.player_.countdownOverlay.show();
-
-        startOrDown();
     }
 
     /**

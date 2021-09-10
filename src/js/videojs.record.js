@@ -23,6 +23,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import compareVersion from './utils/compare-version';
 import {detectBrowser} from './utils/detect-browser';
+import validateCountdownSteps from './utils/validate-countdown-steps';
 
 import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
@@ -239,7 +240,12 @@ class Record extends Plugin {
         this.animationQuality = recordOptions.animationQuality;
 
         // countdown settings
-        this.countdown = recordOptions.countdown;
+        if (validateCountdownSteps(recordOptions.countdown)) {
+            this.countdown = recordOptions.countdown;
+        } else {
+            this.countdown = [];
+            window.console.warn('videojs-record countdown option is not valid. Check out the reference https://collab-project.github.io/videojs-record/#/options');
+        }
     }
 
     /**
@@ -377,6 +383,15 @@ class Record extends Plugin {
         if (this.player.controlBar.playToggle !== undefined) {
             this.player.controlBar.playToggle.hide();
         }
+    }
+
+    /**
+     * Indicates whether the plugin is currently prerecording. Recording is not started yet.
+     *
+     * @return {boolean} Plugin currently prerecording.
+     */
+    isPrerecording() {
+        return this._prerecording;
     }
 
     /**
@@ -859,6 +874,7 @@ class Record extends Plugin {
                 return;
             }
             this._recording = true;
+            this._prerecording = true;
 
             // hide play/pause control
             if (this.player.controlBar.playToggle !== undefined) {
@@ -918,6 +934,7 @@ class Record extends Plugin {
             switch (this.getRecordType()) {
                 case IMAGE_ONLY:
                     // create snapshot
+                    // @todo add countdown
                     this.createSnapshot();
 
                     // notify UI
@@ -932,16 +949,54 @@ class Record extends Plugin {
                     // wait for media stream on video element to actually load
                     this.player.one(Event.LOADEDMETADATA, () => {
                         // start actually recording process
-                        this.startRecording();
+                        this.showPrerecorder().then(() => {
+                            this.startRecording();
+                        });
                     });
                     break;
 
                 default:
                     // all resources have already loaded, so we can start
                     // recording right away
-                    this.startRecording();
+                    this.showPrerecorder().then(() => {
+                        this.startRecording();
+                    });
             }
         }
+    }
+
+    /**
+     * Show the countdown overlay
+     * @return {Promise} - promise is resolved when the last countdown step is reached
+     * @todo rename countdown to prerecorder, because the "countDown" term is used in the player
+     */
+    showPrerecorder() {
+        return new Promise(resolve => {
+            if (this.countdown.length === 0) {
+                // resolve immediately if there are no countdown steps
+                this._prerecording = false;
+                resolve();
+            }
+            let countdownSteps = [...this.countdown];
+            let resolveOrDown = () => {
+                if (countdownSteps.length === 0) {
+                    this.player.countdownOverlay.hide();
+                    this.player.recordToggle.enable();
+                    this._prerecording = false;
+                    resolve();
+                } else {
+                    let value, time;
+                    ({value, time} = countdownSteps.shift());
+                    this.player.countdownOverlay.setCountdownValue(value);
+                    setTimeout(resolveOrDown, time);
+                }
+            };
+
+            this.player.recordToggle.disable();
+            this.player.countdownOverlay.show();
+
+            resolveOrDown();
+        });
     }
 
     /**
@@ -1505,6 +1560,7 @@ class Record extends Plugin {
      */
     resetState() {
         this._recording = false;
+        // @todo add _prerecording
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
