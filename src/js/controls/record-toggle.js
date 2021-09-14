@@ -35,6 +35,9 @@ class RecordToggle extends Button {
 
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
+        this.on(this.player_, Event.PRERECORDER_START, this.onPrerecorderStart);
+        this.on(this.player_, Event.PRERECORDER_FINISH, this.onPrerecorderFinish);
+        this.on(this.player_, Event.PRERECORDER_FINISH, this.onPrerecorderAbort);
     }
 
     /**
@@ -45,6 +48,9 @@ class RecordToggle extends Button {
 
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
+        this.off(this.player_, Event.PRERECORDER_START, this.onPrerecorderStart);
+        this.off(this.player_, Event.PRERECORDER_FINISH, this.onPrerecorderFinish);
+        this.off(this.player_, Event.PRERECORDER_FINISH, this.onPrerecorderAbort);
     }
 
     /**
@@ -71,13 +77,13 @@ class RecordToggle extends Button {
      */
     handleClick(event) {
         let recorder = this.player_.record();
-        if (recorder.isPrerecording()) {
-            // @todo do not disable the record button? stop the countdown when click record button?
-            return;
-        }
-        if (!recorder.isRecording()) {
+        if (!recorder.isProcessing() && !recorder.isPrerecording()) {
             recorder.start();
         } else {
+            if (recorder.isPrerecording()) {
+                recorder.abortPrerecording();
+            }
+
             recorder.stop();
         }
     }
@@ -114,6 +120,45 @@ class RecordToggle extends Button {
 
         // change the button text
         this.controlText('Record');
+    }
+
+    /**
+     * Show prerecorder overlay
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#prerecorderStart
+     * @todo unit test
+     */
+    onPrerecorderStart(event) {
+        this.enable();
+    }
+
+    /**
+     * Hide prerecorder overlay
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#prerecorderFinish
+     * @todo unit test
+     */
+    onPrerecorderFinish(event) {
+        this.disable();
+    }
+
+    /**
+     * Hide prerecorder overlay
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#prerecorderAbort
+     * @todo unit test
+     */
+    onPrerecorderAbort(event) {
+        // @todo implement me
     }
 }
 

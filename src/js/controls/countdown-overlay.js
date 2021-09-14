@@ -4,6 +4,7 @@
  */
 
 import videojs from 'video.js';
+import Event from '../event';
 
 const Component = videojs.getComponent('Component');
 
@@ -14,6 +15,22 @@ const Component = videojs.getComponent('Component');
  * @augments videojs.Component
  */
 class CountdownOverlay extends Component {
+
+    /**
+     * The constructor function for the class.
+     *
+     * @private
+     * @param {(videojs.Player|Object)} player - Video.js player instance.
+     * @param {Object} options - Player options.
+     */
+    constructor(player, options) {
+        super(player, options);
+
+        this.on(this.player_, Event.PRERECORDER_START, this.onPrerecorderStart);
+        this.on(this.player_, Event.PRERECORDER_FINISH, this.onPrerecorderFinish);
+        this.on(this.player_, Event.PRERECORDER_ABORT, this.onPrerecorderAbort);
+    }
+
     /**
      * Create the `Countdown`s DOM element.
      *
@@ -49,6 +66,44 @@ class CountdownOverlay extends Component {
         } else {
             window.console.error('videojs-record countdown overlay is missing');
         }
+    }
+
+    /**
+     * Show prerecorder overlay
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @todo unit test
+     */
+    onPrerecorderStart(event) {
+        this.show();
+    }
+
+    /**
+     * Hide prerecorder overlay
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @todo unit test
+     */
+    onPrerecorderFinish(event) {
+        this.setCountdownValue('');
+        this.hide();
+    }
+
+    /**
+     * Hide prerecorder overlay
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @todo unit test
+     */
+    onPrerecorderAbort(event) {
+        this.setCountdownValue('');
+        this.hide();
     }
 }
 

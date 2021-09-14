@@ -874,6 +874,7 @@ class Record extends Plugin {
                 return;
             }
             this._recording = true;
+            // @todo what if we're in the prerecording state? stop the current prerecording?
             this._prerecording = true;
 
             // hide play/pause control
@@ -934,8 +935,9 @@ class Record extends Plugin {
             switch (this.getRecordType()) {
                 case IMAGE_ONLY:
                     // create snapshot
-                    // @todo add countdown
-                    this.createSnapshot();
+                    this.showPrerecorder().then(() => {
+                        this.createSnapshot();
+                    });
 
                     // notify UI
                     this.player.trigger(Event.START_RECORD);
@@ -977,23 +979,26 @@ class Record extends Plugin {
                 this._prerecording = false;
                 resolve();
             }
-            let countdownSteps = [...this.countdown];
+
+            this.player.trigger(Event.PRERECORDER_START);
+
+            let countdownSteps = [...this.countdown]; // @todo add to this that it can be cleared
             let resolveOrDown = () => {
                 if (countdownSteps.length === 0) {
-                    this.player.countdownOverlay.hide();
-                    this.player.recordToggle.enable();
+                    this.player.clearTimeout(this.prerecorderTimeoutID);
                     this._prerecording = false;
+
+                    this.player.trigger(Event.PRERECORDER_FINISH);
+
                     resolve();
                 } else {
                     let value, time;
                     ({value, time} = countdownSteps.shift());
+                    // @todo trigger an event and pass current step as an event data
                     this.player.countdownOverlay.setCountdownValue(value);
-                    setTimeout(resolveOrDown, time);
+                    this.prerecorderTimeoutID = this.player.setTimeout(resolveOrDown, time);
                 }
             };
-
-            this.player.recordToggle.disable();
-            this.player.countdownOverlay.show();
 
             resolveOrDown();
         });
@@ -1057,6 +1062,24 @@ class Record extends Plugin {
                 }
             }
         }
+    }
+
+    /**
+     * Abort prerecording countdown
+     */
+    abortPrerecording() {
+        // Stop prerecorder steps
+        this.player.clearTimeout(this.prerecorderTimeoutID);
+
+        this._prerecording = false;
+        // @todo investigate and fix
+        // when a user clicks on the recording button (during prerecording count down)
+        // and we have to set up this property to false somewhere
+        // otherwise recorder thinks that we still processing something and does not allow us to start a new recording
+        this._processing = false;
+
+        // Notify the UI
+        this.player.trigger(Event.PRERECORDER_ABORT);
     }
 
     /**
@@ -1560,7 +1583,7 @@ class Record extends Plugin {
      */
     resetState() {
         this._recording = false;
-        // @todo add _prerecording
+        this._prerecording = false;
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
@@ -1694,6 +1717,7 @@ class Record extends Plugin {
      */
     retrySnapshot() {
         this._processing = false;
+        this._prerecording = false;
 
         // retry: hide the snapshot
         this.player.recordCanvas.hide();

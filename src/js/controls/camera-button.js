@@ -72,10 +72,14 @@ class CameraButton extends Button {
     handleClick(event) {
         let recorder = this.player_.record();
 
-        if (!recorder.isProcessing()) {
+        if (!recorder.isProcessing() && !recorder.isPrerecording()) {
             // create snapshot
             recorder.start();
         } else {
+            if (recorder.isPrerecording()) {
+                recorder.abortPrerecording();
+            }
+
             // retry
             recorder.retrySnapshot();
 
