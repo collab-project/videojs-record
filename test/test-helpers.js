@@ -313,8 +313,8 @@ const TestHelpers = {
         return this.makePlayer(tag, opts);
     },
 
-    makeImageOnlyPlayer(newOptions) {
-        let tag = TestHelpers.makeTag('video', 'imageOnly');
+    makeImageOnlyPlayer(newOptions, idName = 'imageOnly') {
+        let tag = TestHelpers.makeTag('video', idName);
         let opts = {
             controls: true,
             autoplay: false,

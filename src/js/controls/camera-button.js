@@ -33,6 +33,8 @@ class CameraButton extends Button {
     enable() {
         super.enable();
 
+        this.on(this.player_, Event.PRERECORDER_START, this.onStartPrerecorder);
+        this.on(this.player_, Event.PRERECORDER_FINISH, this.onFinishPrerecorder);
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
     }
@@ -43,6 +45,8 @@ class CameraButton extends Button {
     disable() {
         super.disable();
 
+        this.off(this.player_, Event.PRERECORDER_START, this.onStartPrerecorder);
+        this.off(this.player_, Event.PRERECORDER_FINISH, this.onFinishPrerecorder);
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
     }
@@ -104,8 +108,11 @@ class CameraButton extends Button {
         this.removeClass('vjs-icon-photo-camera');
         this.addClass('vjs-icon-replay');
 
-        // change the button text
-        this.controlText('Retry');
+        let recorder = this.player_.record();
+        if (!recorder.isPrerecording()) {
+            // change the button text
+            this.controlText('Retry');
+        }
     }
 
     /**
@@ -123,6 +130,32 @@ class CameraButton extends Button {
 
         // change the button text
         this.controlText('Image');
+    }
+
+    /**
+     * Change control text.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#startRecord
+     */
+    onStartPrerecorder(event) {
+        // change the button text
+        this.controlText('Reset');
+    }
+
+    /**
+     * Change control text.
+     *
+     * @param {EventTarget~Event} [event]
+     *        The event that caused this function to run.
+     *
+     * @listens Player#startRecord
+     */
+    onFinishPrerecorder(event) {
+        // change the button text
+        this.controlText('Retry');
     }
 }
 
