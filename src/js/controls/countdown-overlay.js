@@ -25,10 +25,6 @@ class CountdownOverlay extends Component {
      */
     constructor(player, options) {
         super(player, options);
-
-        this.on(this.player_, Event.PRERECORDER_START, this.onPrerecorderStart);
-        this.on(this.player_, Event.PRERECORDER_FINISH, this.onPrerecorderFinish);
-        this.on(this.player_, Event.PRERECORDER_ABORT, this.onPrerecorderAbort);
     }
 
     /**
@@ -66,44 +62,6 @@ class CountdownOverlay extends Component {
         } else {
             window.console.error('videojs-record countdown overlay is missing');
         }
-    }
-
-    /**
-     * Show prerecorder overlay
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @todo unit test
-     */
-    onPrerecorderStart(event) {
-        this.show();
-    }
-
-    /**
-     * Hide prerecorder overlay
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @todo unit test
-     */
-    onPrerecorderFinish(event) {
-        this.setCountdownValue('');
-        this.hide();
-    }
-
-    /**
-     * Hide prerecorder overlay
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @todo unit test
-     */
-    onPrerecorderAbort(event) {
-        this.setCountdownValue('');
-        this.hide();
     }
 }
 

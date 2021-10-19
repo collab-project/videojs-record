@@ -968,7 +968,7 @@ class Record extends Plugin {
     }
 
     /**
-     * Show the countdown overlay
+     * Show the prerecorder overlay and start the countdown
      * @return {Promise} - promise is resolved when the last countdown step is reached
      * @todo rename countdown to prerecorder, because the "countDown" term is used in the player
      */
@@ -980,20 +980,22 @@ class Record extends Plugin {
                 resolve();
             }
 
-            this.player.trigger(Event.PRERECORDER_START);
+            this.player.trigger(Event.START_PRERECORDER);
+            this.player.countdownOverlay.setCountdownValue('');
+            this.player.countdownOverlay.show();
 
-            let countdownSteps = [...this.countdown]; // @todo add to this that it can be cleared
+            let steps = [...this.countdown];
             let resolveOrDown = () => {
-                if (countdownSteps.length === 0) {
+                if (steps.length === 0) {
                     this.player.clearTimeout(this.prerecorderTimeoutID);
                     this._prerecording = false;
-
-                    this.player.trigger(Event.PRERECORDER_FINISH);
+                    this.player.countdownOverlay.hide();
+                    this.player.trigger(Event.FINISH_PRERECORDER);
 
                     resolve();
                 } else {
                     let value, time;
-                    ({value, time} = countdownSteps.shift());
+                    ({value, time} = steps.shift());
                     // @todo trigger an event and pass current step as an event data
                     this.player.countdownOverlay.setCountdownValue(value);
                     this.prerecorderTimeoutID = this.player.setTimeout(resolveOrDown, time);
@@ -1071,6 +1073,7 @@ class Record extends Plugin {
         // Stop prerecorder steps
         this.player.clearTimeout(this.prerecorderTimeoutID);
 
+        this._recording = false;
         this._prerecording = false;
         // @todo investigate and fix
         // when a user clicks on the recording button (during prerecording count down)
@@ -1078,8 +1081,10 @@ class Record extends Plugin {
         // otherwise recorder thinks that we still processing something and does not allow us to start a new recording
         this._processing = false;
 
+        this.player.countdownOverlay.hide();
+
         // Notify the UI
-        this.player.trigger(Event.PRERECORDER_ABORT);
+        this.player.trigger(Event.ABORT_PRERECORDER);
     }
 
     /**

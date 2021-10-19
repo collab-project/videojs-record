@@ -33,8 +33,8 @@ class CameraButton extends Button {
     enable() {
         super.enable();
 
-        this.on(this.player_, Event.PRERECORDER_START, this.onStartPrerecorder);
-        this.on(this.player_, Event.PRERECORDER_FINISH, this.onFinishPrerecorder);
+        this.on(this.player_, Event.START_PRERECORDER, this.onStartPrerecorder);
+        this.on(this.player_, Event.FINISH_PRERECORDER, this.onFinishPrerecorder);
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
     }
@@ -45,8 +45,8 @@ class CameraButton extends Button {
     disable() {
         super.disable();
 
-        this.off(this.player_, Event.PRERECORDER_START, this.onStartPrerecorder);
-        this.off(this.player_, Event.PRERECORDER_FINISH, this.onFinishPrerecorder);
+        this.off(this.player_, Event.START_PRERECORDER, this.onStartPrerecorder);
+        this.off(this.player_, Event.FINISH_PRERECORDER, this.onFinishPrerecorder);
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
     }

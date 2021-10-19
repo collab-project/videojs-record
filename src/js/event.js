@@ -37,9 +37,9 @@ Event.ENTER_PIP = 'enterPIP';
 Event.LEAVE_PIP = 'leavePIP';
 Event.RETRY = 'retry';
 // @todo docs
-Event.PRERECORDER_START = 'prerecorderStart';
-Event.PRERECORDER_FINISH = 'prerecorderFinish';
-Event.PRERECORDER_ABORT = 'prerecorderAbort';
+Event.START_PRERECORDER = 'startPrerecorder';
+Event.FINISH_PRERECORDER = 'finishPrerecorder';
+Event.ABORT_PRERECORDER = 'abortPrerecorder';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';
