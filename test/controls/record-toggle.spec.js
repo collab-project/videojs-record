@@ -85,8 +85,8 @@ describe('controls.RecordToggle', () => {
         });
     });
 
-    it('record button is locked while the countdown is running', (done) => {
-        // create an instance of a player with the countdown
+    it('accept interaction: pre-recorder', (done) => {
+        // create an instance of a player with the pre-recorder
         player.dispose();
         player = TestHelpers.makeAudioVideoPlayer({
             plugins: {
@@ -104,22 +104,17 @@ describe('controls.RecordToggle', () => {
         player.one(Event.DEVICE_READY, () => {
             // start
             toggle.trigger('click');
+            expect(player.record().isPrerecording()).toBeTrue();
+            expect(player.record().isRecording()).toBeTrue();
 
             setTimeout(() => {
-                // countdown is running, record button is locked
-                expect(toggle.el().hasAttribute('disabled')).toBeTrue();
+                // stop
+                toggle.trigger('click');
+                expect(player.record().isPrerecording()).toBeFalse();
+                expect(player.record().isRecording()).toBeFalse();
+
+                done();
             }, 1000);
-
-            setTimeout(() => {
-                // stop recording
-                player.record().stop();
-            }, 3000);
-        });
-
-        player.one(Event.FINISH_RECORD, () => {
-            // wait till it's loaded before destroying
-            // (XXX: create new event for this)
-            setTimeout(done, 1000);
         });
 
         player.one(Event.READY, () => {
