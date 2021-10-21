@@ -39,6 +39,32 @@ describe('controls.CountdownOverlay', () => {
         expect(countdown.el().innerHTML).toEqual('<span></span>');
     });
 
+    it('pre-recorder overlay appears', () => {
+        let countdown = new CountdownOverlay(player);
+
+        player.one(Event.DEVICE_READY, () => {
+            // start
+            player.record().start();
+
+            setTimeout(() => {
+                // overlay is visible
+                expect(countdown.el().hasClass('vjs-hidden')).toBeFalse();
+                // overlay is not empty
+                expect(countdown.el().innerHTML).not.toEqual('<span></span>');
+
+                // stop
+                player.record().stop();
+
+                done();
+            }, 1000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    // @todo-coachup move to videojs.record.spec.ts
     it('start record after the countdown', (done) => {
         let toggle = new RecordToggle(player);
 
