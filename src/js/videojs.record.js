@@ -934,7 +934,7 @@ class Record extends Plugin {
             switch (this.getRecordType()) {
                 case IMAGE_ONLY:
                     // create snapshot
-                    this.showPrerecorder().then(() => {
+                    this.showCountdown().then(() => {
                         this.createSnapshot();
                     });
 
@@ -950,7 +950,7 @@ class Record extends Plugin {
                     // wait for media stream on video element to actually load
                     this.player.one(Event.LOADEDMETADATA, () => {
                         // start actually recording process
-                        this.showPrerecorder().then(() => {
+                        this.showCountdown().then(() => {
                             this.startRecording();
                         });
                     });
@@ -959,7 +959,7 @@ class Record extends Plugin {
                 default:
                     // all resources have already loaded, so we can start
                     // recording right away
-                    this.showPrerecorder().then(() => {
+                    this.showCountdown().then(() => {
                         this.startRecording();
                     });
             }
@@ -967,11 +967,10 @@ class Record extends Plugin {
     }
 
     /**
-     * Show the prerecorder overlay and start the countdown
+     * Show the countdown overlay and start the countdown
      * @return {Promise} - promise is resolved when the last countdown step is reached
-     * @todo rename countdown to prerecorder, because the "countDown" term is used in the player
      */
-    showPrerecorder() {
+    showCountdown() {
         return new Promise(resolve => {
             if (this.countdown.length === 0) {
                 // resolve immediately if there are no countdown steps
