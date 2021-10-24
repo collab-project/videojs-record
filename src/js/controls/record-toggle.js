@@ -35,8 +35,6 @@ class RecordToggle extends Button {
 
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
-        this.on(this.player_, Event.START_COUNTDOWN, this.onCountdownStart);
-        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onCountdownFinish);
     }
 
     /**
@@ -47,8 +45,6 @@ class RecordToggle extends Button {
 
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
-        this.off(this.player_, Event.START_COUNTDOWN, this.onCountdownStart);
-        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onCountdownFinish);
     }
 
     /**
@@ -118,32 +114,6 @@ class RecordToggle extends Button {
 
         // change the button text
         this.controlText('Record');
-    }
-
-    /**
-     * Show countdown overlay
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @listens Player#countdownStart
-     * @todo unit test
-     */
-    onCountdownStart(event) {
-        this.enable();
-    }
-
-    /**
-     * Hide countdown overlay
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @listens Player#countdownFinish
-     * @todo unit test
-     */
-    onCountdownFinish(event) {
-        this.disable();
     }
 }
 
