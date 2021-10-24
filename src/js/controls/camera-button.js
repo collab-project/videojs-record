@@ -76,11 +76,11 @@ class CameraButton extends Button {
     handleClick(event) {
         let recorder = this.player_.record();
 
-        if (!recorder.isProcessing() && !recorder.isPrerecording()) {
+        if (!recorder.isProcessing() && !recorder.isCountingDown()) {
             // create snapshot
             recorder.start();
         } else {
-            if (recorder.isPrerecording()) {
+            if (recorder.isCountingDown()) {
                 recorder.abortPrerecording();
             }
 
@@ -109,7 +109,7 @@ class CameraButton extends Button {
         this.addClass('vjs-icon-replay');
 
         let recorder = this.player_.record();
-        if (!recorder.isPrerecording()) {
+        if (!recorder.isCountingDown()) {
             // change the button text
             this.controlText('Retry');
         }

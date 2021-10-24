@@ -75,10 +75,10 @@ class RecordToggle extends Button {
      */
     handleClick(event) {
         let recorder = this.player_.record();
-        if (!recorder.isProcessing() && !recorder.isPrerecording()) {
+        if (!recorder.isProcessing() && !recorder.isCountingDown()) {
             recorder.start();
         } else {
-            if (recorder.isPrerecording()) {
+            if (recorder.isCountingDown()) {
                 recorder.abortPrerecording();
             } else {
                 recorder.stop();

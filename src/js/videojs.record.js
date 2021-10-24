@@ -386,11 +386,11 @@ class Record extends Plugin {
     }
 
     /**
-     * Indicates whether the plugin is currently prerecording. Recording is not started yet.
+     * Indicates whether the plugin is currently running the countdown. Recording is not started yet.
      *
-     * @return {boolean} Plugin currently prerecording.
+     * @return {boolean} Plugin currently counting down or not.
      */
-    isPrerecording() {
+    isCountingDown() {
         return this._prerecording;
     }
 
