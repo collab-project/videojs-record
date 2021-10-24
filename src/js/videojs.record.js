@@ -391,7 +391,7 @@ class Record extends Plugin {
      * @return {boolean} Plugin currently counting down or not.
      */
     isCountingDown() {
-        return this._prerecording;
+        return this._countingdown;
     }
 
     /**
@@ -874,8 +874,7 @@ class Record extends Plugin {
                 return;
             }
             this._recording = true;
-            // @todo what if we're in the prerecording state? stop the current prerecording?
-            this._prerecording = true;
+            this._countingdown = true;
 
             // hide play/pause control
             if (this.player.controlBar.playToggle !== undefined) {
@@ -976,7 +975,7 @@ class Record extends Plugin {
         return new Promise(resolve => {
             if (this.countdown.length === 0) {
                 // resolve immediately if there are no countdown steps
-                this._prerecording = false;
+                this._countingdown = false;
                 resolve();
             }
 
@@ -988,7 +987,7 @@ class Record extends Plugin {
             let resolveOrDown = () => {
                 if (steps.length === 0) {
                     this.player.clearTimeout(this.prerecorderTimeoutID);
-                    this._prerecording = false;
+                    this._countingdown = false;
                     this.player.countdownOverlay.hide();
                     this.player.trigger(Event.FINISH_COUNTDOWN);
 
@@ -1074,11 +1073,7 @@ class Record extends Plugin {
         this.player.clearTimeout(this.prerecorderTimeoutID);
 
         this._recording = false;
-        this._prerecording = false;
-        // @todo investigate and fix
-        // when a user clicks on the recording button (during prerecording count down)
-        // and we have to set up this property to false somewhere
-        // otherwise recorder thinks that we still processing something and does not allow us to start a new recording
+        this._countingdown = false;
         this._processing = false;
 
         this.player.countdownOverlay.hide();
@@ -1588,7 +1583,7 @@ class Record extends Plugin {
      */
     resetState() {
         this._recording = false;
-        this._prerecording = false;
+        this._countingdown = false;
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
@@ -1722,7 +1717,7 @@ class Record extends Plugin {
      */
     retrySnapshot() {
         this._processing = false;
-        this._prerecording = false;
+        this._countingdown = false;
 
         // retry: hide the snapshot
         this.player.recordCanvas.hide();
