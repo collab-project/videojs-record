@@ -1065,10 +1065,10 @@ class Record extends Plugin {
     }
 
     /**
-     * Abort prerecording countdown
+     * Abort the countdown
      */
-    abortPrerecording() {
-        // Stop prerecorder steps
+    abortCountdown() {
+        // Stop the countdown
         this.player.clearTimeout(this.prerecorderTimeoutID);
 
         this._recording = false;

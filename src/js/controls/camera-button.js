@@ -81,7 +81,7 @@ class CameraButton extends Button {
             recorder.start();
         } else {
             if (recorder.isCountingDown()) {
-                recorder.abortPrerecording();
+                recorder.abortCountdown();
             }
 
             // retry

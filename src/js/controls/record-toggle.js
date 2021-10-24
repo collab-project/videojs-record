@@ -79,7 +79,7 @@ class RecordToggle extends Button {
             recorder.start();
         } else {
             if (recorder.isCountingDown()) {
-                recorder.abortPrerecording();
+                recorder.abortCountdown();
             } else {
                 recorder.stop();
             }
