@@ -84,41 +84,4 @@ describe('controls.RecordToggle', () => {
             player.record().getDevice();
         });
     });
-
-    it('accept interaction: countdown', (done) => {
-        // create an instance of a player with the countdown
-        player.dispose();
-        player = TestHelpers.makeAudioVideoPlayer({
-            plugins: {
-                record: {
-                    countdown: [
-                        {value: '2', time: 1000},
-                        {value: '1', time: 1000},
-                    ]
-                }
-            }
-        });
-
-        let toggle = new RecordToggle(player);
-
-        player.one(Event.DEVICE_READY, () => {
-            // start
-            toggle.trigger('click');
-            expect(player.record().isCountingDown()).toBeTrue();
-            expect(player.record().isRecording()).toBeTrue();
-
-            setTimeout(() => {
-                // stop
-                toggle.trigger('click');
-                expect(player.record().isCountingDown()).toBeFalse();
-                expect(player.record().isRecording()).toBeFalse();
-
-                done();
-            }, 1000);
-        });
-
-        player.one(Event.READY, () => {
-            player.record().getDevice();
-        });
-    });
 });

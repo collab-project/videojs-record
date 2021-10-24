@@ -1039,6 +1039,10 @@ class Record extends Plugin {
             this._recording = false;
             this._processing = true;
 
+            if (this.isCountingDown()) {
+                this.abortCountdown();
+            }
+
             if (this.getRecordType() !== IMAGE_ONLY) {
                 // notify UI
                 this.player.trigger(Event.STOP_RECORD);

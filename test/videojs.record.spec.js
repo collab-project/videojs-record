@@ -874,7 +874,8 @@ describe('Record', () => {
     });
 
     /** @test {Record#isCountingDown} */
-    it('counting down is started', (done) => {
+    /** @test {Record#isRecording} */
+    it('start/stop the countdown', (done) => {
         player = TestHelpers.makeAudioVideoPlayer({
             plugins: {
                 record: {
@@ -887,23 +888,19 @@ describe('Record', () => {
         });
 
         player.one(Event.DEVICE_READY, () => {
-            // start record
+            // start
             player.record().start();
+            expect(player.record().isCountingDown()).toBeTrue();
+            expect(player.record().isRecording()).toBeTrue();
 
             setTimeout(() => {
-                expect(player.record().isCountingDown()).toBeTrue();
-            }, 1000);
-
-            setTimeout(() => {
-                // stop recording
+                // stop
                 player.record().stop();
-            }, 4000);
-        });
+                expect(player.record().isCountingDown()).toBeFalse();
+                expect(player.record().isRecording()).toBeFalse();
 
-        player.one(Event.FINISH_RECORD, () => {
-            // wait till it's loaded before destroying
-            // (XXX: create new event for this)
-            setTimeout(done, 1000);
+                done();
+            }, 1000);
         });
 
         player.one(Event.READY, () => {
