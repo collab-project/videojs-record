@@ -985,7 +985,7 @@ class Record extends Plugin {
             let steps = [...this.countdown];
             let resolveOrDown = () => {
                 if (steps.length === 0) {
-                    this.player.clearTimeout(this.prerecorderTimeoutID);
+                    this.player.clearTimeout(this.countdownTimeoutID);
                     this._countingdown = false;
                     this.player.countdownOverlay.hide();
                     this.player.trigger(Event.FINISH_COUNTDOWN);
@@ -996,7 +996,7 @@ class Record extends Plugin {
                     ({value, time} = steps.shift());
                     // @todo trigger an event and pass current step as an event data
                     this.player.countdownOverlay.setCountdownValue(value);
-                    this.prerecorderTimeoutID = this.player.setTimeout(resolveOrDown, time);
+                    this.countdownTimeoutID = this.player.setTimeout(resolveOrDown, time);
                 }
             };
 
@@ -1069,7 +1069,7 @@ class Record extends Plugin {
      */
     abortCountdown() {
         // Stop the countdown
-        this.player.clearTimeout(this.prerecorderTimeoutID);
+        this.player.clearTimeout(this.countdownTimeoutID);
 
         this._recording = false;
         this._countingdown = false;
