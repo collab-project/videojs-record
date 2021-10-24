@@ -121,12 +121,12 @@ class RecordToggle extends Button {
     }
 
     /**
-     * Show prerecorder overlay
+     * Show countdown overlay
      *
      * @param {EventTarget~Event} [event]
      *        The event that caused this function to run.
      *
-     * @listens Player#prerecorderStart
+     * @listens Player#countdownStart
      * @todo unit test
      */
     onCountdownStart(event) {
@@ -134,12 +134,12 @@ class RecordToggle extends Button {
     }
 
     /**
-     * Hide prerecorder overlay
+     * Hide countdown overlay
      *
      * @param {EventTarget~Event} [event]
      *        The event that caused this function to run.
      *
-     * @listens Player#prerecorderFinish
+     * @listens Player#countdownFinish
      * @todo unit test
      */
     onCountdownFinish(event) {
