@@ -35,9 +35,9 @@ class RecordToggle extends Button {
 
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
-        this.on(this.player_, Event.START_PRERECORDER, this.onPrerecorderStart);
-        this.on(this.player_, Event.FINISH_PRERECORDER, this.onPrerecorderFinish);
-        this.on(this.player_, Event.FINISH_PRERECORDER, this.onPrerecorderAbort);
+        this.on(this.player_, Event.START_COUNTDOWN, this.onPrerecorderStart);
+        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderFinish);
+        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderAbort);
     }
 
     /**
@@ -48,9 +48,9 @@ class RecordToggle extends Button {
 
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
-        this.off(this.player_, Event.START_PRERECORDER, this.onPrerecorderStart);
-        this.off(this.player_, Event.FINISH_PRERECORDER, this.onPrerecorderFinish);
-        this.off(this.player_, Event.FINISH_PRERECORDER, this.onPrerecorderAbort);
+        this.off(this.player_, Event.START_COUNTDOWN, this.onPrerecorderStart);
+        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderFinish);
+        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderAbort);
     }
 
     /**

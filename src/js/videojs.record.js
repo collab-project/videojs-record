@@ -980,7 +980,7 @@ class Record extends Plugin {
                 resolve();
             }
 
-            this.player.trigger(Event.START_PRERECORDER);
+            this.player.trigger(Event.START_COUNTDOWN);
             this.player.countdownOverlay.setCountdownValue('');
             this.player.countdownOverlay.show();
 
@@ -990,7 +990,7 @@ class Record extends Plugin {
                     this.player.clearTimeout(this.prerecorderTimeoutID);
                     this._prerecording = false;
                     this.player.countdownOverlay.hide();
-                    this.player.trigger(Event.FINISH_PRERECORDER);
+                    this.player.trigger(Event.FINISH_COUNTDOWN);
 
                     resolve();
                 } else {
@@ -1084,7 +1084,7 @@ class Record extends Plugin {
         this.player.countdownOverlay.hide();
 
         // Notify the UI
-        this.player.trigger(Event.ABORT_PRERECORDER);
+        this.player.trigger(Event.ABORT_COUNTDOWN);
     }
 
     /**

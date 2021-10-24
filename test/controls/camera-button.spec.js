@@ -105,7 +105,7 @@ describe('controls.CameraButton', () => {
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        playerWithPrerecorder.one(Event.START_PRERECORDER, () => {
+        playerWithPrerecorder.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
                 expect(button.controlText_).toEqual('Reset');
             }, 2000);
@@ -139,7 +139,7 @@ describe('controls.CameraButton', () => {
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        playerWithPrerecorder.one(Event.START_PRERECORDER, () => {
+        playerWithPrerecorder.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
                 expect(button.controlText_).toEqual('Reset');
             }, 500);
@@ -151,7 +151,7 @@ describe('controls.CameraButton', () => {
 
             done();
         });
-        playerWithPrerecorder.one(Event.START_PRERECORDER, () => {
+        playerWithPrerecorder.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
                 // Stop the pre-recording
                 button.trigger('click');
