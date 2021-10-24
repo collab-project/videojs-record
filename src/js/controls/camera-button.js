@@ -33,8 +33,8 @@ class CameraButton extends Button {
     enable() {
         super.enable();
 
-        this.on(this.player_, Event.START_COUNTDOWN, this.onStartPrerecorder);
-        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onFinishPrerecorder);
+        this.on(this.player_, Event.START_COUNTDOWN, this.onStartCountdown);
+        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onFinishCountdown);
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
     }
@@ -45,8 +45,8 @@ class CameraButton extends Button {
     disable() {
         super.disable();
 
-        this.off(this.player_, Event.START_COUNTDOWN, this.onStartPrerecorder);
-        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onFinishPrerecorder);
+        this.off(this.player_, Event.START_COUNTDOWN, this.onStartCountdown);
+        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onFinishCountdown);
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
     }
@@ -140,7 +140,7 @@ class CameraButton extends Button {
      *
      * @listens Player#startRecord
      */
-    onStartPrerecorder(event) {
+    onStartCountdown(event) {
         // change the button text
         this.controlText('Reset');
     }
@@ -153,7 +153,7 @@ class CameraButton extends Button {
      *
      * @listens Player#startRecord
      */
-    onFinishPrerecorder(event) {
+    onFinishCountdown(event) {
         // change the button text
         this.controlText('Retry');
     }

@@ -35,9 +35,8 @@ class RecordToggle extends Button {
 
         this.on(this.player_, Event.START_RECORD, this.onStart);
         this.on(this.player_, Event.STOP_RECORD, this.onStop);
-        this.on(this.player_, Event.START_COUNTDOWN, this.onPrerecorderStart);
-        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderFinish);
-        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderAbort);
+        this.on(this.player_, Event.START_COUNTDOWN, this.onCountdownStart);
+        this.on(this.player_, Event.FINISH_COUNTDOWN, this.onCountdownFinish);
     }
 
     /**
@@ -48,9 +47,8 @@ class RecordToggle extends Button {
 
         this.off(this.player_, Event.START_RECORD, this.onStart);
         this.off(this.player_, Event.STOP_RECORD, this.onStop);
-        this.off(this.player_, Event.START_COUNTDOWN, this.onPrerecorderStart);
-        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderFinish);
-        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onPrerecorderAbort);
+        this.off(this.player_, Event.START_COUNTDOWN, this.onCountdownStart);
+        this.off(this.player_, Event.FINISH_COUNTDOWN, this.onCountdownFinish);
     }
 
     /**
@@ -131,7 +129,7 @@ class RecordToggle extends Button {
      * @listens Player#prerecorderStart
      * @todo unit test
      */
-    onPrerecorderStart(event) {
+    onCountdownStart(event) {
         this.enable();
     }
 
@@ -144,21 +142,8 @@ class RecordToggle extends Button {
      * @listens Player#prerecorderFinish
      * @todo unit test
      */
-    onPrerecorderFinish(event) {
+    onCountdownFinish(event) {
         this.disable();
-    }
-
-    /**
-     * Hide prerecorder overlay
-     *
-     * @param {EventTarget~Event} [event]
-     *        The event that caused this function to run.
-     *
-     * @listens Player#prerecorderAbort
-     * @todo unit test
-     */
-    onPrerecorderAbort(event) {
-        // @todo implement me
     }
 }
 
