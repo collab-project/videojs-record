@@ -127,7 +127,7 @@ describe('controls.CountdownOverlay', () => {
         });
     });
 
-    it('prerecording during the countdown', (done) => {
+    it('recording is not started during the countdown', (done) => {
         let toggle = new RecordToggle(player);
 
         player.one(Event.DEVICE_READY, () => {
@@ -135,8 +135,7 @@ describe('controls.CountdownOverlay', () => {
             toggle.trigger('click');
 
             setTimeout(() => {
-                // recording is not started during the countdown
-                expect(player.record().isPrerecording()).toBeTrue();
+                expect(player.record().isCountingDown()).toBeTrue();
             }, 1000);
 
             setTimeout(() => {

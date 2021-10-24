@@ -34,7 +34,7 @@ describe('controls.CameraButton', () => {
                     debug: true
                 }
             }
-        }, 'imageOnlyPrerecorder');
+        }, 'imageOnlyCountdown');
     });
 
     afterEach(() => {

@@ -104,13 +104,13 @@ describe('controls.RecordToggle', () => {
         player.one(Event.DEVICE_READY, () => {
             // start
             toggle.trigger('click');
-            expect(player.record().isPrerecording()).toBeTrue();
+            expect(player.record().isCountingDown()).toBeTrue();
             expect(player.record().isRecording()).toBeTrue();
 
             setTimeout(() => {
                 // stop
                 toggle.trigger('click');
-                expect(player.record().isPrerecording()).toBeFalse();
+                expect(player.record().isCountingDown()).toBeFalse();
                 expect(player.record().isRecording()).toBeFalse();
 
                 done();
