@@ -85,8 +85,8 @@ describe('controls.RecordToggle', () => {
         });
     });
 
-    it('accept interaction: pre-recorder', (done) => {
-        // create an instance of a player with the pre-recorder
+    it('accept interaction: countdown', (done) => {
+        // create an instance of a player with the countdown
         player.dispose();
         player = TestHelpers.makeAudioVideoPlayer({
             plugins: {

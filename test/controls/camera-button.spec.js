@@ -11,7 +11,7 @@ import CameraButton from '../../src/js/controls/camera-button';
 /** @test {camera-button} */
 describe('controls.CameraButton', () => {
     let player;
-    let playerWithPrerecorder;
+    let playerWithCountdown;
     let originalTimeout;
 
     beforeEach(() => {
@@ -21,8 +21,8 @@ describe('controls.CameraButton', () => {
         // create new image-only player
         player = TestHelpers.makeImageOnlyPlayer();
 
-        // create new image-only player with a pre-recorder
-        playerWithPrerecorder = TestHelpers.makeImageOnlyPlayer({
+        // create new image-only player with the countdown
+        playerWithCountdown = TestHelpers.makeImageOnlyPlayer({
             plugins: {
                 record: {
                     image: true,
@@ -39,7 +39,7 @@ describe('controls.CameraButton', () => {
 
     afterEach(() => {
         player.dispose();
-        playerWithPrerecorder.dispose();
+        playerWithCountdown.dispose();
 
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
@@ -100,17 +100,17 @@ describe('controls.CameraButton', () => {
         });
     });
 
-    it('changes appearance when startRecord or stopRecord is triggered and pre-recorder is on', (done) => {
-        let button = new CameraButton(playerWithPrerecorder);
+    it('changes appearance when startRecord or stopRecord is triggered and countdown is on', (done) => {
+        let button = new CameraButton(playerWithCountdown);
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        playerWithPrerecorder.one(Event.START_COUNTDOWN, () => {
+        playerWithCountdown.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
                 expect(button.controlText_).toEqual('Reset');
             }, 2000);
         });
-        playerWithPrerecorder.one(Event.START_RECORD, () => {
+        playerWithCountdown.one(Event.START_RECORD, () => {
             expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
             expect(button.hasClass('vjs-icon-replay')).toBeTrue();
             expect(button.controlText_).toEqual('Reset');
@@ -125,44 +125,44 @@ describe('controls.CameraButton', () => {
             }, 4000);
         });
 
-        playerWithPrerecorder.one(Event.DEVICE_READY, () => {
+        playerWithCountdown.one(Event.DEVICE_READY, () => {
             button.trigger('click');
         });
 
-        playerWithPrerecorder.one(Event.READY, () => {
-            playerWithPrerecorder.record().getDevice();
+        playerWithCountdown.one(Event.READY, () => {
+            playerWithCountdown.record().getDevice();
         });
     });
 
-    it('changes appearance when stopRecord is triggered and pre-recorder is on', (done) => {
-        let button = new CameraButton(playerWithPrerecorder);
+    it('changes appearance when stopRecord is triggered and the countdown is on', (done) => {
+        let button = new CameraButton(playerWithCountdown);
 
         expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
 
-        playerWithPrerecorder.one(Event.START_COUNTDOWN, () => {
+        playerWithCountdown.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
                 expect(button.controlText_).toEqual('Reset');
             }, 500);
         });
-        playerWithPrerecorder.one(Event.RETRY, () => {
+        playerWithCountdown.one(Event.RETRY, () => {
             expect(button.hasClass('vjs-icon-replay')).toBeFalse();
             expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
             expect(button.controlText_).toEqual('Image');
 
             done();
         });
-        playerWithPrerecorder.one(Event.START_COUNTDOWN, () => {
+        playerWithCountdown.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
                 // Stop the pre-recording
                 button.trigger('click');
             }, 1000);
         });
-        playerWithPrerecorder.one(Event.DEVICE_READY, () => {
+        playerWithCountdown.one(Event.DEVICE_READY, () => {
             button.trigger('click');
         });
 
-        playerWithPrerecorder.one(Event.READY, () => {
-            playerWithPrerecorder.record().getDevice();
+        playerWithCountdown.one(Event.READY, () => {
+            playerWithCountdown.record().getDevice();
         });
     });
 });

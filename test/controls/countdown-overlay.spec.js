@@ -39,7 +39,7 @@ describe('controls.CountdownOverlay', () => {
         expect(countdown.el().innerHTML).toEqual('<span></span>');
     });
 
-    it('pre-recorder overlay appears', () => {
+    it('countdown overlay appears', () => {
         let countdown = new CountdownOverlay(player);
 
         player.one(Event.DEVICE_READY, () => {
