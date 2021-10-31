@@ -56,7 +56,11 @@ class CountdownOverlay extends Component {
         super.show();
     }
 
-    setCountdownValue(value) {
+    resetOverlayText() {
+        this.setOverlayText('');
+    }
+
+    setOverlayText(value) {
         if (this.el().firstChild) {
             this.el().firstChild.innerText = value;
         } else {

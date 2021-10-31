@@ -70,7 +70,6 @@ class RecordToggle extends Button {
      * @listens click
      */
     handleClick(event) {
-        debugger;
         let recorder = this.player_.record();
         if (!recorder.isRecording()) {
             recorder.start();

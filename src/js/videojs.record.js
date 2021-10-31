@@ -979,7 +979,7 @@ class Record extends Plugin {
             }
 
             this.player.trigger(Event.START_COUNTDOWN);
-            this.player.countdownOverlay.setCountdownValue('');
+            this.player.countdownOverlay.resetOverlayText();
             this.player.countdownOverlay.show();
 
             let steps = [...this.countdown];
@@ -992,10 +992,9 @@ class Record extends Plugin {
 
                     resolve();
                 } else {
-                    let value, time;
-                    ({value, time} = steps.shift());
-                    // @todo trigger an event and pass current step as an event data
-                    this.player.countdownOverlay.setCountdownValue(value);
+                    let text, time;
+                    ({text, time} = steps.shift());
+                    this.player.countdownOverlay.setOverlayText(text);
                     this.countdownTimeoutID = this.player.setTimeout(resolveOrDown, time);
                 }
             };
