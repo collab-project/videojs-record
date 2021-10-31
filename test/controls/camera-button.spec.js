@@ -153,7 +153,7 @@ describe('controls.CameraButton', () => {
         });
         playerWithCountdown.one(Event.START_COUNTDOWN, () => {
             setTimeout(() => {
-                // Stop the pre-recording
+                // Stop the countdown
                 button.trigger('click');
             }, 1000);
         });
