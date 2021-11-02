@@ -1827,6 +1827,9 @@ class Record extends Plugin {
             this.recordVideo = {
                 deviceId: {exact: deviceId}
             };
+        } else if (this.recordImage === Object(this.recordImage)) {
+            // already using image constraints
+            this.recordImage.deviceId = {exact: deviceId};
         }
 
         // release existing device
