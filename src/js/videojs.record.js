@@ -99,7 +99,7 @@ class Record extends Plugin {
         // add custom interface elements
         DeviceButton.prototype.buildCSSClass = () => {
             // use dynamic icon class
-            return 'vjs-record vjs-device-button vjs-control vjs-icon-' + deviceIcon;
+            return 'metaweb__button--record';
         };
         player.deviceButton = new DeviceButton(player, options);
         player.addChild(player.deviceButton);
@@ -147,11 +147,7 @@ class Record extends Plugin {
 
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
-            let customUIElements = ['deviceButton', 'recordIndicator',
-                'cameraButton', 'recordToggle'];
-            if (player.pipToggle) {
-                customUIElements.push('pipToggle');
-            }
+            let customUIElements = ['recordIndicator', 'recordToggle'];
 
             customUIElements.forEach((element) => {
                 if (this.player.options_.controlBar[element] !== undefined) {
