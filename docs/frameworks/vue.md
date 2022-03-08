@@ -16,7 +16,7 @@ npm install -g @vue/cli
 Create a new application, e.g. `videojs-record-vue`:
 
 ```console
-vue create --default videojs-record-vue
+vue create --default --packageManager npm videojs-record-vue
 ```
 
 Install videojs-record:
