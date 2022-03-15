@@ -63,7 +63,7 @@ And define an `audio` element:
 <audio id="myAudio" class="video-js vjs-default-skin"></audio>
 ```
 
-There is also support for additional [audio plugins](audio-plugins.md)
+There is also support for additional [audio plugins](plugins.md#audio)
 that allows you to record audio with alternative codecs (that otherwise might not
 be supported in the browser) like Ogg Vorbis, MP3 and Opus.
 
