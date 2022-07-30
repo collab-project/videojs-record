@@ -16,7 +16,7 @@ npm install -g @angular/cli
 Create a new application, e.g. `videojs-record-angular`:
 
 ```console
-ng new videojs-record-angular
+ng new --strict=false videojs-record-angular
 ```
 
 Install `videojs-record` and `@types/video.js`:
