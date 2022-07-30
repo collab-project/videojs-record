@@ -84,4 +84,86 @@ describe('controls.RecordToggle', () => {
             player.record().getDevice();
         });
     });
+
+    it('start then abort the countdown', (done) => {
+        // create an instance of a player with the countdown
+        player.dispose();
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    countdown: [
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ]
+                }
+            }
+        });
+
+        let toggle = new RecordToggle(player);
+
+        player.one(Event.DEVICE_READY, () => {
+            // start countdown
+            toggle.trigger('click');
+            expect(player.record().isCountingDown()).toBeTrue();
+
+            setTimeout(() => {
+                // abort countdown
+                toggle.trigger('click');
+                expect(player.record().isCountingDown()).toBeFalse();
+            }, 1000);
+
+            setTimeout(() => {
+                // no recording after aborting
+                expect(player.record().isCountingDown()).toBeFalse();
+                expect(player.record().isRecording()).toBeFalse();
+                setTimeout(done, 1000);
+            }, 3000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    it('stop the recording', (done) => {
+        // create an instance of a player with the countdown
+        player.dispose();
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    countdown: [
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ]
+                }
+            }
+        });
+
+        let toggle = new RecordToggle(player);
+
+        player.one(Event.DEVICE_READY, () => {
+            // start countdown
+            toggle.trigger('click');
+            expect(player.record().isRecording()).toBeTrue();
+
+            setTimeout(() => {
+                // recording (countdown finished)
+                expect(player.record().isCountingDown()).toBeFalse();
+                expect(player.record().isRecording()).toBeTrue();
+            }, 3000);
+
+            setTimeout(() => {
+                // stop recording
+                toggle.trigger('click');
+                expect(player.record().isCountingDown()).toBeFalse();
+                expect(player.record().isRecording()).toBeFalse();
+
+                setTimeout(done, 1000);
+            }, 4000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
 });
