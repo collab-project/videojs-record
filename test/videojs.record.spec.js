@@ -267,7 +267,7 @@ describe('Record', () => {
                     // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
                     expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
                     expect(player.deviceErrorCode.message).toEqual(
-                        'getDisplayMedia must be called from a user gesture handler.'
+                        'getDisplayMedia requires transient activation from a user gesture.'
                     );
                 }
 
@@ -320,7 +320,7 @@ describe('Record', () => {
                     // and https://www.fxsitecompat.dev/en-CA/docs/2019/requesting-notification-permission-and-screen-capture-now-requires-user-interaction/
                     expect(player.deviceErrorCode.name).toEqual('InvalidStateError');
                     expect(player.deviceErrorCode.message).toEqual(
-                        'getDisplayMedia must be called from a user gesture handler.'
+                        'getDisplayMedia requires transient activation from a user gesture.'
                     );
                 }
 
