@@ -5,7 +5,7 @@
 - ts-ebml plugin: fix Safari issue with ts-ebml (#595, #581)
 - Bump required version for:
   - videojs-wavesurfer (3.9.0 or newer)
-  - webrtc-adapter (8.1.2 or newer)
+  - webrtc-adapter (8.2.0 or newer)
 
 
 ## 4.5.0 - 2021/06/14
