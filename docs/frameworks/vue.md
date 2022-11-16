@@ -2,7 +2,7 @@
 
 This page shows how to get started with [Vue.js](https://vuejs.org/) and videojs-record.
 
-For more information, check the video.js [documentation](https://github.com/videojs/video.js/blob/master/docs/guides/vue.md)
+For more information, check the video.js [documentation](https://videojs.com/guides/vue/)
 for Vue.js.
 
 ## Installation
@@ -144,7 +144,7 @@ Create `src/components/VideoJSRecord.vue`:
                 console.error('device error:', this.player.deviceErrorCode);
             });
         },
-        beforeDestroy() { 
+        beforeDestroy() {
             if (this.player) {
                 this.player.dispose();
             }

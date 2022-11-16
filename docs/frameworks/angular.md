@@ -2,7 +2,7 @@
 
 This document describes how to setup [Angular](https://angular.io) with videojs-record.
 
-For more information, check the video.js [documentation](https://github.com/videojs/video.js/blob/master/docs/guides/angular.md)
+For more information, check the video.js [documentation](https://videojs.com/guides/angular/)
 for Angular.
 
 ## Installation
@@ -90,7 +90,7 @@ export class VideojsRecordComponent implements OnInit, OnDestroy {
   idx = 'clip1';
 
   private config: any;
-  private player: any; 
+  private player: any;
   private plugin: any;
 
   // constructor initializes our declared vars
