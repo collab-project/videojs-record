@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.6.0 - unreleased
+## 4.6.0 - 2022/11/16
 
 - ts-ebml plugin: fix Safari issue with ts-ebml (#595, #581)
 - Bump required version for:
