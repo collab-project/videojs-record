@@ -8,13 +8,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [20]
-
+    name: ${{ matrix.os }} - Node ${{ matrix.node-version }} (${{ matrix.architecture }})
     steps:
     - name: Checkout
       uses: actions/checkout@v4
