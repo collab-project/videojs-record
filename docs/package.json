@@ -30,8 +30,10 @@
     "url": "git+https://github.com/collab-project/videojs-record.git"
   },
   "dependencies": {
-    "@ffmpeg/core": "^0.12.2",
-    "@ffmpeg/ffmpeg": "^0.11.6",
+    "@ffmpeg/core": "^0.12.6",
+    "@ffmpeg/core-mt": "^0.12.6",
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
     "ffmpeg.js": "^4.2.9003",
     "lamejs": "^1.2.1",
     "libvorbis.js": "^1.1.2",

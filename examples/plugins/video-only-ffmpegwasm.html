@@ -11,7 +11,8 @@
   <script src="../../node_modules/video.js/dist/video.min.js"></script>
   <script src="../../node_modules/recordrtc/RecordRTC.js"></script>
   <script src="../../node_modules/webrtc-adapter/out/adapter.js"></script>
-  <script src="../../node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
+  <script src="../../node_modules/@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
+  <script src="../../node_modules/@ffmpeg/util/dist/umd/index.js"></script>
 
   <script src="../../dist/videojs.record.js"></script>
   <script src="../../dist/plugins/videojs.record.ffmpeg-wasm.js"></script>
@@ -48,9 +49,12 @@ var options = {
             debug: true,
             displayMilliseconds: false,
             convertEngine: 'ffmpeg.wasm',
-            convertWorkerURL: 'http://localhost:8080/node_modules/@ffmpeg/core/dist/ffmpeg-core.js',
+            // multi-threaded worker
+            coreURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js',
+            convertWorkerURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js',
+            audioWebAssemblyURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm',
             // convert recorded data to MP4 (and copy over audio data without encoding)
-            convertOptions: ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
+            convertOptions: ['-c:v', 'libx264', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
             // specify output mime-type
             pluginLibraryOptions: {
                 outputType: 'video/mp4'

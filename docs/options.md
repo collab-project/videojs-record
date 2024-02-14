@@ -45,7 +45,7 @@ Additional options for this plugin are:
 | `audioBitRate` | float | `128` | The audio bitrate in kbps (only used in the lamejs plugin). |
 | `audioChannels` | float | `2` | Number of audio channels. Using a single channel results in a smaller file size. |
 | `audioWorkerURL` | string | `''` | URL for the audio worker, for example: `/opus-recorder/build/encoderWorker.min.js`. Currently only used for opus-recorder, opus-media-recorder and lamejs plugins. Use an empty string '' to disable (default). |
-| `audioWebAssemblyURL` | string | `''` | URL for the audio worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the vmsg and opus-media-recorder plugins. |
+| `audioWebAssemblyURL` | string | `''` | URL for the audio worker WebAssembly file. Use an empty string '' to disable (default). Currently only used for the vmsg, ffmpeg.wasm and opus-media-recorder plugins. |
 | `audioBufferUpdate` | boolean | `false` | Enables the `audioBufferUpdate` event that provides real-time `AudioBuffer` instances from the input audio device. |
 | `animationFrameRate` | float | `200` | Frame rate for animated GIF (in frames per second). |
 | `animationQuality` | float | `10` | Sets quality of color quantization (conversion of images to the maximum 256 colors allowed by the GIF specification). Lower values (minimum = 1) produce better colors, but slow processing significantly. The default produces good color mapping at reasonable speeds. Values greater than 20 do not yield significant improvements in speed. |
