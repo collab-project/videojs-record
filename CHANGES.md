@@ -2,6 +2,7 @@
 
 ## 4.7.0 - unreleased
 
+- Fix video.js v8 deprecation warnings
 - Bump required version for:
   - webrtc-adapter (8.2.3 or newer)
 
