@@ -1,5 +1,12 @@
 # videojs-record changelog
 
+## 4.7.0 - unreleased
+
+- Fix video.js v8 deprecation warnings
+- Bump required version for:
+  - webrtc-adapter (8.2.3 or newer)
+
+
 ## 4.6.0 - 2022/11/16
 
 - ts-ebml plugin: fix Safari issue with ts-ebml (#595, #581)

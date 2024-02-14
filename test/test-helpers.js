@@ -4,7 +4,7 @@
 
 import document from 'global/document';
 
-import {Player, mergeOptions} from 'video.js';
+import {Player, obj} from 'video.js';
 
 import adapter from 'webrtc-adapter';
 
@@ -120,7 +120,7 @@ const TestHelpers = {
                 }
             }
         };
-        opts = mergeOptions(opts, newOptions);
+        opts = obj.merge(opts, newOptions);
         let tag = TestHelpers.makeTag('audio', 'audioOnly');
         return this.makePlayer(tag, opts);
     },
@@ -285,7 +285,7 @@ const TestHelpers = {
                 }
             }
         };
-        opts = mergeOptions(opts, newOptions);
+        opts = obj.merge(opts, newOptions);
         let tag = TestHelpers.makeTag('video', 'audioVideo');
         return this.makePlayer(tag, opts);
     },
@@ -308,7 +308,7 @@ const TestHelpers = {
                 }
             }
         };
-        opts = mergeOptions(opts, newOptions);
+        opts = obj.merge(opts, newOptions);
         let tag = TestHelpers.makeTag('video', 'videoOnly');
         return this.makePlayer(tag, opts);
     },
@@ -334,7 +334,7 @@ const TestHelpers = {
                 }
             }
         };
-        opts = mergeOptions(opts, newOptions);
+        opts = obj.merge(opts, newOptions);
         return this.makePlayer(tag, opts);
     },
 
@@ -357,7 +357,7 @@ const TestHelpers = {
                 }
             }
         };
-        opts = mergeOptions(opts, newOptions);
+        opts = obj.merge(opts, newOptions);
         let tag = TestHelpers.makeTag('video', 'screenOnly');
         return this.makePlayer(tag, opts);
     },
@@ -381,7 +381,7 @@ const TestHelpers = {
             }
         };
 
-        opts = mergeOptions(opts, newOptions);
+        opts = obj.merge(opts, newOptions);
         let tag = TestHelpers.makeTag('video', 'audioScreen');
         return this.makePlayer(tag, opts);
     },
