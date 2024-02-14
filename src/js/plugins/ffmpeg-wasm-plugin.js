@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 /**
  * @file ffmpeg-wasm-plugin.js
  * @since 4.2.0
@@ -37,7 +38,19 @@ class FFmpegWasmEngine extends ConvertEngine {
          *
          * @type {string}
          */
-        this.convertWorkerURL = './node_modules/@ffmpeg/core/dist/ffmpeg-core.js';
+        this.coreURL = '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js';
+        /**
+         * Path to script `ffmpeg-core.worker.js`.
+         *
+         * @type {string}
+         */
+        this.convertWorkerURL = '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js';
+        /**
+         * Path to script `ffmpeg-core.wasm`.
+         *
+         * @type {string}
+         */
+        this.audioWebAssemblyURL = '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm';
         /**
          * Mime-type for output.
          *
@@ -50,6 +63,8 @@ class FFmpegWasmEngine extends ConvertEngine {
          * @type {object}
          */
         this.pluginLibraryOptions = {};
+
+        this.ffmpeg = null;
     }
 
     /**
@@ -64,11 +79,25 @@ class FFmpegWasmEngine extends ConvertEngine {
         }
         this.outputType = this.pluginLibraryOptions.outputType;
 
-        const {version, createFFmpeg, fetchFile} = FFmpeg;
-        const ffmpeg = createFFmpeg({
-            corePath: this.convertWorkerURL,
-            log: this.debug
-        });
+        // setup ffmpeg.wasm
+        const {fetchFile} = FFmpegUtil;
+        const {FFmpeg} = FFmpegWASM;
+        if (this.ffmpeg === null) {
+            this.ffmpeg = new FFmpeg();
+
+            if (this.debug) {
+                this.ffmpeg.on('log', ({message}) => {
+                    console.log(message);
+                });
+            }
+
+            await this.ffmpeg.load({
+                coreURL: this.coreURL,
+                wasmURL: this.audioWebAssemblyURL,
+                workerURL: this.convertWorkerURL,
+            });
+        }
+
         // save timestamp
         const timestamp = new Date();
         timestamp.setTime(data.lastModified);
@@ -86,10 +115,10 @@ class FFmpegWasmEngine extends ConvertEngine {
         this.player().trigger('startConvert');
 
         // load and convert blob
-        await ffmpeg.load();
-        ffmpeg.FS('writeFile', tempInputName, await fetchFile(data));
-        await ffmpeg.run(...opts);
-        const output = ffmpeg.FS('readFile', tempOutputName);
+        await this.ffmpeg.writeFile(tempInputName, await fetchFile(data));
+        console.log(opts);
+        await this.ffmpeg.exec(opts);
+        const output = await this.ffmpeg.readFile(tempOutputName);
 
         // create new blob
         let result = new Blob([output.buffer], {type: this.outputType});

@@ -16,13 +16,14 @@ Webassembly / Javascript port of FFmpeg.
 Install the library:
 
 ```console
-npm install --save @ffmpeg/ffmpeg @ffmpeg/core
+npm install --save @ffmpeg/ffmpeg @ffmpeg/core @ffmpeg/core-mt @ffmpeg/util
 ```
 
-Include the library and place it before any other scripts:
+Include the library files and place them before any other scripts:
 
 ```html
-<script src="@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
+<script src="@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
+<script src="@ffmpeg/ffmpeg/util/umd/index.js"></script>
 ```
 
 Import the plugin:
@@ -41,7 +42,10 @@ record: {
     debug: true,
     // enable ffmpeg.wasm plugin
     convertEngine: 'ffmpeg.wasm',
-    convertWorkerURL: '../../node_modules/@ffmpeg/core/dist/ffmpeg-core.js',
+    // multi-threaded worker
+    coreURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js',
+    convertWorkerURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js',
+    audioWebAssemblyURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm',
     // convert recorded data to MP4 (and copy over audio data without encoding)
     convertOptions: ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
     // specify output mime-type
@@ -58,6 +62,8 @@ Options for this plugin:
 | Option | Value | Description |
 | --- | --- | --- |
 | `convertEngine` | `ffmpeg.wasm` | Enables the plugin. |
-| `convertOptions` | `['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2']` | Array of arguments for FFmpeg. |
-| `pluginLibraryOptions` | `{outputType: 'video/mp4'}` | Specify output mime-type and other options. |
-| `convertWorkerURL` | `/path/to/@ffmpeg/core/dist/ffmpeg-core.js` | Specify encoding worker. |
+| `convertOptions` | Example: `['-f', 'mp3', '-codec:a', 'libmp3lame', '-qscale:a', '2']` | Array of arguments for FFmpeg. |
+| `pluginLibraryOptions` | Example: `{outputType: 'video/mp4'}` | Specify output mime-type and other options. |
+| `coreURL` | `/path/to/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js` | Specify ffmpeg-core main file. |
+| `convertWorkerURL` | `/path/to/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js` | Specify ffmpeg-core worker. |
+| `audioWebAssemblyURL` | `/path/to/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm` | Specify ffmpeg-core WebAssembly file. |

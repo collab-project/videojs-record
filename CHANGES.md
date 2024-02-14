@@ -3,6 +3,7 @@
 ## 4.7.0 - unreleased
 
 - Fix video.js v8 deprecation warnings
+- ffmpeg.wasm plugin: add support for v0.12.x
 - Bump required version for:
   - webrtc-adapter (8.2.3 or newer)
 
