@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 /**
  * @file ffmpeg-wasm-plugin.js
  * @since 4.2.0
@@ -79,13 +80,13 @@ class FFmpegWasmEngine extends ConvertEngine {
         this.outputType = this.pluginLibraryOptions.outputType;
 
         // setup ffmpeg.wasm
-        const { fetchFile } = FFmpegUtil;
-        const { FFmpeg } = FFmpegWASM;
+        const {fetchFile} = FFmpegUtil;
+        const {FFmpeg} = FFmpegWASM;
         if (this.ffmpeg === null) {
             this.ffmpeg = new FFmpeg();
 
             if (this.debug) {
-                this.ffmpeg.on('log', ({ message }) => {
+                this.ffmpeg.on('log', ({message}) => {
                     console.log(message);
                 });
             }
