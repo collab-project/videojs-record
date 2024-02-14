@@ -1930,7 +1930,7 @@ class Record extends Plugin {
     setFormatTime(customImplementation) {
         this._formatTime = customImplementation;
 
-        if (videojs.time) {
+        if (videojs.time !== undefined) {
             // video.js v8 and newer
             videojs.time.setFormatTime(this._formatTime);
         } else {
