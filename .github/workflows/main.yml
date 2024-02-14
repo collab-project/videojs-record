@@ -11,7 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20]
+        os:
+          - ubuntu-latest
+          - windows-latest
+        node-version:
+          - 20
+        architecture:
+          - x64
     name: ${{ matrix.os }} - Node ${{ matrix.node-version }} (${{ matrix.architecture }})
     steps:
     - name: Checkout
