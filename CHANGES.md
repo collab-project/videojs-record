@@ -5,6 +5,7 @@
 - Fix video.js v8 deprecation warnings
 - ffmpeg.wasm plugin: add support for v0.12.x
 - Bump required version for:
+  - videojs-wavesurfer (3.10.0 or newer)
   - webrtc-adapter (8.2.3 or newer)
 
 
