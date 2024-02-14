@@ -2,8 +2,9 @@
 
 ## 4.7.0 - unreleased
 
-- Fix video.js v8 deprecation warnings
-- ffmpeg.wasm plugin: add support for v0.12.x
+- Fix video.js v8 deprecation warnings (#707)
+- Ignore click events for record indicator (#688)
+- ffmpeg.wasm plugin: add support for v0.12.x (#708)
 - Bump required version for:
   - videojs-wavesurfer (3.10.0 or newer)
   - webrtc-adapter (8.2.3 or newer)
