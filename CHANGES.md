@@ -1,6 +1,6 @@
 # videojs-record changelog
 
-## 4.7.0 - unreleased
+## 4.7.0 - 2024/02/14
 
 - Fix video.js v8 deprecation warnings (#707)
 - Ignore click events for record indicator (#688)
