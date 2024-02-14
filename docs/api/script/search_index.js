@@ -1128,6 +1128,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#audiowebassemblyurl",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-audioWebAssemblyURL",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#audioWebAssemblyURL",
+    "member"
+  ],
+  [
     "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#constructor",
     "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-constructor-constructor",
     "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#constructor",
@@ -1146,9 +1152,21 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#coreurl",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-coreURL",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#coreURL",
+    "member"
+  ],
+  [
     "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#debug",
     "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-debug",
     "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#debug",
+    "member"
+  ],
+  [
+    "js/plugins/ffmpeg-wasm-plugin.js~ffmpegwasmengine#ffmpeg",
+    "class/js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine.html#instance-member-ffmpeg",
+    "js/plugins/ffmpeg-wasm-plugin.js~FFmpegWasmEngine#ffmpeg",
     "member"
   ],
   [
