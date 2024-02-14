@@ -171,7 +171,14 @@ class Record extends Plugin {
      * @param {Object} newOptions - Optional new player options.
      */
     loadOptions(newOptions = {}) {
-        let recordOptions = videojs.mergeOptions(pluginDefaultOptions,
+        let merge;
+        if (videojs.obj !== undefined) {
+            // video.js v8 and newer
+            merge = videojs.obj.merge;
+        } else {
+            merge = videojs.mergeOptions;
+        }
+        let recordOptions = merge(pluginDefaultOptions,
             this.player.options_.plugins.record, newOptions);
 
         // record settings
@@ -1923,7 +1930,12 @@ class Record extends Plugin {
     setFormatTime(customImplementation) {
         this._formatTime = customImplementation;
 
-        videojs.setFormatTime(this._formatTime);
+        if (videojs.time) {
+            // video.js v8 and newer
+            videojs.time.setFormatTime(this._formatTime);
+        } else {
+            videojs.setFormatTime(this._formatTime);
+        }
 
         // audio-only
         if (this.surfer) {
