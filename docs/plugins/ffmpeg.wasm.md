@@ -23,7 +23,7 @@ Include the library files and place them before any other scripts:
 
 ```html
 <script src="@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
-<script src="@ffmpeg/ffmpeg/util/umd/index.js"></script>
+<script src="@ffmpeg/util/dist/umd/index.js"></script>
 ```
 
 Import the plugin:
