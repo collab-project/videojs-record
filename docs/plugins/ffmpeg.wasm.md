@@ -43,9 +43,9 @@ record: {
     // enable ffmpeg.wasm plugin
     convertEngine: 'ffmpeg.wasm',
     // multi-threaded worker
-    coreURL: '../../node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js',
-    convertWorkerURL: '../../node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js',
-    audioWebAssemblyURL: '../../node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm',
+    coreURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js',
+    convertWorkerURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js',
+    audioWebAssemblyURL: '/node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm',
     // convert recorded data to MP4 (and copy over audio data without encoding)
     convertOptions: ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
     // specify output mime-type
