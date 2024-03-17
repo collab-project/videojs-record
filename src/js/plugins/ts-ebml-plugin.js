@@ -11,7 +11,7 @@ const ConvertEngine = videojs.getComponent('ConvertEngine');
 import {Buffer} from 'buffer';
 window.Buffer = Buffer;
 
-import {Decoder, Encoder, tools, Reader} from 'ts-ebml';
+import * as ebml from 'ts-ebml';
 
 /**
  * Converter engine using the ts-ebml library.
@@ -28,8 +28,8 @@ class TsEBMLEngine extends ConvertEngine {
      * @param {Blob} data - Recorded data that needs to be converted.
      */
     convert(data) {
-        const decoder = new Decoder();
-        const reader = new Reader();
+        const decoder = new ebml.Decoder();
+        const reader = new ebml.Reader();
         reader.logging = false;
         reader.drop_default_duration = false;
 
@@ -55,7 +55,7 @@ class TsEBMLEngine extends ConvertEngine {
             reader.stop();
 
             // generate metadata
-            let refinedMetadataBuf = tools.makeMetadataSeekable(
+            let refinedMetadataBuf = ebml.tools.makeMetadataSeekable(
                 reader.metadatas, reader.duration, reader.cues);
             let body = buffer.slice(reader.metadataSize);
 
