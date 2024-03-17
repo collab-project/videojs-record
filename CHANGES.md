@@ -1,5 +1,9 @@
 # videojs-record changelog
 
+## 4.8.0 - unreleased
+
+- ts-ebml plugin: add support for v3.x (#716)
+
 ## 4.7.0 - 2024/02/14
 
 - Fix video.js v8 deprecation warnings (#707)
