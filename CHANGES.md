@@ -2,7 +2,7 @@
 
 ## 4.8.0 - unreleased
 
-- ts-ebml plugin: add support for v3.x
+- ts-ebml plugin: add support for v3.x (#716)
 
 ## 4.7.0 - 2024/02/14
 
