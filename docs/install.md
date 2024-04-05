@@ -28,7 +28,7 @@ Alternative CDN locations:
 
 - https://cdn.jsdelivr.net/npm/videojs-record/
 - https://cdnjs.com/libraries/videojs-record
-- http://www.bootcdn.cn/videojs-record
+- https://www.bootcdn.cn/videojs-record
 
 ## Upgrade
 

@@ -1,10 +1,9 @@
 # React
 
-This page shows how to get started with [React](https://reactjs.org) and
-videojs-record using the [create-react-app](https://github.com/facebook/create-react-app)
-utility.
+This guide shows you how to get started with [React](https://reactjs.org) and
+videojs-record using [create-react-app](https://github.com/facebook/create-react-app).
 
-For more information, check the video.js [documentation](https://github.com/videojs/video.js/blob/master/docs/guides/react.md)
+For more information, check the video.js [documentation](https://videojs.com/guides/react/)
 for React.
 
 ## Installation
@@ -24,73 +23,113 @@ npm install --save videojs-record
 
 ## Application
 
-Edit `src/index.js`:
+Replace content of `src/App.js` with:
 
 ```javascript
+import './App.css';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 
-const videoJsOptions = {
+import VideoJSComponent from './VideoJSComponent';
+
+function App() {
+  const playerRef = React.useRef(null);
+  const videoJsOptions = {
     controls: true,
     bigPlayButton: false,
     width: 320,
     height: 240,
     fluid: false,
     plugins: {
-        /*
-        // wavesurfer section is only needed when recording audio-only
-        wavesurfer: {
-            backend: 'WebAudio',
-            waveColor: '#36393b',
-            progressColor: 'black',
-            debug: true,
-            cursorWidth: 1,
-            msDisplayMax: 20,
-            hideScrollbar: true,
-            displayMilliseconds: true,
-            plugins: [
-                // enable microphone plugin
-                WaveSurfer.microphone.create({
-                    bufferSize: 4096,
-                    numberOfInputChannels: 1,
-                    numberOfOutputChannels: 1,
-                    constraints: {
-                        video: false,
-                        audio: true
-                    }
-                })
-            ]
-        },
-        */
-        record: {
-            audio: true,
-            video: true,
-            maxLength: 10,
-            debug: true
-        }
+      /*
+      // wavesurfer section is only needed when recording audio-only
+      wavesurfer: {
+        backend: 'WebAudio',
+        waveColor: '#36393b',
+        progressColor: 'black',
+        debug: true,
+        cursorWidth: 1,
+        msDisplayMax: 20,
+        hideScrollbar: true,
+        displayMilliseconds: true,
+        plugins: [
+          // enable microphone plugin
+          WaveSurfer.microphone.create({
+            bufferSize: 4096,
+            numberOfInputChannels: 1,
+            numberOfOutputChannels: 1,
+            constraints: {
+              video: false,
+              audio: true
+            }
+          })
+        ]
+      },
+      */
+      record: {
+        audio: true,
+        video: true,
+        maxLength: 10,
+        debug: true
+      }
     }
-};
+  };
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App { ...videoJsOptions }/>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // handle player events
+    // device is ready
+    player.on('deviceReady', () => {
+      console.log('device is ready!');
+    });
+
+    // user clicked the record button and started recording
+    player.on('startRecord', () => {
+      console.log('started recording!');
+    });
+
+    // user completed recording and stream is available
+    player.on('finishRecord', () => {
+      // recordedData is a blob object containing the recorded data that
+      // can be downloaded by the user, stored on server etc.
+      console.log('finished recording: ', player.recordedData);
+    });
+
+    // error handling
+    player.on('error', (element, error) => {
+      console.warn(error);
+    });
+
+    player.on('deviceError', () => {
+      console.error('device error:', player.deviceErrorCode);
+    });
+  };
+
+  return (
+    <div className="App">
+      <VideoJSComponent options={videoJsOptions} onReady={handlePlayerReady} />
+    </div>
+  );
+}
+
+export default App;
 ```
 
-Edit `src/App.js`:
+Add the following to `src/App.css`:
+
+```css
+/* change player background color */
+.App video-js {
+  background-color: #ACB2F2;
+}
+```
+
+Create `src/VideoJSComponent.js`:
 
 ```javascript
-/* eslint-disable */
-import React, { Component } from 'react';
-
-import './App.css';
-
-import 'video.js/dist/video-js.css';
+import React from 'react';
 import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 
 import 'webrtc-adapter';
 import RecordRTC from 'recordrtc';
@@ -110,69 +149,59 @@ import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 import 'videojs-record/dist/css/videojs.record.css';
 import Record from 'videojs-record/dist/videojs.record.js';
 
-class App extends Component {
-    componentDidMount() {
-        // instantiate Video.js
-        this.player = videojs(this.videoNode, this.props, () => {
-            // print version information at startup
-            const version_info = 'Using video.js ' + videojs.VERSION +
-                ' with videojs-record ' + videojs.getPluginVersion('record') +
-                ' and recordrtc ' + RecordRTC.version;
-            videojs.log(version_info);
-        });
+export const VideoJSComponent = (props) => {
+  const videoRef = React.useRef(null);
+  const playerRef = React.useRef(null);
+  const {options, onReady} = props;
 
-        // device is ready
-        this.player.on('deviceReady', () => {
-            console.log('device is ready!');
-        });
+  React.useEffect(() => {
 
-        // user clicked the record button and started recording
-        this.player.on('startRecord', () => {
-            console.log('started recording!');
-        });
+    // Make sure Video.js player is only initialized once
+    if (!playerRef.current) {
+      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
+      const videoElement = document.createElement('video-js');
 
-        // user completed recording and stream is available
-        this.player.on('finishRecord', () => {
-            // recordedData is a blob object containing the recorded data that
-            // can be downloaded by the user, stored on server etc.
-            console.log('finished recording: ', this.player.recordedData);
-        });
+      videoElement.className = 'video-js vjs-default-skin';
+      videoRef.current.appendChild(videoElement);
 
-        // error handling
-        this.player.on('error', (element, error) => {
-            console.warn(error);
-        });
+      const player = playerRef.current = videojs(videoElement, options, () => {
+        // print version information at startup
+        const version_info = 'Using video.js ' + videojs.VERSION +
+          ' with videojs-record ' + videojs.getPluginVersion('record') +
+          ', recordrtc ' + RecordRTC.version + ' and React ' + React.version;
+        videojs.log(version_info);
 
-        this.player.on('deviceError', () => {
-            console.error('device error:', this.player.deviceErrorCode);
-        });
+        onReady && onReady(player);
+      });
+
+    // You could update an existing player in the `else` block here
+    // on prop change
+    } else {
+      // const player = playerRef.current;
+      // player.record().getDevice();
     }
+  }, [options, videoRef]);
 
-    // destroy player on unmount
-    componentWillUnmount() {
-        if (this.player) {
-            this.player.dispose();
-        }
-    }
-    render() {
-        return (
-        <div data-vjs-player>
-            <video id="myVideo" ref={node => this.videoNode = node} className="video-js vjs-default-skin" playsInline></video>
-        </div>
-        );
-    }
-}
+  // Dispose the Video.js player when the functional component unmounts
+  React.useEffect(() => {
+    const player = playerRef.current;
 
-export default App;
-```
+    return () => {
+      if (player && !player.isDisposed()) {
+        player.dispose();
+        playerRef.current = null;
+      }
+    };
+  }, [playerRef]);
 
-Add the following to `src/index.css`:
+  return (
+    <div data-vjs-player>
+      <div ref={videoRef} />
+    </div>
+  );
+};
 
-```css
-/* change player background color */
-#myVideo {
-  background-color: #ACB2F2;
-}
+export default VideoJSComponent;
 ```
 
 ## Run

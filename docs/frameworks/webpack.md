@@ -45,8 +45,11 @@ module.exports = {
         publicPath: '/dist'
     },
     devServer: {
-        contentBase: basePath,
-        watchContentBase: true
+        static: {
+          directory: basePath,
+          serveIndex: true,
+          watch: true
+        }
     },
     module: {
         rules: [{

@@ -47,7 +47,12 @@ module.exports = {
         // webpack < 5 used to include polyfills for node.js core modules by default.
         // This is no longer the case; enable required polyfills here.
         fallback: {
+            // used for ts-ebml plugin, see https://github.com/legokichi/ts-ebml/issues/25
             'buffer': require.resolve('buffer/')
+        },
+        alias: {
+            // used for ts-ebml plugin, see https://github.com/legokichi/ts-ebml/issues/48
+            ebml: 'ebml/lib/ebml.esm.js'
         }
     },
     // specify dependencies for the library that are not resolved by webpack,

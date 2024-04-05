@@ -38,11 +38,14 @@ module.exports = {
             }
         ],
         // webpack-dev-server middleware
-        onBeforeSetupMiddleware(args) {
+        setupMiddlewares: (middlewares, devServer) => {
+            if (!devServer) {
+                throw new Error('webpack-dev-server is not defined');
+            }
             // =============================================
             // use proper mime-type for wasm files
             // =============================================
-            args.app.get('*.wasm', (req, res, next) => {
+            devServer.app.get('*.wasm', (req, res, next) => {
                 let options = {
                     root: contentBase,
                     dotfiles: 'deny',
@@ -66,7 +69,7 @@ module.exports = {
             // use proper headers for SharedArrayBuffer on Firefox
             // see https://github.com/ffmpegwasm/ffmpeg.wasm/issues/102
             // ========================================================
-            args.app.use((req, res, next) => {
+            devServer.app.use((req, res, next) => {
                 res.header('Cross-Origin-Opener-Policy', 'same-origin');
                 res.header('Cross-Origin-Embedder-Policy', 'require-corp');
                 next();
@@ -81,7 +84,7 @@ module.exports = {
             fs.ensureDirSync(targetDir);
 
             // file upload handler for examples
-            args.app.post('/upload', (req, res) => {
+            devServer.app.post('/upload', (req, res) => {
                 // save uploaded file
                 let form = new formidable.IncomingForm();
                 form.uploadDir = targetDir;
@@ -94,10 +97,10 @@ module.exports = {
                     console.log(err);
                 });
 
-                form.on('fileBegin', (name, file) => {
+                form.on('fileBegin', (formName, file) => {
                     // use original filename in this example
-                    file.path = form.uploadDir + '/' + file.name;
-                    console.log(colors.yellow('filename:', file.name));
+                    file.filepath = form.uploadDir + '/' + file.originalFilename;
+                    console.log(colors.yellow('filename:', file.originalFilename));
                 });
 
                 form.on('end', () => {
@@ -116,6 +119,8 @@ module.exports = {
             console.log('');
             console.log(colors.green(' [examples] /upload handler ready'));
             console.log('');
+
+            return middlewares;
         }
     },
     plugins: [

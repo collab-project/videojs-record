@@ -6,5 +6,8 @@ import setSrcObject from '../../src/js/utils/browser-shim';
 
 /** @test {browser-shim} */
 describe('utils.setSrcObject', () => {
-    // todo
+    /** @test {setSrcObject} */
+    it('todo', () => {
+        pending();
+    });
 });

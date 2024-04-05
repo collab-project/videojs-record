@@ -4,6 +4,7 @@
 
 .vjs-record.video-js .vjs-control.vjs-record-indicator.vjs-hidden {
     display: block!important;
+    pointer-events: none;
     opacity: 0;
     transform: translateX(1em) rotateX(-90deg) scale(0.9);
     transition: all .5s, transform .5s .25s;
@@ -13,6 +14,7 @@
     width: .8em;
     height: .8em;
     background-color: #ff625e;
+    pointer-events: none;
     line-height: 1.1em;
     border-radius: 50%;
     right: 2.5ex;
@@ -27,6 +29,7 @@
     content: attr(data-label);
     color: white;
     position: absolute;
+    pointer-events: none;
     left: -2.7em;
     font-family: "Helvetica", sans-serif;
     animation-name: pulsetext;
@@ -41,6 +44,7 @@
 .vjs-record.video-js .vjs-control.vjs-record-indicator:after {
     content: "";
     display: block;
+    pointer-events: none;
     height: calc(.8em - 4px);
     width: calc(.8em - 4px);
     border: 2px solid #ff625e;

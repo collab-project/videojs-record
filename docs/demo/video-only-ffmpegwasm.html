@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <title>ffmpeg.wasm video-only example - Record Plugin for Video.js</title>
 
-  <link href="//unpkg.com/video.js@7.14.3/dist/video-js.min.css" rel="stylesheet">
+  <link href="//unpkg.com/video.js@8.10.0/dist/video-js.min.css" rel="stylesheet">
   <link href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css" rel="stylesheet">
   <link href="assets/examples.css" rel="stylesheet">
 
-  <script src="//unpkg.com/video.js@7.14.3/dist/video.min.js"></script>
+  <script src="//unpkg.com/video.js@8.10.0/dist/video.min.js"></script>
   <script src="//unpkg.com/recordrtc/RecordRTC.js"></script>
   <script src="//unpkg.com/webrtc-adapter/out/adapter.js"></script>
-  <script src="//unpkg.com/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
+  <script src="//unpkg.com/@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
+  <script src="//unpkg.com/@ffmpeg/util/dist/umd/index.js"></script>
 
   <script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>
   <script src="//unpkg.com/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.js"></script>
@@ -47,9 +48,12 @@ var options = {
             displayMilliseconds: true,
             debug: true,
             convertEngine: 'ffmpeg.wasm',
-            convertWorkerURL: '//unpkg.com/@ffmpeg/core/dist/ffmpeg-core.js',
+            // multi-threaded worker
+            coreURL: '//unpkg.com/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js',
+            convertWorkerURL: '//unpkg.com/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js',
+            audioWebAssemblyURL: '//unpkg.com/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm',
             // convert recorded data to MP4 (and copy over audio data without encoding)
-            convertOptions: ['-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
+            convertOptions: ['-c:v', 'libx264', '-crf', '22', '-c:a', 'copy', '-f', 'mp4'],
             // specify output mime-type
             pluginLibraryOptions: {
                 outputType: 'video/mp4'

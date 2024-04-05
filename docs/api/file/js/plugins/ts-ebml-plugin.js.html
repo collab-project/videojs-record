@@ -114,7 +114,7 @@ const ConvertEngine = videojs.getComponent(&apos;ConvertEngine&apos;);
 import {Buffer} from &apos;buffer&apos;;
 window.Buffer = Buffer;
 
-import {Decoder, Encoder, tools, Reader} from &apos;ts-ebml&apos;;
+import * as ebml from &apos;ts-ebml&apos;;
 
 /**
  * Converter engine using the ts-ebml library.
@@ -131,8 +131,8 @@ class TsEBMLEngine extends ConvertEngine {
      * @param {Blob} data - Recorded data that needs to be converted.
      */
     convert(data) {
-        const decoder = new Decoder();
-        const reader = new Reader();
+        const decoder = new ebml.Decoder();
+        const reader = new ebml.Reader();
         reader.logging = false;
         reader.drop_default_duration = false;
 
@@ -146,14 +146,19 @@ class TsEBMLEngine extends ConvertEngine {
         // load and convert blob
         this.loadBlob(data).then((buffer) =&gt; {
             // decode
-            const elms = decoder.decode(buffer);
+            let elms = decoder.decode(buffer);
+
+            // see https://github.com/legokichi/ts-ebml/issues/33#issuecomment-888800828
+            const validEmlType = [&apos;m&apos;, &apos;u&apos;, &apos;i&apos;, &apos;f&apos;, &apos;s&apos;, &apos;8&apos;, &apos;b&apos;, &apos;d&apos;];
+            elms = elms.filter((elm) =&gt; validEmlType.includes(elm.type));
+
             elms.forEach((elm) =&gt; {
                 reader.read(elm);
             });
             reader.stop();
 
             // generate metadata
-            let refinedMetadataBuf = tools.makeMetadataSeekable(
+            let refinedMetadataBuf = ebml.tools.makeMetadataSeekable(
                 reader.metadatas, reader.duration, reader.cues);
             let body = buffer.slice(reader.metadataSize);
 

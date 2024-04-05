@@ -1,9 +1,30 @@
 # videojs-record changelog
 
-## 4.6.0 - unreleased
+## 4.9.0 - unreleased
 
-- Bump required version for videojs-wavesurfer (3.8.0 or newer)
 - Add `countdown` option for displaying 3-2-1 countdown before the recording (#604)
+
+## 4.8.0 - 2024/04/02
+
+- ts-ebml plugin: add support for v3.x (#716)
+
+
+## 4.7.0 - 2024/02/14
+
+- Fix video.js v8 deprecation warnings (#707)
+- Ignore click events for record indicator (#688)
+- ffmpeg.wasm plugin: add support for v0.12.x (#708)
+- Bump required version for:
+  - videojs-wavesurfer (3.10.0 or newer)
+  - webrtc-adapter (8.2.3 or newer)
+
+
+## 4.6.0 - 2022/11/16
+
+- ts-ebml plugin: fix Safari issue with ts-ebml (#595, #581)
+- Bump required version for:
+  - videojs-wavesurfer (3.9.0 or newer)
+  - webrtc-adapter (8.2.0 or newer)
 
 
 ## 4.5.0 - 2021/06/14
