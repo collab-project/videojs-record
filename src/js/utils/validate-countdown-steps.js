@@ -1,6 +1,6 @@
 /**
  * @file validate-countdown-steps.js
- * @since 4.6.0
+ * @since 4.9.0
  */
 
 /**
