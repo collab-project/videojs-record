@@ -4,7 +4,6 @@
  */
 
 import videojs from 'video.js';
-import Event from '../event';
 
 const Component = videojs.getComponent('Component');
 
