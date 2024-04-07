@@ -13,8 +13,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    filter: grayscale(1);
 
     span {
-        font-size: 6em;
+        font-size: 12em;
     }
+}
+.vjs-countdown {
+
+  video {
+    filter: grayscale(1);
+  }
 }
