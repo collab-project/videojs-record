@@ -999,8 +999,7 @@ class Record extends Plugin {
 
                     resolve();
                 } else {
-                    let text, time;
-                    ({text, time} = steps.shift());
+                    const {value: text, time: time} = steps.shift();
                     this.player.countdownOverlay.setOverlayText(text);
                     this.countdownTimeoutID = this.player.setTimeout(resolveOrDown, time);
                 }
