@@ -1,5 +1,7 @@
 {
   "reject": [
+    "formidable",
+    "parse-ms",
     "video.js"
   ]
 }
