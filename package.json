@@ -104,7 +104,7 @@
     "ffmpeg.js": "^4.2.9003",
     "file-loader": "^6.2.0",
     "fine-uploader": ">=5.16",
-    "formidable": "^2.1.1",
+    "formidable": "^3.2.4",
     "fs-extra": "^11.2.0",
     "host-environment": "^2.1.2",
     "htmlhint": "^1.1.4",
