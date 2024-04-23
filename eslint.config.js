@@ -1,8 +1,14 @@
-{
-  "parserOptions": {
+const jsdoc = require('eslint-plugin-jsdoc');
+
+module.exports = [
+  // configuration included in plugin
+  //jsdoc.configs['flat/recommended'],
+  {
+  "languageOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
+  "plugins": {jsdoc: jsdoc},
   "rules": {
     "no-trailing-spaces": 2,
     "no-mixed-spaces-and-tabs": 2,
@@ -38,12 +44,9 @@
     "key-spacing": ["error", { "afterColon": true, "beforeColon": false }],
     "space-infix-ops": 2,
     "prefer-arrow-callback": 2,
-    "valid-jsdoc": [2, {
-      "requireReturn": false,
-      "requireReturnType": false
-    }],
+    "jsdoc/require-return": "off",
+    "jsdoc/require-returntype": "off",
     "object-curly-spacing": ["error", "never"],
-    "require-jsdoc": 2,
     "no-console": 2,
     "no-dupe-args": 2,
     "no-dupe-keys": 2,
@@ -52,20 +55,19 @@
     "use-isnan": 2,
     "valid-typeof": 2,
     "no-var": 2
-  },
-  "overrides": [
-    {
-      "files": ["test-*.js", "*.spec.js", "test-helpers.js"],
-      "rules": {
-        "valid-jsdoc": 0,
-        "require-jsdoc": 0
-      }
-    },
-    {
-      "files": ["build-config/**/*.js"],
-      "rules": {
-        "no-console": 0
-      }
-    }
-  ]
+  }
+},
+{
+  files: ["build-config/**/*.js"],
+  rules: {
+    "no-console": "off"
+  }
+},
+{
+  files: ["test-*.js", "*.spec.js", "test-helpers.js"],
+  rules: {
+    "no-console": "off",
+    "require-jsdoc": "off"
+  }
 }
+];
