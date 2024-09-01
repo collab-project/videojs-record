@@ -28,3 +28,6 @@ player.on('startRecord', function() {
 | `startConvert` | The convert plugin started processing the recorded data. |
 | `finishConvert` | The converted data is available. Inspect the [player.convertedData](recorded-data#convert-data) object for the converted data. |
 | `retry` | User clicked on `retry` to take another picture. Only available for image-only mode. |
+| `startCountdown` | The countdown before the recording is about to start. |
+| `finishCountdown` | The countdown before the recording is finished. |
+| `abortCountdown` | The countdown is stopped by a user interaction. |

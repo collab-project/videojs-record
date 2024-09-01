@@ -11,6 +11,7 @@ import CameraButton from '../../src/js/controls/camera-button';
 /** @test {camera-button} */
 describe('controls.CameraButton', () => {
     let player;
+    let playerWithCountdown;
     let originalTimeout;
 
     beforeEach(() => {
@@ -19,10 +20,26 @@ describe('controls.CameraButton', () => {
 
         // create new image-only player
         player = TestHelpers.makeImageOnlyPlayer();
+
+        // create new image-only player with the countdown
+        playerWithCountdown = TestHelpers.makeImageOnlyPlayer({
+            plugins: {
+                record: {
+                    image: true,
+                    countdown: [
+                        {value: '3', time: 1000},
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ],
+                    debug: true
+                }
+            }
+        }, 'imageOnlyCountdown');
     });
 
     afterEach(() => {
         player.dispose();
+        playerWithCountdown.dispose();
 
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
@@ -60,12 +77,14 @@ describe('controls.CameraButton', () => {
 
             setTimeout(() => {
                 // stop recording
+                // not sure if it makes any sense here, because done() is called after the click
                 button.trigger('click');
 
                 done();
             }, 2000);
         });
         player.one(Event.STOP_RECORD, () => {
+            // not sure when it's called, dead code?
             expect(button.hasClass('vjs-icon-replay')).toBeFalse();
             expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
             expect(button.controlText_).toEqual('Image');
@@ -81,4 +100,69 @@ describe('controls.CameraButton', () => {
         });
     });
 
+    it('changes appearance when startRecord or stopRecord is triggered and countdown is on', (done) => {
+        let button = new CameraButton(playerWithCountdown);
+
+        expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+
+        playerWithCountdown.one(Event.START_COUNTDOWN, () => {
+            setTimeout(() => {
+                expect(button.controlText_).toEqual('Reset');
+            }, 2000);
+        });
+        playerWithCountdown.one(Event.START_RECORD, () => {
+            expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
+            expect(button.hasClass('vjs-icon-replay')).toBeTrue();
+            expect(button.controlText_).toEqual('Reset');
+
+            setTimeout(() => {
+                expect(button.hasClass('vjs-icon-photo-camera')).toBeFalse();
+                expect(button.hasClass('vjs-icon-replay')).toBeTrue();
+                // it took a photo after 3-2-1 countdown
+                expect(button.controlText_).toEqual('Retry');
+
+                done();
+            }, 4000);
+        });
+
+        playerWithCountdown.one(Event.DEVICE_READY, () => {
+            button.trigger('click');
+        });
+
+        playerWithCountdown.one(Event.READY, () => {
+            playerWithCountdown.record().getDevice();
+        });
+    });
+
+    it('changes appearance when stopRecord is triggered and the countdown is on', (done) => {
+        let button = new CameraButton(playerWithCountdown);
+
+        expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+
+        playerWithCountdown.one(Event.START_COUNTDOWN, () => {
+            setTimeout(() => {
+                expect(button.controlText_).toEqual('Reset');
+            }, 500);
+        });
+        playerWithCountdown.one(Event.RETRY, () => {
+            expect(button.hasClass('vjs-icon-replay')).toBeFalse();
+            expect(button.hasClass('vjs-icon-photo-camera')).toBeTrue();
+            expect(button.controlText_).toEqual('Image');
+
+            done();
+        });
+        playerWithCountdown.one(Event.START_COUNTDOWN, () => {
+            setTimeout(() => {
+                // Stop the countdown
+                button.trigger('click');
+            }, 1000);
+        });
+        playerWithCountdown.one(Event.DEVICE_READY, () => {
+            button.trigger('click');
+        });
+
+        playerWithCountdown.one(Event.READY, () => {
+            playerWithCountdown.record().getDevice();
+        });
+    });
 });

@@ -135,6 +135,8 @@ const pluginDefaultOptions = {
     convertAuto: true,
     // Enable keyboard hotkeys.
     hotKeys: false,
+    // Countdown steps before the recording.
+    countdown: [],
     // Use this object to specify additional settings for the library used by the
     // plugin (only used in opus-recorder, ffmpeg.js, ffmpeg.wasm and vmsg plugins).
     pluginLibraryOptions: {}
