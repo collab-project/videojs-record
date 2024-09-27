@@ -1897,7 +1897,7 @@ class Record extends Plugin {
                 break;
 
             default:
-                let element = player.tech_.el_;
+                let element = this.player.tech_.el_;
                 if (deviceId) {
                     if (typeof element.sinkId !== 'undefined') {
                         element.setSinkId(deviceId).then((result) => {
