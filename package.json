@@ -71,7 +71,7 @@
     "opus"
   ],
   "dependencies": {
-    "recordrtc": ">=5.6.2",
+    "recordrtc": "github:kira/RecordRTC#566a27536f1aaa007058d94cf0af06a1f697b934",
     "video.js": ">=7.0.5",
     "videojs-wavesurfer": ">=3.10.0",
     "webrtc-adapter": ">=9.0.1"
