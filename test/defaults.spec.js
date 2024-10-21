@@ -57,6 +57,7 @@ describe('pluginDefaultOptions', () => {
             convertOptions: [],
             convertAuto: true,
             hotKeys: false,
+            countdown: [],
             pluginLibraryOptions: {}
         });
     });

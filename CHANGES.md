@@ -1,5 +1,9 @@
 # videojs-record changelog
 
+## 4.9.0 - unreleased
+
+- Add `countdown` option for displaying 3-2-1 countdown before the recording (#604)
+
 ## 4.8.0 - 2024/04/02
 
 - ts-ebml plugin: add support for v3.x (#716)

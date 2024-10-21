@@ -12,6 +12,7 @@ import RecordCanvas from './controls/record-canvas';
 import DeviceButton from './controls/device-button';
 import CameraButton from './controls/camera-button';
 import RecordToggle from './controls/record-toggle';
+import CountdownOverlay from './controls/countdown-overlay';
 import RecordIndicator from './controls/record-indicator';
 import PictureInPictureToggle from './controls/picture-in-picture-toggle';
 
@@ -22,6 +23,7 @@ import formatTime from './utils/format-time';
 import setSrcObject from './utils/browser-shim';
 import compareVersion from './utils/compare-version';
 import {detectBrowser} from './utils/detect-browser';
+import validateCountdownSteps from './utils/validate-countdown-steps';
 
 import {getAudioEngine, isAudioPluginActive, getVideoEngine, getConvertEngine} from './engine/engine-loader';
 import {IMAGE_ONLY, AUDIO_ONLY, VIDEO_ONLY, AUDIO_VIDEO, AUDIO_SCREEN, ANIMATION, SCREEN_ONLY, getRecorderMode} from './engine/record-mode';
@@ -127,6 +129,13 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
+        if (this.countdown.length) {
+            // add countdown overlay
+            player.countdownOverlay = new CountdownOverlay(player, options);
+            player.addChild(player.countdownOverlay);
+            player.countdownOverlay.hide();
+        }
+
         // picture-in-picture
         let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
         if (!('pictureInPictureEnabled' in document)) {
@@ -151,6 +160,9 @@ class Record extends Plugin {
                 'cameraButton', 'recordToggle'];
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
+            }
+            if (player.countdownOverlay) {
+                customUIElements.push('countdownOverlay');
             }
 
             customUIElements.forEach((element) => {
@@ -233,6 +245,14 @@ class Record extends Plugin {
         // animation settings
         this.animationFrameRate = recordOptions.animationFrameRate;
         this.animationQuality = recordOptions.animationQuality;
+
+        // countdown settings
+        if (validateCountdownSteps(recordOptions.countdown)) {
+            this.countdown = recordOptions.countdown;
+        } else {
+            this.countdown = [];
+            window.console.warn('videojs-record countdown option is not valid. Check out the reference https://collab-project.github.io/videojs-record/#/options');
+        }
     }
 
     /**
@@ -370,6 +390,15 @@ class Record extends Plugin {
         if (this.player.controlBar.playToggle !== undefined) {
             this.player.controlBar.playToggle.hide();
         }
+    }
+
+    /**
+     * Indicates whether the plugin is currently running the countdown. Recording is not started yet.
+     *
+     * @return {boolean} Plugin currently counting down or not.
+     */
+    isCountingDown() {
+        return this._countingdown;
     }
 
     /**
@@ -852,6 +881,7 @@ class Record extends Plugin {
                 return;
             }
             this._recording = true;
+            this._countingdown = true;
 
             // hide play/pause control
             if (this.player.controlBar.playToggle !== undefined) {
@@ -911,7 +941,9 @@ class Record extends Plugin {
             switch (this.getRecordType()) {
                 case IMAGE_ONLY:
                     // create snapshot
-                    this.createSnapshot();
+                    this.showCountdown().then(() => {
+                        this.createSnapshot();
+                    });
 
                     // notify UI
                     this.player.trigger(Event.START_RECORD);
@@ -925,16 +957,56 @@ class Record extends Plugin {
                     // wait for media stream on video element to actually load
                     this.player.one(Event.LOADEDMETADATA, () => {
                         // start actually recording process
-                        this.startRecording();
+                        this.showCountdown().then(() => {
+                            this.startRecording();
+                        });
                     });
                     break;
 
                 default:
                     // all resources have already loaded, so we can start
                     // recording right away
-                    this.startRecording();
+                    this.showCountdown().then(() => {
+                        this.startRecording();
+                    });
             }
         }
+    }
+
+    /**
+     * Show the countdown overlay and start the countdown
+     * @return {Promise} - promise is resolved when the last countdown step is reached
+     */
+    showCountdown() {
+        return new Promise(resolve => {
+            if (this.countdown.length === 0) {
+                // resolve immediately if there are no countdown steps
+                this._countingdown = false;
+                resolve();
+            }
+
+            this.player.trigger(Event.START_COUNTDOWN);
+            this.player.countdownOverlay.resetOverlayText();
+            this.player.countdownOverlay.show();
+
+            let steps = [...this.countdown];
+            let resolveOrDown = () => {
+                if (steps.length === 0) {
+                    this.player.clearTimeout(this.countdownTimeoutID);
+                    this._countingdown = false;
+                    this.player.countdownOverlay.hide();
+                    this.player.trigger(Event.FINISH_COUNTDOWN);
+
+                    resolve();
+                } else {
+                    const {value: text, time: time} = steps.shift();
+                    this.player.countdownOverlay.setOverlayText(text);
+                    this.countdownTimeoutID = this.player.setTimeout(resolveOrDown, time);
+                }
+            };
+
+            resolveOrDown();
+        });
     }
 
     /**
@@ -972,6 +1044,10 @@ class Record extends Plugin {
             this._recording = false;
             this._processing = true;
 
+            if (this.isCountingDown()) {
+                this.abortCountdown();
+            }
+
             if (this.getRecordType() !== IMAGE_ONLY) {
                 // notify UI
                 this.player.trigger(Event.STOP_RECORD);
@@ -995,6 +1071,23 @@ class Record extends Plugin {
                 }
             }
         }
+    }
+
+    /**
+     * Abort the countdown
+     */
+    abortCountdown() {
+        // Stop the countdown
+        this.player.clearTimeout(this.countdownTimeoutID);
+
+        this._recording = false;
+        this._countingdown = false;
+        this._processing = false;
+
+        this.player.countdownOverlay.hide();
+
+        // Notify the UI
+        this.player.trigger(Event.ABORT_COUNTDOWN);
     }
 
     /**
@@ -1473,6 +1566,11 @@ class Record extends Plugin {
             this.player.controlBar.playToggle.hide();
         }
 
+        if (this.player.countdownOverlay) {
+            // hide countdown overlay
+            this.player.countdownOverlay.hide();
+        }
+
         // show device selection button
         this.player.deviceButton.show();
 
@@ -1493,6 +1591,7 @@ class Record extends Plugin {
      */
     resetState() {
         this._recording = false;
+        this._countingdown = false;
         this._processing = false;
         this._deviceActive = false;
         this.devices = [];
@@ -1626,6 +1725,7 @@ class Record extends Plugin {
      */
     retrySnapshot() {
         this._processing = false;
+        this._countingdown = false;
 
         // retry: hide the snapshot
         this.player.recordCanvas.hide();

@@ -1,0 +1,27 @@
+/* Countdown Overlay (countdown when start recording)
+--------------------------------------------------------------------------------
+*/
+
+.vjs-record-countdown {
+    position: absolute;
+    bottom: 3em;
+    left: 0;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: grayscale(1);
+
+    span {
+        font-size: 12em;
+    }
+}
+.vjs-countdown {
+
+  video {
+    filter: grayscale(1);
+  }
+}

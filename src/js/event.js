@@ -36,6 +36,9 @@ Event.FINISH_CONVERT = 'finishConvert';
 Event.ENTER_PIP = 'enterPIP';
 Event.LEAVE_PIP = 'leavePIP';
 Event.RETRY = 'retry';
+Event.START_COUNTDOWN = 'startCountdown';
+Event.FINISH_COUNTDOWN = 'finishCountdown';
+Event.ABORT_COUNTDOWN = 'abortCountdown';
 
 // dom
 Event.ENTERPICTUREINPICTURE = 'enterpictureinpicture';

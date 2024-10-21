@@ -9,6 +9,7 @@ import {isFirefox, detectBrowser} from '../src/js/utils/detect-browser';
 
 // registers the plugin
 import Record from '../src/js/videojs.record';
+import RecordToggle from "../src/js/controls/record-toggle";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
@@ -829,4 +830,118 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record} */
+    it('no real recording during the countdown', (done) => {
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    countdown: [
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ],
+                }
+            }
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            const onRecordStarted = () => {
+                expect(true).toBe(false);
+            };
+            player.one(Event.START_RECORD, onRecordStarted);
+            setTimeout(() => {
+                // recording is not started during the countdown
+                player.off(Event.START_RECORD, onRecordStarted);
+            }, 2000);
+
+            // start record
+            player.record().start();
+
+            setTimeout(() => {
+                // stop recording
+                player.record().stop();
+            }, 4000);
+        });
+
+        player.one(Event.FINISH_RECORD, () => {
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#isCountingDown} */
+    /** @test {Record#isRecording} */
+    it('start/stop the countdown', (done) => {
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    countdown: [
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ],
+                }
+            }
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            // start
+            player.record().start();
+            expect(player.record().isCountingDown()).toBeTrue();
+            expect(player.record().isRecording()).toBeTrue();
+
+            setTimeout(() => {
+                // stop
+                player.record().stop();
+                expect(player.record().isCountingDown()).toBeFalse();
+                expect(player.record().isRecording()).toBeFalse();
+
+                done();
+            }, 1000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
+
+    /** @test {Record#isCountingDown} */
+    it('counting down is finished', (done) => {
+        player = TestHelpers.makeAudioVideoPlayer({
+            plugins: {
+                record: {
+                    countdown: [
+                        {value: '2', time: 1000},
+                        {value: '1', time: 1000},
+                    ],
+                }
+            }
+        });
+
+        player.one(Event.DEVICE_READY, () => {
+            player.record().start();
+
+            setTimeout(() => {
+                expect(player.record().isCountingDown()).toBeFalse();
+            }, 3000);
+
+            setTimeout(() => {
+                // stop recording
+                player.record().stop();
+            }, 4000);
+        });
+
+        player.one(Event.FINISH_RECORD, () => {
+            // wait till it's loaded before destroying
+            // (XXX: create new event for this)
+            setTimeout(done, 1000);
+        });
+
+        player.one(Event.READY, () => {
+            player.record().getDevice();
+        });
+    });
 });
