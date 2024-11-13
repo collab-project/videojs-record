@@ -62,4 +62,13 @@ describe('engine.convert-engine', () => {
             done();
         });
     });
+
+    it('should call dispose when the player is disposed', (done) => {
+        let engine = new ConvertEngine(player, {});
+        spyOn(engine, 'dispose');
+
+        player.dispose();
+
+        expect(engine.dispose).toHaveBeenCalled();
+    });
 });

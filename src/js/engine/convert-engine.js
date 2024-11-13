@@ -86,6 +86,13 @@ class ConvertEngine extends Component {
         // download converted file
         downloadBlob(fileName, this.player().convertedData);
     }
+
+    /**
+     * Remove any temporary data and references
+     */
+    dispose() {
+        super.dispose();
+    }
 }
 
 // expose component for external plugins
