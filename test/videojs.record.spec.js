@@ -481,6 +481,27 @@ describe('Record', () => {
         });
     });
 
+    /** @test {Record#setAudioOutput} */
+    it('can set audio output for video player', (done) => {
+        // create new audio-video player
+        let player = TestHelpers.makeAudioVideoPlayer();
+
+        player.one(Event.ERROR, (e) => {
+            expect(e.type).toEqual(Event.ERROR);
+
+            done();
+        });
+
+        player.one(Event.ENUMERATE_READY, () => {
+            player.record().setAudioOutput('fakeId');
+        });
+
+        player.one(Event.READY, () => {
+            player.record().enumerateDevices();
+        });
+    });
+
+
     /** @test {Record#saveAs} */
     it('saves as', (done) => {
         // create new player
