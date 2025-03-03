@@ -1384,6 +1384,11 @@ class Record extends Plugin {
             this.engine.off(Event.RECORD_COMPLETE, this.engineStopCallback);
         }
 
+        // Clean up any resources the converter engine may have used
+        if (this.converter) {
+            this.converter.dispose();
+        }
+
         // stop recording and device
         this.stop();
         this.stopDevice();
