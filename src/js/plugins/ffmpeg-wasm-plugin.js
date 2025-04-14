@@ -132,6 +132,17 @@ class FFmpegWasmEngine extends ConvertEngine {
         // notify listeners
         this.player().trigger('finishConvert');
     }
+
+    /**
+     * Terminate the FFMPEG workers if they have been started
+     */
+    dispose() {
+        super.dispose();
+        if (this.ffmpeg !== null && this.ffmpeg.loaded) {
+            this.ffmpeg.terminate();
+            this.ffmpeg = null;
+        }
+    }
 }
 
 // expose plugin
